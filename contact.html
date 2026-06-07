@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Lintejas</title>
+  <meta name="description" content="Get in touch with Lintejas — for partnerships, investment opportunities, demos, and enterprise inquiries." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .contact-reasons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 600px) {
+      .contact-reasons { grid-template-columns: 1fr; }
+    }
+    .reason-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .reason-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 20px rgba(8, 145, 178, 0.1);
+    }
+    .reason-card__icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .reason-card__title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .reason-card__desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .location-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .location-card__map {
+      height: 200px;
+      background: linear-gradient(135deg, rgba(8, 145, 178, 0.08) 0%, var(--bg-secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .location-card__map::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(8, 145, 178, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8, 145, 178, 0.06) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .location-card__map-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+    .location-card__flag {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .location-card__country {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .location-card__region {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .location-card__body {
+      padding: 1.5rem;
+    }
+    .location-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+    .location-detail:last-child { margin-bottom: 0; }
+    .location-detail__icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0;
+    }
+    .faq-item:first-child { padding-top: 0; }
+    .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .faq-question {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .faq-answer {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .faq-answer a {
+      color: var(--teal-light);
+    }
+    .faq-answer a:hover {
+      text-decoration: underline;
+    }
+
+    .response-time {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: #34D399;
+    }
+    .response-dot {
+      width: 7px;
+      height: 7px;
+      background: #34D399;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: livePulse 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="main-nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">L</div>
+        <span class="nav__logo-text">Linte<span>jas</span></span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="products.html" class="nav__link">Products</a>
+        <a href="about.html" class="nav__link">About</a>
+        <a href="contact.html" class="nav__link active">Contact</a>
+      </div>
+      <a href="contact.html" class="btn btn--primary btn--sm nav__cta">Get in Touch</a>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav__mobile">
+    <a href="index.html" class="nav__link">Home</a>
+    <a href="products.html" class="nav__link">Products</a>
+    <a href="about.html" class="nav__link">About</a>
+    <a href="contact.html" class="nav__link active">Contact</a>
+    <a href="contact.html" class="btn btn--primary">Get in Touch</a>
+  </div>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero__content">
+        <span class="section-label" style="margin-bottom: 1rem;">Reach Out</span>
+        <h1 class="page-hero__title">
+          <span style="color: var(--text-primary);">Get in </span>
+          <span class="text-gradient">Touch</span>
+        </h1>
+        <p class="page-hero__subtitle">Whether you're exploring a partnership, requesting a demo, or discussing investment — we want to hear from you. Let's build something great together.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reasons to Contact -->
+  <section class="section section--alt" style="padding: 60px 0;">
+    <div class="container">
+      <div class="contact-reasons">
+        <div class="reason-card reveal">
+          <div class="reason-card__icon">🤝</div>
+          <div class="reason-card__title">Partnerships</div>
+          <p class="reason-card__desc">Explore distribution, reseller, or technology partnership opportunities with Lintejas.</p>
+        </div>
+        <div class="reason-card reveal reveal-delay-1">
+          <div class="reason-card__icon">💼</div>
+          <div class="reason-card__title">Investment</div>
+          <p class="reason-card__desc">Interested in backing Lintejas's growth? We're open to conversations with aligned investors.</p>
+        </div>
+        <div class="reason-card reveal reveal-delay-2">
+          <div class="reason-card__icon">🖥️</div>
+          <div class="reason-card__title">Product Demo</div>
+          <p class="reason-card__desc">Want to see SkillVue in action or get early access to upcoming products? Book a demo.</p>
+        </div>
+        <div class="reason-card reveal reveal-delay-3">
+          <div class="reason-card__icon">🏢</div>
+          <div class="reason-card__title">Enterprise Inquiry</div>
+          <p class="reason-card__desc">Looking for a custom or enterprise implementation? Let's discuss your requirements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Contact Section -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Left: Info -->
+        <div>
+          <span class="section-label reveal">Contact Information</span>
+          <h2 class="section-title reveal" style="font-size: 2rem; margin-bottom: 1.5rem;">We're Based in<br>Slovakia, EU</h2>
+
+          <div class="reveal">
+            <div class="response-time">
+              <span class="response-dot"></span>
+              We typically respond within 24–48 business hours
+            </div>
+          </div>
+
+          <div class="contact-info__item reveal reveal-delay-1">
+            <div class="contact-info__icon">📍</div>
+            <div>
+              <div class="contact-info__label">Headquarters</div>
+              <div class="contact-info__value">Slovakia, European Union</div>
+            </div>
+          </div>
+
+          <div class="contact-info__item reveal reveal-delay-2">
+            <div class="contact-info__icon">🌐</div>
+            <div>
+              <div class="contact-info__label">Live Product</div>
+              <div class="contact-info__value">
+                <a href="https://competenc.netlify.app" target="_blank" rel="noopener">competenc.netlify.app ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info__item reveal reveal-delay-3">
+            <div class="contact-info__icon">🕐</div>
+            <div>
+              <div class="contact-info__label">Time Zone</div>
+              <div class="contact-info__value">CET/CEST (Central European Time)</div>
+            </div>
+          </div>
+
+          <div class="contact-info__item reveal reveal-delay-4">
+            <div class="contact-info__icon">🏢</div>
+            <div>
+              <div class="contact-info__label">Company Status</div>
+              <div class="contact-info__value">Active — Founded 2026</div>
+            </div>
+          </div>
+
+          <!-- Location Card -->
+          <div class="location-card reveal">
+            <div class="location-card__map">
+              <div class="location-card__map-content">
+                <span class="location-card__flag">🇸🇰</span>
+                <div class="location-card__country">Slovakia</div>
+                <div class="location-card__region">Central Europe · European Union</div>
+              </div>
+            </div>
+            <div class="location-card__body">
+              <div class="location-detail">
+                <span class="location-detail__icon">🏛️</span>
+                <span>EU-regulated business environment with GDPR compliance built in</span>
+              </div>
+              <div class="location-detail">
+                <span class="location-detail__icon">✈️</span>
+                <span>Well-connected to markets across Europe, Asia, and globally</span>
+              </div>
+              <div class="location-detail">
+                <span class="location-detail__icon">🔐</span>
+                <span>European data sovereignty standards applied to all products</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div>
+          <div class="form reveal reveal-delay-2">
+            <div id="contact-form-wrapper">
+              <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text-primary);">Send Us a Message</h3>
+              <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.75rem;">Fill out the form below and we'll get back to you as soon as possible.</p>
+
+              <form id="contact-form" novalidate>
+                <div class="form__row">
+                  <div class="form__group">
+                    <label class="form__label" for="first-name">First Name *</label>
+                    <input class="form__input" type="text" id="first-name" name="first-name" placeholder="Angie" required />
+                  </div>
+                  <div class="form__group">
+                    <label class="form__label" for="last-name">Last Name *</label>
+                    <input class="form__input" type="text" id="last-name" name="last-name" placeholder="Smith" required />
+                  </div>
+                </div>
+
+                <div class="form__group">
+                  <label class="form__label" for="email">Email Address *</label>
+                  <input class="form__input" type="email" id="email" name="email" placeholder="your@email.com" required />
+                </div>
+
+                <div class="form__group">
+                  <label class="form__label" for="company">Company / Organization</label>
+                  <input class="form__input" type="text" id="company" name="company" placeholder="Your company name" />
+                </div>
+
+                <div class="form__group">
+                  <label class="form__label" for="inquiry-type">Inquiry Type *</label>
+                  <select class="form__select" id="inquiry-type" name="inquiry-type" required>
+                    <option value="" disabled selected>Select inquiry type</option>
+                    <option value="partnership">Partnership Opportunity</option>
+                    <option value="investment">Investment / Funding</option>
+                    <option value="demo">Product Demo Request</option>
+                    <option value="enterprise">Enterprise Inquiry</option>
+                    <option value="skillvue">SkillVue — Existing Product</option>
+                    <option value="early-access">Early Access — Coming Soon Products</option>
+                    <option value="general">General Inquiry</option>
+                  </select>
+                </div>
+
+                <div class="form__group">
+                  <label class="form__label" for="product-interest">Product of Interest</label>
+                  <select class="form__select" id="product-interest" name="product-interest">
+                    <option value="" disabled selected>Select a product (optional)</option>
+                    <option value="skillvue">SkillVue — Competency Platform (Live)</option>
+                    <option value="materials">Material &amp; Consumables Issuance System</option>
+                    <option value="scheduler">Staff Scheduler Automation</option>
+                    <option value="transport">PH Transport Navigation System</option>
+                    <option value="sme">SME Financial Dashboard</option>
+                    <option value="all">All Products / General</option>
+                  </select>
+                </div>
+
+                <div class="form__group">
+                  <label class="form__label" for="message">Message *</label>
+                  <textarea class="form__textarea" id="message" name="message" placeholder="Tell us about your needs, organization, and what you're hoping to explore with Lintejas..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn--primary btn--lg form__submit">
+                  Send Message →
+                </button>
+              </form>
+            </div>
+
+            <!-- Success State -->
+            <div class="form__success" id="form-success">
+              <div class="form__success-icon">✅</div>
+              <div class="form__success-title">Message Received!</div>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;">Thank you for reaching out to Lintejas. We've received your message and will respond within 24–48 business hours.</p>
+              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">While you wait, explore our products:</p>
+                <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                  <a href="https://competenc.netlify.app" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Visit SkillVue ↗</a>
+                  <a href="products.html" class="btn btn--secondary btn--sm">All Products</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--alt">
+    <div class="container" style="max-width: 800px;">
+      <span class="section-label reveal" style="justify-content: center; display: flex;">FAQ</span>
+      <h2 class="section-title reveal" style="text-align: center; margin-bottom: 3rem;">Common Questions</h2>
+
+      <div class="reveal">
+        <div class="faq-item">
+          <div class="faq-question">Is SkillVue available to use right now?</div>
+          <p class="faq-answer">Yes! SkillVue is live and deployed at <a href="https://competenc.netlify.app" target="_blank" rel="noopener">competenc.netlify.app</a>. You can access it directly or reach out to us for a guided demo.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">When will the other four products be available?</div>
+          <p class="faq-answer">All four remaining products — Material &amp; Consumables, Staff Scheduler, PH Transport Navigation, and SME Financial Dashboard — are currently in development. Register your interest via the contact form and we'll notify you with updates.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Does Lintejas offer enterprise or custom implementations?</div>
+          <p class="faq-answer">Yes. We work with organizations that need customization, integration with existing systems, or dedicated deployments. Use the contact form and select "Enterprise Inquiry" to start that conversation.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Is Lintejas open to investment or partnerships?</div>
+          <p class="faq-answer">Absolutely. We welcome conversations with aligned investors and strategic partners. Use the contact form with "Investment" or "Partnership Opportunity" selected and we'll schedule a call.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Where is Lintejas based and what data standards do you follow?</div>
+          <p class="faq-answer">Lintejas is headquartered in Slovakia, European Union. We build all products with GDPR compliance and EU data sovereignty standards as first-class requirements — not afterthoughts.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I get early access to products that are coming soon?</div>
+          <p class="faq-answer">Yes. We're selectively accepting early-access partners for our upcoming products. Reach out via the contact form and indicate which product you're interested in and your use case.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-cta reveal">
+        <div class="contact-cta__content">
+          <h2 class="contact-cta__title">Still Have Questions?</h2>
+          <p class="contact-cta__sub">We're a small, focused team — when you reach out, you talk to someone who actually builds the product.</p>
+          <div class="contact-cta__actions">
+            <a href="https://competenc.netlify.app" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Visit SkillVue Live →</a>
+            <a href="products.html" class="btn btn--secondary btn--lg">Explore All Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" style="margin-bottom: 1rem; display: inline-flex;">
+            <div class="nav__logo-icon">L</div>
+            <span class="nav__logo-text">Linte<span>jas</span></span>
+          </a>
+          <p class="footer__brand-desc">Building the Future, One Product at a Time. A technology company founded in Slovakia, Europe.</p>
+          <div class="footer__location">📍 Slovakia, European Union · Founded 2026</div>
+        </div>
+        <div>
+          <div class="footer__col-title">Company</div>
+          <div class="footer__links">
+            <a href="about.html" class="footer__link">About Us</a>
+            <a href="products.html" class="footer__link">Products</a>
+            <a href="contact.html" class="footer__link">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Products</div>
+          <div class="footer__links">
+            <a href="https://competenc.netlify.app" target="_blank" rel="noopener" class="footer__link">SkillVue ↗</a>
+            <a href="products.html" class="footer__link">Material &amp; Consumables</a>
+            <a href="products.html" class="footer__link">Staff Scheduler</a>
+            <a href="products.html" class="footer__link">PH Transport</a>
+            <a href="products.html" class="footer__link">SME Dashboard</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contact</div>
+          <div class="footer__links">
+            <a href="contact.html" class="footer__link">Get in Touch</a>
+            <a href="contact.html" class="footer__link">Partnerships</a>
+            <a href="contact.html" class="footer__link">Investors</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <div class="footer__copy">© 2026 <span>Lintejas</span>. All rights reserved.</div>
+        <div class="footer__tagline">Building the Future, One Product at a Time</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

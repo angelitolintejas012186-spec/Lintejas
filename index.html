@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lintejas — Building the Future, One Product at a Time</title>
+  <meta name="description" content="Lintejas is a technology company based in Slovakia, Europe, building intelligent software solutions for industries worldwide." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Home-specific styles */
+    .hero__right {
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .hero__content {
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 4rem;
+        align-items: center;
+        min-height: calc(100vh - var(--nav-height));
+        padding-top: calc(var(--nav-height) + 40px);
+        padding-bottom: 40px;
+      }
+      .hero__right {
+        display: block;
+      }
+    }
+    .hero__dashboard {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4), var(--shadow-teal);
+      animation: fadeInRight 0.8s ease 0.4s both;
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .dashboard__header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dashboard__dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dashboard__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dashboard__dot:nth-child(1) { background: #FF5F57; }
+    .dashboard__dot:nth-child(2) { background: #FEBC2E; }
+    .dashboard__dot:nth-child(3) { background: #28C840; }
+    .dashboard__title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+    .dashboard__metric {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dashboard__metric:last-child { margin-bottom: 0; }
+    .dm__label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .dm__value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text-primary);
+    }
+    .dm__badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 50px;
+    }
+    .dm__badge--green {
+      background: rgba(16,185,129,0.1);
+      color: #34D399;
+      border: 1px solid rgba(16,185,129,0.25);
+    }
+    .dm__badge--blue {
+      background: rgba(8,145,178,0.1);
+      color: var(--teal-light);
+      border: 1px solid rgba(8,145,178,0.25);
+    }
+    .dm__badge--gold {
+      background: rgba(245,158,11,0.1);
+      color: var(--gold);
+      border: 1px solid rgba(245,158,11,0.25);
+    }
+    .dashboard__bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .dashboard__bar-track {
+      height: 4px;
+      background: var(--bg-primary);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .dashboard__bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      animation: fillBar 2s ease 1s both;
+    }
+    @keyframes fillBar {
+      from { width: 0 !important; }
+    }
+    .dashboard__bar-fill--teal { background: linear-gradient(90deg, var(--teal-dark), var(--teal-light)); }
+    .dashboard__bar-fill--gold { background: linear-gradient(90deg, #d97706, var(--gold-light)); }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="main-nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">L</div>
+        <span class="nav__logo-text">Linte<span>jas</span></span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html" class="nav__link active">Home</a>
+        <a href="products.html" class="nav__link">Products</a>
+        <a href="about.html" class="nav__link">About</a>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </div>
+      <a href="contact.html" class="btn btn--primary btn--sm nav__cta">Get in Touch</a>
+      <button class="nav__hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="nav__mobile">
+    <a href="index.html" class="nav__link active">Home</a>
+    <a href="products.html" class="nav__link">Products</a>
+    <a href="about.html" class="nav__link">About</a>
+    <a href="contact.html" class="nav__link">Contact</a>
+    <a href="contact.html" class="btn btn--primary">Get in Touch</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <canvas class="hero__canvas" id="hero-canvas"></canvas>
+    <div class="hero__bg"></div>
+    <div class="hero__orb hero__orb--1"></div>
+    <div class="hero__orb hero__orb--2"></div>
+    <div class="hero__grid"></div>
+
+    <div class="hero__content">
+      <div class="hero__left">
+        <div class="hero__eyebrow">
+          <span class="hero__eyebrow-dot"></span>
+          Technology Company · Slovakia, Europe
+        </div>
+        <h1 class="hero__title">
+          <span class="line1">Building the</span>
+          <span class="line2">Future,</span>
+          <span class="line3">One Product at a Time</span>
+        </h1>
+        <p class="hero__subtitle">
+          Lintejas creates intelligent, industry-specific software solutions that transform how businesses operate — from food manufacturing to finance.
+        </p>
+        <div class="hero__actions">
+          <a href="products.html" class="btn btn--primary btn--lg">Explore Products</a>
+          <a href="about.html" class="btn btn--secondary btn--lg">Our Story</a>
+        </div>
+        <div class="hero__scroll">
+          <span class="hero__scroll-line"></span>
+          Scroll to explore
+        </div>
+      </div>
+
+      <div class="hero__right">
+        <div class="hero__dashboard">
+          <div class="dashboard__header">
+            <div class="dashboard__dots">
+              <div class="dashboard__dot"></div>
+              <div class="dashboard__dot"></div>
+              <div class="dashboard__dot"></div>
+            </div>
+            <span class="dashboard__title">SkillVue — Live Dashboard</span>
+          </div>
+
+          <div class="dashboard__metric">
+            <div>
+              <div class="dm__label">Active Competencies</div>
+              <div class="dm__value">247</div>
+            </div>
+            <span class="dm__badge dm__badge--green">● LIVE</span>
+          </div>
+
+          <div class="dashboard__metric">
+            <div style="width:100%">
+              <div class="dashboard__bar-label">
+                <span>Skill Coverage</span><span>84%</span>
+              </div>
+              <div class="dashboard__bar-track">
+                <div class="dashboard__bar-fill dashboard__bar-fill--teal" style="width:84%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard__metric">
+            <div>
+              <div class="dm__label">Team Readiness Score</div>
+              <div class="dm__value">92.4</div>
+            </div>
+            <span class="dm__badge dm__badge--blue">+12% MoM</span>
+          </div>
+
+          <div class="dashboard__metric">
+            <div style="width:100%">
+              <div class="dashboard__bar-label">
+                <span>Gap Closure Rate</span><span>71%</span>
+              </div>
+              <div class="dashboard__bar-track">
+                <div class="dashboard__bar-fill dashboard__bar-fill--gold" style="width:71%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard__metric">
+            <div>
+              <div class="dm__label">Products in Pipeline</div>
+              <div class="dm__value">4</div>
+            </div>
+            <span class="dm__badge dm__badge--gold">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-bar__grid">
+        <div class="stat-item">
+          <div class="stat-item__number">
+            <span data-target="1" data-suffix="">1</span>
+          </div>
+          <div class="stat-item__label">Live Product</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__number">
+            <span data-target="4" data-suffix="">4</span>
+          </div>
+          <div class="stat-item__label">In Development</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__number">
+            <span data-target="2026" data-suffix="">2026</span>
+          </div>
+          <div class="stat-item__label">Year Founded</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__number" style="color: var(--teal-light); font-size: 1.8rem;">🇸🇰</div>
+          <div class="stat-item__label">Slovakia, EU</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products Preview -->
+  <section class="section" id="products">
+    <div class="container">
+      <span class="section-label reveal">Our Products</span>
+      <h2 class="section-title reveal">Intelligent Software for<br>Real-World Industries</h2>
+      <p class="section-subtitle reveal">Each product is built to solve a specific, high-impact problem — engineered with precision and deployed with purpose.</p>
+
+      <div class="products-grid">
+        <!-- SkillVue — LIVE -->
+        <div class="product-card product-card--featured reveal">
+          <div class="product-card__header">
+            <div class="product-card__icon">🧠</div>
+            <div class="product-card__badges">
+              <span class="badge badge--live">Live</span>
+            </div>
+          </div>
+          <div class="product-card__name">SkillVue</div>
+          <div class="product-card__tagline">Competency Intelligence Platform for Food Manufacturing</div>
+          <p class="product-card__desc">A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing environments. From skill gap analysis to training workflows — SkillVue makes workforce capability measurable and actionable.</p>
+          <div class="product-card__tags">
+            <span class="badge badge--tag">Food Manufacturing</span>
+            <span class="badge badge--tag">HR Tech</span>
+            <span class="badge badge--tag">Competency Management</span>
+            <span class="badge badge--tag">Workforce Analytics</span>
+          </div>
+          <div class="product-card__footer">
+            <a href="https://competenc.netlify.app" target="_blank" rel="noopener" class="btn btn--primary btn--sm">Visit SkillVue →</a>
+            <a href="products.html" class="btn btn--secondary btn--sm">Learn More</a>
+          </div>
+        </div>
+
+        <!-- Material & Consumables -->
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-card__header">
+            <div class="product-card__icon">📦</div>
+            <div class="product-card__badges">
+              <span class="badge badge--soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="product-card__name">Material &amp; Consumables<br>Issuance System</div>
+          <div class="product-card__tagline">Precision inventory issuance management</div>
+          <p class="product-card__desc">End-to-end management of materials and consumables issuance across manufacturing operations — reducing waste, ensuring traceability, and automating reorder cycles.</p>
+          <div class="product-card__tags">
+            <span class="badge badge--tag">Manufacturing</span>
+            <span class="badge badge--tag">Inventory</span>
+            <span class="badge badge--tag">Supply Chain</span>
+          </div>
+          <div class="product-card__footer">
+            <a href="contact.html" class="btn btn--secondary btn--sm">Get Notified</a>
+          </div>
+        </div>
+
+        <!-- Staff Scheduler -->
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-card__header">
+            <div class="product-card__icon">🗓️</div>
+            <div class="product-card__badges">
+              <span class="badge badge--soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="product-card__name">Staff Scheduler<br>Automation System</div>
+          <div class="product-card__tagline">Intelligent shift planning at scale</div>
+          <p class="product-card__desc">AI-powered staff scheduling that respects labor rules, skill requirements, and employee preferences — eliminating manual scheduling and reducing operational friction.</p>
+          <div class="product-card__tags">
+            <span class="badge badge--tag">Workforce</span>
+            <span class="badge badge--tag">Automation</span>
+            <span class="badge badge--tag">AI Scheduling</span>
+          </div>
+          <div class="product-card__footer">
+            <a href="contact.html" class="btn btn--secondary btn--sm">Get Notified</a>
+          </div>
+        </div>
+
+        <!-- PH Transport -->
+        <div class="product-card reveal reveal-delay-3">
+          <div class="product-card__header">
+            <div class="product-card__icon">🗺️</div>
+            <div class="product-card__badges">
+              <span class="badge badge--soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="product-card__name">Philippines Transport<br>Navigation System</div>
+          <div class="product-card__tagline">Smart navigation for Philippine roads</div>
+          <p class="product-card__desc">A navigation and transport intelligence platform designed for the complexities of Philippine geography, traffic patterns, and multi-modal transport networks.</p>
+          <div class="product-card__tags">
+            <span class="badge badge--tag">Navigation</span>
+            <span class="badge badge--tag">Transport</span>
+            <span class="badge badge--tag">Philippines</span>
+          </div>
+          <div class="product-card__footer">
+            <a href="contact.html" class="btn btn--secondary btn--sm">Get Notified</a>
+          </div>
+        </div>
+
+        <!-- SME Financial -->
+        <div class="product-card reveal reveal-delay-4">
+          <div class="product-card__header">
+            <div class="product-card__icon">📊</div>
+            <div class="product-card__badges">
+              <span class="badge badge--soon">Coming Soon</span>
+            </div>
+          </div>
+          <div class="product-card__name">SME Financial<br>Dashboard</div>
+          <div class="product-card__tagline">Financial clarity for small businesses</div>
+          <p class="product-card__desc">A unified financial intelligence dashboard built for SMEs — bringing cash flow, P&amp;L, and key financial metrics into one clear, actionable interface.</p>
+          <div class="product-card__tags">
+            <span class="badge badge--tag">FinTech</span>
+            <span class="badge badge--tag">SME</span>
+            <span class="badge badge--tag">Financial Analytics</span>
+          </div>
+          <div class="product-card__footer">
+            <a href="contact.html" class="btn btn--secondary btn--sm">Get Notified</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top: 3rem;">
+        <a href="products.html" class="btn btn--secondary">View All Products →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview -->
+  <section class="section section--alt" id="about">
+    <div class="container">
+      <div class="about-home__grid">
+        <div class="about-home__text">
+          <span class="section-label reveal">About Lintejas</span>
+          <h2 class="section-title reveal">Technology Built with<br>Purpose &amp; Precision</h2>
+          <div class="about-home__features">
+            <div class="about-home__feature reveal reveal-delay-1">
+              <div class="about-home__feature-icon">🎯</div>
+              <div>
+                <div class="about-home__feature-title">Industry-Specific Focus</div>
+                <div class="about-home__feature-desc">Every product targets a well-defined industry pain point — no generic software, no bloated feature sets.</div>
+              </div>
+            </div>
+            <div class="about-home__feature reveal reveal-delay-2">
+              <div class="about-home__feature-icon">⚡</div>
+              <div>
+                <div class="about-home__feature-title">Built to Scale</div>
+                <div class="about-home__feature-desc">Architected from day one to handle enterprise-grade workloads — whether for 10 users or 10,000.</div>
+              </div>
+            </div>
+            <div class="about-home__feature reveal reveal-delay-3">
+              <div class="about-home__feature-icon">🌍</div>
+              <div>
+                <div class="about-home__feature-title">Global by Design</div>
+                <div class="about-home__feature-desc">Headquartered in Slovakia, EU, with products serving industries across Europe, Southeast Asia, and beyond.</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 2rem;" class="reveal reveal-delay-4">
+            <a href="about.html" class="btn btn--primary">Meet the Team →</a>
+          </div>
+        </div>
+
+        <div class="about-home__visual reveal">
+          <div class="about-home__card">
+            <div class="about-home__logo-lg">
+              <span style="color: var(--text-primary)">Linte</span><span style="color: var(--teal-light)">jas</span>
+            </div>
+            <div class="about-home__founded">Founded 2026 · Slovakia, Europe</div>
+
+            <div class="about-home__pill">
+              <span class="about-home__pill-icon">🇸🇰</span>
+              Headquartered in Slovakia, European Union
+            </div>
+            <div class="about-home__pill">
+              <span class="about-home__pill-icon">🔬</span>
+              Focus: Deep-tech, Industry 4.0 &amp; FinTech
+            </div>
+            <div class="about-home__pill">
+              <span class="about-home__pill-icon">🚀</span>
+              Mission: One great product per industry
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Founder</div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-dark), var(--teal)); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; color: #fff;">A</div>
+                <div>
+                  <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Angie</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Founder &amp; CEO, Lintejas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-cta reveal">
+        <div class="contact-cta__content">
+          <span class="section-label" style="justify-content: center; margin-bottom: 1rem;">Work With Us</span>
+          <h2 class="contact-cta__title">Ready to Build Something<br><span class="text-gradient">Extraordinary?</span></h2>
+          <p class="contact-cta__sub">Whether you're an investor, potential partner, or an enterprise looking for a custom solution — we'd love to hear from you.</p>
+          <div class="contact-cta__actions">
+            <a href="contact.html" class="btn btn--primary btn--lg">Start a Conversation</a>
+            <a href="products.html" class="btn btn--secondary btn--lg">Explore Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" style="margin-bottom: 1rem; display: inline-flex;">
+            <div class="nav__logo-icon">L</div>
+            <span class="nav__logo-text">Linte<span>jas</span></span>
+          </a>
+          <p class="footer__brand-desc">Building the Future, One Product at a Time. A technology company founded in Slovakia, Europe.</p>
+          <div class="footer__location">📍 Slovakia, European Union · Founded 2026</div>
+        </div>
+        <div>
+          <div class="footer__col-title">Company</div>
+          <div class="footer__links">
+            <a href="about.html" class="footer__link">About Us</a>
+            <a href="products.html" class="footer__link">Products</a>
+            <a href="contact.html" class="footer__link">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Products</div>
+          <div class="footer__links">
+            <a href="https://competenc.netlify.app" target="_blank" rel="noopener" class="footer__link">SkillVue ↗</a>
+            <a href="products.html" class="footer__link">Material &amp; Consumables</a>
+            <a href="products.html" class="footer__link">Staff Scheduler</a>
+            <a href="products.html" class="footer__link">PH Transport</a>
+            <a href="products.html" class="footer__link">SME Dashboard</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">Contact</div>
+          <div class="footer__links">
+            <a href="contact.html" class="footer__link">Get in Touch</a>
+            <a href="contact.html" class="footer__link">Partnerships</a>
+            <a href="contact.html" class="footer__link">Investors</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <div class="footer__copy">© 2026 <span>Lintejas</span>. All rights reserved.</div>
+        <div class="footer__tagline">Building the Future, One Product at a Time</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

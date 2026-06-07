@@ -1,0 +1,3450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Lintejas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- ========================================
+     ADMIN LAYOUT
+     ======================================== -->
+<div class="admin-wrap">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Logo -->
+    <div class="sidebar__head">
+      <div class="sidebar__logo">
+        <div class="sidebar__logo-icon">L</div>
+        <span class="sidebar__logo-text">Linte<span>jas</span></span>
+      </div>
+      <div class="sidebar__badge">System Admin</div>
+    </div>
+
+    <!-- User -->
+    <div class="sidebar__user">
+      <div class="sidebar__avatar">A</div>
+      <div>
+        <div class="sidebar__uname">Angie</div>
+        <div class="sidebar__urole">Founder & Administrator</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar__nav">
+
+      <div class="nav-group">
+        <div class="nav-group__label">Overview</div>
+        <div class="nav-item active" data-panel="dashboard">
+          <span class="nav-item__icon">📊</span>
+          <span class="nav-item__label">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group__label">Content</div>
+
+        <div class="nav-item" data-panel="products">
+          <span class="nav-item__icon">📦</span>
+          <span class="nav-item__label">Products</span>
+          <span class="nav-item__badge nav-item__badge--teal">5</span>
+        </div>
+
+        <div class="nav-item" data-panel="messages">
+          <span class="nav-item__icon">📬</span>
+          <span class="nav-item__label">Messages</span>
+          <span class="nav-item__badge" id="msg-badge">3</span>
+        </div>
+
+        <div class="nav-item" data-panel="content">
+          <span class="nav-item__icon">✍️</span>
+          <span class="nav-item__label">Content Editor</span>
+        </div>
+
+        <div class="nav-item" data-panel="announcements">
+          <span class="nav-item__icon">📢</span>
+          <span class="nav-item__label">Announcements</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group__label">Extensions</div>
+        <div class="nav-item" data-panel="plugins">
+          <span class="nav-item__icon">🧩</span>
+          <span class="nav-item__label">Plugins &amp; Tools</span>
+          <span class="nav-item__badge nav-item__badge--teal" id="plugins-installed-badge">3</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group__label">Management</div>
+
+        <div class="nav-item" data-panel="users">
+          <span class="nav-item__icon">👥</span>
+          <span class="nav-item__label">User Management</span>
+        </div>
+
+        <div class="nav-item" data-panel="settings">
+          <span class="nav-item__icon">⚙️</span>
+          <span class="nav-item__label">Website Settings</span>
+        </div>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group__label">Account</div>
+        <div class="nav-item" data-panel="profile">
+          <span class="nav-item__icon">👤</span>
+          <span class="nav-item__label">My Profile</span>
+        </div>
+      </div>
+
+    </nav>
+
+    <!-- Footer -->
+    <div class="sidebar__footer">
+      <button class="signout-btn" id="signout-btn">
+        <span>🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main">
+
+    <!-- Header -->
+    <header class="main-header">
+      <div style="flex:1">
+        <div class="main-header__title" id="header-title">Dashboard</div>
+        <div class="main-header__sub" id="header-sub">Welcome back, Angie · Lintejas System Administration</div>
+      </div>
+      <div class="header-actions">
+        <a href="../index.html" target="_blank" class="h-btn">🌐 View Site</a>
+        <a href="https://competenc.netlify.app" target="_blank" class="h-btn">🧠 SkillVue ↗</a>
+        <div class="notif-btn" title="Notifications">
+          🔔<div class="notif-dot"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="main-content">
+
+      <!-- ============================================================
+           PANEL: DASHBOARD
+           ============================================================ -->
+      <div class="panel active" id="panel-dashboard">
+
+        <!-- Welcome -->
+        <div class="welcome-banner">
+          <div class="wb-content">
+            <div class="wb-title">👋 Good day, Angie!</div>
+            <div class="wb-sub" id="dashboard-date">Lintejas Administration · Slovakia, EU</div>
+          </div>
+          <div class="wb-actions">
+            <button class="btn btn--primary" onclick="switchPanel('products')">+ Add Product</button>
+            <button class="btn btn--secondary" onclick="switchPanel('messages')">View Messages</button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card stat-card--teal">
+            <div class="sc-label">Total Products</div>
+            <div class="sc-val">5</div>
+            <div class="sc-meta">1 Live · 4 In Development</div>
+            <div class="sc-icon">📦</div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="sc-label">Live Products</div>
+            <div class="sc-val">1</div>
+            <div class="sc-meta">SkillVue · competenc.netlify.app</div>
+            <div class="sc-icon">🧠</div>
+          </div>
+          <div class="stat-card stat-card--red">
+            <div class="sc-label">Unread Messages</div>
+            <div class="sc-val" id="stat-unread">3</div>
+            <div class="sc-meta">Requires your attention</div>
+            <div class="sc-icon">📬</div>
+          </div>
+          <div class="stat-card stat-card--gold">
+            <div class="sc-label">Company Age</div>
+            <div class="sc-val">2026</div>
+            <div class="sc-meta">Founded · Slovakia, EU</div>
+            <div class="sc-icon">🏢</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-grid">
+          <div class="qa" onclick="switchPanel('products')"><div class="qa-icon">🧠</div><div class="qa-label">Manage Products</div></div>
+          <div class="qa" onclick="switchPanel('messages')"><div class="qa-icon">📬</div><div class="qa-label">View Messages</div></div>
+          <div class="qa" onclick="switchPanel('announcements')"><div class="qa-icon">📢</div><div class="qa-label">Post Announcement</div></div>
+          <div class="qa" onclick="switchPanel('content')"><div class="qa-icon">✍️</div><div class="qa-label">Edit Content</div></div>
+          <div class="qa" onclick="window.open('https://competenc.netlify.app','_blank')"><div class="qa-icon">🌐</div><div class="qa-label">Visit SkillVue</div></div>
+        </div>
+
+        <!-- Bottom 2-col -->
+        <div class="two-col" style="align-items:start">
+
+          <!-- Recent Messages -->
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">📬 Recent Messages</div>
+                <div class="card-sub">Latest contact form submissions</div>
+              </div>
+              <button class="btn btn--sm btn--secondary" onclick="switchPanel('messages')">View All</button>
+            </div>
+            <div class="card-body" id="dash-messages">
+              <!-- injected by JS -->
+            </div>
+          </div>
+
+          <!-- Product Status -->
+          <div>
+            <div class="card mb-2">
+              <div class="card-head">
+                <div>
+                  <div class="card-title">📦 Product Status</div>
+                  <div class="card-sub">Pipeline overview</div>
+                </div>
+                <button class="btn btn--sm btn--secondary" onclick="switchPanel('products')">Manage</button>
+              </div>
+              <div class="card-body" id="dash-products">
+                <!-- injected by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title">📋 Recent Activity</div></div>
+              <div class="card-body">
+                <div class="activity-item">
+                  <div class="act-icon">🧠</div>
+                  <div class="act-text"><div class="act-title">SkillVue is live</div><div class="act-sub">competenc.netlify.app · Active</div></div>
+                  <div class="act-time">Today</div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-icon">📬</div>
+                  <div class="act-text"><div class="act-title">3 new inquiries received</div><div class="act-sub">Partnership · Demo · Investment</div></div>
+                  <div class="act-time">Jun 5</div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-icon">🏢</div>
+                  <div class="act-text"><div class="act-title">Company portfolio site launched</div><div class="act-sub">All 4 pages live</div></div>
+                  <div class="act-time">Jun 6</div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-icon">⚙️</div>
+                  <div class="act-text"><div class="act-title">Admin panel initialized</div><div class="act-sub">System Administration active</div></div>
+                  <div class="act-time">Jun 6</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: PRODUCTS
+           ============================================================ -->
+      <div class="panel" id="panel-products">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Product Management</h2>
+            <p>Manage all Lintejas products — update status, descriptions, and settings</p>
+          </div>
+          <button class="btn btn--primary" onclick="openProductModal()">+ Add Product</button>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">All Products (5)</div>
+            <div class="flex-c gap-1">
+              <select class="form-select" style="width:150px" id="product-filter" onchange="renderProductsTable()">
+                <option value="all">All Status</option>
+                <option value="live">Live Only</option>
+                <option value="coming-soon">Coming Soon</option>
+              </select>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Product Name</th>
+                  <th>Industry</th>
+                  <th>Status</th>
+                  <th>URL</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: MESSAGES
+           ============================================================ -->
+      <div class="panel" id="panel-messages">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Contact Messages</h2>
+            <p>All incoming inquiries from the contact form</p>
+          </div>
+          <div class="flex-c gap-1">
+            <select class="form-select" style="width:160px" id="msg-filter" onchange="renderMessages()">
+              <option value="all">All Messages</option>
+              <option value="unread">Unread Only</option>
+              <option value="partnership">Partnership</option>
+              <option value="investment">Investment</option>
+              <option value="demo">Demo Request</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Inbox</div>
+            <div id="msg-count-label" class="card-sub"></div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Sender</th>
+                  <th>Company</th>
+                  <th>Type</th>
+                  <th>Product</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="messages-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: CONTENT EDITOR
+           ============================================================ -->
+      <div class="panel" id="panel-content">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Content Editor</h2>
+            <p>Edit key text content across the Lintejas website</p>
+          </div>
+          <div class="info-box" style="padding:.6rem 1rem;font-size:.72rem">ℹ️ Changes are saved locally and serve as your content reference</div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab-hero">🏠 Home Hero</button>
+          <button class="tab-btn" data-tab="tab-about">🏢 About Page</button>
+          <button class="tab-btn" data-tab="tab-footer">🔗 Footer & Meta</button>
+        </div>
+
+        <!-- Hero Tab -->
+        <div class="tab-panel active" id="tab-hero">
+          <div class="sidebar-layout">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Hero Section Content</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Company Name</label>
+                  <input class="form-input" id="c-company-name" value="Lintejas" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Hero Tagline (Main Headline)</label>
+                  <textarea class="form-textarea" id="c-tagline" style="min-height:70px">Building the Future, One Product at a Time</textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Hero Subtitle / Description</label>
+                  <textarea class="form-textarea" id="c-hero-sub">Lintejas creates intelligent, industry-specific software solutions that transform how businesses operate — from food manufacturing to finance.</textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Primary CTA Button Text</label>
+                  <input class="form-input" id="c-cta1" value="Explore Products" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Secondary CTA Button Text</label>
+                  <input class="form-input" id="c-cta2" value="Our Story" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Eyebrow Tag Text</label>
+                  <input class="form-input" id="c-eyebrow" value="Technology Company · Slovakia, Europe" />
+                </div>
+                <button class="btn btn--primary" onclick="saveContent('hero')">💾 Save Hero Content</button>
+              </div>
+            </div>
+            <div>
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Stats Bar</div></div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label">Stat 1 Label</label>
+                    <input class="form-input" value="Live Product" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Stat 2 Label</label>
+                    <input class="form-input" value="In Development" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Stat 3 Label</label>
+                    <input class="form-input" value="Year Founded" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Stat 4 Label</label>
+                    <input class="form-input" value="Slovakia, EU" />
+                  </div>
+                  <button class="btn btn--secondary btn--sm" onclick="toast('Stats updated','success')">Save Stats</button>
+                </div>
+              </div>
+              <div class="warn-box">⚠️ Content changes here are reference notes. To apply them live, edit the HTML files directly or deploy via your hosting pipeline.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Tab -->
+        <div class="tab-panel" id="tab-about">
+          <div class="card">
+            <div class="card-head"><div class="card-title">About Page Content</div></div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Founder Name</label>
+                  <input class="form-input" id="c-founder" value="Angie" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Founder Title</label>
+                  <input class="form-input" id="c-founder-title" value="Founder & Chief Executive Officer" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Mission Statement</label>
+                <textarea class="form-textarea">To build precision software that transforms how industries operate — one carefully crafted product at a time.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Vision Statement</label>
+                <textarea class="form-textarea">A world where every industry has access to enterprise-grade software built specifically for its needs.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Founder Bio</label>
+                <textarea class="form-textarea" style="min-height:120px">Angie founded Lintejas in 2026 with a clear mission: build exceptional, industry-specific software that solves real operational problems. With a background spanning technology, product development, and business operations, Angie brings a rare combination of technical depth and strategic clarity to every product Lintejas builds.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company Headquarters</label>
+                <input class="form-input" value="Slovakia, European Union" />
+              </div>
+              <button class="btn btn--primary" onclick="saveContent('about')">💾 Save About Content</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer & Meta Tab -->
+        <div class="tab-panel" id="tab-footer">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Footer Settings</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Footer Tagline</label>
+                  <input class="form-input" value="Building the Future, One Product at a Time" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Copyright Text</label>
+                  <input class="form-input" value="© 2026 Lintejas. All rights reserved." />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Location Text</label>
+                  <input class="form-input" value="Slovakia, European Union · Founded 2026" />
+                </div>
+                <button class="btn btn--primary" onclick="saveContent('footer')">💾 Save Footer</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">SEO & Meta Tags</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Site Title</label>
+                  <input class="form-input" value="Lintejas — Building the Future, One Product at a Time" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Meta Description</label>
+                  <textarea class="form-textarea" style="min-height:80px">Lintejas is a technology company based in Slovakia, Europe, building intelligent software solutions for industries worldwide.</textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Keywords</label>
+                  <input class="form-input" value="Lintejas, SkillVue, Slovakia tech company, competency management" />
+                </div>
+                <button class="btn btn--primary" onclick="saveContent('seo')">💾 Save SEO</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: ANNOUNCEMENTS
+           ============================================================ -->
+      <div class="panel" id="panel-announcements">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Announcements</h2>
+            <p>Create and manage public announcements for the website</p>
+          </div>
+        </div>
+
+        <div class="sidebar-layout">
+          <!-- Create Form -->
+          <div>
+            <div class="card mb-2">
+              <div class="card-head"><div class="card-title">➕ Create New Announcement</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Announcement Title <span class="req">*</span></label>
+                  <input class="form-input" id="ann-title" placeholder="e.g. SkillVue 2.0 Coming Soon" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Type</label>
+                  <select class="form-select" id="ann-type">
+                    <option value="product">🚀 Product Launch</option>
+                    <option value="update">🔄 Product Update</option>
+                    <option value="event">📅 Event</option>
+                    <option value="news">📰 Company News</option>
+                    <option value="milestone">🏆 Milestone</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Message Body <span class="req">*</span></label>
+                  <textarea class="form-textarea" id="ann-body" placeholder="Write your announcement content here..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Linked Product (optional)</label>
+                  <select class="form-select" id="ann-product">
+                    <option value="">No specific product</option>
+                    <option value="skillvue">SkillVue</option>
+                    <option value="materials">Material &amp; Consumables System</option>
+                    <option value="scheduler">Staff Scheduler</option>
+                    <option value="transport">PH Transport Navigation</option>
+                    <option value="sme">SME Financial Dashboard</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <div class="toggle-wrap">
+                    <label class="toggle">
+                      <input type="checkbox" id="ann-visible" checked />
+                      <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-lbl">Show on website</span>
+                  </div>
+                </div>
+                <button class="btn btn--primary" onclick="addAnnouncement()">📢 Publish Announcement</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Existing Announcements -->
+          <div>
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title">Published Announcements</div>
+                <div class="card-sub" id="ann-count">Loading…</div>
+              </div>
+              <div class="card-body" id="ann-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: PLUGINS & TOOLS
+           ============================================================ -->
+      <div class="panel" id="panel-plugins">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Plugins &amp; Tools</h2>
+            <p>Install plugins to extend your site · Use built-in tools for quick tasks</p>
+          </div>
+          <div class="flex-c gap-1">
+            <span id="plugins-stat-badge" class="bdg bdg--active" style="font-size:.72rem;padding:4px 12px"></span>
+          </div>
+        </div>
+
+        <div class="tabs" id="plugin-tabs">
+          <button class="tab-btn active" data-ptab="pt-installed">🧩 Installed <span id="pt-inst-count" style="margin-left:4px;background:rgba(8,145,178,.2);border-radius:50px;padding:1px 7px;font-size:.65rem"></span></button>
+          <button class="tab-btn" data-ptab="pt-store">🛒 Plugin Store</button>
+          <button class="tab-btn" data-ptab="pt-tools">🔧 Tools</button>
+          <button class="tab-btn" data-ptab="pt-updates">🔄 Updates <span id="pt-upd-count" style="margin-left:4px;background:rgba(245,158,11,.2);color:var(--gold);border-radius:50px;padding:1px 7px;font-size:.65rem"></span></button>
+        </div>
+
+        <!-- Installed Tab -->
+        <div class="ptab-panel active" id="pt-installed">
+          <div class="flex-b mb-2 fw gap-1">
+            <div class="flex-c gap-1">
+              <select class="form-select" style="width:170px" id="inst-filter" onchange="renderInstalled()">
+                <option value="all">All Categories</option>
+                <option value="SEO & Marketing">SEO &amp; Marketing</option>
+                <option value="Analytics">Analytics</option>
+                <option value="Privacy & Security">Privacy &amp; Security</option>
+                <option value="Forms">Forms &amp; Communication</option>
+                <option value="Media">Media &amp; Content</option>
+                <option value="Performance">Performance</option>
+              </select>
+            </div>
+            <button class="btn btn--secondary btn--sm" onclick="switchPluginTab('pt-store')">+ Install More</button>
+          </div>
+          <div class="plugin-grid" id="installed-grid"></div>
+        </div>
+
+        <!-- Store Tab -->
+        <div class="ptab-panel" id="pt-store">
+          <div class="flex-b mb-2 fw gap-1">
+            <div class="flex-c gap-1">
+              <input class="form-input" style="width:220px" id="store-search" placeholder="🔍 Search plugins…" oninput="renderStore()" />
+              <select class="form-select" style="width:170px" id="store-filter" onchange="renderStore()">
+                <option value="all">All Categories</option>
+                <option value="SEO & Marketing">SEO &amp; Marketing</option>
+                <option value="Analytics">Analytics</option>
+                <option value="Privacy & Security">Privacy &amp; Security</option>
+                <option value="Forms">Forms &amp; Communication</option>
+                <option value="Media">Media &amp; Content</option>
+                <option value="Performance">Performance</option>
+                <option value="E-commerce">E-commerce &amp; Leads</option>
+              </select>
+            </div>
+            <span class="text-muted" style="font-size:.75rem" id="store-count-lbl"></span>
+          </div>
+          <div class="plugin-grid" id="store-grid"></div>
+        </div>
+
+        <!-- Tools Tab -->
+        <div class="ptab-panel" id="pt-tools">
+          <div class="info-box mb-3">🔧 These tools run directly in your browser — no installation required. All data stays local.</div>
+          <div class="tools-grid" id="tools-grid"></div>
+        </div>
+
+        <!-- Updates Tab -->
+        <div class="ptab-panel" id="pt-updates">
+          <div id="updates-content"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: USERS
+           ============================================================ -->
+      <div class="panel" id="panel-users">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>User Management</h2>
+            <p>Manage administrator accounts and access permissions</p>
+          </div>
+          <button class="btn btn--primary" onclick="openInviteModal()">+ Invite Admin</button>
+        </div>
+
+        <div class="sidebar-layout">
+          <div>
+            <div class="card mb-2">
+              <div class="card-head"><div class="card-title">Administrator Accounts</div></div>
+              <div class="card-body" id="users-list">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title">Role Permissions</div></div>
+              <div class="card-body">
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Super Administrator</h4><p>Full access to all panels, settings, and user management</p></div>
+                  <span class="bdg bdg--admin">Full Access</span>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Content Editor</h4><p>Can edit content, products, and announcements only</p></div>
+                  <span class="bdg bdg--dev">Restricted</span>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Viewer</h4><p>Read-only access to dashboard and messages</p></div>
+                  <span class="bdg bdg--read">Read Only</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">🔐 Access Log</div></div>
+              <div class="card-body">
+                <div class="activity-item">
+                  <div class="act-icon">🔑</div>
+                  <div class="act-text"><div class="act-title">angie@lintejas.com logged in</div><div class="act-sub">Slovakia, EU · Chrome</div></div>
+                  <div class="act-time">Now</div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-icon">🔑</div>
+                  <div class="act-text"><div class="act-title">angie@lintejas.com logged in</div><div class="act-sub">Slovakia, EU · Chrome</div></div>
+                  <div class="act-time">Jun 5</div>
+                </div>
+                <div class="activity-item">
+                  <div class="act-icon">🔑</div>
+                  <div class="act-text"><div class="act-title">Admin panel initialized</div><div class="act-sub">First-time setup</div></div>
+                  <div class="act-time">Jun 6</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           PANEL: SETTINGS
+           ============================================================ -->
+      <div class="panel" id="panel-settings">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>Website Settings</h2>
+            <p>Configure company information, SEO, security, and integrations</p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="stab-general">🏢 General</button>
+          <button class="tab-btn" data-tab="stab-seo">🔍 SEO</button>
+          <button class="tab-btn" data-tab="stab-security">🔐 Security</button>
+          <button class="tab-btn" data-tab="stab-integrations">🔌 Integrations</button>
+          <button class="tab-btn" data-tab="stab-appearance">🎨 Appearance</button>
+          <button class="tab-btn" data-tab="stab-branding">🖼️ Branding</button>
+        </div>
+
+        <!-- General -->
+        <div class="tab-panel active" id="stab-general">
+          <div class="sidebar-layout">
+            <div>
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Company Information</div></div>
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Company Name</label>
+                      <input class="form-input" value="Lintejas" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Founded Year</label>
+                      <input class="form-input" type="number" value="2026" />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Country</label>
+                      <input class="form-input" value="Slovakia" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Region</label>
+                      <input class="form-input" value="European Union" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Company Tagline</label>
+                    <input class="form-input" value="Building the Future, One Product at a Time" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Company Email</label>
+                    <input class="form-input" type="email" value="angie@lintejas.com" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Website URL</label>
+                    <input class="form-input" value="https://lintejas.com" />
+                  </div>
+                  <button class="btn btn--primary" onclick="saveSettings('general')">💾 Save General Settings</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-head"><div class="card-title">Social Links</div></div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label">LinkedIn</label>
+                    <input class="form-input" placeholder="https://linkedin.com/company/lintejas" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">GitHub</label>
+                    <input class="form-input" placeholder="https://github.com/lintejas" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Twitter / X</label>
+                    <input class="form-input" placeholder="https://x.com/lintejas" />
+                  </div>
+                  <button class="btn btn--secondary" onclick="saveSettings('social')">💾 Save Social Links</button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Site Features</div></div>
+                <div class="card-body">
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Contact Form</h4><p>Enable public contact form</p></div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Announcements Banner</h4><p>Show announcement bar on homepage</p></div>
+                    <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Coming Soon Pages</h4><p>Show "coming soon" products</p></div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Particle Animation</h4><p>Hero background particles</p></div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-head"><div class="card-title">Maintenance Mode</div></div>
+                <div class="card-body">
+                  <div class="warn-box mb-2">⚠️ Enabling maintenance mode will show a maintenance page to all visitors.</div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Maintenance Mode</h4><p>Show maintenance page to visitors</p></div>
+                    <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="form-group mt-2">
+                    <label class="form-label">Maintenance Message</label>
+                    <textarea class="form-textarea" style="min-height:60px">We're currently performing scheduled maintenance. We'll be back shortly.</textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="tab-panel" id="stab-seo">
+          <div class="card">
+            <div class="card-head"><div class="card-title">SEO & Meta Configuration</div></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Default Page Title</label>
+                <input class="form-input" value="Lintejas — Building the Future, One Product at a Time" />
+                <div class="form-hint">Recommended: 50–60 characters</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Meta Description</label>
+                <textarea class="form-textarea" style="min-height:80px">Lintejas is a technology company based in Slovakia, Europe, building intelligent software solutions for industries worldwide.</textarea>
+                <div class="form-hint">Recommended: 150–160 characters</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Keywords</label>
+                <input class="form-input" value="Lintejas, SkillVue, Slovakia tech, competency management, food manufacturing software" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">OG Title</label>
+                  <input class="form-input" value="Lintejas Technology" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">OG Image URL</label>
+                  <input class="form-input" placeholder="/images/og-image.jpg" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Canonical URL</label>
+                <input class="form-input" value="https://lintejas.com" />
+              </div>
+              <div class="setting-row">
+                <div class="setting-row-text"><h4>Google Indexing</h4><p>Allow search engines to index the site</p></div>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="setting-row">
+                <div class="setting-row-text"><h4>Sitemap Auto-generation</h4><p>Generate sitemap.xml automatically</p></div>
+                <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+              </div>
+              <div class="divider"></div>
+              <button class="btn btn--primary" onclick="saveSettings('seo')">💾 Save SEO Settings</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security -->
+        <div class="tab-panel" id="stab-security">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-head"><div class="card-title">🔑 Change Admin Password</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Current Password <span class="req">*</span></label>
+                  <input class="form-input" type="password" id="sec-cur-pw" placeholder="••••••••••" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">New Password <span class="req">*</span></label>
+                  <input class="form-input" type="password" id="sec-new-pw" placeholder="Minimum 8 characters" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm New Password <span class="req">*</span></label>
+                  <input class="form-input" type="password" id="sec-conf-pw" placeholder="Re-enter new password" />
+                </div>
+                <button class="btn btn--primary" onclick="changePassword()">🔐 Update Password</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Session & Access</div></div>
+                <div class="card-body">
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Session Timeout</h4><p>Auto-logout after inactivity</p></div>
+                    <select class="form-select" style="width:130px">
+                      <option>8 hours</option>
+                      <option>24 hours</option>
+                      <option>7 days</option>
+                    </select>
+                  </div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Two-Factor Auth</h4><p>Require 2FA on login (coming soon)</p></div>
+                    <label class="toggle"><input type="checkbox" disabled /><span class="toggle-slider"></span></label>
+                  </div>
+                  <div class="setting-row">
+                    <div class="setting-row-text"><h4>Admin Access Log</h4><p>Track all admin logins</p></div>
+                    <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="danger-zone">
+                <h3>⚠️ Danger Zone</h3>
+                <div class="setting-row" style="border-bottom:none;padding-top:0">
+                  <div class="setting-row-text"><h4 style="color:var(--red-light)">Clear All Messages</h4><p>Permanently delete all contact messages</p></div>
+                  <button class="btn btn--danger btn--sm" onclick="clearMessages()">Delete All</button>
+                </div>
+                <div class="setting-row" style="border-bottom:none;padding-bottom:0">
+                  <div class="setting-row-text"><h4 style="color:var(--red-light)">Reset Admin Panel</h4><p>Reset all settings to default (cannot be undone)</p></div>
+                  <button class="btn btn--danger btn--sm" onclick="resetAdmin()">Reset</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrations -->
+        <div class="tab-panel" id="stab-integrations">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-head"><div class="card-title">🔌 Analytics & Tracking</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Google Analytics ID</label>
+                  <input class="form-input" placeholder="G-XXXXXXXXXX" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Google Tag Manager ID</label>
+                  <input class="form-input" placeholder="GTM-XXXXXXX" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Hotjar Site ID</label>
+                  <input class="form-input" placeholder="1234567" />
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Cookie Consent Banner</h4><p>Show GDPR cookie consent</p></div>
+                  <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                </div>
+                <button class="btn btn--primary" onclick="saveSettings('analytics')">💾 Save Analytics</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title">📧 Email & Notifications</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Contact Form Recipient</label>
+                  <input class="form-input" type="email" value="angie@lintejas.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">SMTP Host</label>
+                  <input class="form-input" placeholder="smtp.gmail.com" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">SMTP Port</label>
+                    <input class="form-input" placeholder="587" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Encryption</label>
+                    <select class="form-select"><option>TLS</option><option>SSL</option></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">SMTP Password</label>
+                  <input class="form-input" type="password" placeholder="••••••••" />
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Email Notifications</h4><p>Send email on new contact form submission</p></div>
+                  <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                </div>
+                <button class="btn btn--primary" onclick="saveSettings('email')">💾 Save Email Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appearance -->
+        <div class="tab-panel" id="stab-appearance">
+          <div class="sidebar-layout">
+            <div class="card">
+              <div class="card-head"><div class="card-title">🎨 Theme & Colors</div></div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Background Color</label>
+                    <div class="flex-c gap-1">
+                      <input type="color" value="#0D1B2A" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px" />
+                      <input class="form-input" value="#0D1B2A" style="font-family:monospace" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Accent Color (Teal)</label>
+                    <div class="flex-c gap-1">
+                      <input type="color" value="#0891B2" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px" />
+                      <input class="form-input" value="#0891B2" style="font-family:monospace" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Highlight Color (Gold)</label>
+                    <div class="flex-c gap-1">
+                      <input type="color" value="#F59E0B" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px" />
+                      <input class="form-input" value="#F59E0B" style="font-family:monospace" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Text Color</label>
+                    <div class="flex-c gap-1">
+                      <input type="color" value="#E2E8F0" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;padding:2px" />
+                      <input class="form-input" value="#E2E8F0" style="font-family:monospace" />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Font Family — Headings</label>
+                  <select class="form-select">
+                    <option>Space Grotesk</option>
+                    <option>Inter</option>
+                    <option>Poppins</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Font Family — Body</label>
+                  <select class="form-select">
+                    <option>Inter</option>
+                    <option>Space Grotesk</option>
+                    <option>Roboto</option>
+                  </select>
+                </div>
+                <button class="btn btn--primary" onclick="saveSettings('appearance')">💾 Save Appearance</button>
+              </div>
+            </div>
+            <div>
+              <div class="info-box mb-2">ℹ️ Appearance settings are saved as reference. To apply them to the live site, update the CSS variables in <code style="font-family:monospace;color:var(--teal-light)">css/styles.css</code>.</div>
+              <div class="card">
+                <div class="card-head"><div class="card-title">Current Theme Preview</div></div>
+                <div class="card-body">
+                  <div style="background:var(--bg-primary);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:.75rem">
+                    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.35rem">Heading Sample</div>
+                    <div style="font-size:.8rem;color:var(--text-secondary)">Body text sample — Inter, 14px</div>
+                  </div>
+                  <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                    <span style="background:var(--teal);color:#fff;padding:4px 12px;border-radius:6px;font-size:.78rem;font-weight:600">Primary</span>
+                    <span style="background:var(--gold);color:#0D1B2A;padding:4px 12px;border-radius:6px;font-size:.78rem;font-weight:600">Gold</span>
+                    <span style="background:rgba(8,145,178,.12);border:1px solid var(--border);color:var(--teal-light);padding:4px 12px;border-radius:6px;font-size:.78rem;font-weight:600">Secondary</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRANDING TAB -->
+        <div class="tab-panel" id="stab-branding">
+          <div class="sidebar-layout">
+            <div>
+
+              <!-- Logo Upload -->
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Site Logo</div></div>
+                <div class="card-body">
+                  <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem">Upload a logo — transparent PNG recommended, min 200×200px. Drag & drop or click to browse.</p>
+                  <div class="logo-drop-zone" id="logo-drop-zone">
+                    <input type="file" id="logo-file-input" accept="image/*" style="display:none" />
+                    <img id="logo-preview-img" src="" alt="Logo preview" style="display:none;max-width:130px;max-height:130px;object-fit:contain;border-radius:8px" />
+                    <div id="drop-content" style="display:flex;flex-direction:column;align-items:center;gap:.3rem;pointer-events:none">
+                      <div style="font-size:2.2rem">🖼️</div>
+                      <div style="font-weight:600;font-size:.88rem">Drag &amp; drop your logo here</div>
+                      <div style="font-size:.75rem;color:var(--text-muted)">or click to browse</div>
+                      <div style="font-size:.68rem;color:var(--text-muted);margin-top:.25rem">PNG · JPG · SVG · WebP</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;align-items:center">
+                    <button class="btn btn--sm btn--secondary" onclick="document.getElementById('logo-file-input').click()">📁 Browse File</button>
+                    <button class="btn btn--sm" id="remove-logo-btn" onclick="removeLogo()" style="display:none;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)">🗑 Remove Logo</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Logo Style -->
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Logo Style</div></div>
+                <div class="card-body">
+
+                  <!-- Corner Roundness -->
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Corner Roundness</label>
+                      <span class="slider-val" id="val-radius">9px</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-radius" min="0" max="50" value="9" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Sharp</span><span>Circle</span></div>
+                  </div>
+
+                  <!-- Brightness -->
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Brightness</label>
+                      <span class="slider-val" id="val-brightness">100%</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-brightness" min="30" max="200" value="100" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Dim</span><span>Bright</span></div>
+                  </div>
+
+                  <!-- Contrast -->
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Contrast</label>
+                      <span class="slider-val" id="val-contrast">100%</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-contrast" min="30" max="200" value="100" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Flat</span><span>Vivid</span></div>
+                  </div>
+
+                  <!-- Saturation -->
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Saturation</label>
+                      <span class="slider-val" id="val-saturate">100%</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-saturate" min="0" max="300" value="100" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Greyscale</span><span>Vivid</span></div>
+                  </div>
+
+                  <!-- Glow Effect -->
+                  <div class="settings-row" style="padding:.6rem 0 0;border:none">
+                    <div>
+                      <div class="settings-row-label">Glow / Lighting Effect</div>
+                      <div class="settings-row-desc">Radiant glow around the logo container</div>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" id="sl-glow-on" onchange="onStyleChange()" />
+                      <span class="toggle-track"></span>
+                    </label>
+                  </div>
+                  <div id="glow-options" style="display:none;margin-top:.6rem">
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">Glow Color</label>
+                        <div class="flex-c gap-1">
+                          <input type="color" id="sl-glow-color" value="#0891B2" oninput="onStyleChange()" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px;background:none;flex-shrink:0" />
+                          <input class="form-input" id="sl-glow-color-hex" value="#0891B2" maxlength="7" style="font-family:monospace" oninput="syncGlowHex(this)" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Intensity <span class="slider-val" id="val-glow-size">12px</span></label>
+                        <input type="range" class="style-slider" id="sl-glow-size" min="2" max="40" value="12" oninput="onStyleChange()" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="height:1px;background:var(--border);margin:.8rem 0 .85rem"></div>
+
+                  <!-- Icon Size -->
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Icon Size</label>
+                      <span class="slider-val" id="val-logo-size">38px</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-logo-size" min="20" max="72" value="38" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Small</span><span>Large</span></div>
+                  </div>
+
+                  <!-- Icon Background Color -->
+                  <div class="form-group">
+                    <label class="form-label">Icon Background Color</label>
+                    <div class="flex-c gap-1">
+                      <input type="color" id="sl-logo-bg" value="#0891B2" oninput="onStyleChange()" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px;background:none;flex-shrink:0" />
+                      <input class="form-input" id="sl-logo-bg-hex" value="#0891B2" maxlength="7" style="font-family:monospace" oninput="syncColorHex('sl-logo-bg','sl-logo-bg-hex',this)" />
+                    </div>
+                  </div>
+
+                  <!-- Logo Animation -->
+                  <div class="form-group">
+                    <label class="form-label">Logo Animation</label>
+                    <select class="form-select" id="sl-logo-anim" onchange="onStyleChange()">
+                      <option value="none">None</option>
+                      <option value="float">Float (gentle bob)</option>
+                      <option value="pulse">Pulse (scale)</option>
+                      <option value="spin">Slow Spin</option>
+                      <option value="glow">Glow Pulse</option>
+                      <option value="bounce">Bounce</option>
+                    </select>
+                  </div>
+
+                  <button class="btn btn--ghost" style="margin-top:.3rem;font-size:.74rem;padding:.3rem .8rem" onclick="resetLogoStyle()">↩ Reset Style</button>
+                </div>
+              </div>
+
+              <!-- Brand Name -->
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Brand Name</div></div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label">Display Name <span style="font-size:.71rem;color:var(--text-muted);font-weight:400">(shown in navbar &amp; footer)</span></label>
+                    <input class="form-input" id="brand-name-input" value="Lintejas" maxlength="32" oninput="updateBrandPreview()" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Highlighted Suffix <span style="font-size:.71rem;color:var(--text-muted);font-weight:400">(rendered in teal — e.g. "jas")</span></label>
+                    <input class="form-input" id="brand-suffix-input" value="jas" maxlength="16" oninput="updateBrandPreview()" />
+                  </div>
+                  <div class="style-row" style="margin-top:.85rem">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Text Size</label>
+                      <span class="slider-val" id="val-text-size">100%</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-text-size" min="60" max="180" value="100" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Small</span><span>Large</span></div>
+                  </div>
+
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Text Brightness</label>
+                      <span class="slider-val" id="val-text-bright">100%</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-text-bright" min="20" max="100" value="100" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Dim</span><span>Full</span></div>
+                  </div>
+
+                  <div class="style-row">
+                    <div class="style-row-labels">
+                      <label class="form-label" style="margin:0">Letter Spacing</label>
+                      <span class="slider-val" id="val-text-spacing">0px</span>
+                    </div>
+                    <input type="range" class="style-slider" id="sl-text-spacing" min="-5" max="10" value="0" oninput="onStyleChange()" />
+                    <div class="style-row-hints"><span>Tight</span><span>Wide</span></div>
+                  </div>
+
+                  <!-- Color & Font Section -->
+                  <div style="height:1px;background:var(--border);margin:.9rem 0 .85rem"></div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Text Color</label>
+                      <div class="flex-c gap-1">
+                        <input type="color" id="sl-text-color" value="#E2E8F0" oninput="onStyleChange()" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px;background:none;flex-shrink:0" />
+                        <input class="form-input" id="sl-text-color-hex" value="#E2E8F0" maxlength="7" style="font-family:monospace" oninput="syncColorHex('sl-text-color','sl-text-color-hex',this)" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Highlight Color</label>
+                      <div class="flex-c gap-1">
+                        <input type="color" id="sl-suffix-color" value="#22D3EE" oninput="onStyleChange()" style="width:40px;height:36px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px;background:none;flex-shrink:0" />
+                        <input class="form-input" id="sl-suffix-color-hex" value="#22D3EE" maxlength="7" style="font-family:monospace" oninput="syncColorHex('sl-suffix-color','sl-suffix-color-hex',this)" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Font Style</label>
+                      <select class="form-select" id="sl-font-family" onchange="onFontChange()">
+                        <option value="Space Grotesk">Space Grotesk (Default)</option>
+                        <option value="Inter">Inter</option>
+                        <option value="Poppins">Poppins</option>
+                        <option value="Raleway">Raleway</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Orbitron">Orbitron</option>
+                        <option value="Playfair Display">Playfair Display</option>
+                        <option value="Bebas Neue">Bebas Neue</option>
+                        <option value="Exo 2">Exo 2</option>
+                        <option value="Quantico">Quantico</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Font Weight</label>
+                      <select class="form-select" id="sl-font-weight" onchange="onStyleChange()">
+                        <option value="400">Regular 400</option>
+                        <option value="500">Medium 500</option>
+                        <option value="600">Semi-Bold 600</option>
+                        <option value="700" selected>Bold 700</option>
+                        <option value="800">Extra-Bold 800</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Text Animation</label>
+                    <select class="form-select" id="sl-text-anim" onchange="onStyleChange()">
+                      <option value="none">None</option>
+                      <option value="shimmer">Shimmer (metallic glide)</option>
+                      <option value="breathe">Breathe (fade pulse)</option>
+                      <option value="glow-text">Glow (text halo)</option>
+                      <option value="slidein">Slide-In (on load)</option>
+                    </select>
+                  </div>
+
+                  <!-- Image Wordmark -->
+                  <div style="height:1px;background:var(--border);margin:.9rem 0 .85rem"></div>
+
+                  <div class="settings-row" style="padding:0;border:none">
+                    <div>
+                      <div class="settings-row-label">Use Image Wordmark</div>
+                      <div class="settings-row-desc">Replace text with an uploaded image (SVG · PNG · WebP)</div>
+                    </div>
+                    <label class="toggle">
+                      <input type="checkbox" id="wordmark-toggle" onchange="onWordmarkToggle()" />
+                      <span class="toggle-track"></span>
+                    </label>
+                  </div>
+
+                  <div id="wordmark-section" style="display:none;margin-top:.75rem">
+                    <div class="logo-drop-zone" id="wordmark-drop-zone" style="min-height:90px">
+                      <input type="file" id="wordmark-file-input" accept="image/*" style="display:none" />
+                      <img id="wordmark-preview-img" src="" alt="Wordmark preview" style="display:none;max-height:48px;max-width:90%;object-fit:contain" />
+                      <div id="wordmark-drop-content" style="display:flex;flex-direction:column;align-items:center;gap:.3rem;pointer-events:none">
+                        <div style="font-size:1.8rem">🔤</div>
+                        <div style="font-weight:600;font-size:.84rem">Drag &amp; drop wordmark image</div>
+                        <div style="font-size:.72rem;color:var(--text-muted)">SVG or transparent PNG recommended</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap;align-items:center">
+                      <button class="btn btn--sm btn--secondary" onclick="document.getElementById('wordmark-file-input').click()">📁 Browse</button>
+                      <button class="btn btn--sm" id="remove-wordmark-btn" onclick="removeWordmark()" style="display:none;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)">🗑 Remove</button>
+                    </div>
+                    <div class="style-row" style="margin-top:.85rem">
+                      <div class="style-row-labels">
+                        <label class="form-label" style="margin:0">Wordmark Height</label>
+                        <span class="slider-val" id="val-wordmark-height">24px</span>
+                      </div>
+                      <input type="range" class="style-slider" id="sl-wordmark-height" min="12" max="56" value="24" oninput="onWordmarkStyleChange()" />
+                      <div class="style-row-hints"><span>Small</span><span>Large</span></div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem">
+                    <button class="btn btn--primary" onclick="saveBranding()">💾 Save Branding</button>
+                    <button class="btn btn--ghost" onclick="resetBranding()">↩ Reset to Default</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div>
+
+              <!-- Live Preview -->
+              <div class="card mb-2">
+                <div class="card-head"><div class="card-title">Live Preview</div></div>
+                <div class="card-body">
+                  <div style="font-size:.68rem;color:var(--text-muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem">Public Navbar</div>
+                  <div class="brand-preview-bar">
+                    <div class="brand-preview-icon" id="brand-preview-icon">L</div>
+                    <span class="brand-preview-name" id="brand-preview-name">Linte<span id="brand-preview-suffix">jas</span></span>
+                  </div>
+
+                  <div style="font-size:.68rem;color:var(--text-muted);letter-spacing:.07em;text-transform:uppercase;margin-top:1.1rem;margin-bottom:.5rem">Admin Sidebar</div>
+                  <div class="brand-preview-bar brand-preview-bar--dark">
+                    <div class="brand-preview-icon brand-preview-icon--sm" id="brand-preview-icon2">L</div>
+                    <span class="brand-preview-name" id="brand-preview-name2">Linte<span id="brand-preview-suffix2">jas</span></span>
+                  </div>
+
+                  <div style="height:1px;background:var(--border);margin:1.1rem 0 .85rem"></div>
+                  <div style="font-size:.68rem;color:var(--text-muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.6rem">Element Order &amp; Visibility</div>
+
+                  <div class="brand-layout-list" id="brand-layout-list">
+                    <div class="brand-layout-item" draggable="true" data-item="icon">
+                      <span class="drag-handle" title="Drag to reorder">⠿</span>
+                      <div id="layout-icon-thumb" style="width:22px;height:22px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;flex-shrink:0">L</div>
+                      <span class="brand-layout-label">Logo Icon</span>
+                      <label class="toggle" style="margin-left:auto;flex-shrink:0" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="layout-show-icon" checked onchange="updateBrandPreview()" />
+                        <span class="toggle-track"></span>
+                      </label>
+                    </div>
+                    <div class="brand-layout-item" draggable="true" data-item="name">
+                      <span class="drag-handle" title="Drag to reorder">⠿</span>
+                      <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;color:var(--text-primary);flex-shrink:0;pointer-events:none">Abc</span>
+                      <span class="brand-layout-label">Brand Name</span>
+                      <label class="toggle" style="margin-left:auto;flex-shrink:0" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="layout-show-name" checked onchange="updateBrandPreview()" />
+                        <span class="toggle-track"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <p style="font-size:.67rem;color:var(--text-muted);margin-top:.5rem;line-height:1.5">Drag items to reorder · Toggle to show/hide</p>
+                </div>
+              </div>
+
+              <div class="info-box">ℹ️ Branding is saved to the browser. The public website and this admin panel reflect changes on next page load.</div>
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panel-settings -->
+
+      <!-- ============================================================
+           PANEL: PROFILE
+           ============================================================ -->
+      <div class="panel" id="panel-profile">
+        <div class="sec-head mb-3">
+          <div>
+            <h2>My Profile</h2>
+            <p>Manage your administrator account details</p>
+          </div>
+        </div>
+
+        <div class="sidebar-layout">
+          <div>
+            <!-- Profile Banner -->
+            <div class="profile-banner mb-2">
+              <div class="profile-avatar-lg">A</div>
+              <div class="profile-name">Angie</div>
+              <div class="profile-role">Founder & System Administrator</div>
+              <div style="margin-top:.75rem;font-size:.75rem;color:var(--text-muted)">angie@lintejas.com · Lintejas · Slovakia, EU</div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-head"><div class="card-title">Personal Information</div></div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-input" id="prof-name" value="Angie" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Display Name</label>
+                    <input class="form-input" id="prof-display" value="Angie" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input class="form-input" id="prof-email" type="email" value="angie@lintejas.com" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Role / Title</label>
+                    <input class="form-input" value="Founder & CEO" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input class="form-input" value="Slovakia, EU" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Bio</label>
+                  <textarea class="form-textarea">Founder of Lintejas — building intelligent software for industries worldwide. Based in Slovakia, EU.</textarea>
+                </div>
+                <button class="btn btn--primary" onclick="saveProfile()">💾 Save Profile</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title">🔑 Update Password</div></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="form-label">Current Password</label>
+                  <input class="form-input" type="password" id="prof-cur-pw" placeholder="••••••••••" />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input class="form-input" type="password" id="prof-new-pw" placeholder="Min. 8 characters" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input class="form-input" type="password" id="prof-conf-pw" placeholder="Re-enter" />
+                  </div>
+                </div>
+                <button class="btn btn--secondary" onclick="changePassword()">🔐 Update Password</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card mb-2">
+              <div class="card-head"><div class="card-title">Account Status</div></div>
+              <div class="card-body">
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Account Type</h4><p>Access level</p></div>
+                  <span class="bdg bdg--admin">Super Admin</span>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Account Status</h4><p>Current state</p></div>
+                  <span class="bdg bdg--active">Active</span>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Member Since</h4><p>Account creation</p></div>
+                  <span style="font-size:.78rem;color:var(--text-secondary)">June 2026</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-2">
+              <div class="card-head"><div class="card-title">⚙️ Preferences</div></div>
+              <div class="card-body">
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Email Notifications</h4><p>New form submissions</p></div>
+                  <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Dark Mode</h4><p>Always on (theme default)</p></div>
+                  <label class="toggle"><input type="checkbox" checked disabled /><span class="toggle-slider"></span></label>
+                </div>
+                <div class="setting-row">
+                  <div class="setting-row-text"><h4>Dashboard Animations</h4><p>Enable card animations</p></div>
+                  <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title">🌐 Quick Links</div></div>
+              <div class="card-body">
+                <a href="../index.html" target="_blank" class="btn btn--secondary" style="width:100%;justify-content:center;margin-bottom:.5rem">View Website →</a>
+                <a href="https://competenc.netlify.app" target="_blank" class="btn btn--success" style="width:100%;justify-content:center;margin-bottom:.5rem">SkillVue Live ↗</a>
+                <a href="../products.html" target="_blank" class="btn btn--secondary" style="width:100%;justify-content:center">Products Page →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /main -->
+</div><!-- /admin-wrap -->
+
+<!-- ========================================
+     MODALS
+     ======================================== -->
+
+<!-- Product Edit/Add Modal -->
+<div class="overlay" id="product-modal">
+  <div class="modal modal--wide">
+    <div class="modal-head">
+      <div class="modal-title" id="product-modal-title">Add New Product</div>
+      <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-product-id" value="" />
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Product Name <span class="req">*</span></label>
+          <input class="form-input" id="edit-name" placeholder="e.g. SkillVue" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Icon (emoji)</label>
+          <input class="form-input" id="edit-icon" placeholder="🧠" maxlength="4" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tagline / Subtitle</label>
+        <input class="form-input" id="edit-tagline" placeholder="Short descriptor" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="edit-desc" placeholder="Describe what this product does..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Industry / Market</label>
+          <input class="form-input" id="edit-industry" placeholder="e.g. Food Manufacturing" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="edit-status">
+            <option value="live">● Live</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="development">In Development</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Product URL (if live)</label>
+        <input class="form-input" id="edit-url" type="url" placeholder="https://" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tags (comma separated)</label>
+        <input class="form-input" id="edit-tags" placeholder="HR Tech, Competency Management, Analytics" />
+      </div>
+      <div class="form-group">
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" id="edit-featured" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-lbl">Featured product (show prominently on homepage)</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--secondary" onclick="closeModal('product-modal')">Cancel</button>
+      <button class="btn btn--primary" onclick="saveProduct()">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Message View Modal -->
+<div class="overlay" id="message-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Message Details</div>
+      <button class="modal-close" onclick="closeModal('message-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="message-modal-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn--secondary" onclick="closeModal('message-modal')">Close</button>
+      <button class="btn btn--primary" id="msg-reply-btn">✉️ Reply via Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- Invite Admin Modal -->
+<div class="overlay" id="invite-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Invite Administrator</div>
+      <button class="modal-close" onclick="closeModal('invite-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Name <span class="req">*</span></label>
+        <input class="form-input" id="inv-name" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address <span class="req">*</span></label>
+        <input class="form-input" id="inv-email" type="email" placeholder="admin@lintejas.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        <select class="form-select" id="inv-role">
+          <option>Super Administrator</option>
+          <option>Content Editor</option>
+          <option>Viewer</option>
+        </select>
+      </div>
+      <div class="info-box">ℹ️ An invitation email will be sent to the provided address with login setup instructions.</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn--secondary" onclick="closeModal('invite-modal')">Cancel</button>
+      <button class="btn btn--primary" onclick="sendInvite()">📧 Send Invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- Plugin Settings Modal -->
+<div class="overlay" id="plugin-settings-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="psm-title">Plugin Settings</div>
+      <button class="modal-close" onclick="closeModal('plugin-settings-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="psm-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn--secondary" onclick="closeModal('plugin-settings-modal')">Cancel</button>
+      <button class="btn btn--primary" id="psm-save-btn">💾 Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tool Runner Modal -->
+<div class="overlay" id="tool-modal">
+  <div class="modal modal--wide">
+    <div class="modal-head">
+      <div class="modal-title" id="tool-modal-title">Tool</div>
+      <button class="modal-close" onclick="closeModal('tool-modal')">✕</button>
+    </div>
+    <div class="modal-body" id="tool-modal-body" style="min-height:260px"></div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- ========================================
+     JAVASCRIPT
+     ======================================== -->
+<script>
+/* ============================================
+   AUTH CHECK
+   ============================================ */
+if (!localStorage.getItem('lintejas_admin_auth')) {
+  window.location.href = 'login.html';
+}
+
+const ADMIN_EMAIL    = 'angie@lintejas.com';
+const ADMIN_PASSWORD = 'Lintejas@2026!';
+
+/* ============================================
+   DATA STORE (localStorage)
+   ============================================ */
+function loadData(key, defaults) {
+  try {
+    const raw = localStorage.getItem('lintejas_' + key);
+    return raw ? JSON.parse(raw) : defaults;
+  } catch { return defaults; }
+}
+function saveData(key, data) {
+  localStorage.setItem('lintejas_' + key, JSON.stringify(data));
+}
+
+// Default products
+const defaultProducts = [
+  { id:1, icon:'🧠', name:'SkillVue', tagline:'Competency Intelligence Platform for Food Manufacturing', desc:'A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing environments.', status:'live', url:'https://competenc.netlify.app', industry:'Food Manufacturing', tags:'HR Tech, Competency Management, Analytics', featured:true },
+  { id:2, icon:'📦', name:'Material & Consumables Issuance Management System', tagline:'Precision inventory issuance management', desc:'End-to-end management of materials and consumables issuance across manufacturing operations.', status:'coming-soon', url:'', industry:'Manufacturing', tags:'Inventory Management, Supply Chain', featured:false },
+  { id:3, icon:'🗓️', name:'Staff Scheduler Automation System', tagline:'AI-powered shift planning at scale', desc:'AI-powered staff scheduling that respects labor rules, skill requirements, and employee preferences.', status:'coming-soon', url:'', industry:'Manufacturing, Healthcare, Retail', tags:'Workforce Management, Automation, HR Tech', featured:false },
+  { id:4, icon:'🗺️', name:'Philippines Transport Navigation System', tagline:'Smart navigation for Philippine roads', desc:'A navigation and transport intelligence platform designed for the complexities of Philippine geography and transit.', status:'coming-soon', url:'', industry:'Transport, Philippines', tags:'Navigation, Transport Tech, Mobility', featured:false },
+  { id:5, icon:'📊', name:'SME Financial Dashboard', tagline:'Financial clarity for small businesses', desc:'A unified financial intelligence dashboard built for SMEs — cash flow, P&L, and key financial metrics in one interface.', status:'coming-soon', url:'', industry:'Finance, SME', tags:'FinTech, Business Intelligence, SaaS', featured:false },
+];
+
+// Default messages
+const defaultMessages = [
+  { id:1, name:'Marco Rossi', email:'marco.r@italianfood.eu', company:'Barilla Group', type:'demo', product:'SkillVue', message:'We are a large food manufacturing company interested in a demo of SkillVue for our operations across Italy and Slovakia. We have over 3,000 employees and need a structured competency management solution that can work at scale.', date:'2026-06-04', read:false },
+  { id:2, name:'Sarah Chen', email:'s.chen@horizonventures.sg', company:'Horizon Ventures', type:'investment', product:'General', message:'Hello, I represent a tech-focused venture fund based in Singapore. We have been following Lintejas and are impressed with the product vision. We would like to schedule a call to discuss potential investment opportunities and learn more about the roadmap.', date:'2026-06-03', read:false },
+  { id:3, name:'David Novak', email:'d.novak@plastika.sk', company:'Plastika Slovakia', type:'enterprise', product:'Staff Scheduler Automation System', message:'We are a mid-sized manufacturing firm in Slovakia looking for a staff scheduling solution. We currently manage 400 shift workers manually across 3 facilities. Please let us know when the Staff Scheduler will be available and if early access is possible.', date:'2026-06-02', read:false },
+  { id:4, name:'Ana Reyes', email:'a.reyes@mmholdings.ph', company:'MM Holdings Philippines', type:'partnership', product:'Philippines Transport Navigation System', message:'MM Holdings is interested in exploring a distribution partnership for the Philippines Transport Navigation System. We have existing relationships with major transport operators across Luzon and believe there is significant market opportunity.', date:'2026-06-01', read:true },
+];
+
+// Default announcements
+const defaultAnnouncements = [
+  { id:1, title:'SkillVue is Now Live!', type:'product', body:'We are excited to announce that SkillVue — our Competency Intelligence Platform for Food Manufacturing — is now live and available at competenc.netlify.app. Start your free trial today!', product:'SkillVue', visible:true, date:'2026-06-01' },
+  { id:2, title:'Lintejas Company Website Launched', type:'news', body:'Our official company portfolio website is now live. Explore all five of our products, learn about our mission, and get in touch with us for partnerships, demos, and investment inquiries.', product:'', visible:true, date:'2026-06-06' },
+];
+
+// Default users
+const defaultUsers = [
+  { id:1, name:'Angie', email:'angie@lintejas.com', role:'Super Administrator', avatar:'A', status:'active' },
+];
+
+// Initialize stores
+let products      = loadData('products', defaultProducts);
+let messages      = loadData('messages', defaultMessages);
+let announcements = loadData('announcements', defaultAnnouncements);
+let users         = loadData('users', defaultUsers);
+
+/* ============================================
+   PANEL NAVIGATION
+   ============================================ */
+const panelTitles = {
+  dashboard: ['Dashboard', 'Overview & quick actions'],
+  products: ['Products', 'Manage all Lintejas products'],
+  messages: ['Messages', 'Incoming contact form submissions'],
+  content: ['Content Editor', 'Edit website content'],
+  announcements: ['Announcements', 'Create and manage public announcements'],
+  users: ['User Management', 'Manage administrator accounts'],
+  settings: ['Website Settings', 'Configure site settings'],
+  profile:  ['My Profile', 'Your administrator account'],
+  plugins:  ['Plugins & Tools', 'Install plugins · Run built-in utility tools'],
+};
+
+function switchPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const navItem = document.querySelector(`.nav-item[data-panel="${id}"]`);
+  if (navItem) navItem.classList.add('active');
+  if (panelTitles[id]) {
+    document.getElementById('header-title').textContent = panelTitles[id][0];
+    document.getElementById('header-sub').textContent   = panelTitles[id][1];
+  }
+  if (id === 'messages')     renderMessages();
+  if (id === 'products')     renderProductsTable();
+  if (id === 'announcements') renderAnnouncements();
+  if (id === 'users')        renderUsers();
+  if (id === 'dashboard')    renderDashboard();
+  if (id === 'plugins')      renderPluginsPanel();
+  if (id === 'settings')     initBrandingPanel();
+}
+
+document.querySelectorAll('.nav-item[data-panel]').forEach(item => {
+  item.addEventListener('click', () => switchPanel(item.dataset.panel));
+});
+
+/* ============================================
+   TABS
+   ============================================ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const container = btn.closest('.panel') || btn.closest('.admin-wrap');
+    const group = btn.closest('.tabs');
+    group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const targetId = btn.dataset.tab;
+    // Find all tab-panels sibling to the tabs div
+    const parent = group.parentElement;
+    parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(targetId);
+    if (target) target.classList.add('active');
+  });
+});
+
+/* ============================================
+   SIGN OUT
+   ============================================ */
+document.getElementById('signout-btn').addEventListener('click', () => {
+  localStorage.removeItem('lintejas_admin_auth');
+  window.location.href = 'login.html';
+});
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+function toast(msg, type = 'info') {
+  const icons = { success:'✅', error:'❌', info:'ℹ️', warn:'⚠️' };
+  const el = document.createElement('div');
+  el.className = `toast toast--${type}`;
+  el.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+/* ============================================
+   MODAL HELPERS
+   ============================================ */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+});
+
+/* ============================================
+   DASHBOARD RENDER
+   ============================================ */
+function renderDashboard() {
+  // Date
+  const now = new Date();
+  document.getElementById('dashboard-date').textContent =
+    'Lintejas Admin Panel · ' + now.toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' }) + ' · Slovakia, EU';
+
+  // Unread count
+  const unread = messages.filter(m => !m.read).length;
+  document.getElementById('stat-unread').textContent = unread;
+  document.getElementById('msg-badge').textContent = unread;
+  document.getElementById('msg-badge').style.display = unread > 0 ? '' : 'none';
+
+  // Recent messages
+  const dmEl = document.getElementById('dash-messages');
+  const recent = messages.slice(0, 3);
+  dmEl.innerHTML = recent.length ? recent.map(m => `
+    <div class="activity-item">
+      <div class="act-icon">${m.read ? '📨' : '📬'}</div>
+      <div class="act-text">
+        <div class="act-title">${m.name} · ${m.company}</div>
+        <div class="act-sub">${m.type} · ${m.product}</div>
+      </div>
+      <div class="flex-c gap-1">
+        ${!m.read ? '<span class="bdg bdg--unread">New</span>' : ''}
+        <div class="act-time">${m.date}</div>
+      </div>
+    </div>`).join('') : '<div class="empty"><div class="empty-icon">📭</div><div class="empty-txt">No messages yet</div></div>';
+
+  // Products
+  const dpEl = document.getElementById('dash-products');
+  dpEl.innerHTML = products.map(p => `
+    <div class="prow">
+      <div class="prow-icon">${p.icon}</div>
+      <div><div class="prow-name">${p.name.length > 28 ? p.name.substring(0,28)+'…' : p.name}</div><div class="prow-cat">${p.industry}</div></div>
+      <div class="prow-right">${statusBadge(p.status)}</div>
+    </div>`).join('');
+}
+
+function statusBadge(s) {
+  if (s === 'live') return '<span class="bdg bdg--live">Live</span>';
+  if (s === 'coming-soon') return '<span class="bdg bdg--soon">Coming Soon</span>';
+  return '<span class="bdg bdg--dev">In Dev</span>';
+}
+
+/* ============================================
+   PRODUCTS TABLE
+   ============================================ */
+function renderProductsTable() {
+  const filter = document.getElementById('product-filter')?.value || 'all';
+  const filtered = filter === 'all' ? products : products.filter(p => p.status === filter);
+  const tbody = document.getElementById('products-tbody');
+  tbody.innerHTML = filtered.map(p => `
+    <tr>
+      <td class="td-icon">${p.icon}</td>
+      <td><div class="td-main">${p.name}</div><div style="font-size:.7rem;color:var(--text-muted)">${p.tagline}</div></td>
+      <td>${p.industry}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td>${p.url ? `<a href="${p.url}" target="_blank" style="color:var(--teal-light);font-size:.75rem">Visit ↗</a>` : '<span style="color:var(--text-muted);font-size:.75rem">—</span>'}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn--secondary btn--sm" onclick="openProductModal(${p.id})">✏️ Edit</button>
+          <button class="btn btn--sm ${p.status==='live' ? 'btn--danger' : 'btn--success'}" onclick="toggleProductStatus(${p.id})">${p.status==='live' ? '⏸ Pause' : '▶ Activate'}</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><div class="empty-icon">📦</div><div class="empty-txt">No products found</div></div></td></tr>';
+  }
+}
+
+function toggleProductStatus(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  p.status = p.status === 'live' ? 'coming-soon' : 'live';
+  saveData('products', products);
+  renderProductsTable();
+  toast(`${p.name} status updated to "${p.status}"`, 'success');
+}
+
+function openProductModal(id = null) {
+  const modal = document.getElementById('product-modal');
+  document.getElementById('product-modal-title').textContent = id ? 'Edit Product' : 'Add New Product';
+  document.getElementById('edit-product-id').value = id || '';
+
+  if (id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('edit-name').value     = p.name;
+    document.getElementById('edit-icon').value     = p.icon;
+    document.getElementById('edit-tagline').value  = p.tagline;
+    document.getElementById('edit-desc').value     = p.desc;
+    document.getElementById('edit-industry').value = p.industry;
+    document.getElementById('edit-status').value   = p.status;
+    document.getElementById('edit-url').value      = p.url || '';
+    document.getElementById('edit-tags').value     = p.tags || '';
+    document.getElementById('edit-featured').checked = p.featured;
+  } else {
+    ['edit-name','edit-icon','edit-tagline','edit-desc','edit-industry','edit-url','edit-tags'].forEach(f => document.getElementById(f).value = '');
+    document.getElementById('edit-status').value = 'coming-soon';
+    document.getElementById('edit-featured').checked = false;
+  }
+  openModal('product-modal');
+}
+
+function saveProduct() {
+  const id = document.getElementById('edit-product-id').value;
+  const name = document.getElementById('edit-name').value.trim();
+  if (!name) { toast('Product name is required', 'error'); return; }
+
+  const data = {
+    icon: document.getElementById('edit-icon').value.trim() || '📦',
+    name,
+    tagline:  document.getElementById('edit-tagline').value.trim(),
+    desc:     document.getElementById('edit-desc').value.trim(),
+    industry: document.getElementById('edit-industry').value.trim(),
+    status:   document.getElementById('edit-status').value,
+    url:      document.getElementById('edit-url').value.trim(),
+    tags:     document.getElementById('edit-tags').value.trim(),
+    featured: document.getElementById('edit-featured').checked,
+  };
+
+  if (id) {
+    const idx = products.findIndex(p => p.id === parseInt(id));
+    if (idx !== -1) products[idx] = { ...products[idx], ...data };
+  } else {
+    data.id = Date.now();
+    products.push(data);
+  }
+
+  saveData('products', products);
+  closeModal('product-modal');
+  renderProductsTable();
+  toast(id ? 'Product updated successfully' : 'Product added successfully', 'success');
+}
+
+/* ============================================
+   MESSAGES
+   ============================================ */
+function renderMessages() {
+  const filter = document.getElementById('msg-filter')?.value || 'all';
+  let filtered = messages;
+  if (filter === 'unread') filtered = messages.filter(m => !m.read);
+  else if (filter !== 'all') filtered = messages.filter(m => m.type === filter);
+
+  const unread = messages.filter(m => !m.read).length;
+  const countLbl = document.getElementById('msg-count-label');
+  if (countLbl) countLbl.textContent = `${filtered.length} message${filtered.length !== 1 ? 's' : ''} · ${unread} unread`;
+
+  document.getElementById('msg-badge').textContent = unread;
+  document.getElementById('msg-badge').style.display = unread > 0 ? '' : 'none';
+  document.getElementById('stat-unread').textContent = unread;
+
+  const tbody = document.getElementById('messages-tbody');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">📭</div><div class="empty-txt">No messages found</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(m => `
+    <tr style="${!m.read ? 'background:rgba(8,145,178,.04)' : ''}">
+      <td>${m.read ? '<span class="bdg bdg--read">Read</span>' : '<span class="bdg bdg--unread">New</span>'}</td>
+      <td><div class="td-main">${m.name}</div><div style="font-size:.7rem;color:var(--text-muted)">${m.email}</div></td>
+      <td>${m.company}</td>
+      <td><span style="text-transform:capitalize">${m.type.replace('-',' ')}</span></td>
+      <td style="font-size:.72rem;color:var(--text-muted)">${m.product}</td>
+      <td style="font-size:.72rem;color:var(--text-muted)">${m.date}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn--secondary btn--sm" onclick="viewMessage(${m.id})">👁 View</button>
+          ${!m.read ? `<button class="btn btn--sm btn--success" onclick="markRead(${m.id})">✓ Read</button>` : ''}
+          <button class="btn btn--danger btn--sm" onclick="deleteMessage(${m.id})">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function viewMessage(id) {
+  const m = messages.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('message-modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">From</div><div style="font-weight:600;color:var(--text-primary)">${m.name}</div><div style="font-size:.75rem;color:var(--text-muted)">${m.email}</div></div>
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Company</div><div style="font-weight:600;color:var(--text-primary)">${m.company}</div></div>
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Inquiry Type</div><span class="bdg bdg--dev" style="text-transform:capitalize">${m.type.replace('-',' ')}</span></div>
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Product Interest</div><div style="font-size:.82rem;color:var(--text-secondary)">${m.product}</div></div>
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Date</div><div style="font-size:.82rem;color:var(--text-secondary)">${m.date}</div></div>
+      <div><div style="font-size:.68rem;color:var(--text-muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Status</div>${m.read ? '<span class="bdg bdg--read">Read</span>' : '<span class="bdg bdg--unread">Unread</span>'}</div>
+    </div>
+    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:1rem">
+      <div style="font-size:.68rem;color:var(--text-muted);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.06em">Message</div>
+      <div style="font-size:.85rem;color:var(--text-secondary);line-height:1.75">${m.message}</div>
+    </div>`;
+  document.getElementById('msg-reply-btn').onclick = () => {
+    window.open(`mailto:${m.email}?subject=Re: Your Inquiry to Lintejas&body=Dear ${m.name},%0A%0AThank you for reaching out to Lintejas.%0A%0A`);
+  };
+  markRead(id, false);
+  openModal('message-modal');
+}
+
+function markRead(id, refreshTable = true) {
+  const m = messages.find(x => x.id === id);
+  if (m) { m.read = true; saveData('messages', messages); }
+  if (refreshTable) { renderMessages(); renderDashboard(); }
+}
+
+function deleteMessage(id) {
+  if (!confirm('Delete this message? This cannot be undone.')) return;
+  messages = messages.filter(m => m.id !== id);
+  saveData('messages', messages);
+  renderMessages();
+  renderDashboard();
+  toast('Message deleted', 'warn');
+}
+
+/* ============================================
+   ANNOUNCEMENTS
+   ============================================ */
+const annIcons = { product:'🚀', update:'🔄', event:'📅', news:'📰', milestone:'🏆' };
+
+function renderAnnouncements() {
+  const el = document.getElementById('ann-list');
+  const cnt = document.getElementById('ann-count');
+  if (cnt) cnt.textContent = `${announcements.length} total`;
+
+  if (!announcements.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📢</div><div class="empty-txt">No announcements yet</div></div>';
+    return;
+  }
+  el.innerHTML = announcements.map(a => `
+    <div class="ann-item">
+      <div class="ann-icon">${annIcons[a.type] || '📢'}</div>
+      <div style="flex:1">
+        <div class="ann-title">${a.title}</div>
+        <div class="ann-body">${a.body.substring(0, 100)}${a.body.length > 100 ? '…' : ''}</div>
+        <div class="ann-meta">${a.date}${a.product ? ' · ' + a.product : ''} · ${a.visible ? '<span style="color:var(--green-light)">Visible</span>' : '<span style="color:var(--text-muted)">Hidden</span>'}</div>
+      </div>
+      <div class="ann-actions">
+        <button class="btn btn--sm ${a.visible ? 'btn--secondary' : 'btn--success'}" onclick="toggleAnn(${a.id})">${a.visible ? 'Hide' : 'Show'}</button>
+        <button class="btn btn--sm btn--danger" onclick="deleteAnn(${a.id})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function addAnnouncement() {
+  const title = document.getElementById('ann-title').value.trim();
+  const body  = document.getElementById('ann-body').value.trim();
+  if (!title || !body) { toast('Title and message body are required', 'error'); return; }
+
+  announcements.unshift({
+    id: Date.now(),
+    title,
+    type: document.getElementById('ann-type').value,
+    body,
+    product: document.getElementById('ann-product').value,
+    visible: document.getElementById('ann-visible').checked,
+    date: new Date().toISOString().slice(0, 10),
+  });
+  saveData('announcements', announcements);
+  document.getElementById('ann-title').value = '';
+  document.getElementById('ann-body').value  = '';
+  renderAnnouncements();
+  toast('Announcement published!', 'success');
+}
+
+function toggleAnn(id) {
+  const a = announcements.find(x => x.id === id);
+  if (a) { a.visible = !a.visible; saveData('announcements', announcements); renderAnnouncements(); toast('Announcement visibility updated', 'info'); }
+}
+
+function deleteAnn(id) {
+  if (!confirm('Delete this announcement?')) return;
+  announcements = announcements.filter(a => a.id !== id);
+  saveData('announcements', announcements);
+  renderAnnouncements();
+  toast('Announcement deleted', 'warn');
+}
+
+/* ============================================
+   USERS
+   ============================================ */
+function renderUsers() {
+  const el = document.getElementById('users-list');
+  el.innerHTML = users.map(u => `
+    <div class="user-card">
+      <div class="uc-avatar uc-avatar--teal">${u.avatar}</div>
+      <div>
+        <div class="uc-name">${u.name} ${u.id === 1 ? '(You)' : ''}</div>
+        <div class="uc-email">${u.email}</div>
+        <div style="margin-top:4px"><span class="bdg bdg--admin">${u.role}</span></div>
+      </div>
+      <div class="uc-actions">
+        <span class="bdg bdg--active">${u.status}</span>
+        ${u.id !== 1 ? `<button class="btn btn--danger btn--sm" onclick="removeUser(${u.id})">Remove</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function openInviteModal() { openModal('invite-modal'); }
+
+function sendInvite() {
+  const name  = document.getElementById('inv-name').value.trim();
+  const email = document.getElementById('inv-email').value.trim();
+  if (!name || !email) { toast('Name and email are required', 'error'); return; }
+  users.push({ id: Date.now(), name, email, role: document.getElementById('inv-role').value, avatar: name[0].toUpperCase(), status:'invited' });
+  saveData('users', users);
+  closeModal('invite-modal');
+  renderUsers();
+  toast(`Invite sent to ${email}`, 'success');
+  document.getElementById('inv-name').value  = '';
+  document.getElementById('inv-email').value = '';
+}
+
+function removeUser(id) {
+  if (!confirm('Remove this admin user?')) return;
+  users = users.filter(u => u.id !== id);
+  saveData('users', users);
+  renderUsers();
+  toast('User removed', 'warn');
+}
+
+/* ============================================
+   CONTENT SAVE
+   ============================================ */
+function saveContent(section) {
+  saveData('content_' + section, { saved: new Date().toISOString() });
+  toast(`${section.charAt(0).toUpperCase() + section.slice(1)} content saved as reference`, 'success');
+}
+
+/* ============================================
+   SETTINGS SAVE
+   ============================================ */
+function saveSettings(section) {
+  saveData('settings_' + section, { saved: new Date().toISOString() });
+  toast(`${section.charAt(0).toUpperCase() + section.slice(1)} settings saved`, 'success');
+}
+
+/* ============================================
+   BRANDING
+   ============================================ */
+let _pendingLogo     = null;   // base64 staged before save; '' means remove
+let _pendingWordmark = null;   // same semantics for wordmark image
+let _brandingInited  = false;
+
+function initBrandingPanel() {
+  if (_brandingInited) { updateBrandPreview(); return; }
+  _brandingInited = true;
+
+  const savedLogo   = localStorage.getItem('lintejas_logo');
+  const savedName   = localStorage.getItem('lintejas_brand_name')   || 'Lintejas';
+  const savedSuffix = localStorage.getItem('lintejas_brand_suffix')  || 'jas';
+
+  document.getElementById('brand-name-input').value   = savedName;
+  document.getElementById('brand-suffix-input').value = savedSuffix;
+  if (savedLogo) _setLogoPreview(savedLogo);
+
+  // Load saved logo style
+  const ls = JSON.parse(localStorage.getItem('lintejas_logo_style') || '{}');
+  const _setEl = (id, v) => { const el = document.getElementById(id); if (!el) return; if (typeof v === 'boolean') el.checked = v; else el.value = v; };
+  if (ls.radius    !== undefined) _setEl('sl-radius',     ls.radius);
+  if (ls.bright    !== undefined) _setEl('sl-brightness', ls.bright);
+  if (ls.cont      !== undefined) _setEl('sl-contrast',   ls.cont);
+  if (ls.sat       !== undefined) _setEl('sl-saturate',   ls.sat);
+  if (ls.glowOn    !== undefined) _setEl('sl-glow-on',    ls.glowOn);
+  if (ls.glowColor)             { _setEl('sl-glow-color', ls.glowColor); _setEl('sl-glow-color-hex', ls.glowColor); }
+  if (ls.glowSize  !== undefined) _setEl('sl-glow-size',  ls.glowSize);
+  if (ls.size      !== undefined) _setEl('sl-logo-size',  ls.size);
+  if (ls.bgColor)               { _setEl('sl-logo-bg',    ls.bgColor);   _setEl('sl-logo-bg-hex',    ls.bgColor); }
+  if (ls.animation)               _setEl('sl-logo-anim',  ls.animation);
+
+  // Load saved brand style
+  const bs = JSON.parse(localStorage.getItem('lintejas_brand_style') || '{}');
+  if (bs.textSize    !== undefined) _setEl('sl-text-size',    bs.textSize);
+  if (bs.textBright  !== undefined) _setEl('sl-text-bright',  bs.textBright);
+  if (bs.textSpacing !== undefined) _setEl('sl-text-spacing', bs.textSpacing);
+  if (bs.textColor)               { _setEl('sl-text-color',   bs.textColor);   _setEl('sl-text-color-hex',   bs.textColor); }
+  if (bs.suffixColor)             { _setEl('sl-suffix-color', bs.suffixColor); _setEl('sl-suffix-color-hex', bs.suffixColor); }
+  if (bs.fontFamily)              { _setEl('sl-font-family',  bs.fontFamily);  _loadGoogleFont(bs.fontFamily); }
+  if (bs.fontWeight)                _setEl('sl-font-weight',  bs.fontWeight);
+  if (bs.animation)                 _setEl('sl-text-anim',    bs.animation);
+
+  // Load saved layout + wire drag-and-drop
+  const savedLayout = JSON.parse(localStorage.getItem('lintejas_brand_layout') || '{}');
+  _loadLayoutState(savedLayout);
+  initLayoutBuilder();
+
+  // Load saved wordmark
+  const wmSrc = localStorage.getItem('lintejas_brand_wordmark');
+  const ws    = JSON.parse(localStorage.getItem('lintejas_wordmark_style') || '{}');
+  const wmOn  = ws.useWordmark ?? false;
+  if (ws.height !== undefined) { const h = document.getElementById('sl-wordmark-height'); if (h) h.value = ws.height; }
+  const wmToggle = document.getElementById('wordmark-toggle');
+  if (wmToggle) wmToggle.checked = wmOn;
+  const wmSection = document.getElementById('wordmark-section');
+  if (wmSection) wmSection.style.display = wmOn ? '' : 'none';
+  if (wmSrc) _setWordmarkPreview(wmSrc);
+  onWordmarkStyleChange();
+
+  // Wire wordmark drop zone
+  const wdrop  = document.getElementById('wordmark-drop-zone');
+  const winput = document.getElementById('wordmark-file-input');
+  if (wdrop && winput) {
+    wdrop.addEventListener('dragover', e => { e.preventDefault(); wdrop.classList.add('dragging'); });
+    wdrop.addEventListener('dragleave', () => wdrop.classList.remove('dragging'));
+    wdrop.addEventListener('drop', e => {
+      e.preventDefault(); wdrop.classList.remove('dragging');
+      const f = e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) _readWordmarkFile(f);
+    });
+    wdrop.addEventListener('click', e => { if (!e.target.closest('button')) winput.click(); });
+    winput.addEventListener('change', () => { if (winput.files[0]) _readWordmarkFile(winput.files[0]); winput.value = ''; });
+  }
+
+  onStyleChange(); // sync all value labels + preview
+
+  const dropZone  = document.getElementById('logo-drop-zone');
+  const fileInput = document.getElementById('logo-file-input');
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragging');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) _readLogoFile(file);
+  });
+  dropZone.addEventListener('click', e => { if (!e.target.closest('button')) fileInput.click(); });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) _readLogoFile(fileInput.files[0]);
+    fileInput.value = '';
+  });
+}
+
+function _readLogoFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    _pendingLogo = e.target.result;
+    _setLogoPreview(_pendingLogo);
+    updateBrandPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function _setLogoPreview(src) {
+  const img   = document.getElementById('logo-preview-img');
+  const hint  = document.getElementById('drop-content');
+  const rmBtn = document.getElementById('remove-logo-btn');
+  const zone  = document.getElementById('logo-drop-zone');
+  img.src = src; img.style.display = 'block';
+  hint.style.display = 'none';
+  zone.classList.add('has-logo');
+  rmBtn.style.display = '';
+}
+
+function _clearLogoPreview() {
+  const img   = document.getElementById('logo-preview-img');
+  const hint  = document.getElementById('drop-content');
+  const rmBtn = document.getElementById('remove-logo-btn');
+  const zone  = document.getElementById('logo-drop-zone');
+  img.src = ''; img.style.display = 'none';
+  hint.style.display = '';
+  zone.classList.remove('has-logo');
+  rmBtn.style.display = 'none';
+}
+
+function removeLogo() {
+  _pendingLogo = '';
+  _clearLogoPreview();
+  updateBrandPreview();
+}
+
+/* --- Wordmark helpers --- */
+function onWordmarkToggle() {
+  const on = document.getElementById('wordmark-toggle').checked;
+  document.getElementById('wordmark-section').style.display = on ? '' : 'none';
+  updateBrandPreview();
+}
+
+function onWordmarkStyleChange() {
+  const h = document.getElementById('sl-wordmark-height')?.value ?? 24;
+  const el = document.getElementById('val-wordmark-height');
+  if (el) el.textContent = h + 'px';
+  updateBrandPreview();
+}
+
+function _readWordmarkFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    _pendingWordmark = e.target.result;
+    _setWordmarkPreview(_pendingWordmark);
+    updateBrandPreview();
+  };
+  reader.readAsDataURL(file);
+}
+
+function _setWordmarkPreview(src) {
+  const img   = document.getElementById('wordmark-preview-img');
+  const hint  = document.getElementById('wordmark-drop-content');
+  const rmBtn = document.getElementById('remove-wordmark-btn');
+  const zone  = document.getElementById('wordmark-drop-zone');
+  if (!img) return;
+  img.src = src; img.style.display = 'block';
+  if (hint)  hint.style.display   = 'none';
+  if (zone)  zone.classList.add('has-logo');
+  if (rmBtn) rmBtn.style.display  = '';
+}
+
+function _clearWordmarkPreview() {
+  const img   = document.getElementById('wordmark-preview-img');
+  const hint  = document.getElementById('wordmark-drop-content');
+  const rmBtn = document.getElementById('remove-wordmark-btn');
+  const zone  = document.getElementById('wordmark-drop-zone');
+  if (img)   { img.src = ''; img.style.display = 'none'; }
+  if (hint)  hint.style.display  = '';
+  if (zone)  zone.classList.remove('has-logo');
+  if (rmBtn) rmBtn.style.display = 'none';
+}
+
+function removeWordmark() {
+  _pendingWordmark = '';
+  _clearWordmarkPreview();
+  updateBrandPreview();
+}
+
+function getWordmarkState() {
+  return {
+    useWordmark: document.getElementById('wordmark-toggle')?.checked ?? false,
+    height:      parseInt(document.getElementById('sl-wordmark-height')?.value ?? 24),
+    src: _pendingWordmark !== null
+      ? (_pendingWordmark || null)
+      : (localStorage.getItem('lintejas_brand_wordmark') || null),
+  };
+}
+
+/* --- Logo style helpers --- */
+function getLogoStyle() {
+  return {
+    radius:    parseInt(document.getElementById('sl-radius')?.value     ?? 9),
+    bright:    parseInt(document.getElementById('sl-brightness')?.value ?? 100),
+    cont:      parseInt(document.getElementById('sl-contrast')?.value   ?? 100),
+    sat:       parseInt(document.getElementById('sl-saturate')?.value   ?? 100),
+    glowOn:    document.getElementById('sl-glow-on')?.checked           ?? false,
+    glowColor: document.getElementById('sl-glow-color')?.value          ?? '#0891B2',
+    glowSize:  parseInt(document.getElementById('sl-glow-size')?.value  ?? 12),
+    size:      parseInt(document.getElementById('sl-logo-size')?.value  ?? 38),
+    bgColor:   document.getElementById('sl-logo-bg')?.value             ?? '#0891B2',
+    animation: document.getElementById('sl-logo-anim')?.value           ?? 'none',
+  };
+}
+
+function getBrandStyle() {
+  return {
+    textSize:    parseInt(document.getElementById('sl-text-size')?.value    ?? 100),
+    textBright:  parseInt(document.getElementById('sl-text-bright')?.value  ?? 100),
+    textSpacing: parseInt(document.getElementById('sl-text-spacing')?.value ?? 0),
+    textColor:   document.getElementById('sl-text-color')?.value            ?? '#E2E8F0',
+    suffixColor: document.getElementById('sl-suffix-color')?.value          ?? '#22D3EE',
+    fontFamily:  document.getElementById('sl-font-family')?.value           ?? 'Space Grotesk',
+    fontWeight:  document.getElementById('sl-font-weight')?.value           ?? '700',
+    animation:   document.getElementById('sl-text-anim')?.value             ?? 'none',
+  };
+}
+
+function onStyleChange() {
+  const r  = document.getElementById('sl-radius')?.value      ?? 9;
+  const b  = document.getElementById('sl-brightness')?.value  ?? 100;
+  const c  = document.getElementById('sl-contrast')?.value    ?? 100;
+  const s  = document.getElementById('sl-saturate')?.value    ?? 100;
+  const gs = document.getElementById('sl-glow-size')?.value   ?? 12;
+  const go = document.getElementById('sl-glow-on')?.checked   ?? false;
+  const ts = document.getElementById('sl-text-size')?.value   ?? 100;
+  const tb = document.getElementById('sl-text-bright')?.value ?? 100;
+  const tl = document.getElementById('sl-text-spacing')?.value ?? 0;
+  const lz = document.getElementById('sl-logo-size')?.value   ?? 38;
+
+  const setV = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  setV('val-radius',       r + 'px');
+  setV('val-brightness',   b + '%');
+  setV('val-contrast',     c + '%');
+  setV('val-saturate',     s + '%');
+  setV('val-glow-size',    gs + 'px');
+  setV('val-text-size',    ts + '%');
+  setV('val-text-bright',  tb + '%');
+  setV('val-text-spacing', tl + 'px');
+  setV('val-logo-size',    lz + 'px');
+
+  const glowOpts = document.getElementById('glow-options');
+  if (glowOpts) glowOpts.style.display = go ? '' : 'none';
+
+  // Sync all color pickers ↔ hex inputs (only when picker is active)
+  const syncCP = (cpId, hexId) => {
+    const cp = document.getElementById(cpId);
+    const hx = document.getElementById(hexId);
+    if (cp && hx && document.activeElement !== hx) hx.value = cp.value;
+  };
+  syncCP('sl-glow-color',   'sl-glow-color-hex');
+  syncCP('sl-logo-bg',      'sl-logo-bg-hex');
+  syncCP('sl-text-color',   'sl-text-color-hex');
+  syncCP('sl-suffix-color', 'sl-suffix-color-hex');
+
+  updateBrandPreview();
+}
+
+function syncGlowHex(input) {
+  if (/^#[0-9A-Fa-f]{6}$/.test(input.value)) {
+    const cp = document.getElementById('sl-glow-color');
+    if (cp) cp.value = input.value;
+    onStyleChange();
+  }
+}
+
+function syncColorHex(cpId, hexId, input) {
+  if (/^#[0-9A-Fa-f]{6}$/.test(input.value)) {
+    const cp = document.getElementById(cpId);
+    if (cp) cp.value = input.value;
+    onStyleChange();
+  }
+}
+
+function onFontChange() {
+  const font = document.getElementById('sl-font-family')?.value;
+  if (font) _loadGoogleFont(font);
+  onStyleChange();
+}
+
+function _loadGoogleFont(fontName) {
+  const builtIn = ['Space Grotesk', 'Inter'];
+  if (!fontName || builtIn.includes(fontName)) return;
+  const id = 'lt-gf-' + fontName.replace(/\s+/g, '-').toLowerCase();
+  if (document.getElementById(id)) return;
+  const link   = document.createElement('link');
+  link.id      = id;
+  link.rel     = 'stylesheet';
+  link.href    = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName).replace(/%20/g,'+')}:wght@400;500;600;700;800&display=swap`;
+  document.head.appendChild(link);
+}
+
+function _applyAnimClass(el, prefix, animName) {
+  [...el.classList].filter(c => c.startsWith(prefix)).forEach(c => el.classList.remove(c));
+  if (animName && animName !== 'none') el.classList.add(prefix + animName);
+}
+
+function resetLogoStyle() {
+  const set = (id, v) => {
+    const el = document.getElementById(id); if (!el) return;
+    if (typeof v === 'boolean') el.checked = v; else el.value = v;
+  };
+  set('sl-radius', 9);        set('sl-brightness', 100);  set('sl-contrast', 100);
+  set('sl-saturate', 100);    set('sl-glow-on', false);   set('sl-glow-color', '#0891B2');
+  set('sl-glow-color-hex','#0891B2'); set('sl-glow-size', 12);
+  set('sl-logo-size', 38);    set('sl-logo-bg', '#0891B2'); set('sl-logo-bg-hex', '#0891B2');
+  set('sl-logo-anim', 'none');
+  set('sl-text-size', 100);   set('sl-text-bright', 100); set('sl-text-spacing', 0);
+  set('sl-text-color', '#E2E8F0');    set('sl-text-color-hex', '#E2E8F0');
+  set('sl-suffix-color', '#22D3EE'); set('sl-suffix-color-hex', '#22D3EE');
+  set('sl-font-family', 'Space Grotesk'); set('sl-font-weight', '700');
+  set('sl-text-anim', 'none');
+  onStyleChange();
+}
+
+function _applyLogoStyleToEl(iconEl, ls, hasLogo) {
+  const sz = ls.size ?? 38;
+  iconEl.style.borderRadius = ls.radius + 'px';
+  iconEl.style.width        = sz + 'px';
+  iconEl.style.height       = sz + 'px';
+  iconEl.style.minWidth     = sz + 'px';
+  if (!hasLogo) {
+    const bg = ls.bgColor || '#0891B2';
+    iconEl.style.background = `linear-gradient(135deg, ${bg}, ${bg}cc)`;
+  }
+  iconEl.style.boxShadow = ls.glowOn
+    ? `0 0 ${ls.glowSize}px ${ls.glowColor}, 0 0 ${ls.glowSize * 2}px ${ls.glowColor}55`
+    : (hasLogo ? 'none' : '');
+  _applyAnimClass(iconEl, 'lt-anim-logo-', ls.animation || 'none');
+}
+
+function _applyBrandStyleToEl(nameEl, bs) {
+  if (!nameEl) return;
+  nameEl.style.fontSize      = (bs.textSize / 100) + 'em';
+  nameEl.style.opacity       = bs.textBright / 100;
+  nameEl.style.letterSpacing = bs.textSpacing + 'px';
+  nameEl.style.color         = bs.textColor || '';
+  nameEl.style.fontFamily    = bs.fontFamily ? `'${bs.fontFamily}', sans-serif` : '';
+  nameEl.style.fontWeight    = bs.fontWeight || '';
+  const sfxSpan = nameEl.querySelector('span');
+  if (sfxSpan) sfxSpan.style.color = bs.suffixColor || '';
+  _applyAnimClass(nameEl, 'lt-anim-text-', bs.animation || 'none');
+}
+
+/* --- Layout drag-and-drop --- */
+let _layoutInited = false;
+
+function initLayoutBuilder() {
+  if (_layoutInited) return;
+  _layoutInited = true;
+
+  const list = document.getElementById('brand-layout-list');
+  if (!list) return;
+
+  let dragSrc = null;
+
+  list.querySelectorAll('.brand-layout-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      setTimeout(() => item.classList.add('dragging'), 0);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      list.querySelectorAll('.brand-layout-item').forEach(i => i.classList.remove('drag-over'));
+      dragSrc = null;
+      updateBrandPreview();
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (!dragSrc || dragSrc === item) return;
+      e.dataTransfer.dropEffect = 'move';
+      list.querySelectorAll('.brand-layout-item').forEach(i => i.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+      const rect = item.getBoundingClientRect();
+      if (e.clientY < rect.top + rect.height / 2) {
+        list.insertBefore(dragSrc, item);
+      } else {
+        item.after(dragSrc);
+      }
+    });
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+    item.addEventListener('drop',      e => { e.preventDefault(); item.classList.remove('drag-over'); });
+  });
+}
+
+function getLayoutState() {
+  const list  = document.getElementById('brand-layout-list');
+  const order = list
+    ? [...list.querySelectorAll('.brand-layout-item')].map(i => i.dataset.item)
+    : ['icon', 'name'];
+  return {
+    order,
+    showIcon: document.getElementById('layout-show-icon')?.checked ?? true,
+    showName: document.getElementById('layout-show-name')?.checked ?? true,
+  };
+}
+
+function _loadLayoutState(layout) {
+  const order    = layout.order    || ['icon', 'name'];
+  const showIcon = layout.showIcon ?? true;
+  const showName = layout.showName ?? true;
+
+  const iconCb = document.getElementById('layout-show-icon');
+  const nameCb = document.getElementById('layout-show-name');
+  if (iconCb) iconCb.checked = showIcon;
+  if (nameCb) nameCb.checked = showName;
+
+  // Restore drag order in the list
+  const list     = document.getElementById('brand-layout-list');
+  if (list && order[0] === 'name') {
+    const nameItem = list.querySelector('[data-item="name"]');
+    if (nameItem) list.prepend(nameItem);
+  }
+}
+
+function saveBranding() {
+  const name   = document.getElementById('brand-name-input').value.trim()  || 'Lintejas';
+  const suffix = document.getElementById('brand-suffix-input').value.trim() || '';
+
+  if (_pendingLogo === '')  localStorage.removeItem('lintejas_logo');
+  else if (_pendingLogo)   localStorage.setItem('lintejas_logo', _pendingLogo);
+  _pendingLogo = null;
+
+  if (_pendingWordmark === '') localStorage.removeItem('lintejas_brand_wordmark');
+  else if (_pendingWordmark)   localStorage.setItem('lintejas_brand_wordmark', _pendingWordmark);
+  _pendingWordmark = null;
+
+  localStorage.setItem('lintejas_brand_name',    name);
+  localStorage.setItem('lintejas_brand_suffix',  suffix);
+  localStorage.setItem('lintejas_logo_style',    JSON.stringify(getLogoStyle()));
+  localStorage.setItem('lintejas_brand_style',   JSON.stringify(getBrandStyle()));
+  localStorage.setItem('lintejas_brand_layout',  JSON.stringify(getLayoutState()));
+  localStorage.setItem('lintejas_wordmark_style', JSON.stringify({ useWordmark: document.getElementById('wordmark-toggle')?.checked ?? false, height: parseInt(document.getElementById('sl-wordmark-height')?.value ?? 24) }));
+
+  applyAdminBranding();
+  toast('Branding saved — refresh the public site to see changes live', 'success');
+}
+
+function resetBranding() {
+  if (!confirm('Reset all branding to Lintejas defaults?')) return;
+  ['lintejas_logo','lintejas_brand_name','lintejas_brand_suffix',
+   'lintejas_logo_style','lintejas_brand_style','lintejas_brand_layout',
+   'lintejas_brand_wordmark','lintejas_wordmark_style'].forEach(k => localStorage.removeItem(k));
+  _pendingLogo = null;     _clearLogoPreview();
+  _pendingWordmark = null; _clearWordmarkPreview();
+  const wt = document.getElementById('wordmark-toggle');   if (wt) wt.checked = false;
+  const ws2 = document.getElementById('wordmark-section'); if (ws2) ws2.style.display = 'none';
+  document.getElementById('brand-name-input').value   = 'Lintejas';
+  document.getElementById('brand-suffix-input').value = 'jas';
+  _loadLayoutState({});   // restore default icon-then-name order
+  resetLogoStyle();       // also resets text sliders + calls updateBrandPreview
+  applyAdminBranding();
+  toast('Branding reset to default', 'success');
+}
+
+function updateBrandPreview() {
+  const nameEl   = document.getElementById('brand-name-input');
+  const suffixEl = document.getElementById('brand-suffix-input');
+  if (!nameEl) return;
+
+  const name    = nameEl.value   || 'Lintejas';
+  const suffix  = suffixEl.value || '';
+  const logoSrc = _pendingLogo !== null
+    ? (_pendingLogo || null)
+    : (localStorage.getItem('lintejas_logo') || null);
+
+  const endsW  = suffix && name.toLowerCase().endsWith(suffix.toLowerCase());
+  const prefix = endsW ? name.slice(0, name.length - suffix.length) : name;
+  const sfx    = endsW ? suffix : '';
+
+  const ls     = getLogoStyle();
+  const bs     = getBrandStyle();
+  const layout = getLayoutState();
+  const wm     = getWordmarkState();
+  const imgFilter = `brightness(${ls.bright/100}) contrast(${ls.cont/100}) saturate(${ls.sat/100})`;
+
+  ['', '2'].forEach(n => {
+    const icon = document.getElementById('brand-preview-icon' + n);
+    const nmEl = document.getElementById('brand-preview-name' + n);
+    if (!icon) return;
+
+    // Logo icon
+    if (logoSrc) {
+      icon.innerHTML        = `<img src="${logoSrc}" style="width:100%;height:100%;object-fit:contain;display:block;filter:${imgFilter}" />`;
+      icon.style.background = 'transparent';
+    } else {
+      icon.textContent      = prefix.charAt(0).toUpperCase();
+      icon.style.background = '';
+    }
+    _applyLogoStyleToEl(icon, ls, !!logoSrc);
+    icon.style.order   = layout.order.indexOf('icon').toString();
+    icon.style.display = layout.showIcon ? '' : 'none';
+
+    // Brand name — text or wordmark image
+    if (nmEl) {
+      if (wm.useWordmark && wm.src) {
+        const h = n === '2' ? Math.round(wm.height * 0.82) : wm.height;
+        nmEl.innerHTML         = `<img src="${wm.src}" style="height:${h}px;max-width:160px;object-fit:contain;display:block;opacity:${bs.textBright/100}" alt="brand" />`;
+        nmEl.style.fontSize    = '';
+        nmEl.style.letterSpacing = '';
+        nmEl.style.opacity     = '';
+      } else {
+        nmEl.innerHTML = prefix + (sfx ? `<span style="color:var(--teal-light)">${sfx}</span>` : '');
+        _applyBrandStyleToEl(nmEl, bs);
+      }
+      nmEl.style.order   = layout.order.indexOf('name').toString();
+      nmEl.style.display = layout.showName ? '' : 'none';
+    }
+  });
+}
+
+function applyAdminBranding() {
+  const logo   = localStorage.getItem('lintejas_logo');
+  const name   = localStorage.getItem('lintejas_brand_name')  || 'Lintejas';
+  const suffix = localStorage.getItem('lintejas_brand_suffix') || 'jas';
+  const ls     = JSON.parse(localStorage.getItem('lintejas_logo_style')   || '{"radius":9,"bright":100,"cont":100,"sat":100,"glowOn":false,"glowColor":"#0891B2","glowSize":12}');
+  const bs     = JSON.parse(localStorage.getItem('lintejas_brand_style')  || '{"textSize":100,"textBright":100,"textSpacing":0}');
+  const layout = JSON.parse(localStorage.getItem('lintejas_brand_layout') || '{"order":["icon","name"],"showIcon":true,"showName":true}');
+
+  const endsW  = suffix && name.toLowerCase().endsWith(suffix.toLowerCase());
+  const prefix = endsW ? name.slice(0, name.length - suffix.length) : name;
+  const sfx    = endsW ? suffix : '';
+
+  const sideIcon = document.querySelector('.sidebar__logo-icon');
+  if (sideIcon) {
+    if (logo) {
+      const imgFilter = `brightness(${ls.bright/100}) contrast(${ls.cont/100}) saturate(${ls.sat/100})`;
+      sideIcon.innerHTML        = `<img src="${logo}" style="width:100%;height:100%;object-fit:contain;display:block;filter:${imgFilter}" />`;
+      sideIcon.style.background = 'transparent';
+      sideIcon.style.padding    = '0';
+    } else {
+      sideIcon.textContent      = prefix.charAt(0).toUpperCase();
+      sideIcon.style.background = '';
+      sideIcon.style.padding    = '';
+    }
+    _applyLogoStyleToEl(sideIcon, ls, !!logo);
+    sideIcon.style.order   = layout.order.indexOf('icon').toString();
+    sideIcon.style.display = layout.showIcon ? '' : 'none';
+  }
+
+  const wmSrc    = localStorage.getItem('lintejas_brand_wordmark');
+  const wsCfg    = JSON.parse(localStorage.getItem('lintejas_wordmark_style') || '{}');
+  const wmActive = wsCfg.useWordmark ?? false;
+  const wmH      = wsCfg.height ?? 24;
+
+  const sideName = document.querySelector('.sidebar__logo-text');
+  if (sideName) {
+    if (wmActive && wmSrc) {
+      sideName.innerHTML       = `<img src="${wmSrc}" style="height:${Math.round(wmH * 0.82)}px;max-width:130px;object-fit:contain;display:block" alt="brand" />`;
+      sideName.style.fontSize  = '';
+      sideName.style.letterSpacing = '';
+      sideName.style.opacity   = '';
+    } else {
+      sideName.innerHTML = prefix + (sfx ? `<span>${sfx}</span>` : '');
+      _applyBrandStyleToEl(sideName, bs);
+    }
+    sideName.style.order   = layout.order.indexOf('name').toString();
+    sideName.style.display = layout.showName ? '' : 'none';
+  }
+}
+
+// Apply branding to admin sidebar on load
+applyAdminBranding();
+
+/* ============================================
+   PROFILE SAVE
+   ============================================ */
+function saveProfile() {
+  const name = document.getElementById('prof-name').value.trim();
+  if (name) document.querySelector('.sidebar__uname').textContent = name;
+  saveData('profile', { name, email: document.getElementById('prof-email').value.trim() });
+  toast('Profile updated successfully', 'success');
+}
+
+/* ============================================
+   CHANGE PASSWORD
+   ============================================ */
+function changePassword() {
+  const curPw  = (document.getElementById('sec-cur-pw') || document.getElementById('prof-cur-pw'))?.value;
+  const newPw  = (document.getElementById('sec-new-pw') || document.getElementById('prof-new-pw'))?.value;
+  const confPw = (document.getElementById('sec-conf-pw') || document.getElementById('prof-conf-pw'))?.value;
+
+  if (!curPw || curPw !== ADMIN_PASSWORD) { toast('Current password is incorrect', 'error'); return; }
+  if (!newPw || newPw.length < 8)          { toast('New password must be at least 8 characters', 'error'); return; }
+  if (newPw !== confPw)                    { toast('Passwords do not match', 'error'); return; }
+
+  toast('Password updated. Please use new password on next login.', 'success');
+}
+
+/* ============================================
+   DANGER ZONE
+   ============================================ */
+function clearMessages() {
+  if (!confirm('Delete ALL messages permanently? This cannot be undone.')) return;
+  messages = [];
+  saveData('messages', messages);
+  renderMessages();
+  renderDashboard();
+  toast('All messages cleared', 'warn');
+}
+
+function resetAdmin() {
+  if (!confirm('Reset ALL admin data to defaults? This cannot be undone.')) return;
+  ['products','messages','announcements','users'].forEach(k => localStorage.removeItem('lintejas_' + k));
+  products = loadData('products', defaultProducts);
+  messages = loadData('messages', defaultMessages);
+  announcements = loadData('announcements', defaultAnnouncements);
+  users = loadData('users', defaultUsers);
+  renderDashboard();
+  toast('Admin panel reset to defaults', 'warn');
+}
+
+/* ============================================================
+   PLUGINS & TOOLS — DATA
+   ============================================================ */
+const ALL_PLUGINS = [
+  // ── Pre-installed (3) ──────────────────────────────────────
+  { id:'seo-optimizer',    icon:'🔍', name:'SEO Optimizer',             version:'2.1.0', author:'Lintejas Core',  cat:'SEO & Marketing',    desc:'Manage meta tags, Open Graph, keywords, and structured data for every page automatically.',        installed:true,  active:true,  hasUpdate:false,
+    settings:[
+      { key:'title_suffix', label:'Title Suffix', type:'text',   val:'— Lintejas' },
+      { key:'auto_og',      label:'Auto-generate OG tags', type:'toggle', val:true },
+      { key:'default_desc', label:'Default Meta Description', type:'textarea', val:'Lintejas builds intelligent software for industries worldwide.' },
+      { key:'robots',       label:'Robots Directive', type:'select', val:'index,follow', opts:['index,follow','noindex,follow','index,nofollow','noindex,nofollow'] },
+    ]},
+  { id:'cookie-consent',   icon:'🍪', name:'Cookie Consent Manager',    version:'1.5.2', author:'Lintejas Core',  cat:'Privacy & Security',  desc:'GDPR-compliant cookie banner with granular consent categories for EU visitors.',                   installed:true,  active:true,  hasUpdate:false,
+    settings:[
+      { key:'position',     label:'Banner Position', type:'select', val:'bottom', opts:['bottom','top'] },
+      { key:'banner_text',  label:'Banner Text', type:'textarea', val:'We use cookies to improve your experience and comply with GDPR.' },
+      { key:'accept_text',  label:'Accept Button Label', type:'text', val:'Accept All' },
+      { key:'reject_text',  label:'Reject Button Label', type:'text', val:'Necessary Only' },
+    ]},
+  { id:'analytics-dash',   icon:'📈', name:'Analytics Dashboard',       version:'3.0.1', author:'Lintejas Core',  cat:'Analytics',           desc:'Track visitors, page views, bounce rate, and traffic sources. Integrates with Google Analytics.',   installed:true,  active:true,  hasUpdate:true,
+    settings:[
+      { key:'ga_id',        label:'Google Analytics ID', type:'text', val:'', placeholder:'G-XXXXXXXXXX' },
+      { key:'sampling',     label:'Enable Data Sampling', type:'toggle', val:true },
+      { key:'exclude_admin',label:'Exclude Admin Traffic', type:'toggle', val:true },
+      { key:'track_events', label:'Track Custom Events', type:'toggle', val:false },
+    ]},
+
+  // ── Available in Store ────────────────────────────────────
+  { id:'contact-form-pro', icon:'📋', name:'Contact Form Pro',          version:'2.3.0', author:'Lintejas Labs', cat:'Forms',               desc:'Enhanced contact form with file uploads, conditional fields, multi-step forms, and auto-reply.',    installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'form_title',   label:'Form Title', type:'text', val:'Send Us a Message' },
+      { key:'file_upload',  label:'Enable File Uploads', type:'toggle', val:true },
+      { key:'max_file_mb',  label:'Max File Size (MB)', type:'text', val:'5' },
+      { key:'auto_reply',   label:'Send Auto-Reply Email', type:'toggle', val:true },
+    ]},
+  { id:'newsletter',       icon:'📧', name:'Newsletter Capture',        version:'1.2.1', author:'Lintejas Labs', cat:'SEO & Marketing',    desc:'Grow your email list with exit-intent popups, inline forms, and Mailchimp/ConvertKit integration.',   installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'delay',        label:'Popup Delay (seconds)', type:'text', val:'5' },
+      { key:'exit_intent',  label:'Exit Intent Trigger', type:'toggle', val:true },
+      { key:'form_title',   label:'Form Headline', type:'text', val:'Stay in the Loop' },
+      { key:'mc_api',       label:'Mailchimp API Key', type:'text', val:'', placeholder:'your-api-key' },
+    ]},
+  { id:'live-chat',        icon:'💬', name:'Live Chat Integration',     version:'1.0.4', author:'Lintejas Labs', cat:'Forms',               desc:'Add a live chat widget — supports Crisp, Tawk.to, Intercom, and Tidio.',                            installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'provider',     label:'Chat Provider', type:'select', val:'Crisp', opts:['Crisp','Tawk.to','Intercom','Tidio'] },
+      { key:'widget_id',    label:'Widget ID / Key', type:'text', val:'', placeholder:'Paste your widget key' },
+      { key:'mobile',       label:'Show on Mobile', type:'toggle', val:true },
+    ]},
+  { id:'image-optimizer',  icon:'🖼️', name:'Image Optimizer',          version:'2.0.0', author:'Lintejas Labs', cat:'Media',               desc:'Automatically compress and convert images to WebP on upload. Reduces load times by up to 70%.',      installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'quality',      label:'Compression Quality (0-100)', type:'text', val:'80' },
+      { key:'webp',         label:'Convert to WebP', type:'toggle', val:true },
+      { key:'max_width',    label:'Max Width (px)', type:'text', val:'1920' },
+    ]},
+  { id:'social-feed',      icon:'📱', name:'Social Media Feed',         version:'1.1.0', author:'Lintejas Labs', cat:'Media',               desc:'Display your latest Instagram or X (Twitter) posts on any page with a customizable grid layout.',    installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'platform',     label:'Platform', type:'select', val:'Instagram', opts:['Instagram','X (Twitter)','LinkedIn'] },
+      { key:'handle',       label:'Account Handle', type:'text', val:'', placeholder:'@lintejas' },
+      { key:'post_count',   label:'Number of Posts', type:'text', val:'6' },
+    ]},
+  { id:'backup-export',    icon:'💾', name:'Backup & Export',           version:'1.3.0', author:'Lintejas Labs', cat:'Privacy & Security',  desc:'Schedule automatic backups and export all site data — products, messages, settings — as JSON.',       installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'frequency',    label:'Auto-Backup Frequency', type:'select', val:'Weekly', opts:['Daily','Weekly','Monthly','Never'] },
+      { key:'include_msgs', label:'Include Messages', type:'toggle', val:true },
+      { key:'format',       label:'Export Format', type:'select', val:'JSON', opts:['JSON','CSV'] },
+    ]},
+  { id:'two-factor',       icon:'🔐', name:'Two-Factor Authentication', version:'1.0.1', author:'Lintejas Labs', cat:'Privacy & Security',  desc:'Add an extra security layer to admin login via email OTP or authenticator app.',                      installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'method',       label:'2FA Method', type:'select', val:'Email OTP', opts:['Email OTP','Authenticator App'] },
+      { key:'remember_days',label:'Remember Device (days)', type:'text', val:'30' },
+    ]},
+  { id:'perf-monitor',     icon:'⚡', name:'Performance Monitor',       version:'2.2.0', author:'Lintejas Labs', cat:'Performance',         desc:'Track Core Web Vitals — LCP, FID, CLS, FCP — and get alerted when thresholds are exceeded.',         installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'lcp_thresh',   label:'LCP Threshold (ms)', type:'text', val:'2500' },
+      { key:'cls_thresh',   label:'CLS Threshold', type:'text', val:'0.1' },
+      { key:'email_alerts', label:'Email Alerts', type:'toggle', val:true },
+    ]},
+  { id:'lead-capture',     icon:'🎯', name:'Lead Capture Pro',          version:'1.0.0', author:'Lintejas Labs', cat:'E-commerce',          desc:'Advanced lead generation forms with scoring, tagging, CRM integration, and automated follow-ups.',    installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'crm',          label:'CRM Integration', type:'select', val:'None', opts:['None','HubSpot','Salesforce','Pipedrive'] },
+      { key:'lead_scoring', label:'Enable Lead Scoring', type:'toggle', val:false },
+    ]},
+  { id:'testimonials',     icon:'⭐', name:'Testimonials Manager',       version:'1.1.2', author:'Lintejas Labs', cat:'Media',               desc:'Collect, manage, and display customer testimonials with star ratings and approval workflow.',           installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'layout',       label:'Display Layout', type:'select', val:'Grid', opts:['Grid','Carousel','List'] },
+      { key:'auto_approve', label:'Auto-Approve New Testimonials', type:'toggle', val:false },
+    ]},
+  { id:'spam-protection',  icon:'🛡️', name:'Spam Protection',          version:'2.0.3', author:'Lintejas Labs', cat:'Privacy & Security',  desc:'Block spam submissions using reCAPTCHA v3, honeypot fields, and rate limiting.',                      installed:false, active:false, hasUpdate:false,
+    settings:[
+      { key:'recaptcha_key',label:'reCAPTCHA Site Key', type:'text', val:'', placeholder:'Paste your site key' },
+      { key:'honeypot',     label:'Enable Honeypot Fields', type:'toggle', val:true },
+      { key:'rate_limit',   label:'Rate Limit (requests/min)', type:'text', val:'10' },
+    ]},
+];
+
+let pluginStore = loadData('plugin_store', ALL_PLUGINS);
+
+// Sync default data that may be missing in stored version
+pluginStore = ALL_PLUGINS.map(def => {
+  const stored = pluginStore.find(p => p.id === def.id);
+  return stored ? { ...def, installed: stored.installed, active: stored.active } : def;
+});
+
+/* ── Plugin tab switcher ─────────────────────────── */
+document.getElementById('plugin-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('[data-ptab]');
+  if (!btn) return;
+  document.querySelectorAll('[data-ptab]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.ptab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(btn.dataset.ptab).classList.add('active');
+  if (btn.dataset.ptab === 'pt-store')   renderStore();
+  if (btn.dataset.ptab === 'pt-tools')   renderTools();
+  if (btn.dataset.ptab === 'pt-updates') renderUpdates();
+});
+
+/* ── Main panel renderer ─────────────────────────── */
+function renderPluginsPanel() {
+  const installed = pluginStore.filter(p => p.installed);
+  const active    = installed.filter(p => p.active);
+  const updates   = pluginStore.filter(p => p.installed && p.hasUpdate);
+
+  document.getElementById('plugins-installed-badge').textContent = installed.length;
+  document.getElementById('pt-inst-count').textContent  = installed.length;
+  document.getElementById('pt-upd-count').textContent   = updates.length || '';
+  document.getElementById('plugins-stat-badge').textContent = `${installed.length} Installed · ${active.length} Active`;
+
+  renderInstalled();
+  renderTools();
+}
+
+/* ── Installed tab ───────────────────────────────── */
+function renderInstalled() {
+  const cat      = document.getElementById('inst-filter')?.value || 'all';
+  const installed = pluginStore.filter(p => p.installed && (cat === 'all' || p.cat === cat));
+  const grid     = document.getElementById('installed-grid');
+
+  if (!installed.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🧩</div><div class="empty-txt">No installed plugins in this category.<br><a href="#" onclick="switchPluginTab('pt-store')" style="color:var(--teal-light)">Browse the plugin store →</a></div></div>`;
+    return;
+  }
+  grid.innerHTML = installed.map(p => pluginCardHTML(p, true)).join('');
+}
+
+/* ── Store tab ───────────────────────────────────── */
+function renderStore() {
+  const q   = (document.getElementById('store-search')?.value || '').toLowerCase();
+  const cat = document.getElementById('store-filter')?.value || 'all';
+  const list = pluginStore.filter(p => {
+    const matchCat  = cat === 'all' || p.cat === cat;
+    const matchQ    = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  const countLbl = document.getElementById('store-count-lbl');
+  if (countLbl) countLbl.textContent = `${list.length} plugin${list.length !== 1 ? 's' : ''} found`;
+  const grid = document.getElementById('store-grid');
+  grid.innerHTML = list.length
+    ? list.map(p => pluginCardHTML(p, false)).join('')
+    : `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🔍</div><div class="empty-txt">No plugins match your search</div></div>`;
+}
+
+/* ── Plugin card HTML ────────────────────────────── */
+function pluginCardHTML(p, installedView) {
+  const isInst = p.installed;
+  return `
+  <div class="plugin-card ${isInst ? 'plugin-card--installed' : ''} ${isInst && p.active ? 'plugin-card--active' : ''}" id="pcard-${p.id}">
+    ${isInst && p.active ? '<div class="plugin-card-bar"></div>' : ''}
+    <div class="pc-head">
+      <div class="pc-icon">${p.icon}</div>
+      <div style="flex:1">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-ver">v${p.version} · ${p.author}</div>
+      </div>
+      ${p.hasUpdate ? '<span class="bdg bdg--soon" style="flex-shrink:0">Update</span>' : ''}
+    </div>
+    <div class="pc-cat">${p.cat}</div>
+    <div class="pc-desc">${p.desc}</div>
+    <div class="pc-footer">
+      ${isInst ? `
+        <label class="toggle" title="${p.active ? 'Deactivate' : 'Activate'}">
+          <input type="checkbox" ${p.active ? 'checked' : ''} onchange="togglePluginActive('${p.id}',this.checked)" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="pc-status ${p.active ? 'text-green' : 'text-muted'}">${p.active ? 'Active' : 'Inactive'}</span>
+        <div style="margin-left:auto;display:flex;gap:.4rem">
+          <button class="btn btn--secondary btn--sm" onclick="openPluginSettings('${p.id}')">⚙️ Settings</button>
+          <button class="btn btn--danger btn--sm" onclick="uninstallPlugin('${p.id}')">🗑</button>
+        </div>
+      ` : `
+        <span class="pc-status text-muted">Not installed</span>
+        <button class="btn btn--primary btn--sm" style="margin-left:auto" onclick="installPlugin('${p.id}')">⬇️ Install</button>
+      `}
+    </div>
+  </div>`;
+}
+
+/* ── Install plugin ──────────────────────────────── */
+function installPlugin(id) {
+  const p   = pluginStore.find(x => x.id === id);
+  if (!p) return;
+  const btn = document.querySelector(`#pcard-${id} .btn--primary`);
+  if (btn) { btn.textContent = '⏳ Installing…'; btn.disabled = true; }
+  setTimeout(() => {
+    p.installed = true;
+    p.active    = true;
+    saveData('plugin_store', pluginStore);
+    renderStore();
+    renderInstalled();
+    const installed = pluginStore.filter(x => x.installed);
+    document.getElementById('plugins-installed-badge').textContent = installed.length;
+    document.getElementById('pt-inst-count').textContent = installed.length;
+    document.getElementById('plugins-stat-badge').textContent = `${installed.length} Installed · ${pluginStore.filter(x => x.active && x.installed).length} Active`;
+    toast(`${p.name} installed and activated!`, 'success');
+  }, 1200);
+}
+
+/* ── Uninstall plugin ────────────────────────────── */
+function uninstallPlugin(id) {
+  const p = pluginStore.find(x => x.id === id);
+  if (!p || !confirm(`Uninstall "${p.name}"? This will remove its configuration.`)) return;
+  p.installed = false;
+  p.active    = false;
+  saveData('plugin_store', pluginStore);
+  renderInstalled();
+  renderStore();
+  const installed = pluginStore.filter(x => x.installed);
+  document.getElementById('plugins-installed-badge').textContent = installed.length;
+  document.getElementById('pt-inst-count').textContent = installed.length;
+  document.getElementById('plugins-stat-badge').textContent = `${installed.length} Installed · ${pluginStore.filter(x => x.active && x.installed).length} Active`;
+  toast(`${p.name} uninstalled`, 'warn');
+}
+
+/* ── Toggle active ───────────────────────────────── */
+function togglePluginActive(id, val) {
+  const p = pluginStore.find(x => x.id === id);
+  if (!p) return;
+  p.active = val;
+  saveData('plugin_store', pluginStore);
+  const card = document.getElementById(`pcard-${id}`);
+  if (card) {
+    const lbl = card.querySelector('.pc-status');
+    if (lbl) { lbl.textContent = val ? 'Active' : 'Inactive'; lbl.className = `pc-status ${val ? 'text-green' : 'text-muted'}`; }
+    card.classList.toggle('plugin-card--active', val);
+    const bar = card.querySelector('.plugin-card-bar');
+    if (val && !bar) { const b = document.createElement('div'); b.className = 'plugin-card-bar'; card.prepend(b); }
+    if (!val && bar) bar.remove();
+  }
+  document.getElementById('plugins-stat-badge').textContent = `${pluginStore.filter(x => x.installed).length} Installed · ${pluginStore.filter(x => x.active && x.installed).length} Active`;
+  toast(`${p.name} ${val ? 'activated' : 'deactivated'}`, val ? 'success' : 'info');
+}
+
+/* ── Plugin Settings modal ───────────────────────── */
+function openPluginSettings(id) {
+  const p = pluginStore.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('psm-title').textContent = `${p.icon} ${p.name} — Settings`;
+  document.getElementById('psm-body').innerHTML = p.settings.map(s => {
+    if (s.type === 'toggle') return `
+      <div class="form-group flex-b"><div><div class="form-label">${s.label}</div></div>
+      <label class="toggle"><input type="checkbox" id="ps-${s.key}" ${s.val ? 'checked' : ''} /><span class="toggle-slider"></span></label></div>`;
+    if (s.type === 'textarea') return `
+      <div class="form-group"><label class="form-label">${s.label}</label>
+      <textarea class="form-textarea" id="ps-${s.key}" style="min-height:70px">${s.val}</textarea></div>`;
+    if (s.type === 'select') return `
+      <div class="form-group"><label class="form-label">${s.label}</label>
+      <select class="form-select" id="ps-${s.key}">${s.opts.map(o => `<option ${o === s.val ? 'selected' : ''}>${o}</option>`).join('')}</select></div>`;
+    return `<div class="form-group"><label class="form-label">${s.label}</label>
+      <input class="form-input" id="ps-${s.key}" value="${s.val}" placeholder="${s.placeholder||''}" /></div>`;
+  }).join('') + `<div class="divider"></div><div class="info-box">Plugin: <strong>${p.name}</strong> · v${p.version} · ${p.cat}</div>`;
+
+  document.getElementById('psm-save-btn').onclick = () => {
+    p.settings.forEach(s => {
+      const el = document.getElementById(`ps-${s.key}`);
+      if (!el) return;
+      s.val = s.type === 'toggle' ? el.checked : el.value;
+    });
+    saveData('plugin_store', pluginStore);
+    closeModal('plugin-settings-modal');
+    toast(`${p.name} settings saved`, 'success');
+  };
+  openModal('plugin-settings-modal');
+}
+
+/* ── Updates tab ─────────────────────────────────── */
+function renderUpdates() {
+  const updates = pluginStore.filter(p => p.installed && p.hasUpdate);
+  const el = document.getElementById('updates-content');
+  if (!updates.length) {
+    el.innerHTML = `<div class="empty" style="padding:3rem"><div class="empty-icon">✅</div><div class="empty-txt">All plugins are up to date!</div></div>`;
+    return;
+  }
+  el.innerHTML = updates.map(p => `
+    <div class="plugin-card mb-2" style="display:flex;align-items:center;gap:1rem">
+      <div class="pc-icon">${p.icon}</div>
+      <div style="flex:1"><div class="pc-name">${p.name}</div><div class="pc-ver" style="color:var(--gold)">v${p.version} → v${(parseFloat(p.version)+0.1).toFixed(1)}</div></div>
+      <button class="btn btn--gold btn--sm" onclick="updatePlugin('${p.id}')">⬆️ Update</button>
+    </div>`).join('');
+}
+
+function updatePlugin(id) {
+  const p = pluginStore.find(x => x.id === id);
+  if (!p) return;
+  p.hasUpdate = false;
+  p.version = (parseFloat(p.version) + 0.1).toFixed(1);
+  saveData('plugin_store', pluginStore);
+  renderUpdates();
+  document.getElementById('pt-upd-count').textContent = pluginStore.filter(x => x.installed && x.hasUpdate).length || '';
+  toast(`${p.name} updated successfully!`, 'success');
+}
+
+function switchPluginTab(tabId) {
+  document.querySelectorAll('[data-ptab]').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`[data-ptab="${tabId}"]`);
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.ptab-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById(tabId);
+  if (panel) panel.classList.add('active');
+  if (tabId === 'pt-store')   renderStore();
+  if (tabId === 'pt-tools')   renderTools();
+  if (tabId === 'pt-updates') renderUpdates();
+}
+
+/* ============================================================
+   TOOLS DATA & RENDERER
+   ============================================================ */
+const TOOLS = [
+  { id:'password-gen', icon:'🔑', name:'Password Generator',    desc:'Generate strong, secure passwords with custom rules' },
+  { id:'color-palette',icon:'🎨', name:'Color Palette Generator',desc:'Build harmonious color palettes from any base color' },
+  { id:'json-fmt',     icon:'{}', name:'JSON Formatter',         desc:'Validate, format, and minify JSON data instantly' },
+  { id:'base64',       icon:'🔄', name:'Base64 Encoder',         desc:'Encode or decode Base64 text in one click' },
+  { id:'word-counter', icon:'📊', name:'Word & Char Counter',    desc:'Count words, characters, sentences, and reading time' },
+  { id:'url-encoder',  icon:'🔗', name:'URL Encoder / Decoder',  desc:'Encode and decode URLs and query string values' },
+  { id:'markdown',     icon:'📝', name:'Markdown Previewer',     desc:'Write Markdown and preview the rendered output live' },
+  { id:'gradient-gen', icon:'🌈', name:'CSS Gradient Generator', desc:'Build CSS gradients visually and copy the code' },
+];
+
+function renderTools() {
+  document.getElementById('tools-grid').innerHTML = TOOLS.map(t => `
+    <div class="tool-card" onclick="openTool('${t.id}')">
+      <div class="tool-icon">${t.icon}</div>
+      <div class="tool-name">${t.name}</div>
+      <div class="tool-desc">${t.desc}</div>
+      <div style="margin-top:.75rem"><span class="btn btn--primary btn--sm">Open Tool →</span></div>
+    </div>`).join('');
+}
+
+function openTool(id) {
+  const t = TOOLS.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('tool-modal-title').textContent = `${t.icon} ${t.name}`;
+  const body = document.getElementById('tool-modal-body');
+
+  const TOOL_HTML = {
+    'password-gen': `
+      <div class="form-group flex-c gap-2 fw">
+        <div style="flex:1"><label class="form-label">Length: <span id="pw-len-val">16</span></label>
+        <input type="range" id="pw-len" min="8" max="64" value="16" oninput="document.getElementById('pw-len-val').textContent=this.value" style="width:100%;accent-color:var(--teal)" /></div>
+      </div>
+      <div class="flex-c gap-2 fw mb-2" style="gap:1.25rem">
+        <label class="flex-c gap-1"><input type="checkbox" id="pw-up" checked style="accent-color:var(--teal)"> Uppercase</label>
+        <label class="flex-c gap-1"><input type="checkbox" id="pw-lo" checked style="accent-color:var(--teal)"> Lowercase</label>
+        <label class="flex-c gap-1"><input type="checkbox" id="pw-nu" checked style="accent-color:var(--teal)"> Numbers</label>
+        <label class="flex-c gap-1"><input type="checkbox" id="pw-sy" checked style="accent-color:var(--teal)"> Symbols</label>
+      </div>
+      <div class="flex-c gap-1 mb-2">
+        <input class="form-input" id="pw-out" readonly style="font-family:monospace;font-size:.95rem;letter-spacing:.04em" placeholder="Click Generate…" />
+        <button class="btn btn--secondary" onclick="copyVal('pw-out')">📋 Copy</button>
+      </div>
+      <div class="flex-c gap-1">
+        <button class="btn btn--primary" onclick="genPassword()">🔑 Generate</button>
+        <div id="pw-strength" style="font-size:.75rem;margin-left:.5rem"></div>
+      </div>`,
+
+    'color-palette': `
+      <div class="flex-c gap-2 mb-3 fw">
+        <div><label class="form-label">Base Color</label>
+        <input type="color" id="cp-base" value="#0891B2" style="width:52px;height:40px;border-radius:8px;border:1px solid var(--border);cursor:pointer;padding:2px" /></div>
+        <div style="flex:1"><label class="form-label">Harmony</label>
+        <select class="form-select" id="cp-mode">
+          <option value="complementary">Complementary</option>
+          <option value="analogous">Analogous</option>
+          <option value="triadic">Triadic</option>
+          <option value="tetradic">Tetradic</option>
+          <option value="shades">Shades / Tints</option>
+        </select></div>
+        <div style="align-self:flex-end"><button class="btn btn--primary" onclick="genPalette()">🎨 Generate</button></div>
+      </div>
+      <div id="cp-out" class="flex-c fw gap-1" style="min-height:80px"></div>`,
+
+    'json-fmt': `
+      <div class="form-row" style="height:280px">
+        <div style="display:flex;flex-direction:column">
+          <label class="form-label">Input JSON</label>
+          <textarea class="form-textarea" id="json-in" style="flex:1;min-height:0;font-family:monospace;font-size:.78rem" placeholder='{"key": "value"}'></textarea>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <label class="form-label">Output</label>
+          <textarea class="form-textarea" id="json-out" style="flex:1;min-height:0;font-family:monospace;font-size:.78rem" readonly></textarea>
+        </div>
+      </div>
+      <div class="flex-c gap-1 mt-2">
+        <button class="btn btn--primary" onclick="fmtJSON(true)">✨ Prettify</button>
+        <button class="btn btn--secondary" onclick="fmtJSON(false)">📦 Minify</button>
+        <button class="btn btn--secondary" onclick="validateJSON()">✅ Validate</button>
+        <button class="btn btn--secondary" onclick="copyVal('json-out')">📋 Copy</button>
+        <div id="json-err" style="font-size:.75rem;color:var(--red-light);margin-left:.5rem"></div>
+      </div>`,
+
+    'base64': `
+      <div class="form-group">
+        <label class="form-label">Input Text / Base64</label>
+        <textarea class="form-textarea" id="b64-in" style="font-family:monospace;font-size:.82rem" placeholder="Enter text or Base64 string…"></textarea>
+      </div>
+      <div class="flex-c gap-1 mb-2">
+        <button class="btn btn--primary" onclick="doB64('encode')">🔒 Encode to Base64</button>
+        <button class="btn btn--secondary" onclick="doB64('decode')">🔓 Decode from Base64</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Output</label>
+        <textarea class="form-textarea" id="b64-out" style="font-family:monospace;font-size:.82rem" readonly placeholder="Result appears here…"></textarea>
+      </div>
+      <div class="flex-c gap-1"><button class="btn btn--secondary btn--sm" onclick="copyVal('b64-out')">📋 Copy Result</button><div id="b64-err" style="font-size:.75rem;color:var(--red-light);margin-left:.5rem"></div></div>`,
+
+    'word-counter': `
+      <div class="form-group">
+        <label class="form-label">Paste your text below</label>
+        <textarea class="form-textarea" id="wc-in" style="min-height:160px" oninput="countWords()" placeholder="Start typing or paste text here…"></textarea>
+      </div>
+      <div class="three-col" style="text-align:center">
+        ${['wc-words','wc-chars','wc-nospace','wc-sents','wc-paras','wc-read'].map((id,i) => {
+          const labels = ['Words','Characters','No Spaces','Sentences','Paragraphs','Read Time'];
+          return `<div class="stat-card"><div class="sc-label">${labels[i]}</div><div class="sc-val" id="${id}" style="font-size:1.5rem">0</div></div>`;
+        }).join('')}
+      </div>`,
+
+    'url-encoder': `
+      <div class="form-group">
+        <label class="form-label">Input</label>
+        <textarea class="form-textarea" id="ue-in" style="font-family:monospace;font-size:.82rem" placeholder="https://example.com/path?q=hello world&lang=en"></textarea>
+      </div>
+      <div class="flex-c gap-1 mb-2">
+        <button class="btn btn--primary" onclick="doURL('encode')">🔒 Encode URL</button>
+        <button class="btn btn--secondary" onclick="doURL('decode')">🔓 Decode URL</button>
+        <button class="btn btn--secondary" onclick="doURL('encodeComp')">📦 Encode Component</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Output</label>
+        <textarea class="form-textarea" id="ue-out" style="font-family:monospace;font-size:.82rem" readonly></textarea>
+      </div>
+      <button class="btn btn--secondary btn--sm" onclick="copyVal('ue-out')">📋 Copy</button>`,
+
+    'markdown': `
+      <div class="form-row" style="height:320px">
+        <div style="display:flex;flex-direction:column">
+          <label class="form-label">Markdown Input</label>
+          <textarea class="form-textarea" id="md-in" style="flex:1;min-height:0;font-family:monospace;font-size:.8rem" oninput="previewMD()" placeholder="# Hello World\n\n**Bold**, *italic*, \`code\`\n\n- Item 1\n- Item 2"></textarea>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <label class="form-label">Preview</label>
+          <div id="md-out" style="flex:1;overflow-y:auto;background:var(--bg-secondary);border:1px solid var(--border);border-radius:7px;padding:1rem;font-size:.85rem;line-height:1.75;color:var(--text-secondary)">Preview appears here…</div>
+        </div>
+      </div>`,
+
+    'gradient-gen': `
+      <div class="flex-c gap-2 fw mb-2" style="gap:1.5rem">
+        <div><label class="form-label">Color 1</label>
+        <input type="color" id="gg-c1" value="#0891B2" oninput="genGrad()" style="width:52px;height:40px;border-radius:8px;border:1px solid var(--border);cursor:pointer;padding:2px" /></div>
+        <div><label class="form-label">Color 2</label>
+        <input type="color" id="gg-c2" value="#F59E0B" oninput="genGrad()" style="width:52px;height:40px;border-radius:8px;border:1px solid var(--border);cursor:pointer;padding:2px" /></div>
+        <div><label class="form-label">Direction</label>
+        <select class="form-select" id="gg-dir" onchange="genGrad()" style="width:160px">
+          <option value="to right">→ Left to Right</option>
+          <option value="to bottom">↓ Top to Bottom</option>
+          <option value="135deg">↘ Diagonal</option>
+          <option value="to bottom right">↘ Bottom Right</option>
+          <option value="circle">◉ Radial</option>
+        </select></div>
+        <div><label class="form-label">Type</label>
+        <select class="form-select" id="gg-type" onchange="genGrad()" style="width:120px">
+          <option value="linear">Linear</option>
+          <option value="radial">Radial</option>
+          <option value="conic">Conic</option>
+        </select></div>
+      </div>
+      <div id="gg-preview" style="height:110px;border-radius:12px;border:1px solid var(--border);margin-bottom:1rem;transition:background .2s"></div>
+      <div class="flex-c gap-1">
+        <input class="form-input" id="gg-out" readonly style="font-family:monospace;font-size:.78rem;flex:1" />
+        <button class="btn btn--primary" onclick="copyVal('gg-out')">📋 Copy CSS</button>
+      </div>`,
+  };
+
+  body.innerHTML = TOOL_HTML[id] || '<div class="empty"><div class="empty-icon">🔧</div><div class="empty-txt">Tool not found</div></div>';
+  openModal('tool-modal');
+
+  // Init tools that need post-render setup
+  if (id === 'gradient-gen') genGrad();
+  if (id === 'markdown') previewMD();
+}
+
+/* ── Tool Functions ──────────────────────────────── */
+function copyVal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.value || el.textContent).then(() => toast('Copied to clipboard!', 'success'));
+}
+
+// Password Generator
+function genPassword() {
+  const len = parseInt(document.getElementById('pw-len').value);
+  const up  = document.getElementById('pw-up').checked;
+  const lo  = document.getElementById('pw-lo').checked;
+  const nu  = document.getElementById('pw-nu').checked;
+  const sy  = document.getElementById('pw-sy').checked;
+  let chars = '';
+  if (up) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (lo) chars += 'abcdefghijklmnopqrstuvwxyz';
+  if (nu) chars += '0123456789';
+  if (sy) chars += '!@#$%^&*()_+-=[]{}|;:,.?';
+  if (!chars) { toast('Select at least one character type', 'error'); return; }
+  let pw = '';
+  for (let i = 0; i < len; i++) pw += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('pw-out').value = pw;
+  // Strength indicator
+  const types = [up,lo,nu,sy].filter(Boolean).length;
+  const str   = types >= 4 && len >= 16 ? '💪 Strong' : types >= 3 && len >= 12 ? '👍 Good' : types >= 2 ? '⚠️ Fair' : '❌ Weak';
+  document.getElementById('pw-strength').textContent = str;
+}
+
+// Color Palette Generator
+function genPalette() {
+  const base = document.getElementById('cp-base').value;
+  const mode = document.getElementById('cp-mode').value;
+  const h    = parseInt(base.slice(1,3),16);
+  const hsl  = hexToHSL(base);
+  let colors = [];
+  if (mode === 'complementary') colors = [base, hslToHex((hsl.h+180)%360,hsl.s,hsl.l), hslToHex((hsl.h+30)%360,hsl.s,hsl.l), hslToHex((hsl.h+210)%360,hsl.s,hsl.l)];
+  else if (mode === 'analogous')    colors = [hslToHex((hsl.h-30+360)%360,hsl.s,hsl.l), base, hslToHex((hsl.h+30)%360,hsl.s,hsl.l), hslToHex((hsl.h+60)%360,hsl.s,hsl.l)];
+  else if (mode === 'triadic')      colors = [base, hslToHex((hsl.h+120)%360,hsl.s,hsl.l), hslToHex((hsl.h+240)%360,hsl.s,hsl.l), hslToHex((hsl.h+60)%360,hsl.s,60)];
+  else if (mode === 'tetradic')     colors = [base, hslToHex((hsl.h+90)%360,hsl.s,hsl.l), hslToHex((hsl.h+180)%360,hsl.s,hsl.l), hslToHex((hsl.h+270)%360,hsl.s,hsl.l)];
+  else colors = [hslToHex(hsl.h,hsl.s,20),hslToHex(hsl.h,hsl.s,40),base,hslToHex(hsl.h,hsl.s,70),hslToHex(hsl.h,hsl.s,85)];
+
+  document.getElementById('cp-out').innerHTML = colors.map(c => `
+    <div onclick="navigator.clipboard.writeText('${c}').then(()=>toast('Copied ${c}','success'))"
+      style="flex:1;min-width:80px;height:80px;background:${c};border-radius:10px;
+             display:flex;align-items:flex-end;justify-content:center;padding:.4rem;
+             cursor:pointer;transition:transform .2s;border:1px solid rgba(255,255,255,.1)"
+      onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''"
+      title="Click to copy">
+      <span style="font-size:.65rem;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);background:rgba(0,0,0,.35);border-radius:4px;padding:2px 6px">${c.toUpperCase()}</span>
+    </div>`).join('');
+}
+
+function hexToHSL(hex) {
+  let r = parseInt(hex.slice(1,3),16)/255, g = parseInt(hex.slice(3,5),16)/255, b = parseInt(hex.slice(5,7),16)/255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b); let h, s, l = (max+min)/2;
+  if (max === min) { h = s = 0; } else {
+    const d = max - min; s = l > .5 ? d/(2-max-min) : d/(max+min);
+    h = max === r ? ((g-b)/d + (g<b?6:0))/6 : max === g ? ((b-r)/d+2)/6 : ((r-g)/d+4)/6;
+    h = Math.round(h*360);
+  }
+  return { h, s: Math.round(s*100), l: Math.round(l*100) };
+}
+
+function hslToHex(h, s, l) {
+  s /= 100; l /= 100;
+  const a = s * Math.min(l, 1-l);
+  const f = n => { const k = (n+h/30)%12; const c = l-a*Math.max(Math.min(k-3,9-k,1),-1); return Math.round(255*c).toString(16).padStart(2,'0'); };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+// JSON Formatter
+function fmtJSON(pretty) {
+  const inp = document.getElementById('json-in').value.trim();
+  const err = document.getElementById('json-err');
+  try { const o = JSON.parse(inp); document.getElementById('json-out').value = pretty ? JSON.stringify(o,null,2) : JSON.stringify(o); err.textContent = ''; }
+  catch(e) { err.textContent = '✕ ' + e.message; }
+}
+function validateJSON() {
+  const inp = document.getElementById('json-in').value.trim();
+  const err = document.getElementById('json-err');
+  try { JSON.parse(inp); err.textContent = ''; toast('Valid JSON ✓', 'success'); }
+  catch(e) { err.textContent = '✕ ' + e.message; toast('Invalid JSON', 'error'); }
+}
+
+// Base64
+function doB64(mode) {
+  const inp = document.getElementById('b64-in').value;
+  const err = document.getElementById('b64-err');
+  try {
+    document.getElementById('b64-out').value = mode === 'encode' ? btoa(unescape(encodeURIComponent(inp))) : decodeURIComponent(escape(atob(inp)));
+    err.textContent = '';
+  } catch(e) { err.textContent = '✕ Invalid input for ' + mode; }
+}
+
+// Word Counter
+function countWords() {
+  const txt = document.getElementById('wc-in').value;
+  const words  = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  const chars  = txt.length;
+  const nospace= txt.replace(/\s/g,'').length;
+  const sents  = txt.split(/[.!?]+/).filter(s => s.trim()).length;
+  const paras  = txt.split(/\n\n+/).filter(p => p.trim()).length;
+  const mins   = Math.ceil(words / 200);
+  ['wc-words','wc-chars','wc-nospace','wc-sents','wc-paras'].forEach((id,i) => {
+    const el = document.getElementById(id); if (el) el.textContent = [words,chars,nospace,sents,paras][i];
+  });
+  const rt = document.getElementById('wc-read'); if (rt) rt.textContent = mins + 'm';
+}
+
+// URL Encoder
+function doURL(mode) {
+  const val = document.getElementById('ue-in').value;
+  const out = document.getElementById('ue-out');
+  if (mode === 'encode')      out.value = encodeURI(val);
+  else if (mode === 'decode') out.value = decodeURIComponent(val);
+  else out.value = encodeURIComponent(val);
+}
+
+// Markdown Previewer (lightweight)
+function previewMD() {
+  const raw = document.getElementById('md-in')?.value || '';
+  const html = raw
+    .replace(/^###### (.+)/gm,'<h6>$1</h6>').replace(/^##### (.+)/gm,'<h5>$1</h5>')
+    .replace(/^#### (.+)/gm,'<h4>$1</h4>').replace(/^### (.+)/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)/gm,'<h2>$1</h2>').replace(/^# (.+)/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code style="background:rgba(8,145,178,.15);padding:1px 5px;border-radius:4px;font-family:monospace;font-size:.9em">$1</code>')
+    .replace(/^- (.+)/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/s,'<ul>$1</ul>')
+    .replace(/^\d+\. (.+)/gm,'<li>$1</li>')
+    .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" style="color:var(--teal-light)">$1</a>')
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  const out = document.getElementById('md-out');
+  if (out) out.innerHTML = '<p>' + (html || '<span style="color:var(--text-muted)">Preview appears here…</span>') + '</p>';
+}
+
+// CSS Gradient Generator
+function genGrad() {
+  const c1   = document.getElementById('gg-c1')?.value || '#0891B2';
+  const c2   = document.getElementById('gg-c2')?.value || '#F59E0B';
+  const dir  = document.getElementById('gg-dir')?.value || 'to right';
+  const type = document.getElementById('gg-type')?.value || 'linear';
+  let css;
+  if (type === 'radial')      css = `radial-gradient(circle, ${c1}, ${c2})`;
+  else if (type === 'conic')  css = `conic-gradient(${c1}, ${c2}, ${c1})`;
+  else css = `linear-gradient(${dir}, ${c1}, ${c2})`;
+  const prev = document.getElementById('gg-preview'); if (prev) prev.style.background = css;
+  const out  = document.getElementById('gg-out');     if (out)  out.value = `background: ${css};`;
+}
+
+/* ============================================
+   INIT
+   ============================================ */
+renderDashboard();
+</script>
+</body>
+</html>
