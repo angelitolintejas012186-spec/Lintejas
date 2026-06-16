@@ -1,63 +1,135 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import TheInterlockLogo from './TheInterlockLogo'
-import BrandName from './BrandName'
+
+const NAV = [
+  {
+    heading: 'Company',
+    links: [
+      { to: '/about',     label: 'About'    },
+      { to: '/companies', label: 'Portfolio' },
+      { to: '/services',  label: 'Services'  },
+      { to: '/contact',   label: 'Contact'   },
+    ],
+  },
+  {
+    heading: 'Ventures',
+    links: [
+      { to: '/companies', label: 'SkillVue'           },
+      { to: '/companies', label: 'MCIS'               },
+      { to: '/companies', label: 'Staff Scheduler Pro' },
+    ],
+  },
+  {
+    heading: 'Legal',
+    links: [
+      { to: '/contact#impressum', label: 'Impressum' },
+    ],
+  },
+]
 
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="border-t mt-24" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <TheInterlockLogo size={36} />
-              <BrandName overrideConfig={{ x: 0, y: 0 }} className="text-xl font-display font-semibold" />
+    <footer className="relative">
+      {/* Gradient underglow — fades up from navy into the section above */}
+      <div
+        className="absolute inset-x-0 top-0 h-32 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, rgba(212,168,67,0.03))' }}
+      />
+
+      {/* Top hairline separator */}
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(212,168,67,0.22) 50%, transparent 100%)' }}
+      />
+
+      <div
+        className="relative"
+        style={{ background: 'var(--navy)' }}
+      >
+        {/* Ambient gold bloom behind the logo */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-48 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.05) 0%, transparent 70%)' }}
+        />
+
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-16 pb-10">
+
+          {/* ── Upper row ─────────────────────────────────── */}
+          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-12">
+
+            {/* Brand */}
+            <div>
+              <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
+                <motion.div
+                  whileHover={{ rotate: [0, -5, 5, -2, 0], scale: 1.06 }}
+                  transition={{ duration: 0.5 }}
+                  style={{ filter: 'drop-shadow(0 0 10px rgba(212,168,67,0.30))' }}
+                >
+                  <TheInterlockLogo size={34} />
+                </motion.div>
+                <span className="font-display font-semibold text-lg" style={{ color: 'var(--cream)' }}>
+                  Linte<span style={{ color: 'var(--gold)' }}>j</span>as
+                </span>
+              </Link>
+
+              <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'var(--slate)' }}>
+                A European technology holding company building precision software for industries that
+                shape the world. Registered in the Slovak Republic.
+              </p>
+
+              {/* Trust marks */}
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {['EU GDPR', 'ISO/HACCP', 'MFA Security'].map(tag => (
+                  <span key={tag} className="text-xs" style={{ color: 'var(--slate)' }}>
+                    <span style={{ color: 'var(--bronze)' }}>—</span> {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-secondary)' }}>
-              A European technology holding company building precision software for industry.
-              Registered in the Slovak Republic.
+
+            {/* Nav columns */}
+            {NAV.map(col => (
+              <div key={col.heading}>
+                <p
+                  className="text-xs font-medium uppercase tracking-widest mb-4"
+                  style={{ color: 'var(--gold)' }}
+                >
+                  {col.heading}
+                </p>
+                <ul className="space-y-2.5">
+                  {col.links.map(l => (
+                    <li key={l.label}>
+                      <Link
+                        to={l.to}
+                        className="text-sm transition-colors duration-200"
+                        style={{ color: 'var(--slate)' }}
+                        onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--cream)')}
+                        onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--slate)')}
+                      >
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* ── Bottom bar ────────────────────────────────── */}
+          <div
+            className="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3"
+            style={{ borderColor: 'rgba(212,168,67,0.10)' }}
+          >
+            <p className="text-xs" style={{ color: 'var(--slate)' }}>
+              © {year} Lintejas s.r.o. All rights reserved.
+            </p>
+            <p className="text-xs" style={{ color: 'var(--slate)' }}>
+              Slovak Republic · European Union
             </p>
           </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--accent)' }}>Company</h4>
-            <ul className="space-y-2">
-              {[
-                { to: '/about',     label: 'About' },
-                { to: '/companies', label: 'Portfolio' },
-                { to: '/services',  label: 'Services' },
-                { to: '/contact',   label: 'Contact' },
-              ].map(l => (
-                <li key={l.to}>
-                  <Link to={l.to} className="text-sm transition-colors hover:text-[var(--accent)]" style={{ color: 'var(--text-secondary)' }}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--accent)' }}>Legal</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/contact#impressum" className="text-sm transition-colors hover:text-[var(--accent)]" style={{ color: 'var(--text-secondary)' }}>
-                  Impressum
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-10 pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: 'var(--border)' }}>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            © {new Date().getFullYear()} Lintejas s.r.o. All rights reserved.
-          </p>
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Slovak Republic · EU VAT registered
-          </p>
         </div>
       </div>
     </footer>
