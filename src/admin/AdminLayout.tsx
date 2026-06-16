@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LayoutDashboard, Palette, Image, Puzzle, Settings, LogOut, ChevronLeft, ChevronRight, Globe } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
@@ -115,12 +115,12 @@ export default function AdminLayout() {
               <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Site owner</p>
             </div>
           )}
-          <Link to="/" target="_blank" rel="noopener noreferrer" title="View site"
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs transition-all hover:bg-[var(--bg-card)]"
-                style={{ color: 'var(--text-muted)' }}>
+          <a href={`${import.meta.env.BASE_URL}#/`} target="_blank" rel="noopener noreferrer" title="View site"
+             className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs transition-all hover:bg-[var(--bg-card)]"
+             style={{ color: 'var(--text-muted)' }}>
             <Globe size={14} />
             {!collapsed && 'View site'}
-          </Link>
+          </a>
           <button onClick={handleSignOut}
                   className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'} w-full px-3 py-2.5 rounded-xl text-sm transition-all hover:bg-red-500/10 hover:text-red-400`}
                   style={{ color: 'var(--text-muted)' }}>
