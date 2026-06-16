@@ -5,7 +5,7 @@ import type { LogoConfig } from '../lib/types'
 function logoStyle(cfg: LogoConfig): React.CSSProperties {
   const glowActive = cfg.glow.intensity > 0
   const shadow = glowActive
-    ? `0 0 ${cfg.glow.blur}px ${cfg.glow.color}${Math.round(cfg.glow.intensity * 255).toString(16).padStart(2, '0')}`
+    ? `0 0 ${cfg.glow.blur}px ${cfg.glow.spread}px ${cfg.glow.color}${Math.round(cfg.glow.intensity * 255).toString(16).padStart(2, '0')}`
     : 'none'
 
   const animMap: Record<string, string> = {

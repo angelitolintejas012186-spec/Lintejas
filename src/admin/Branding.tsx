@@ -172,10 +172,36 @@ export default function Branding() {
                 <Section title="Logo Image">
                   <DropZone label="SVG · PNG · WebP — drag & drop or click" onFile={handleLogoFile}
                             preview={logo.src} onRemove={() => setLogo({ src: null })} />
-                  <button onClick={() => { setLogo({ src: null }); }} className="w-full py-2 text-xs rounded-lg transition-colors hover:bg-[var(--bg-secondary)]"
+                  <button onClick={() => setLogo({ src: null })} className="w-full py-2 text-xs rounded-lg transition-colors hover:bg-[var(--bg-secondary)]"
                           style={{ color: 'var(--text-muted)' }}>
                     <RotateCcw size={12} className="inline mr-1.5" /> Reset to The Interlock
                   </button>
+                </Section>
+
+                <Section title="Position">
+                  <div>
+                    <span className="text-xs block mb-2" style={{ color: 'var(--text-secondary)' }}>Alignment on page</span>
+                    <div className="flex gap-2">
+                      {(['left', 'center', 'right'] as const).map(a => (
+                        <button key={a} onClick={() => setLogo({ align: a })}
+                                className={`flex-1 py-2 rounded-xl text-xs font-medium border capitalize transition-all ${logo.align === a ? '' : 'opacity-60 hover:opacity-80'}`}
+                                style={{ borderColor: logo.align === a ? 'var(--accent)' : 'var(--border)', background: logo.align === a ? 'rgba(201,168,76,0.1)' : 'var(--bg-secondary)', color: logo.align === a ? 'var(--accent)' : 'var(--text-secondary)' }}>
+                          {a}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(['x', 'y'] as const).map(axis => (
+                      <div key={axis}>
+                        <label className="text-xs mb-1.5 block" style={{ color: 'var(--text-secondary)' }}>{axis.toUpperCase()} offset</label>
+                        <input type="number" value={logo[axis]}
+                               onChange={e => setLogo({ [axis]: Number(e.target.value) } as Partial<LogoConfig>)}
+                               className="w-full px-3 py-2 rounded-xl text-sm border outline-none font-mono"
+                               style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+                      </div>
+                    ))}
+                  </div>
                 </Section>
 
                 <Section title="Size & Shape">
@@ -196,6 +222,7 @@ export default function Branding() {
                     </div>
                   </div>
                   <Slider label="Blur" value={logo.glow.blur} min={0} max={60} onChange={v => setLogo({ glow: { ...logo.glow, blur: v } })} unit="px" />
+                  <Slider label="Spread" value={logo.glow.spread} min={0} max={30} onChange={v => setLogo({ glow: { ...logo.glow, spread: v } })} unit="px" />
                 </Section>
 
                 <Section title="Animation">
@@ -328,7 +355,7 @@ export default function Branding() {
           <div className="relative overflow-hidden border-b" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', height: 180 }}>
             <DndContext modifiers={[restrictToParentElement]} onDragEnd={handleLogoDragEnd}>
               <Draggable id="logo" x={logo.x + 20} y={logo.y + 20}>
-                <SiteLogo />
+                <SiteLogo overrideConfig={{ x: 0, y: 0 }} />
               </Draggable>
             </DndContext>
             <DndContext modifiers={[restrictToParentElement]} onDragEnd={handleBrandDragEnd}>
@@ -340,11 +367,11 @@ export default function Branding() {
           </div>
 
           {/* Hero preview */}
-          <div className="relative flex flex-col items-center justify-center py-14 px-8" style={{ background: 'var(--bg-primary)' }}>
-            <div className="flex justify-center mb-5">
+          <div className="relative flex flex-col py-14 px-8" style={{ background: 'var(--bg-primary)', alignItems: logo.align === 'right' ? 'flex-end' : logo.align === 'left' ? 'flex-start' : 'center' }}>
+            <div className="mb-5">
               <SiteLogo overrideConfig={{ size: 72 }} />
             </div>
-            <BrandName className="block text-center mb-2 text-3xl" />
+            <BrandName className="block mb-2 text-3xl" />
             <p className="text-xs text-center max-w-xs" style={{ color: 'var(--text-muted)' }}>
               Technology Holding Company · Slovakia, EU
             </p>

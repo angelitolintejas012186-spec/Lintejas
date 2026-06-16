@@ -4,10 +4,15 @@ import { ArrowRight, Cpu, Shield, TrendingUp } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import BrandName from '../components/BrandName'
 import SiteLogo from '../components/SiteLogo'
+import { useSiteConfig } from '../lib/SiteConfigContext'
 
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
+const ALIGN_CLASS = { left: 'justify-start', center: 'justify-center', right: 'justify-end' } as const
 
 export default function Home() {
+  const { config } = useSiteConfig()
+  const heroJustify = ALIGN_CLASS[config.branding.logo.align] ?? 'justify-center'
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       {/* Hero */}
@@ -22,7 +27,7 @@ export default function Home() {
           initial="hidden" animate="show"
           variants={{ show: { transition: { staggerChildren: 0.12 } } }}
         >
-          <motion.div variants={fade} className="flex justify-center mb-8">
+          <motion.div variants={fade} className={`flex ${heroJustify} mb-8`}>
             <SiteLogo overrideConfig={{ size: 88 }} />
           </motion.div>
 
