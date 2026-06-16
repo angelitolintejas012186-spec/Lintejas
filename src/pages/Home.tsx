@@ -138,7 +138,7 @@ export default function Home() {
                   style={{ background: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%)', color: '#0B1F33' }}>
               Learn more <ArrowRight size={14} />
             </Link>
-            <a href="https://skillvue-app.fly.dev" target="_blank" rel="noopener noreferrer"
+            <a href="https://skillvue-production.up.railway.app" target="_blank" rel="noopener noreferrer"
                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all hover:bg-[var(--bg-secondary)]"
                style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
               Visit Platform
