@@ -5,6 +5,7 @@ import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
+import HudFrame            from '../components/motion/HudFrame'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
@@ -148,17 +149,26 @@ export default function Home() {
                 </Link>
               </motion.div>
 
-              {/* Trust strip */}
-              <motion.div
-                variants={fadeUp}
-                className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2"
+              {/* Trust strip — HUD-framed */}
+              <HudFrame
+                cornerSize={12}
+                strokeWidth={1.0}
+                delay={1.0}
+                readouts={[
+                  { position: 'tr', label: 'REV', value: 'v2.4' },
+                ]}
               >
-                {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
-                  <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
-                    <span style={{ color: 'var(--gold)' }}>—</span> {tag}
-                  </span>
-                ))}
-              </motion.div>
+                <motion.div
+                  variants={fadeUp}
+                  className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 px-3 pb-2"
+                >
+                  {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
+                    <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
+                      <span style={{ color: 'var(--gold)' }}>—</span> {tag}
+                    </span>
+                  ))}
+                </motion.div>
+              </HudFrame>
             </motion.div>
 
             {/* ── 3D column ───────────────────────────────────── */}

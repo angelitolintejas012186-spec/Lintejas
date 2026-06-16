@@ -7,6 +7,7 @@ import Reveal   from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
 import { staggerContainer, staggerItem, ease } from '../lib/motion'
 import NetworkGraph from '../components/motion/NetworkGraph'
+import HudFrame    from '../components/motion/HudFrame'
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const VENTURES = [
@@ -297,7 +298,21 @@ export default function Companies() {
           <p className="text-xs font-medium uppercase tracking-widest mb-5" style={{ color: 'var(--gold)' }}>
             Flagship venture
           </p>
-          {flagship.map(v => <FlagshipCard key={v.id} v={v} />)}
+          {flagship.map(v => (
+            <HudFrame
+              key={v.id}
+              delay={0.4}
+              cornerSize={22}
+              strokeWidth={1.4}
+              scanline
+              readouts={[
+                { position: 'tl', label: 'STATUS', value: 'LIVE' },
+                { position: 'tr', label: 'MODULES', value: '12+' },
+              ]}
+            >
+              <FlagshipCard v={v} />
+            </HudFrame>
+          ))}
         </Reveal>
 
         {/* ── Supporting ventures ───────────────────────────── */}
