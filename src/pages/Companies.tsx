@@ -6,6 +6,7 @@ import TiltCard from '../components/ui/TiltCard'
 import Reveal   from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
 import { staggerContainer, staggerItem, ease } from '../lib/motion'
+import NetworkGraph from '../components/motion/NetworkGraph'
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const VENTURES = [
@@ -260,8 +261,9 @@ export default function Companies() {
   const supporting = VENTURES.filter(v => !v.flagship)
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--navy)' }}>
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pt-28 pb-28">
+    <div className="relative min-h-screen" style={{ background: 'var(--navy)' }}>
+      <NetworkGraph />
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-8 pt-28 pb-28">
 
         {/* ── Header ───────────────────────────────────────── */}
         <Reveal className="mb-16">
