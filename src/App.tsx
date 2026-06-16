@@ -1,11 +1,13 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
+import { SmoothScrollProvider } from './lib/SmoothScroll'
 
-import NavBar from './components/NavBar'
-import Footer from './components/Footer'
-import AnnouncementBar from './components/AnnouncementBar'
-import SeoManager from './components/SeoManager'
-import Analytics from './components/Analytics'
+import AuroraBackground from './components/AuroraBackground'
+import NavBar           from './components/NavBar'
+import Footer           from './components/Footer'
+import AnnouncementBar  from './components/AnnouncementBar'
+import SeoManager       from './components/SeoManager'
+import Analytics        from './components/Analytics'
 
 import Home      from './pages/Home'
 import About     from './pages/About'
@@ -13,23 +15,29 @@ import Companies from './pages/Companies'
 import Services  from './pages/Services'
 import Contact   from './pages/Contact'
 
-import Login       from './admin/Login'
-import AdminLayout from './admin/AdminLayout'
-import Dashboard   from './admin/Dashboard'
-import Branding    from './admin/Branding'
-import Theme       from './admin/Theme'
-import Plugins     from './admin/Plugins'
-import Settings    from './admin/Settings'
+import Login          from './admin/Login'
+import AdminLayout    from './admin/AdminLayout'
+import Dashboard      from './admin/Dashboard'
+import Branding       from './admin/Branding'
+import Theme          from './admin/Theme'
+import Plugins        from './admin/Plugins'
+import Settings       from './admin/Settings'
 import ProtectedRoute from './admin/ProtectedRoute'
 
-function PublicLayout({ children }: { children: React.ReactNode }) {
+/* Public shell — wraps all public routes with Lenis + aurora */
+function PublicShell() {
   return (
-    <>
-      <AnnouncementBar />
-      <NavBar />
-      <div className="pt-16">{children}</div>
-      <Footer />
-    </>
+    <SmoothScrollProvider>
+      <AuroraBackground />
+      <div className="relative" style={{ zIndex: 3 }}>
+        <AnnouncementBar />
+        <NavBar />
+        <main className="pt-16">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </SmoothScrollProvider>
   )
 }
 
@@ -40,12 +48,14 @@ export default function App() {
       <Analytics />
       <HashRouter>
         <Routes>
-          {/* Public */}
-          <Route path="/"          element={<PublicLayout><Home /></PublicLayout>} />
-          <Route path="/about"     element={<PublicLayout><About /></PublicLayout>} />
-          <Route path="/companies" element={<PublicLayout><Companies /></PublicLayout>} />
-          <Route path="/services"  element={<PublicLayout><Services /></PublicLayout>} />
-          <Route path="/contact"   element={<PublicLayout><Contact /></PublicLayout>} />
+          {/* Public site */}
+          <Route element={<PublicShell />}>
+            <Route path="/"          element={<Home />} />
+            <Route path="/about"     element={<About />} />
+            <Route path="/companies" element={<Companies />} />
+            <Route path="/services"  element={<Services />} />
+            <Route path="/contact"   element={<Contact />} />
+          </Route>
 
           {/* Admin */}
           <Route path="/admin/login" element={<Login />} />
@@ -54,11 +64,11 @@ export default function App() {
               <AdminLayout />
             </ProtectedRoute>
           }>
-            <Route index            element={<Dashboard />} />
-            <Route path="branding"  element={<Branding />} />
-            <Route path="theme"     element={<Theme />} />
-            <Route path="plugins"   element={<Plugins />} />
-            <Route path="settings"  element={<Settings />} />
+            <Route index           element={<Dashboard />} />
+            <Route path="branding" element={<Branding />} />
+            <Route path="theme"    element={<Theme />} />
+            <Route path="plugins"  element={<Plugins />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
       </HashRouter>

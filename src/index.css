@@ -3,15 +3,34 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary:     #0B1F33;
-  --bg-secondary:   #0F2640;
-  --bg-card:        #132D4A;
-  --accent:         #C9A84C;
-  --accent-light:   #E8C96C;
-  --text-primary:   #F0EDE8;
-  --text-secondary: #9BAAB8;
-  --text-muted:     #5A7490;
-  --border:         rgba(201,168,76,0.15);
+  /* ── Legacy theme vars (admin + theme editor) ─── */
+  --bg-primary:     #0A1628;
+  --bg-secondary:   #0D1B2E;
+  --bg-card:        #13243B;
+  --accent:         #D4A843;
+  --accent-light:   #E8C766;
+  --text-primary:   #F4F1EA;
+  --text-secondary: #8A9AB0;
+  --text-muted:     #4A6080;
+  --border:         rgba(212,168,67,0.12);
+
+  /* ── Futuristic redesign design tokens ────────── */
+  --navy:             #0A1628;
+  --navy-mid:         #0D1B2E;
+  --navy-elevated:    #13243B;
+  --navy-surface:     #16294A;
+  --gold:             #D4A843;
+  --gold-bright:      #E8C766;
+  --bronze:           #9A7A2E;
+  --cream:            #F4F1EA;
+  --slate:            #8A9AB0;
+  --live-green:       #3FB950;
+
+  /* Glass system */
+  --glass-bg:         rgba(13, 27, 46, 0.6);
+  --glass-border:     rgba(212, 168, 67, 0.12);
+  --glass-shine:      rgba(232, 199, 102, 0.06);
+  --gold-glow:        rgba(212, 168, 67, 0.20);
 }
 
 * { box-sizing: border-box; }
@@ -98,4 +117,50 @@ input:focus, textarea:focus, select:focus {
 input[type="color"] {
   padding: 2px;
   cursor: pointer;
+}
+
+/* ── Aurora background ────────────────────────────────────────── */
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-3%, 5%) scale(1.06); }
+  66%       { transform: translate(4%, -3%) scale(0.96); }
+}
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(6%, -7%) scale(1.1); }
+}
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-5%, 6%) scale(0.93); }
+  80%       { transform: translate(3%, -4%) scale(1.05); }
+}
+
+/* ── Film grain ───────────────────────────────────────────────── */
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-1%, 1.5%); }
+  20%  { transform: translate(1.5%, -0.5%); }
+  30%  { transform: translate(-0.5%, 1%); }
+  40%  { transform: translate(1%, -1.5%); }
+  50%  { transform: translate(-1.5%, 0.5%); }
+  60%  { transform: translate(0.5%, 1%); }
+  70%  { transform: translate(-1%, -0.5%); }
+  80%  { transform: translate(1.5%, 1%); }
+  90%  { transform: translate(-0.5%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── Mask-reveal clip animation ───────────────────────────────── */
+@keyframes mask-up {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0% 0); }
+}
+
+/* ── Reduced-motion overrides ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
