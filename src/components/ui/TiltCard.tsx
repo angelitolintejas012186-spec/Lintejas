@@ -58,7 +58,7 @@ export default function TiltCard({
         perspective:    '1200px',
         ...style,
       }}
-      className={['relative overflow-hidden', className].join(' ')}
+      className={['relative overflow-hidden glass-glow', className].join(' ')}
     >
       {/* Rim-light glow that follows cursor */}
       {glowOnHover && hovered && (

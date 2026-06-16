@@ -3,7 +3,8 @@ import { MotionConfig } from 'framer-motion'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
 import { SmoothScrollProvider } from './lib/SmoothScroll'
 
-import AuroraBackground from './components/AuroraBackground'
+import AuroraBackground  from './components/AuroraBackground'
+import TechBackground   from './components/background/TechBackground'
 import NavBar           from './components/NavBar'
 import Footer           from './components/Footer'
 import AnnouncementBar  from './components/AnnouncementBar'
@@ -30,6 +31,7 @@ function PublicShell() {
   return (
     <SmoothScrollProvider>
       <AuroraBackground />
+      <TechBackground />
       <div className="relative" style={{ zIndex: 3 }}>
         {/* Skip-to-content — visible only on keyboard focus */}
         <a href="#main-content" className="skip-link">Skip to content</a>

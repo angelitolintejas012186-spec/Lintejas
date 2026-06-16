@@ -176,6 +176,33 @@ input[type="color"] {
   to   { clip-path: inset(0 0 0% 0); }
 }
 
+/* ── TechBackground scanning beam ─────────────────────────────── */
+@keyframes scan-beam {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* ── Glass FX — breathing edge glow (box-shadow only, safe on any element) */
+@keyframes glass-glow-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0  0px  0px rgba(212,168,67,0.00),
+      0 0  0px  0px rgba(212,168,67,0.00);
+  }
+  50% {
+    box-shadow:
+      0 0 18px  0px rgba(212,168,67,0.08),
+      0 0 36px  0px rgba(212,168,67,0.04);
+  }
+}
+
+/* .glass-glow — apply to any glass element for the breathing rim light.
+   Safe on elements with Framer Motion transforms (only animates box-shadow). */
+.glass-glow {
+  animation: glass-glow-breathe 5s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
 /* ── Reduced-motion overrides ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -188,7 +215,7 @@ input[type="color"] {
      but kill any residual CSS animations here too. */
   .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
   .animate-grain, .animate-shimmer, .animate-float, .animate-pulse-live,
-  .animate-pulse-gold {
+  .animate-pulse-gold, .glass-glow {
     animation: none !important;
   }
 }
