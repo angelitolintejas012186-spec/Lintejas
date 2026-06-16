@@ -1,10 +1,19 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, MapPin, Mail } from 'lucide-react'
+import { Send, MapPin, Mail, Phone } from 'lucide-react'
+import { useSiteConfig } from '../lib/SiteConfigContext'
 
 export default function Contact() {
-  const [form, setForm]     = useState({ name: '', company: '', email: '', type: 'general', message: '' })
-  const [sent, setSent]     = useState(false)
+  const { config } = useSiteConfig()
+  const cfPlugin = config.plugins.find(p => p.id === 'contact-form' && p.installed && p.enabled)
+  const cf = (cfPlugin?.settings ?? {}) as Record<string, unknown>
+
+  const showPhone   = Boolean(cf.showPhone)
+  const showCompany = cfPlugin ? Boolean(cf.showCompany) : true
+  const successMsg  = cf.successMessage ? String(cf.successMessage) : "We'll respond within one business day."
+
+  const [form, setForm]       = useState({ name: '', company: '', phone: '', email: '', type: 'general', message: '' })
+  const [sent, setSent]       = useState(false)
   const [sending, setSending] = useState(false)
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
@@ -45,7 +54,7 @@ export default function Contact() {
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="py-12 text-center">
                 <div className="text-4xl mb-4">✓</div>
                 <h3 className="font-display font-semibold text-xl mb-2" style={{ color: 'var(--text-primary)' }}>Message sent</h3>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>We'll respond within one business day.</p>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{successMsg}</p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -54,11 +63,21 @@ export default function Contact() {
                     <label className="block text-xs font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>Full name *</label>
                     <input name="name" required value={form.name} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="Your name" />
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>Company</label>
-                    <input name="company" value={form.company} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="Optional" />
-                  </div>
+                  {showCompany && (
+                    <div>
+                      <label className="block text-xs font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>Company</label>
+                      <input name="company" value={form.company} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="Optional" />
+                    </div>
+                  )}
                 </div>
+                {showPhone && (
+                  <div>
+                    <label className="block text-xs font-medium mb-2 flex items-center gap-1.5" style={{ color: 'var(--text-secondary)' }}>
+                      <Phone size={11} /> Phone
+                    </label>
+                    <input name="phone" type="tel" value={form.phone} onChange={handleChange} className={inputClass} style={inputStyle} placeholder="+421 …" />
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-xs font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>Email *</label>

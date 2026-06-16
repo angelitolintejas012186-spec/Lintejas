@@ -41,7 +41,7 @@ export default function AdminLayout() {
   const enabledNavPlugins = config.plugins
     .filter(p => p.installed && p.enabled)
     .map(p => PLUGIN_REGISTRY.find(r => r.id === p.id))
-    .filter((p): p is NonNullable<typeof p> => p?.mountPoint === 'nav')
+    .filter((p): p is NonNullable<typeof p> => p != null)
 
   async function handleSignOut() {
     await signOut()

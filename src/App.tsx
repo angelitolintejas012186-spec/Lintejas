@@ -4,6 +4,8 @@ import { SiteConfigProvider } from './lib/SiteConfigContext'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import AnnouncementBar from './components/AnnouncementBar'
+import SeoManager from './components/SeoManager'
+import Analytics from './components/Analytics'
 
 import Home      from './pages/Home'
 import About     from './pages/About'
@@ -34,6 +36,8 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <SiteConfigProvider>
+      <SeoManager />
+      <Analytics />
       <HashRouter>
         <Routes>
           {/* Public */}
