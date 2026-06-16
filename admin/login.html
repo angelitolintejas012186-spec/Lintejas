@@ -68,9 +68,9 @@
         </div>
         <div class="creds-row">
           <span class="creds-key">Password</span>
-          <span class="creds-val" title="Click to copy" onclick="copyAndFill('password','Lintejas@2026!')">Lintejas@2026!</span>
+          <span class="creds-val" style="color:var(--text-muted);cursor:default">Set via server environment</span>
         </div>
-        <div style="margin-top:8px;font-size:.68rem;color:var(--text-muted)">Click values to auto-fill · Keep these credentials secure</div>
+        <div style="margin-top:8px;font-size:.68rem;color:var(--text-muted)">Click email to auto-fill · Password stored securely on server</div>
       </div>
 
       <!-- Back link -->
@@ -79,59 +79,53 @@
   </div>
 
   <script>
+    const API_BASE = 'https://skillvue-app.fly.dev/api/lintejas';
+
     // If already authenticated, redirect to dashboard
-    if (localStorage.getItem('lintejas_admin_auth') === 'true') {
+    if (localStorage.getItem('lintejas_admin_token')) {
       window.location.href = 'index.html';
     }
 
-    const ADMIN_EMAIL    = 'angie@lintejas.com';
-    const ADMIN_PASSWORD = 'Lintejas@2026!';
-
-    const form   = document.getElementById('login-form');
-    const errBox = document.getElementById('login-error');
-    const btn    = document.getElementById('login-btn');
+    const form     = document.getElementById('login-form');
+    const errBox   = document.getElementById('login-error');
+    const btn      = document.getElementById('login-btn');
     const togglePw = document.getElementById('toggle-pw');
     const pwInput  = document.getElementById('password');
 
-    // Toggle password visibility
     togglePw.addEventListener('click', () => {
       const show = pwInput.type === 'password';
       pwInput.type = show ? 'text' : 'password';
       togglePw.textContent = show ? '🙈' : '👁';
     });
 
-    // Form submit
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errBox.classList.remove('show');
-
-      const email = document.getElementById('email').value.trim();
-      const pw    = pwInput.value;
-
-      if (email !== ADMIN_EMAIL || pw !== ADMIN_PASSWORD) {
-        errBox.classList.add('show');
-        pwInput.value = '';
-        pwInput.focus();
-        return;
-      }
-
       btn.textContent = 'Signing in…';
       btn.disabled = true;
       btn.style.opacity = '0.75';
 
-      if (document.getElementById('remember').checked) {
-        localStorage.setItem('lintejas_admin_auth', 'true');
-      } else {
-        sessionStorage.setItem('lintejas_admin_auth', 'true');
-        localStorage.setItem('lintejas_admin_auth', 'true');
-      }
+      try {
+        const res = await fetch(API_BASE + '/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwInput.value }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.token) throw new Error('bad');
 
-      setTimeout(() => {
+        localStorage.setItem('lintejas_admin_token', data.token);
         window.location.href = 'index.html';
-      }, 700);
+      } catch {
+        errBox.classList.add('show');
+        pwInput.value = '';
+        pwInput.focus();
+        btn.textContent = 'Sign In to Dashboard';
+        btn.disabled = false;
+        btn.style.opacity = '';
+      }
     });
 
-    // Click-to-fill credentials
     function copyAndFill(fieldId, value) {
       document.getElementById(fieldId).value = value;
       if (fieldId === 'password') {
@@ -141,7 +135,6 @@
       document.getElementById(fieldId).focus();
     }
 
-    // Clear error on input
     document.getElementById('email').addEventListener('input', () => errBox.classList.remove('show'));
     pwInput.addEventListener('input', () => errBox.classList.remove('show'));
   </script>

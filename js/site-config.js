@@ -1,11 +1,13 @@
 /**
  * site-config.js
- * Reads Lintejas admin settings from localStorage and applies them
- * to every public page (branding, theme, plugins).
+ * Fetches Lintejas admin config from the Laravel API (with localStorage fallback)
+ * and applies branding, theme, and plugins to every public page.
  * Load this before </body> on every public page.
  */
 (function () {
   'use strict';
+
+  const _API = 'https://skillvue-app.fly.dev/api/lintejas/config';
 
   /* ── helpers ──────────────────────────────────── */
   function ls(key, fallback) {
@@ -221,11 +223,26 @@
     applySEO();
   }
 
-  // Apply immediately (DOM is ready since this loads before </body>)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyAll);
-  } else {
+  function fetchAndApply() {
+    // Apply from localStorage immediately (fast, no flicker)
     applyAll();
+    // Then fetch fresh config from API and re-apply
+    fetch(_API, { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        Object.entries(data).forEach(([k, v]) => {
+          localStorage.setItem('lintejas_' + k, typeof v === 'string' ? v : JSON.stringify(v));
+        });
+        applyAll();
+      })
+      .catch(() => {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fetchAndApply);
+  } else {
+    fetchAndApply();
   }
 
   // Re-apply when admin saves changes in another tab

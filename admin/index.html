@@ -1806,15 +1806,48 @@
 /* ============================================
    AUTH CHECK
    ============================================ */
-if (!localStorage.getItem('lintejas_admin_auth')) {
+if (!localStorage.getItem('lintejas_admin_token')) {
   window.location.href = 'login.html';
 }
 
-const ADMIN_EMAIL    = 'angie@lintejas.com';
-const ADMIN_PASSWORD = 'Lintejas@2026!';
+/* ============================================
+   API BRIDGE (Option C — Laravel backend)
+   ============================================ */
+const API_BASE = 'https://skillvue-app.fly.dev/api/lintejas';
+function _apiToken() { return localStorage.getItem('lintejas_admin_token') || ''; }
+
+async function _apiSave(key, value) {
+  try {
+    await fetch(API_BASE + '/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + _apiToken() },
+      body: JSON.stringify({ key, value }),
+    });
+  } catch {}
+}
+
+async function _apiDelete(key) {
+  try {
+    await fetch(API_BASE + '/config/' + encodeURIComponent(key), {
+      method: 'DELETE',
+      headers: { Authorization: 'Bearer ' + _apiToken() },
+    });
+  } catch {}
+}
+
+async function _apiLoad() {
+  try {
+    const r = await fetch(API_BASE + '/config');
+    if (!r.ok) return;
+    const data = await r.json();
+    Object.entries(data).forEach(([k, v]) => {
+      localStorage.setItem('lintejas_' + k, typeof v === 'string' ? v : JSON.stringify(v));
+    });
+  } catch {}
+}
 
 /* ============================================
-   DATA STORE (localStorage)
+   DATA STORE (localStorage + API sync)
    ============================================ */
 function loadData(key, defaults) {
   try {
@@ -1824,6 +1857,7 @@ function loadData(key, defaults) {
 }
 function saveData(key, data) {
   localStorage.setItem('lintejas_' + key, JSON.stringify(data));
+  _apiSave(key, data);
 }
 
 // Default products
@@ -1921,7 +1955,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
    SIGN OUT
    ============================================ */
 document.getElementById('signout-btn').addEventListener('click', () => {
-  localStorage.removeItem('lintejas_admin_auth');
+  localStorage.removeItem('lintejas_admin_token');
   window.location.href = 'login.html';
 });
 
@@ -2712,20 +2746,26 @@ function saveBranding() {
   const name   = document.getElementById('brand-name-input').value.trim()  || 'Lintejas';
   const suffix = document.getElementById('brand-suffix-input').value.trim() || '';
 
-  if (_pendingLogo === '')  localStorage.removeItem('lintejas_logo');
-  else if (_pendingLogo)   localStorage.setItem('lintejas_logo', _pendingLogo);
+  if (_pendingLogo === '')  { localStorage.removeItem('lintejas_logo');         _apiDelete('logo'); }
+  else if (_pendingLogo)   { localStorage.setItem('lintejas_logo', _pendingLogo); _apiSave('logo', _pendingLogo); }
   _pendingLogo = null;
 
-  if (_pendingWordmark === '') localStorage.removeItem('lintejas_brand_wordmark');
-  else if (_pendingWordmark)   localStorage.setItem('lintejas_brand_wordmark', _pendingWordmark);
+  if (_pendingWordmark === '') { localStorage.removeItem('lintejas_brand_wordmark'); _apiDelete('brand_wordmark'); }
+  else if (_pendingWordmark)   { localStorage.setItem('lintejas_brand_wordmark', _pendingWordmark); _apiSave('brand_wordmark', _pendingWordmark); }
   _pendingWordmark = null;
 
-  localStorage.setItem('lintejas_brand_name',    name);
-  localStorage.setItem('lintejas_brand_suffix',  suffix);
-  localStorage.setItem('lintejas_logo_style',    JSON.stringify(getLogoStyle()));
-  localStorage.setItem('lintejas_brand_style',   JSON.stringify(getBrandStyle()));
-  localStorage.setItem('lintejas_brand_layout',  JSON.stringify(getLayoutState()));
-  localStorage.setItem('lintejas_wordmark_style', JSON.stringify({ useWordmark: document.getElementById('wordmark-toggle')?.checked ?? false, height: parseInt(document.getElementById('sl-wordmark-height')?.value ?? 24) }));
+  const brandKeys = {
+    brand_name:      name,
+    brand_suffix:    suffix,
+    logo_style:      getLogoStyle(),
+    brand_style:     getBrandStyle(),
+    brand_layout:    getLayoutState(),
+    wordmark_style:  { useWordmark: document.getElementById('wordmark-toggle')?.checked ?? false, height: parseInt(document.getElementById('sl-wordmark-height')?.value ?? 24) },
+  };
+  Object.entries(brandKeys).forEach(([k, v]) => {
+    localStorage.setItem('lintejas_' + k, JSON.stringify(v));
+    _apiSave(k, v);
+  });
 
   applyAdminBranding();
   toast('Branding saved — refresh the public site to see changes live', 'success');
@@ -2735,7 +2775,10 @@ function resetBranding() {
   if (!confirm('Reset all branding to Lintejas defaults?')) return;
   ['lintejas_logo','lintejas_brand_name','lintejas_brand_suffix',
    'lintejas_logo_style','lintejas_brand_style','lintejas_brand_layout',
-   'lintejas_brand_wordmark','lintejas_wordmark_style'].forEach(k => localStorage.removeItem(k));
+   'lintejas_brand_wordmark','lintejas_wordmark_style'].forEach(k => {
+    localStorage.removeItem(k);
+    _apiDelete(k.replace('lintejas_', ''));
+  });
   _pendingLogo = null;     _clearLogoPreview();
   _pendingWordmark = null; _clearWordmarkPreview();
   const wt = document.getElementById('wordmark-toggle');   if (wt) wt.checked = false;
@@ -3778,11 +3821,11 @@ function updateThemePreview() {
 /* ── apply / revert ── */
 function applyTheme() {
   if (!_tmMapped) return;
-  // Save previous theme for revert
   const prev = localStorage.getItem('lintejas_theme_vars');
-  if (prev) localStorage.setItem('lintejas_theme_vars_prev', prev);
-  if (_tmImageData) localStorage.setItem('lintejas_theme_source', _tmImageData);
+  if (prev) { localStorage.setItem('lintejas_theme_vars_prev', prev); _apiSave('theme_vars_prev', JSON.parse(prev)); }
+  if (_tmImageData) { localStorage.setItem('lintejas_theme_source', _tmImageData); _apiSave('theme_source', _tmImageData); }
   localStorage.setItem('lintejas_theme_vars', JSON.stringify(_tmMapped));
+  _apiSave('theme_vars', _tmMapped);
   document.getElementById('tm-revert-btn').style.display = '';
   toast('🎨 Theme applied to all pages!', 'success');
 
@@ -3799,13 +3842,17 @@ function revertTheme() {
   const prev = localStorage.getItem('lintejas_theme_vars_prev');
   if (prev) {
     localStorage.setItem('lintejas_theme_vars', prev);
+    _apiSave('theme_vars', JSON.parse(prev));
     toast('↩ Reverted to previous theme', 'info');
   } else {
     localStorage.removeItem('lintejas_theme_vars');
+    _apiDelete('theme_vars');
     toast('↩ Removed custom theme — restored defaults', 'info');
   }
   localStorage.removeItem('lintejas_theme_vars_prev');
   localStorage.removeItem('lintejas_theme_source');
+  _apiDelete('theme_vars_prev');
+  _apiDelete('theme_source');
   document.getElementById('tm-revert-btn').style.display = 'none';
   let styleEl = document.getElementById('live-theme-vars');
   if (styleEl) styleEl.textContent = '';
@@ -3822,6 +3869,7 @@ function syncPluginsConfig() {
     id: p.id, active: p.active, settings: p.settings || {}
   }));
   localStorage.setItem('lintejas_plugins', JSON.stringify(cfg));
+  _apiSave('plugins', cfg);
 }
 
 // Patch installPlugin / uninstallPlugin / togglePluginActive to call syncPluginsConfig
@@ -3831,9 +3879,15 @@ uninstallPlugin = function(id) { _pu(id); setTimeout(syncPluginsConfig, 100); };
 togglePluginActive = function(id, on) { _pt(id, on); setTimeout(syncPluginsConfig, 100); };
 
 /* ============================================
-   INIT
+   INIT — load config from API, then render
    ============================================ */
-renderDashboard();
+_apiLoad().then(() => {
+  products      = loadData('products', defaultProducts);
+  messages      = loadData('messages', defaultMessages);
+  announcements = loadData('announcements', defaultAnnouncements);
+  users         = loadData('users', defaultUsers);
+  renderDashboard();
+});
 </script>
 </body>
 </html>
