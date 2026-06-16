@@ -63,7 +63,7 @@ export default function Settings() {
         <h2 className="font-semibold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>Site information</h2>
         <div className="space-y-3">
           {[
-            { label: 'Site URL',       value: 'https://lintejas.io' },
+            { label: 'Site URL',       value: 'https://angelitolintejas012186-spec.github.io/Lintejas/' },
             { label: 'Framework',      value: 'React 18 + Vite + TypeScript' },
             { label: 'Deployment',     value: 'GitHub Actions → GitHub Pages' },
             { label: 'Storage',        value: isSupabaseConfigured ? 'Supabase Storage + Postgres' : 'localStorage (no Supabase)' },
