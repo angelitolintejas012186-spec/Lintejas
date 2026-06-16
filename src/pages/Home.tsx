@@ -6,6 +6,7 @@ import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
 import HudFrame            from '../components/motion/HudFrame'
+import LiquidGold          from '../components/motion/LiquidGold'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
@@ -70,6 +71,14 @@ export default function Home() {
           style={{ opacity: 0.07 }}
         >
           <AssemblingInterlock size={320} delay={0.6} scroll />
+        </div>
+
+        {/* Liquid gold glow behind the 3D column — desktop only */}
+        <div
+          className="absolute top-0 right-0 bottom-0 w-[55%] pointer-events-none hidden lg:block"
+          style={{ zIndex: 0 }}
+        >
+          <LiquidGold style={{ opacity: 0.55 }} />
         </div>
 
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full py-24 lg:py-0">
