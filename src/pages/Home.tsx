@@ -1,3 +1,4 @@
+import type React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, Cpu, Shield, TrendingUp } from 'lucide-react'
@@ -11,7 +12,10 @@ const ALIGN_CLASS = { left: 'justify-start', center: 'justify-center', right: 'j
 
 export default function Home() {
   const { config } = useSiteConfig()
-  const heroJustify = ALIGN_CLASS[config.branding.logo.align] ?? 'justify-center'
+  const heroJustify  = ALIGN_CLASS[config.branding.logo.align]     ?? 'justify-center'
+  const brandAlign   = config.branding.brandName.align
+  const brandTextAlign: React.CSSProperties['textAlign'] =
+    brandAlign === 'left' ? 'left' : brandAlign === 'right' ? 'right' : 'center'
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
@@ -37,7 +41,7 @@ export default function Home() {
           </motion.div>
 
           <motion.h1 variants={fade} className="text-5xl sm:text-6xl lg:text-7xl font-display font-semibold mb-6 leading-tight"
-                     style={{ color: 'var(--text-primary)' }}>
+                     style={{ color: 'var(--text-primary)', textAlign: brandTextAlign }}>
             <BrandName className="block" />
           </motion.h1>
 

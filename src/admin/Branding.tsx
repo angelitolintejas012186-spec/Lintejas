@@ -268,6 +268,32 @@ export default function Branding() {
                   </div>
                 </Section>
 
+                <Section title="Position">
+                  <div>
+                    <span className="text-xs block mb-2" style={{ color: 'var(--text-secondary)' }}>Alignment on page</span>
+                    <div className="flex gap-2">
+                      {(['left', 'center', 'right'] as const).map(a => (
+                        <button key={a} onClick={() => setBrand({ align: a })}
+                                className={`flex-1 py-2 rounded-xl text-xs font-medium border capitalize transition-all ${brand.align === a ? '' : 'opacity-60 hover:opacity-80'}`}
+                                style={{ borderColor: brand.align === a ? 'var(--accent)' : 'var(--border)', background: brand.align === a ? 'rgba(201,168,76,0.1)' : 'var(--bg-secondary)', color: brand.align === a ? 'var(--accent)' : 'var(--text-secondary)' }}>
+                          {a}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(['x', 'y'] as const).map(axis => (
+                      <div key={axis}>
+                        <label className="text-xs mb-1.5 block" style={{ color: 'var(--text-secondary)' }}>{axis.toUpperCase()} offset</label>
+                        <input type="number" value={brand[axis]}
+                               onChange={e => setBrand({ [axis]: Number(e.target.value) } as Partial<BrandNameConfig>)}
+                               className="w-full px-3 py-2 rounded-xl text-sm border outline-none font-mono"
+                               style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+                      </div>
+                    ))}
+                  </div>
+                </Section>
+
                 {brand.mode === 'text' ? (
                   <>
                     <Section title="Text">
@@ -294,12 +320,41 @@ export default function Branding() {
                       <Slider label="Size" value={brand.size} min={14} max={56} onChange={v => setBrand({ size: v })} unit="px" />
                       <Slider label="Weight" value={brand.weight} min={300} max={800} step={100} onChange={v => setBrand({ weight: v })} />
                       <Slider label="Letter spacing" value={brand.letterSpacing} min={-2} max={8} step={0.5} onChange={v => setBrand({ letterSpacing: v })} unit="px" />
-                      <div className="flex gap-3">
-                        <label className="flex-1">
-                          <span className="text-xs mb-1.5 block" style={{ color: 'var(--text-secondary)' }}>Colour</span>
+                      {/* Colour / Gradient */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>Colour{brand.gradient ? ' (gradient)' : ''}</span>
+                          <label className="flex items-center gap-1.5 text-xs cursor-pointer" style={{ color: 'var(--text-muted)' }}>
+                            <input type="checkbox" checked={brand.gradient !== null}
+                                   onChange={e => setBrand({ gradient: e.target.checked ? `linear-gradient(135deg, ${brand.color}, #C9A84C)` : null })}
+                                   style={{ accentColor: 'var(--accent)' }} />
+                            Gradient
+                          </label>
+                        </div>
+                        {brand.gradient ? (
+                          <div className="space-y-2">
+                            {[0, 1].map(i => {
+                              const cols = brand.gradient?.match(/#[0-9a-fA-F]{6}/g) ?? [brand.color, '#C9A84C']
+                              const hex = cols[i] ?? brand.color
+                              return (
+                                <div key={i} className="flex items-center gap-3">
+                                  <span className="text-xs w-6 flex-shrink-0" style={{ color: 'var(--text-muted)' }}>{i === 0 ? 'A' : 'B'}</span>
+                                  <input type="color" value={hex}
+                                         onChange={e => {
+                                           const c = brand.gradient?.match(/#[0-9a-fA-F]{6}/g) ?? [brand.color, '#C9A84C']
+                                           const next = [...c]; next[i] = e.target.value
+                                           setBrand({ gradient: `linear-gradient(135deg, ${next[0]}, ${next[1] ?? next[0]})` })
+                                         }}
+                                         className="flex-1 h-8 rounded-lg border cursor-pointer"
+                                         style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }} />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : (
                           <input type="color" value={brand.color} onChange={e => setBrand({ color: e.target.value })}
                                  className="w-full h-9 rounded-lg border cursor-pointer" style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }} />
-                        </label>
+                        )}
                       </div>
                     </Section>
                   </>
@@ -314,15 +369,16 @@ export default function Branding() {
                 <Section title="Brightness & Glow">
                   <Slider label="Brightness" value={Math.round(brand.brightness * 100)} min={30} max={200} onChange={v => setBrand({ brightness: v / 100 })} unit="%" />
                   <div className="flex gap-3">
-                    <label className="flex-1">
+                    <label className="flex-1 block">
                       <span className="text-xs mb-1.5 block" style={{ color: 'var(--text-secondary)' }}>Glow colour</span>
                       <input type="color" value={brand.glow.color} onChange={e => setBrand({ glow: { ...brand.glow, color: e.target.value } })}
                              className="w-full h-9 rounded-lg border cursor-pointer" style={{ borderColor: 'var(--border)', background: 'var(--bg-secondary)' }} />
                     </label>
                     <div className="flex-1">
-                      <Slider label="Glow intensity" value={Math.round(brand.glow.intensity * 100)} min={0} max={100} onChange={v => setBrand({ glow: { ...brand.glow, intensity: v / 100 } })} unit="%" />
+                      <Slider label="Intensity" value={Math.round(brand.glow.intensity * 100)} min={0} max={100} onChange={v => setBrand({ glow: { ...brand.glow, intensity: v / 100 } })} unit="%" />
                     </div>
                   </div>
+                  <Slider label="Blur" value={brand.glow.blur} min={0} max={60} onChange={v => setBrand({ glow: { ...brand.glow, blur: v } })} unit="px" />
                 </Section>
 
                 <Section title="Animation">
@@ -335,6 +391,9 @@ export default function Branding() {
                       </button>
                     ))}
                   </div>
+                  {brand.animation !== 'none' && (
+                    <Slider label="Speed" value={brand.animationSpeed} min={1} max={8} step={0.5} onChange={v => setBrand({ animationSpeed: v })} unit="s" />
+                  )}
                 </Section>
               </>
             )}
@@ -360,7 +419,7 @@ export default function Branding() {
             </DndContext>
             <DndContext modifiers={[restrictToParentElement]} onDragEnd={handleBrandDragEnd}>
               <Draggable id="brand" x={brand.x + 80} y={brand.y + 28}>
-                <BrandName />
+                <BrandName overrideConfig={{ x: 0, y: 0 }} />
               </Draggable>
             </DndContext>
             <p className="absolute bottom-2 right-3 text-xs opacity-30" style={{ color: 'var(--text-muted)' }}>Header</p>
@@ -371,7 +430,7 @@ export default function Branding() {
             <div className="mb-5">
               <SiteLogo overrideConfig={{ size: 72 }} />
             </div>
-            <BrandName className="block mb-2 text-3xl" />
+            <BrandName className={`block mb-2 text-3xl ${brand.align === 'left' ? 'text-left' : brand.align === 'right' ? 'text-right' : 'text-center'}`} />
             <p className="text-xs text-center max-w-xs" style={{ color: 'var(--text-muted)' }}>
               Technology Holding Company · Slovakia, EU
             </p>

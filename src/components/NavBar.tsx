@@ -32,7 +32,7 @@ export default function NavBar() {
         {/* Brand */}
         <Link to="/" className="flex items-center gap-3 min-w-0" onClick={() => setOpen(false)}>
           <SiteLogo overrideConfig={{ x: 0, y: 0 }} />
-          <BrandName className="font-display font-semibold whitespace-nowrap" />
+          <BrandName overrideConfig={{ x: 0, y: 0 }} className="font-display font-semibold whitespace-nowrap" />
         </Link>
 
         {/* Desktop links */}

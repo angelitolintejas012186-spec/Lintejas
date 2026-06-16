@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <TheInterlockLogo size={36} />
-              <BrandName className="text-xl font-display font-semibold" />
+              <BrandName overrideConfig={{ x: 0, y: 0 }} className="text-xl font-display font-semibold" />
             </div>
             <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--text-secondary)' }}>
               A European technology holding company building precision software for industry.
