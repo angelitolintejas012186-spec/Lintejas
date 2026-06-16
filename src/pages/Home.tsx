@@ -263,6 +263,80 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
+          MANIFESTO STRIP — full-bleed editorial
+      ══════════════════════════════════════════════════════════ */}
+      <section className="relative py-24 overflow-hidden mb-20">
+        {/* Background gradient */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, transparent 0%, rgba(212,168,67,0.04) 50%, transparent 100%)',
+          }}
+        />
+        {/* Hairline top / bottom borders */}
+        <div className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(212,168,67,0.18), transparent)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(212,168,67,0.18), transparent)' }} />
+
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8">
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease }}
+            className="flex items-center gap-4 mb-12"
+          >
+            <div className="h-px w-12" style={{ background: 'rgba(212,168,67,0.30)' }} />
+            <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
+              Our belief
+            </span>
+          </motion.div>
+
+          {/* Pull quote */}
+          <div className="max-w-4xl">
+            {[
+              'The best technology',
+              'is invisible.',
+            ].map((line, i) => (
+              <motion.span
+                key={line}
+                className="block overflow-hidden"
+                initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.0, delay: 0.1 + i * 0.14, ease }}
+              >
+                <span
+                  className={[
+                    'block font-display font-semibold leading-tight',
+                    i === 0
+                      ? 'text-4xl sm:text-5xl lg:text-6xl'
+                      : 'text-4xl sm:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gold-gradient',
+                  ].join(' ')}
+                  style={i === 0 ? { color: 'var(--cream)' } : {}}
+                >
+                  {line}
+                </span>
+              </motion.span>
+            ))}
+
+            <motion.p
+              className="text-base sm:text-lg leading-relaxed mt-8 max-w-2xl"
+              style={{ color: 'var(--slate)' }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.45, ease }}
+            >
+              It dissolves into the work, amplifying human capability without friction.
+              Every product we build is held to that standard — precision-engineered for
+              the people who depend on it every day.
+            </motion.p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
           FEATURED VENTURE — SkillVue
       ══════════════════════════════════════════════════════════ */}
       <section id="portfolio" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
