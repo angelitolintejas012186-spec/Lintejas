@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
 import { MotionConfig } from 'framer-motion'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
@@ -5,6 +6,8 @@ import { SmoothScrollProvider } from './lib/SmoothScroll'
 
 import AuroraBackground  from './components/AuroraBackground'
 import TechBackground   from './components/background/TechBackground'
+
+const SceneJourney = lazy(() => import('./components/motion/SceneJourney'))
 import NavBar           from './components/NavBar'
 import Footer           from './components/Footer'
 import AnnouncementBar  from './components/AnnouncementBar'
@@ -31,6 +34,7 @@ function PublicShell() {
   return (
     <SmoothScrollProvider>
       <AuroraBackground />
+      <Suspense fallback={null}><SceneJourney /></Suspense>
       <TechBackground />
       <div className="relative" style={{ zIndex: 3 }}>
         {/* Skip-to-content — visible only on keyboard focus */}
