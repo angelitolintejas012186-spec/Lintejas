@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
+import AssemblingInterlock from '../components/motion/AssemblingInterlock'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
@@ -62,6 +63,14 @@ export default function Home() {
           HERO
       ══════════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Watermark — assembles on load, fades on scroll; behind all hero content via DOM order */}
+        <div
+          className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[6%] pointer-events-none"
+          style={{ opacity: 0.07 }}
+        >
+          <AssemblingInterlock size={320} delay={0.6} scroll />
+        </div>
+
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full py-24 lg:py-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-64px)]">
 
@@ -261,6 +270,11 @@ export default function Home() {
           ))}
         </motion.div>
       </section>
+
+      {/* Interlock divider ornament */}
+      <div className="flex justify-center py-6 pointer-events-none" style={{ opacity: 0.30 }}>
+        <AssemblingInterlock size={60} delay={0.2} />
+      </div>
 
       {/* ══════════════════════════════════════════════════════════
           MANIFESTO STRIP — full-bleed editorial
