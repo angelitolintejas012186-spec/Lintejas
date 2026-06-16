@@ -120,6 +120,7 @@ export default function NavBar() {
           style={{ color: 'var(--slate)' }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
@@ -141,6 +142,9 @@ export default function NavBar() {
         {open && (
           <motion.div
             key="mobile-menu"
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Mobile"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

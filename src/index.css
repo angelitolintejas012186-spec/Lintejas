@@ -81,11 +81,31 @@ input[type="range"]::-moz-range-thumb {
 /* Selection */
 ::selection { background: rgba(201,168,76,0.25); color: var(--text-primary); }
 
-/* Focus rings */
-input:focus, textarea:focus, select:focus {
-  --tw-ring-color: var(--accent);
+/* Skip-to-content link (keyboard a11y) */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--gold);
+  color: #0A1628;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
+/* Focus rings for form inputs */
+input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: none;
-  border-color: var(--accent) !important;
+  border-color: rgba(212, 168, 67, 0.5);
 }
 
 /* Animations */
@@ -162,5 +182,13 @@ input[type="color"] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Framer Motion honours MotionConfig reducedMotion="user" in JS,
+     but kill any residual CSS animations here too. */
+  .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
+  .animate-grain, .animate-shimmer, .animate-float, .animate-pulse-live,
+  .animate-pulse-gold {
+    animation: none !important;
   }
 }

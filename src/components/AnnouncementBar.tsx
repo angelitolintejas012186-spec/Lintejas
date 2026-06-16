@@ -26,8 +26,12 @@ export default function AnnouncementBar() {
         )}
       </span>
       {s.dismissable !== false && (
-        <button onClick={() => setDismissed(true)} className="absolute right-3 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100">
-          <X size={14} />
+        <button
+          onClick={() => setDismissed(true)}
+          aria-label="Dismiss announcement"
+          className="absolute right-3 top-1/2 -translate-y-1/2 opacity-70 hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded"
+        >
+          <X size={14} aria-hidden="true" />
         </button>
       )}
     </div>

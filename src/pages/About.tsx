@@ -141,7 +141,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20 mb-24">
           {/* Left column — visual anchor */}
           <Reveal>
-            <div className="sticky top-28">
+            <div className="lg:sticky top-28">
               <div
                 className="rounded-2xl p-7 border"
                 style={{

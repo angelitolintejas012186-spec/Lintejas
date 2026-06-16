@@ -1,4 +1,5 @@
 import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { MotionConfig } from 'framer-motion'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
 import { SmoothScrollProvider } from './lib/SmoothScroll'
 
@@ -30,9 +31,11 @@ function PublicShell() {
     <SmoothScrollProvider>
       <AuroraBackground />
       <div className="relative" style={{ zIndex: 3 }}>
+        {/* Skip-to-content — visible only on keyboard focus */}
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <AnnouncementBar />
         <NavBar />
-        <main className="pt-16">
+        <main id="main-content" tabIndex={-1} className="pt-16 outline-none">
           <Outlet />
         </main>
         <Footer />
@@ -46,6 +49,7 @@ export default function App() {
     <SiteConfigProvider>
       <SeoManager />
       <Analytics />
+      <MotionConfig reducedMotion="user">
       <HashRouter>
         <Routes>
           {/* Public site */}
@@ -72,6 +76,7 @@ export default function App() {
           </Route>
         </Routes>
       </HashRouter>
+      </MotionConfig>
     </SiteConfigProvider>
   )
 }
