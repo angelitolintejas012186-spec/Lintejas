@@ -22,11 +22,30 @@ const Ctx = createContext<SiteConfigCtx | null>(null)
 
 const LS_KEY = 'lintejas_config'
 
+/* Recursive merge: DEFAULT_CONFIG supplies missing keys at every depth.
+   Arrays (e.g. plugins) are replaced, not element-merged. */
+function deepMerge<T>(target: T, source: unknown): T {
+  if (source === null || source === undefined || typeof source !== 'object' || Array.isArray(source)) {
+    return (source !== undefined ? source : target) as T
+  }
+  const result = { ...target } as Record<string, unknown>
+  const src = source as Record<string, unknown>
+  for (const key of Object.keys(src)) {
+    const tv = result[key], sv = src[key]
+    if (sv !== null && typeof sv === 'object' && !Array.isArray(sv) && typeof tv === 'object' && tv !== null && !Array.isArray(tv)) {
+      result[key] = deepMerge(tv, sv)
+    } else if (sv !== undefined) {
+      result[key] = sv
+    }
+  }
+  return result as T
+}
+
 function loadLocal(): SiteConfig {
   try {
     const raw = localStorage.getItem(LS_KEY)
     if (!raw) return DEFAULT_CONFIG
-    return { ...DEFAULT_CONFIG, ...JSON.parse(raw) } as SiteConfig
+    return deepMerge(DEFAULT_CONFIG, JSON.parse(raw))
   } catch {
     return DEFAULT_CONFIG
   }
@@ -65,7 +84,7 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
       setIsLoading(true)
       const remote = await fetchSiteConfig()
       if (remote) {
-        const merged = { ...DEFAULT_CONFIG, ...remote } as SiteConfig
+        const merged = deepMerge(DEFAULT_CONFIG, remote)
         setConfig(merged)
         localStorage.setItem(LS_KEY, JSON.stringify(merged))
       }

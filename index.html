@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lintejas — Technology Holding Company</title>
     <meta name="description" content="Lintejas is a European technology holding company building precision software for industry." />
+    <!-- Apply stored theme CSS vars synchronously before React loads to prevent colour flash -->
+    <script>
+      (function () {
+        try {
+          var c = JSON.parse(localStorage.getItem('lintejas_config') || 'null');
+          if (c && c.theme && c.theme.vars) {
+            var r = document.documentElement, v = c.theme.vars;
+            for (var k in v) {
+              if (Object.prototype.hasOwnProperty.call(v, k)) r.style.setProperty(k, v[k]);
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
