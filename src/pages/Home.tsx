@@ -1,170 +1,391 @@
-import type React from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, Cpu, Shield, TrendingUp } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
-import BrandName from '../components/BrandName'
-import SiteLogo from '../components/SiteLogo'
-import { useSiteConfig } from '../lib/SiteConfigContext'
+import MagneticButton from '../components/ui/MagneticButton'
+import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
-const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
-const ALIGN_CLASS = { left: 'justify-start', center: 'justify-center', right: 'justify-end' } as const
+const Interlock3D = lazy(() => import('../components/Interlock3D'))
+
+/* ── Headline lines — each reveals with a clip-path mask ──────── */
+const HEADLINE = ['We build', 'precision', 'software', 'ventures.']
+
+/* ── Scroll-cue chevron ───────────────────────────────────────── */
+function ScrollCue() {
+  const { scrollY } = useScroll()
+  const opacity = useTransform(scrollY, [0, 200], [1, 0])
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
+    >
+      <span className="text-[10px] uppercase tracking-widest font-medium" style={{ color: 'var(--slate)' }}>
+        Scroll
+      </span>
+      <motion.div
+        animate={{ y: [0, 5, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <ChevronDown size={16} style={{ color: 'var(--gold)' }} strokeWidth={1.5} />
+      </motion.div>
+    </motion.div>
+  )
+}
+
+/* ── Values strip ─────────────────────────────────────────────── */
+const VALUES = [
+  { icon: Cpu,        title: 'Precision Engineering', desc: 'Every product is built to exacting standards, designed for the long run and the harshest operational environments.' },
+  { icon: Shield,     title: 'European Values',       desc: 'Founded in Slovakia. Operating across the EU. Our products reflect European standards of quality, privacy, and reliability.' },
+  { icon: TrendingUp, title: 'Compounding Value',     desc: 'We invest in ventures with durable moats — products that get more valuable as the businesses they serve grow.' },
+]
 
 export default function Home() {
-  const { config } = useSiteConfig()
-  const heroJustify  = ALIGN_CLASS[config.branding.logo.align]     ?? 'justify-center'
-  const brandAlign   = config.branding.brandName.align
-  const brandTextAlign: React.CSSProperties['textAlign'] =
-    brandAlign === 'left' ? 'left' : brandAlign === 'right' ? 'right' : 'center'
+  /* Mouse ref for 3D parallax — tracked at page level */
+  const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      mouseRef.current = {
+        x:  (e.clientX / window.innerWidth  - 0.5) * 2,
+        y: -(e.clientY / window.innerHeight - 0.5) * 2,
+      }
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    return () => window.removeEventListener('mousemove', onMove)
+  }, [])
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-24 px-4">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-10"
-               style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }} />
+    <div style={{ background: 'var(--navy)' }}>
+
+      {/* ══════════════════════════════════════════════════════════
+          HERO
+      ══════════════════════════════════════════════════════════ */}
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full py-24 lg:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-64px)]">
+
+            {/* ── Text column ─────────────────────────────────── */}
+            <motion.div
+              className="relative z-10 flex flex-col gap-8 order-2 lg:order-1"
+              initial="hidden"
+              animate="show"
+              variants={staggerContainer}
+            >
+              {/* Chip */}
+              <motion.div variants={fadeUp}>
+                <span
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase"
+                  style={{
+                    background: 'rgba(212,168,67,0.08)',
+                    border:     '1px solid rgba(212,168,67,0.20)',
+                    color:      'var(--gold)',
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
+                  Technology Holding · Slovakia, EU
+                </span>
+              </motion.div>
+
+              {/* Headline — per-line mask reveal */}
+              <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
+                {HEADLINE.map((line, i) => (
+                  <motion.span
+                    key={line}
+                    className="block overflow-hidden"
+                    initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                    animate={{ clipPath: 'inset(0 0 0% 0)' }}
+                    transition={{ duration: 0.9, delay: 0.15 + i * 0.11, ease }}
+                  >
+                    <span
+                      className={[
+                        'block text-5xl sm:text-6xl lg:text-7xl',
+                        /* "ventures." — gold accent on last line */
+                        i === HEADLINE.length - 1 ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
+                      ].join(' ')}
+                    >
+                      {line}
+                    </span>
+                  </motion.span>
+                ))}
+              </h1>
+
+              {/* Subtext */}
+              <motion.p
+                variants={fadeUp}
+                className="text-base sm:text-lg leading-relaxed max-w-md"
+                style={{ color: 'var(--slate)' }}
+              >
+                From Slovakia, EU — building enduring technology for the industries
+                that shape the world. Precision software ventures with durable competitive advantage.
+              </motion.p>
+
+              {/* CTA row */}
+              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start gap-4">
+                <MagneticButton
+                  onClick={() => {
+                    document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                >
+                  View our portfolio <ArrowRight size={15} />
+                </MagneticButton>
+
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium border transition-all duration-300 hover:border-[var(--gold)] hover:text-[var(--cream)]"
+                  style={{ borderColor: 'rgba(212,168,67,0.20)', color: 'var(--slate)' }}
+                >
+                  About Lintejas
+                </Link>
+              </motion.div>
+
+              {/* Trust strip */}
+              <motion.div
+                variants={fadeUp}
+                className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2"
+              >
+                {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
+                  <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
+                    <span style={{ color: 'var(--gold)' }}>—</span> {tag}
+                  </span>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* ── 3D column ───────────────────────────────────── */}
+            <motion.div
+              className="relative order-1 lg:order-2 h-[340px] sm:h-[420px] lg:h-[580px]"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.2, ease }}
+            >
+              {/* Outer glow ring */}
+              <div
+                className="absolute inset-0 rounded-full pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at center, rgba(212,168,67,0.10) 0%, transparent 65%)',
+                  filter: 'blur(20px)',
+                }}
+              />
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center h-full">
+                    <TheInterlockLogo size={140} className="opacity-70 animate-float" />
+                  </div>
+                }
+              >
+                <Interlock3D mouseRef={mouseRef} />
+              </Suspense>
+            </motion.div>
+          </div>
         </div>
 
+        {/* Gradient fade into next section */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom, transparent, var(--navy))' }}
+        />
+
+        <ScrollCue />
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          VALUES STRIP
+      ══════════════════════════════════════════════════════════ */}
+      <section id="values" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        {/* Section eyebrow */}
         <motion.div
-          className="max-w-4xl mx-auto text-center relative z-10"
-          initial="hidden" animate="show"
-          variants={{ show: { transition: { staggerChildren: 0.12 } } }}
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-80px' }}
+          variants={fadeUp}
+          className="flex items-center gap-4 mb-12"
         >
-          <motion.div variants={fade} className={`flex ${heroJustify} mb-8`}>
-            <SiteLogo overrideConfig={{ size: 88 }} />
-          </motion.div>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
+            Our philosophy
+          </span>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+        </motion.div>
 
-          <motion.div variants={fade} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-medium tracking-widest uppercase"
-                      style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', color: 'var(--accent)' }}>
-            Technology Holding Company · Slovakia, EU
-          </motion.div>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-5"
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={staggerContainer}
+        >
+          {VALUES.map(({ icon: Icon, title, desc }) => (
+            <motion.div
+              key={title}
+              variants={staggerItem}
+              className="group relative rounded-2xl p-7 border transition-all duration-500 cursor-default"
+              style={{
+                background:   'var(--glass-bg)',
+                borderColor:  'var(--glass-border)',
+                backdropFilter: 'blur(20px)',
+                boxShadow:    'var(--tw-shadow)',
+              }}
+              whileHover={{
+                y: -4,
+                transition: { duration: 0.3, ease },
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.25)'
+                ;(e.currentTarget as HTMLElement).style.boxShadow  = '0 8px 40px rgba(0,0,0,0.3), 0 0 24px rgba(212,168,67,0.06)'
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'var(--glass-border)'
+                ;(e.currentTarget as HTMLElement).style.boxShadow  = 'none'
+              }}
+            >
+              {/* Top shine */}
+              <div
+                className="absolute inset-x-0 top-0 h-px rounded-full opacity-60"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.3), transparent)' }}
+              />
 
-          <motion.h1 variants={fade} className="text-5xl sm:text-6xl lg:text-7xl font-display font-semibold mb-6 leading-tight"
-                     style={{ color: 'var(--text-primary)', textAlign: brandTextAlign }}>
-            <BrandName className="block" />
-          </motion.h1>
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                style={{
+                  background: 'rgba(212,168,67,0.08)',
+                  border:     '1px solid rgba(212,168,67,0.15)',
+                }}
+              >
+                <Icon size={20} style={{ color: 'var(--gold)' }} />
+              </div>
 
-          <motion.p variants={fade} className="text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto"
-                    style={{ color: 'var(--text-secondary)' }}>
-            Precision software for the industries that shape the world.
-            We build and grow technology companies with enduring competitive advantage.
-          </motion.p>
-
-          <motion.div variants={fade} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/companies"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium transition-all hover:opacity-90 active:scale-95"
-                  style={{ background: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%)', color: '#0B1F33' }}>
-              View Our Portfolio <ArrowRight size={16} />
-            </Link>
-            <Link to="/about"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium border transition-all hover:bg-[var(--bg-card)]"
-                  style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
-              About Lintejas
-            </Link>
-          </motion.div>
+              <h3 className="font-display font-semibold text-lg mb-3" style={{ color: 'var(--cream)' }}>
+                {title}
+              </h3>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--slate)' }}>
+                {desc}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 
-      {/* Values */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { icon: Cpu,       title: 'Precision Engineering', desc: 'Every product is built to exacting standards, designed for the long run and the harshest operational environments.' },
-            { icon: Shield,    title: 'European Values',       desc: 'Founded in Slovakia. Operating across the EU. Our products reflect European standards of quality, privacy, and reliability.' },
-            { icon: TrendingUp, title: 'Compounding Value',   desc: 'We invest in ventures with durable moats — products that get more valuable as the businesses they serve grow.' },
-          ].map(({ icon: Icon, title, desc }) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl p-7 border"
-              style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}
-            >
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-                   style={{ background: 'linear-gradient(135deg, var(--accent-light)22 0%, var(--accent)22 100%)', border: '1px solid var(--border)' }}>
-                <Icon size={20} style={{ color: 'var(--accent)' }} />
-              </div>
-              <h3 className="font-display font-semibold text-lg mb-2" style={{ color: 'var(--text-primary)' }}>{title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured venture */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="flex items-center gap-3 mb-10">
-          <div className="h-px flex-1" style={{ background: 'var(--border)' }} />
-          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--accent)' }}>Portfolio</span>
-          <div className="h-px flex-1" style={{ background: 'var(--border)' }} />
-        </div>
+      {/* ══════════════════════════════════════════════════════════
+          FEATURED VENTURE — SkillVue
+      ══════════════════════════════════════════════════════════ */}
+      <section id="portfolio" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        <motion.div
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+          className="flex items-center gap-4 mb-12"
+        >
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>Portfolio</span>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-8 sm:p-10 border relative overflow-hidden"
-          style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}
+          transition={{ duration: 0.8, ease }}
+          className="relative rounded-2xl p-8 sm:p-10 border overflow-hidden"
+          style={{
+            background:   'var(--glass-bg)',
+            borderColor:  'var(--glass-border)',
+            backdropFilter: 'blur(20px)',
+          }}
         >
-          <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-5 pointer-events-none"
-               style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)', transform: 'translate(30%, -30%)' }} />
+          {/* Top hairline shine */}
+          <div
+            className="absolute inset-x-0 top-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(232,199,102,0.25) 50%, transparent 100%)' }}
+          />
+          {/* Gold bloom */}
+          <div
+            className="absolute top-0 right-0 w-80 h-80 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at 70% 20%, rgba(212,168,67,0.06), transparent 70%)',
+            }}
+          />
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
-               style={{ background: '#0B2F1A', color: '#4ADE80', border: '1px solid #166534' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Live
+          {/* Live badge */}
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
+            style={{ background: 'rgba(63,185,80,0.10)', color: '#3FB950', border: '1px solid rgba(63,185,80,0.25)' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3FB950] animate-pulse-live" />
+            Live
           </div>
 
           <div className="flex items-start gap-5 mb-5">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-                 style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }}>
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
+              style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid var(--glass-border)' }}
+            >
               🧠
             </div>
             <div>
-              <h2 className="font-display font-semibold text-2xl mb-1" style={{ color: 'var(--text-primary)' }}>SkillVue</h2>
-              <p style={{ color: 'var(--accent)' }} className="text-sm font-medium">Competency Intelligence Platform</p>
+              <h2 className="font-display font-semibold text-2xl mb-1" style={{ color: 'var(--cream)' }}>SkillVue</h2>
+              <p className="text-sm font-medium" style={{ color: 'var(--gold)' }}>Competency Intelligence Platform</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--slate)' }}>Food Manufacturing · HR Tech</p>
             </div>
           </div>
 
-          <p className="text-base leading-relaxed mb-7 max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
-            A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing environments.
-            Trusted by HR leaders across Slovakia and Central Europe.
+          <p className="text-base leading-relaxed mb-7 max-w-2xl" style={{ color: 'var(--slate)' }}>
+            A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing
+            environments. Structured training pathways, real-time skill-gap dashboards, and ISO/HACCP-aligned
+            frameworks built for shift-based workforces.
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <Link to="/companies" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:opacity-90"
-                  style={{ background: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%)', color: '#0B1F33' }}>
-              Learn more <ArrowRight size={14} />
+            <MagneticButton href="https://skillvue-production.up.railway.app" strength={0.2}>
+              Visit Platform <ArrowRight size={14} />
+            </MagneticButton>
+            <Link
+              to="/companies"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all duration-300 hover:border-[var(--gold)] hover:text-[var(--cream)]"
+              style={{ borderColor: 'var(--glass-border)', color: 'var(--slate)' }}
+            >
+              Full portfolio
             </Link>
-            <a href="https://skillvue-production.up.railway.app" target="_blank" rel="noopener noreferrer"
-               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all hover:bg-[var(--bg-secondary)]"
-               style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
-              Visit Platform
-            </a>
           </div>
         </motion.div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="rounded-2xl p-10 text-center border relative overflow-hidden"
-             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
-          <TheInterlockLogo size={56} className="mx-auto mb-6 opacity-60" />
-          <h2 className="font-display font-semibold text-3xl mb-4" style={{ color: 'var(--text-primary)' }}>
-            Build with us
+      {/* ══════════════════════════════════════════════════════════
+          CTA STRIP
+      ══════════════════════════════════════════════════════════ */}
+      <section className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease }}
+          className="relative rounded-2xl p-10 text-center border overflow-hidden"
+          style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(20px)' }}
+        >
+          <div
+            className="absolute inset-x-0 top-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.20), transparent)' }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.07) 0%, transparent 60%)' }}
+          />
+
+          <TheInterlockLogo size={52} className="mx-auto mb-6 opacity-70" />
+
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl mb-4" style={{ color: 'var(--cream)' }}>
+            Build the next venture
+            <span className="block text-transparent bg-clip-text bg-gold-gradient">with us</span>
           </h2>
-          <p className="text-base leading-relaxed mb-7 max-w-lg mx-auto" style={{ color: 'var(--text-secondary)' }}>
-            We partner with industry operators, investors, and engineering teams to build the next generation of industrial software.
+
+          <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: 'var(--slate)' }}>
+            We partner with industry operators, investors, and engineering teams to build the next
+            generation of industrial software.
           </p>
-          <Link to="/contact"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%)', color: '#0B1F33' }}>
-            Get in touch <ArrowRight size={16} />
-          </Link>
-        </div>
+
+          <div className="flex justify-center">
+            <MagneticButton onClick={() => { window.location.hash = '/contact' }}>
+              Get in touch <ArrowRight size={15} />
+            </MagneticButton>
+          </div>
+        </motion.div>
       </section>
+
     </div>
   )
 }
