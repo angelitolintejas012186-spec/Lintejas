@@ -111,6 +111,22 @@ export default function NavBar() {
               {p.icon} {p.name}
             </span>
           ))}
+
+          <a
+            href="https://skillvue-production.up.railway.app/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+            style={{
+              background: 'linear-gradient(135deg, var(--gold), #b8922a)',
+              color: '#0a1628',
+              boxShadow: '0 2px 12px rgba(212,168,67,0.30)',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(212,168,67,0.50)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(212,168,67,0.30)' }}
+          >
+            Client Login
+          </a>
         </div>
 
         {/* ── Mobile toggle ──────────────────────────────────── */}
@@ -185,6 +201,24 @@ export default function NavBar() {
                   </motion.div>
                 )
               })}
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: NAV_LINKS.length * 0.04, duration: 0.25, ease }}
+              >
+                <a
+                  href="https://skillvue-production.up.railway.app/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center mt-2 px-4 py-3 rounded-xl text-sm font-semibold"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--gold), #b8922a)',
+                    color: '#0a1628',
+                  }}
+                >
+                  Client Login
+                </a>
+              </motion.div>
             </div>
           </motion.div>
         )}
