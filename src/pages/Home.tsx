@@ -438,7 +438,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <MagneticButton href="https://skillvue-production.up.railway.app" strength={0.2}>
+            <MagneticButton href="https://skillvue-production.up.railway.app/login" strength={0.2}>
               Visit Platform <ArrowRight size={14} />
             </MagneticButton>
             <Link

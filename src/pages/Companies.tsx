@@ -19,7 +19,7 @@ const VENTURES = [
     industry: 'Food Manufacturing · HR Tech',
     status:   'live' as const,
     desc:     'A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing environments. Structured training pathways, real-time skill-gap dashboards, and ISO/HACCP-aligned frameworks built for shift-based workforces.',
-    url:      'https://skillvue-production.up.railway.app',
+    url:      'https://skillvue-production.up.railway.app/login',
     tags:     ['Competency Management', 'Analytics', 'HR Tech'],
     flagship: true,
   },
