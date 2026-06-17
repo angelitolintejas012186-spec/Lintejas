@@ -23,7 +23,7 @@ const NAV = [
   {
     heading: 'Legal',
     links: [
-      { to: '/contact#impressum', label: 'Impressum' },
+      { to: '/contact', label: 'Impressum' },
     ],
   },
 ]

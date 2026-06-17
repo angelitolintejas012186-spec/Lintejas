@@ -64,7 +64,17 @@ export default function Contact() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
-    await new Promise(r => setTimeout(r, 900))
+
+    const subject = encodeURIComponent(`[lintejas.io] Enquiry — ${form.type}`)
+    const body = encodeURIComponent(
+      `Name: ${form.name}\n` +
+      (form.company ? `Company: ${form.company}\n` : '') +
+      (form.phone   ? `Phone: ${form.phone}\n`   : '') +
+      `Email: ${form.email}\nType: ${form.type}\n\nMessage:\n${form.message}`
+    )
+    window.location.href = `mailto:hello@lintejas.com?subject=${subject}&body=${body}`
+
+    await new Promise(r => setTimeout(r, 600))
     setSent(true)
     setSending(false)
   }

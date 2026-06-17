@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
@@ -44,6 +44,7 @@ const VALUES = [
 ]
 
 export default function Home() {
+  const navigate = useNavigate()
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -486,7 +487,7 @@ export default function Home() {
           </p>
 
           <div className="flex justify-center">
-            <MagneticButton onClick={() => { window.location.hash = '/contact' }}>
+            <MagneticButton onClick={() => navigate('/contact')}>
               Get in touch <ArrowRight size={15} />
             </MagneticButton>
           </div>
