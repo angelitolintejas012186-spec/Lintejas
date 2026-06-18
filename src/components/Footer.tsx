@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import TheInterlockLogo from './TheInterlockLogo'
+import BrandMark from './BrandMark'
 import SocialIcons from './SocialIcons'
 
 const NAV = [
@@ -64,13 +63,7 @@ export default function Footer() {
             {/* Brand */}
             <div>
               <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
-                <motion.div
-                  whileHover={{ rotate: [0, -5, 5, -2, 0], scale: 1.06 }}
-                  transition={{ duration: 0.5 }}
-                  style={{ filter: 'drop-shadow(0 0 10px rgba(212,168,67,0.30))' }}
-                >
-                  <TheInterlockLogo size={34} />
-                </motion.div>
+                <BrandMark />
                 <span className="font-display font-semibold text-lg" style={{ color: 'var(--cream)' }}>
                   Linte<span style={{ color: 'var(--gold)' }}>j</span>as
                 </span>

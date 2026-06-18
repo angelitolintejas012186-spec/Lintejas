@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import TheInterlockLogo from './TheInterlockLogo'
+import BrandMark from './BrandMark'
 import { useSiteConfig } from '../lib/SiteConfigContext'
 import { PLUGIN_REGISTRY } from '../lib/plugins'
 import { ease } from '../lib/motion'
@@ -66,13 +66,7 @@ export default function NavBar() {
           className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
           aria-label="Lintejas — home"
         >
-          <motion.span
-            whileHover={{ rotate: [0, -4, 4, -2, 0], scale: 1.06 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className="flex-shrink-0"
-          >
-            <TheInterlockLogo size={30} />
-          </motion.span>
+          <BrandMark />
 
           <span
             className="font-display font-semibold text-lg tracking-tight select-none whitespace-nowrap"
