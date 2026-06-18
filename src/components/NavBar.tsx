@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import TheInterlockLogo from './TheInterlockLogo'
@@ -7,11 +7,13 @@ import { useSiteConfig } from '../lib/SiteConfigContext'
 import { PLUGIN_REGISTRY } from '../lib/plugins'
 import { ease } from '../lib/motion'
 
-const NAV_LINKS = [
+const NAV_LINKS: { to: string; label: string; section?: string }[] = [
   { to: '/',          label: 'Home' },
   { to: '/about',     label: 'About' },
   { to: '/companies', label: 'Companies' },
   { to: '/services',  label: 'Services' },
+  { to: '/',          label: 'Pricing', section: 'pricing' },
+  { to: '/',          label: 'FAQ',     section: 'faq'     },
   { to: '/contact',   label: 'Contact' },
 ]
 
@@ -19,7 +21,16 @@ export default function NavBar() {
   const [open,      setOpen]      = useState(false)
   const [scrolled,  setScrolled]  = useState(false)
   const { pathname } = useLocation()
+  const navigate     = useNavigate()
   const { config }   = useSiteConfig()
+
+  function scrollToSection(id: string) {
+    const el = document.getElementById(id)
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); return }
+    // Not on home yet — navigate then scroll
+    navigate('/')
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350)
+  }
 
   /* Gain frosted glass on scroll */
   useEffect(() => {
@@ -74,7 +85,23 @@ export default function NavBar() {
         {/* ── Desktop links ──────────────────────────────────── */}
         <div className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map(link => {
-            const active = pathname === link.to
+            const active = !link.section && pathname === link.to
+
+            if (link.section) {
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => scrollToSection(link.section!)}
+                  className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                  style={{ color: 'var(--slate)', background: 'none', border: 'none', cursor: 'pointer' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--slate)' }}
+                >
+                  {link.label}
+                </button>
+              )
+            }
+
             return (
               <Link
                 key={link.to}
@@ -174,30 +201,40 @@ export default function NavBar() {
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link, i) => {
-                const active = pathname === link.to
+                const active = !link.section && pathname === link.to
                 return (
                   <motion.div
-                    key={link.to}
+                    key={link.label}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04, duration: 0.25, ease }}
                   >
-                    <Link
-                      to={link.to}
-                      className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all"
-                      style={{
-                        color:      active ? 'var(--gold)' : 'var(--slate)',
-                        background: active ? 'rgba(212,168,67,0.07)' : 'transparent',
-                      }}
-                    >
-                      {link.label}
-                      {active && (
-                        <span
-                          className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style={{ background: 'var(--gold)' }}
-                        />
-                      )}
-                    </Link>
+                    {link.section ? (
+                      <button
+                        onClick={() => { setOpen(false); scrollToSection(link.section!) }}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                        style={{ color: 'var(--slate)', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <Link
+                        to={link.to}
+                        className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                        style={{
+                          color:      active ? 'var(--gold)' : 'var(--slate)',
+                          background: active ? 'rgba(212,168,67,0.07)' : 'transparent',
+                        }}
+                      >
+                        {link.label}
+                        {active && (
+                          <span
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{ background: 'var(--gold)' }}
+                          />
+                        )}
+                      </Link>
+                    )}
                   </motion.div>
                 )
               })}
