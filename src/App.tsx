@@ -11,6 +11,7 @@ const SceneJourney = lazy(() => import('./components/motion/SceneJourney'))
 import NavBar           from './components/NavBar'
 import Footer           from './components/Footer'
 import AnnouncementBar  from './components/AnnouncementBar'
+import FloatingWhatsApp from './components/FloatingWhatsApp'
 import SeoManager       from './components/SeoManager'
 import Analytics        from './components/Analytics'
 
@@ -45,6 +46,7 @@ function PublicShell() {
           <Outlet />
         </main>
         <Footer />
+        <FloatingWhatsApp />
       </div>
     </SmoothScrollProvider>
   )
