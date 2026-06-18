@@ -71,7 +71,7 @@ const PLANS: readonly Plan[] = [
       'Email support',
     ],
     cta:  'Choose Essentials',
-    href: '#essentials-signup', // TODO: point to self-serve trial/checkout
+    href: 'https://skillvue-production.up.railway.app/register-company?plan=starter',
   },
   {
     icon:      BarChart3,
@@ -93,7 +93,7 @@ const PLANS: readonly Plan[] = [
     ],
     addOn: 'Work Permits available as add-on',
     cta:   'Choose Professional',
-    href:  '#professional-signup', // TODO: point to self-serve trial/checkout
+    href:  'https://skillvue-production.up.railway.app/register-company?plan=professional',
   },
   {
     icon:      Globe,
