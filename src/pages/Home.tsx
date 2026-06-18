@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown, Check, X } from 'lucide-react'
@@ -58,6 +58,34 @@ const PLANS = [
   },
 ] as const
 
+/* ── FAQ ───────────────────────────────────────────────────────── */
+const FAQS = [
+  {
+    q: 'Why SkillVue for food manufacturing?',
+    a: 'SkillVue was built by someone who spent 15+ years working in food manufacturing. Unlike generic HR or compliance software, SkillVue understands your specific challenges — LOTO procedures, work permits, HACCP compliance, shift-based workforce, and managing competencies across 200+ employees in a food plant. It was not adapted for food manufacturing. It was built for it.',
+  },
+  {
+    q: 'Is my data stored safely in Europe?',
+    a: 'Yes. All SkillVue data is stored exclusively on Google Cloud Platform (GCP) in Frankfurt, Germany. Data is encrypted at rest (AES-256) and in transit (TLS 1.2+). We are registered in the European Union (Slovak Republic) and operate under EU GDPR. Your data never leaves the European Economic Area.',
+  },
+  {
+    q: 'What makes Lintejas different from other tech companies?',
+    a: 'Three things: industry depth, EU base, and bootstrapped focus. We build software for industries we know from the inside. We are based in the EU with full GDPR compliance built in from day one. And we are self-funded — which means our only agenda is making our clients successful, not satisfying investors.',
+  },
+  {
+    q: 'Can I try SkillVue before committing?',
+    a: 'Absolutely. SkillVue offers a 30-day free trial with full access to all features. No credit card required. You can also explore our live demo account at skillvue.io/onboarding using the demo credentials — no sign-up needed. See exactly what your team will experience before making any decision.',
+  },
+  {
+    q: 'How long does it take to set up SkillVue?',
+    a: 'Most companies are fully set up within 1-2 weeks. Day 1: create your account, configure departments, upload employees via CSV. Week 1: set up competency requirements and checklists. Week 2: your team starts using it and dashboards fill with real data. We provide dedicated onboarding support on Professional and Enterprise plans.',
+  },
+  {
+    q: 'Does Lintejas work with companies outside Slovakia?',
+    a: 'Yes. Lintejas Company and SkillVue serve clients globally. Primary markets are Slovakia, Czech Republic, Germany, Austria, and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
+  },
+]
+
 /* ── Values strip ─────────────────────────────────────────────── */
 const VALUES = [
   { icon: Cpu,        title: 'Precision Engineering', desc: 'Every product is built to exacting standards, designed for the long run and the harshest operational environments.' },
@@ -67,6 +95,7 @@ const VALUES = [
 
 export default function Home() {
   const navigate = useNavigate()
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -618,6 +647,160 @@ export default function Home() {
           All plans include a 30-day free trial. No credit card required. Cancel anytime.{' '}
           <span style={{ color: 'var(--gold)' }}>Annual plans save 2 months.</span>
         </motion.p>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          FAQ
+      ══════════════════════════════════════════════════════════ */}
+      <section id="faq" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        {/* Eyebrow */}
+        <motion.div
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+          className="flex items-center gap-4 mb-12"
+        >
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>FAQ</span>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7, ease }}
+          className="mb-12"
+        >
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl" style={{ color: 'var(--cream)' }}>
+            Frequently Asked Questions
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+
+          {/* ── Accordion ── */}
+          <motion.div
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: '-40px' }}
+            variants={staggerContainer}
+            className="space-y-3"
+          >
+            {FAQS.map((faq, i) => {
+              const isOpen = openFaq === i
+              return (
+                <motion.div key={i} variants={staggerItem}>
+                  <div
+                    className="rounded-2xl border overflow-hidden transition-all duration-300"
+                    style={{
+                      background: 'var(--glass-bg)',
+                      borderColor: isOpen ? 'rgba(212,168,67,0.35)' : 'var(--glass-border)',
+                      backdropFilter: 'blur(20px)',
+                    }}
+                  >
+                    {/* Question row */}
+                    <button
+                      className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                      onClick={() => setOpenFaq(isOpen ? null : i)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="text-sm font-semibold leading-snug" style={{ color: 'var(--cream)' }}>
+                        {faq.q}
+                      </span>
+                      <motion.span
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.25, ease }}
+                        className="flex-shrink-0"
+                      >
+                        <ChevronDown size={16} style={{ color: 'var(--gold)' }} />
+                      </motion.span>
+                    </button>
+
+                    {/* Answer — animated height */}
+                    <motion.div
+                      initial={false}
+                      animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+                      transition={{ duration: 0.3, ease }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className="px-6 pb-5">
+                        <div className="h-px mb-4" style={{ background: 'var(--glass-border)' }} />
+                        <p className="text-sm leading-relaxed" style={{ color: 'var(--slate)' }}>
+                          {faq.a}
+                        </p>
+                      </div>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+
+          {/* ── Right CTA box ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2, ease }}
+          >
+            <div
+              className="rounded-2xl border p-7 lg:sticky lg:top-28"
+              style={{ background: 'var(--glass-bg)', borderColor: 'rgba(212,168,67,0.25)', backdropFilter: 'blur(20px)' }}
+            >
+              <div className="absolute inset-x-0 top-0 h-px rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.22), transparent)' }} />
+
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.20)' }}
+              >
+                <span style={{ fontSize: '1.1rem' }}>💬</span>
+              </div>
+
+              <h3 className="font-display font-semibold text-lg mb-2" style={{ color: 'var(--cream)' }}>
+                Still have questions?
+              </h3>
+              <p className="text-sm mb-6" style={{ color: 'var(--slate)' }}>
+                Our team responds within 24 hours.
+              </p>
+
+              <div className="flex flex-col gap-3 mb-7">
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                  style={{ background: 'linear-gradient(135deg, #E8C766, #D4A843)', color: '#0A1628' }}
+                >
+                  Contact Us <ArrowRight size={14} />
+                </button>
+                <a
+                  href="https://wa.me/421XXXXXXXXX"
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                  style={{ background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.30)', color: '#25D366' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.18)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.10)' }}
+                >
+                  <span>💬</span> Chat on WhatsApp
+                </a>
+              </div>
+
+              <div className="space-y-2 pt-5" style={{ borderTop: '1px solid var(--glass-border)' }}>
+                <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Quick links</p>
+                {[
+                  { label: 'Visit SkillVue', href: 'https://skillvue.io' },
+                  { label: 'Try Demo Account', href: 'https://skillvue.io/onboarding' },
+                  { label: 'Visit Lintejas Fashion', href: 'https://lintejas.store' },
+                ].map(({ label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm transition-colors duration-200 py-1"
+                    style={{ color: 'var(--slate)' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--slate)' }}
+                  >
+                    <ArrowRight size={12} style={{ color: 'var(--gold)', flexShrink: 0 }} />
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════
