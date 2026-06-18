@@ -143,36 +143,82 @@ export default function Home() {
               animate="show"
               variants={staggerContainer}
             >
-              {/* Chip */}
-              <motion.div variants={fadeUp}>
-                <span
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase"
+              {/* ── Brand wordmark ───────────────────────────────── */}
+              <motion.div variants={fadeUp} className="flex flex-col gap-3">
+
+                {/* Wordmark — LINTE·J·AS */}
+                <div className="flex items-baseline" style={{ letterSpacing: '0.30em' }}>
+                  <span
+                    className="font-display font-light text-[2.2rem] sm:text-[2.75rem] select-none"
+                    style={{ color: 'rgba(240,244,248,0.92)' }}
+                  >
+                    LINTE
+                  </span>
+                  <span
+                    className="font-display font-bold text-[2.2rem] sm:text-[2.75rem] text-transparent bg-clip-text select-none"
+                    style={{
+                      backgroundImage: 'linear-gradient(135deg, #F0D882 0%, #D4A843 55%, #9A7A2E 100%)',
+                      letterSpacing: '0.30em',
+                    }}
+                  >
+                    J
+                  </span>
+                  <span
+                    className="font-display font-light text-[2.2rem] sm:text-[2.75rem] select-none"
+                    style={{ color: 'rgba(240,244,248,0.92)', letterSpacing: '0.30em' }}
+                  >
+                    AS
+                  </span>
+                </div>
+
+                {/* Graduated gold rule */}
+                <motion.div
+                  initial={{ scaleX: 0, originX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 0.9, delay: 0.5, ease }}
                   style={{
-                    background: 'rgba(212,168,67,0.08)',
-                    border:     '1px solid rgba(212,168,67,0.20)',
-                    color:      'var(--gold)',
+                    height: 1,
+                    width: 180,
+                    background: 'linear-gradient(90deg, rgba(212,168,67,0.75) 0%, rgba(212,168,67,0.18) 70%, transparent 100%)',
+                    transformOrigin: 'left',
                   }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
-                  Technology Holding · Slovakia, EU
-                </span>
+                />
+
+                {/* Live status descriptor */}
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full flex-shrink-0 animate-pulse-live"
+                    style={{ background: 'var(--live-green)' }}
+                  />
+                  <span
+                    className="font-medium uppercase"
+                    style={{
+                      fontSize: '0.60rem',
+                      letterSpacing: '0.24em',
+                      color: 'var(--slate)',
+                    }}
+                  >
+                    Technology Holding &nbsp;·&nbsp; Slovakia, EU
+                  </span>
+                </div>
               </motion.div>
 
-              {/* Headline — per-line mask reveal */}
-              <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
+              {/* ── Headline — per-line mask reveal ──────────────── */}
+              <h1 className="font-display leading-[1.04] tracking-tight" style={{ color: 'var(--cream)' }}>
                 {HEADLINE.map((line, i) => (
                   <motion.span
                     key={line}
                     className="block overflow-hidden"
                     initial={{ clipPath: 'inset(0 0 100% 0)' }}
                     animate={{ clipPath: 'inset(0 0 0% 0)' }}
-                    transition={{ duration: 0.9, delay: 0.15 + i * 0.11, ease }}
+                    transition={{ duration: 0.85, delay: 0.35 + i * 0.10, ease }}
                   >
                     <span
                       className={[
                         'block text-5xl sm:text-6xl lg:text-7xl',
-                        /* "ventures." — gold accent on last line */
-                        i === HEADLINE.length - 1 ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
+                        i === HEADLINE.length - 1
+                          ? 'font-semibold text-transparent bg-clip-text bg-gold-gradient'
+                          : 'font-light',
                       ].join(' ')}
                     >
                       {line}
