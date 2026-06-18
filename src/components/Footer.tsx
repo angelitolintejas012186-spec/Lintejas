@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import TheInterlockLogo from './TheInterlockLogo'
+import SocialIcons from './SocialIcons'
 
 const NAV = [
   {
@@ -81,13 +82,16 @@ export default function Footer() {
               </p>
 
               {/* Trust marks */}
-              <div className="flex flex-wrap gap-x-4 gap-y-1">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 mb-6">
                 {['EU GDPR', 'ISO/HACCP', 'MFA Security'].map(tag => (
                   <span key={tag} className="text-xs" style={{ color: 'var(--slate)' }}>
                     <span style={{ color: 'var(--bronze)' }}>—</span> {tag}
                   </span>
                 ))}
               </div>
+
+              {/* Social icons */}
+              <SocialIcons />
             </div>
 
             {/* Nav columns */}

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Send, MapPin, Mail, CheckCircle } from 'lucide-react'
 import { useSiteConfig } from '../lib/SiteConfigContext'
 import Reveal from '../components/ui/Reveal'
+import SocialIcons from '../components/SocialIcons'
 import { ease } from '../lib/motion'
 
 /* ── Styled input ─────────────────────────────────────────────── */
@@ -338,6 +339,24 @@ export default function Contact() {
                   We respond to every message personally within one business day. No auto-replies,
                   no ticketing systems.
                 </div>
+              </div>
+            </Reveal>
+
+            {/* Social icons */}
+            <Reveal delay={0.12}>
+              <div
+                className="relative rounded-2xl border p-7"
+                style={{
+                  background:     'var(--glass-bg)',
+                  borderColor:    'var(--glass-border)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-px rounded-t-2xl"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.12), transparent)' }}
+                />
+                <SocialIcons />
               </div>
             </Reveal>
 
