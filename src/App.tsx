@@ -12,6 +12,7 @@ import NavBar           from './components/NavBar'
 import Footer           from './components/Footer'
 import AnnouncementBar  from './components/AnnouncementBar'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
+import CookieConsent    from './components/CookieConsent'
 import SeoManager       from './components/SeoManager'
 import Analytics        from './components/Analytics'
 
@@ -47,6 +48,7 @@ function PublicShell() {
         </main>
         <Footer />
         <FloatingWhatsApp />
+        <CookieConsent />
       </div>
     </SmoothScrollProvider>
   )
