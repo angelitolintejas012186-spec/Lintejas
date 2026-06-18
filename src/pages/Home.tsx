@@ -41,6 +41,8 @@ function ScrollCue() {
    Single source of truth — never duplicate prices or features.
    CTA hrefs marked TODO need real destinations before launch.
 ──────────────────────────────────────────────────────────────── */
+type PlanFeature = string | { text: string; comingSoon: true }
+
 type Plan = {
   icon: LucideIcon
   name: string
@@ -49,7 +51,7 @@ type Plan = {
   seats: string
   popular: boolean
   deltaLead?: string          // "Everything in X, plus" prefix for Pro/Enterprise
-  features: readonly string[]
+  features: readonly PlanFeature[]
   addOn?: string              // Muted add-on note shown below feature list
   cta: string
   href: string | null         // null → navigate to /contact
@@ -88,7 +90,7 @@ const PLANS: readonly Plan[] = [
       'Abnormality Reports',
       'Recognition Wall',
       'Grievance',
-      'Advanced reporting + custom fields',
+      'Advanced reporting + managed custom fields',
       'Priority support',
     ],
     addOn: 'Work Permits available as add-on',
@@ -106,8 +108,8 @@ const PLANS: readonly Plan[] = [
     features: [
       'Work Permits',
       'CIP Tasks',
-      'SSO / API & integrations',
-      'Audit Log + Privacy Dashboard',
+      { text: 'SSO / API & integrations',    comingSoon: true },
+      { text: 'Audit Log + Privacy Dashboard', comingSoon: true },
       'AI Support included',
       'Dedicated support + SLA',
     ],
@@ -666,12 +668,37 @@ export default function Home() {
                           {plan.deltaLead}
                         </li>
                       )}
-                      {plan.features.map(f => (
-                        <li key={f} className="flex items-start gap-2.5">
-                          <Check size={13} className="flex-shrink-0 mt-0.5" style={{ color: 'var(--gold)' }} />
-                          <span className="text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>{f}</span>
-                        </li>
-                      ))}
+                      {plan.features.map(f => {
+                        const label      = typeof f === 'string' ? f : f.text
+                        const comingSoon = typeof f !== 'string' && f.comingSoon
+                        return (
+                          <li key={label} className="flex items-start gap-2.5">
+                            <Check size={13} className="flex-shrink-0 mt-0.5" style={{ color: comingSoon ? 'var(--slate)' : 'var(--gold)', opacity: comingSoon ? 0.45 : 1 }} />
+                            <span className="text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>
+                              {label}
+                              {comingSoon && (
+                                <span
+                                  className="ml-2 inline-flex items-center px-1.5 rounded"
+                                  style={{
+                                    fontSize: '0.58rem',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.06em',
+                                    textTransform: 'uppercase',
+                                    verticalAlign: 'middle',
+                                    background: 'rgba(138,154,176,0.12)',
+                                    border: '1px solid rgba(138,154,176,0.22)',
+                                    color: 'var(--slate)',
+                                    paddingTop: '0.15rem',
+                                    paddingBottom: '0.15rem',
+                                  }}
+                                >
+                                  Coming soon
+                                </span>
+                              )}
+                            </span>
+                          </li>
+                        )
+                      })}
                     </ul>
 
                     {/* Add-on note — dashed pill below feature list */}
