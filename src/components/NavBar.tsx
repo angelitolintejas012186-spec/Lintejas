@@ -113,7 +113,7 @@ export default function NavBar() {
           ))}
 
           <a
-            href="https://skillvue-production.up.railway.app/login"
+            href="https://skillvue-production.up.railway.app/demo-entry"
             target="_blank"
             rel="noopener noreferrer"
             className="ml-3 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
@@ -207,7 +207,7 @@ export default function NavBar() {
                 transition={{ delay: NAV_LINKS.length * 0.04, duration: 0.25, ease }}
               >
                 <a
-                  href="https://skillvue-production.up.railway.app/login"
+                  href="https://skillvue-production.up.railway.app/demo-entry"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center mt-2 px-4 py-3 rounded-xl text-sm font-semibold"
