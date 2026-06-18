@@ -93,7 +93,7 @@ const PLANS: readonly Plan[] = [
       'Advanced reporting + managed custom fields',
       'Priority support',
     ],
-    addOn: 'Work Permits available as add-on',
+    addOn: 'Work Permits add-on — coming soon',
     cta:   'Choose Professional',
     href:  'https://skillvue-production.up.railway.app/register-company?plan=professional',
   },
@@ -106,7 +106,7 @@ const PLANS: readonly Plan[] = [
     popular:   false,
     deltaLead: 'Everything in Professional, plus',
     features: [
-      'Work Permits',
+      { text: 'Work Permits', comingSoon: true },
       'CIP Tasks',
       { text: 'SSO / API & integrations',    comingSoon: true },
       { text: 'Audit Log + Privacy Dashboard', comingSoon: true },
