@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
+import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown, Check, X } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
@@ -35,6 +35,28 @@ function ScrollCue() {
     </motion.div>
   )
 }
+
+/* ── Pricing plans ────────────────────────────────────────────── */
+const PLANS = [
+  {
+    name: 'Starter', price: '€500', annual: '€5,000', users: 'Up to 50 users', popular: false,
+    included: ['All core modules', 'Competency Matrix & Gap Analysis', 'Training Library', 'Email support', 'EU cloud hosting (GCP Frankfurt)', '30-day free trial'],
+    excluded: ['Safety suite', 'API access'],
+    cta: 'Start Free Trial', href: 'https://skillvue.io',
+  },
+  {
+    name: 'Professional', price: '€1,200', annual: '€12,000', users: 'Up to 200 users', popular: true,
+    included: ['All modules + Safety suite', 'LOTO, Work Permits, Confined Space', 'Production Checklists', 'Priority support', 'API access', 'Custom food categories', 'Dedicated onboarding session', 'EU cloud hosting', '30-day free trial'],
+    excluded: [],
+    cta: 'Request Demo', href: 'https://skillvue.io',
+  },
+  {
+    name: 'Enterprise', price: '€2,500', annual: '€25,000', users: 'Unlimited users', popular: false,
+    included: ['All modules + future features', 'Dedicated support manager', 'SLA 99.9% uptime guarantee', 'Custom ERP/MES integration', 'On-site training available', 'White-label option', 'Custom contract terms', 'EU cloud hosting', '30-day free trial'],
+    excluded: [],
+    cta: 'Contact Us', href: null,
+  },
+] as const
 
 /* ── Values strip ─────────────────────────────────────────────── */
 const VALUES = [
@@ -451,6 +473,151 @@ export default function Home() {
             </Link>
           </div>
         </motion.div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          PRICING
+      ══════════════════════════════════════════════════════════ */}
+      <section id="pricing" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        <motion.div
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+          className="flex items-center gap-4 mb-12"
+        >
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>Pricing</span>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7, ease }}
+          className="text-center mb-14"
+        >
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl mb-4" style={{ color: 'var(--cream)' }}>
+            Simple, Transparent Pricing
+          </h2>
+          <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--slate)' }}>
+            No hidden fees. No per-user charges. One flat monthly subscription.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start"
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={staggerContainer}
+        >
+          {PLANS.map((plan) => (
+            <motion.div key={plan.name} variants={staggerItem} className={plan.popular ? 'md:-mt-4' : ''}>
+              <div
+                className="relative rounded-2xl border h-full flex flex-col overflow-hidden transition-all duration-300"
+                style={{
+                  background: 'var(--glass-bg)',
+                  borderColor: plan.popular ? 'rgba(212,168,67,0.50)' : 'var(--glass-border)',
+                  backdropFilter: 'blur(20px)',
+                  boxShadow: plan.popular ? '0 0 40px rgba(212,168,67,0.12)' : 'none',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.40)'
+                  ;(e.currentTarget as HTMLElement).style.boxShadow = '0 8px 40px rgba(212,168,67,0.15)'
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = plan.popular ? 'rgba(212,168,67,0.50)' : 'var(--glass-border)'
+                  ;(e.currentTarget as HTMLElement).style.boxShadow = plan.popular ? '0 0 40px rgba(212,168,67,0.12)' : 'none'
+                }}
+              >
+                {/* Top shine */}
+                <div className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.25), transparent)' }} />
+
+                {/* Most Popular badge */}
+                {plan.popular && (
+                  <div className="absolute top-0 inset-x-0 flex justify-center">
+                    <span
+                      className="px-4 py-1 text-xs font-bold uppercase tracking-widest rounded-b-lg"
+                      style={{ background: 'linear-gradient(135deg, #E8C766, #D4A843)', color: '#0A1628' }}
+                    >
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+
+                <div className={`p-7 flex flex-col flex-1 ${plan.popular ? 'pt-10' : ''}`}>
+                  {/* Plan name */}
+                  <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>
+                    {plan.name}
+                  </p>
+
+                  {/* Price */}
+                  <div className="mb-1">
+                    <span className="font-display font-semibold text-4xl" style={{ color: 'var(--cream)' }}>{plan.price}</span>
+                    <span className="text-sm ml-1" style={{ color: 'var(--slate)' }}>/month</span>
+                  </div>
+                  <p className="text-xs mb-1" style={{ color: 'var(--slate)' }}>
+                    {plan.annual}/year <span style={{ color: 'var(--gold)' }}>— 2 months free</span>
+                  </p>
+                  <p className="text-xs mb-6 pb-6" style={{ color: 'var(--slate)', borderBottom: '1px solid var(--glass-border)' }}>
+                    {plan.users}
+                  </p>
+
+                  {/* Features */}
+                  <ul className="space-y-2.5 mb-8 flex-1">
+                    {plan.included.map(f => (
+                      <li key={f} className="flex items-start gap-2.5">
+                        <Check size={13} className="flex-shrink-0 mt-0.5" style={{ color: 'var(--gold)' }} />
+                        <span className="text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>{f}</span>
+                      </li>
+                    ))}
+                    {plan.excluded.map(f => (
+                      <li key={f} className="flex items-start gap-2.5 opacity-40">
+                        <X size={13} className="flex-shrink-0 mt-0.5" style={{ color: 'var(--slate)' }} />
+                        <span className="text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  {plan.href ? (
+                    <a
+                      href={plan.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                      style={plan.popular
+                        ? { background: 'linear-gradient(135deg, #E8C766, #D4A843)', color: '#0A1628', boxShadow: '0 4px 20px rgba(212,168,67,0.30)' }
+                        : { background: 'transparent', border: '1px solid rgba(212,168,67,0.30)', color: 'var(--cream)' }
+                      }
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 24px rgba(212,168,67,0.45)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = plan.popular ? '0 4px 20px rgba(212,168,67,0.30)' : 'none' }}
+                    >
+                      {plan.cta} <ArrowRight size={14} />
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => navigate('/contact')}
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                      style={{ background: 'transparent', border: '1px solid rgba(212,168,67,0.30)', color: 'var(--cream)' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.60)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.30)' }}
+                    >
+                      {plan.cta} <ArrowRight size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Note */}
+        <motion.p
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-center text-xs mt-8"
+          style={{ color: 'var(--slate)' }}
+        >
+          All plans include a 30-day free trial. No credit card required. Cancel anytime.{' '}
+          <span style={{ color: 'var(--gold)' }}>Annual plans save 2 months.</span>
+        </motion.p>
       </section>
 
       {/* ══════════════════════════════════════════════════════════
