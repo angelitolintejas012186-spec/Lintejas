@@ -107,6 +107,8 @@ const PLANS: readonly Plan[] = [
     deltaLead: 'Everything in Professional, plus',
     features: [
       { text: 'Work Permits', comingSoon: true },
+      'Lockout/Tagout (LOTO) permits',
+      'Confined Space Entry (CSE) permits',
       'CIP Tasks',
       { text: 'SSO / API & integrations',    comingSoon: true },
       { text: 'Audit Log + Privacy Dashboard', comingSoon: true },
