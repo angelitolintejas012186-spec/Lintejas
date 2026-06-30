@@ -128,7 +128,7 @@ const FAQS = [
   },
   {
     q: 'Is my data stored safely in Europe?',
-    a: 'Yes. All SkillVue data is stored exclusively on Google Cloud Platform (GCP) in Frankfurt, Germany. Data is encrypted at rest (AES-256) and in transit (TLS 1.2+). We are registered in the European Union (Slovak Republic) and operate under EU GDPR. Your data never leaves the European Economic Area.',
+    a: 'Yes. All SkillVue data is stored exclusively on Google Cloud Platform (GCP) in Frankfurt, Germany. Data is encrypted at rest (AES-256) and in transit (TLS 1.2+). We are based in the European Union and operate under EU GDPR. Your data never leaves the European Economic Area.',
   },
   {
     q: 'What makes Lintejas different from other tech companies?',

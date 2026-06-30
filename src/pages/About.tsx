@@ -92,7 +92,7 @@ export default function About() {
           </h1>
 
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--slate)' }}>
-            Lintejas is a technology holding company founded in the Slovak Republic. We identify,
+            Lintejas is a technology holding company based in the European Union. We identify,
             build, and grow software ventures that solve real operational problems in industries
             where precision matters.
           </p>

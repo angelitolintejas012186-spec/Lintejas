@@ -71,7 +71,7 @@ export default function Footer() {
 
               <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'var(--slate)' }}>
                 A European technology holding company building precision software for industries that
-                shape the world. Registered in the Slovak Republic.
+                shape the world.
               </p>
 
               {/* Trust marks */}
@@ -124,7 +124,7 @@ export default function Footer() {
               © {year} Lintejas s.r.o. All rights reserved.
             </p>
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              Slovak Republic · European Union
+              European Union
             </p>
           </div>
         </div>

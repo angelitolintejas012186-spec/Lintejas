@@ -373,7 +373,7 @@ export default function Contact() {
                     <div>
                       <p className="text-xs mb-1" style={{ color: 'var(--slate)' }}>Location</p>
                       <p className="text-sm font-medium" style={{ color: 'var(--cream)' }}>
-                        Slovak Republic, EU
+                        European Union
                       </p>
                     </div>
                   </div>
@@ -431,7 +431,7 @@ export default function Contact() {
                 </h3>
                 <div className="space-y-1 text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>
                   <p className="font-medium text-sm" style={{ color: 'var(--cream)' }}>Lintejas s.r.o.</p>
-                  <p>Registered in the Slovak Republic</p>
+                  <p>European Union</p>
                   <p>EU VAT: SK — (registration pending)</p>
                   <p
                     className="pt-3 mt-1 border-t text-xs"
