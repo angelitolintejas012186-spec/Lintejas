@@ -58,18 +58,18 @@ export default function NavBar() {
         boxShadow:    scrolled ? '0 1px 0 rgba(232,199,102,0.04), 0 8px 32px rgba(0,0,0,0.20)' : 'none',
       }}
     >
-      <nav className="max-w-[1280px] mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+      <nav className="max-w-[1280px] mx-auto px-6 lg:px-8 h-20 flex items-center justify-between overflow-x-hidden">
 
         {/* ── Brand ─────────────────────────────────────────── */}
         <Link
           to="/"
-          className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
+          className="flex items-center gap-3 group min-w-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
           aria-label="Lintejas — home"
         >
           <BrandMark size={40} />
 
           {/* Wordmark lockup — gold L signature; descriptor hides below sm */}
-          <span className="flex flex-col justify-center select-none">
+          <span className="flex flex-col justify-center select-none min-w-0">
             <span
               className="font-display font-semibold text-xl leading-tight whitespace-nowrap"
               style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
@@ -77,7 +77,7 @@ export default function NavBar() {
               <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
             </span>
             <span
-              className="block text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight whitespace-nowrap mt-0.5"
+              className="block text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight truncate mt-0.5"
               style={{ color: 'var(--slate)' }}
             >
               SOFTWARE DEVELOPMENT &amp; E-COMMERCE
@@ -162,7 +162,7 @@ export default function NavBar() {
         {/* ── Mobile toggle ──────────────────────────────────── */}
         <button
           onClick={() => setOpen(o => !o)}
-          className="lg:hidden p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+          className="lg:hidden flex-shrink-0 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
           style={{ color: 'var(--slate)' }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}

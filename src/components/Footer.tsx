@@ -49,7 +49,7 @@ export default function Footer() {
       />
 
       <div
-        className="relative"
+        className="relative overflow-hidden"
         style={{ background: 'var(--navy)' }}
       >
         {/* Ambient gold bloom behind the logo */}
@@ -79,8 +79,8 @@ export default function Footer() {
                     <span aria-hidden="true" className="flex-shrink-0" style={{ width: '34px', height: '1px', background: 'var(--gold)' }} />
                   </span>
                   <span
-                    className="text-[9px] leading-tight whitespace-nowrap mt-1"
-                    style={{ color: 'var(--slate)', letterSpacing: '0.26em' }}
+                    className="text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight whitespace-nowrap mt-1"
+                    style={{ color: 'var(--slate)' }}
                   >
                     SOFTWARE DEVELOPMENT &amp; E-COMMERCE
                   </span>
