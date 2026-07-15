@@ -77,8 +77,8 @@ export default function NavBar() {
               <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
             </span>
             <span
-              className="hidden sm:block text-[9px] leading-tight whitespace-nowrap mt-0.5"
-              style={{ color: 'var(--slate)', letterSpacing: '0.26em' }}
+              className="block text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight whitespace-nowrap mt-0.5"
+              style={{ color: 'var(--slate)' }}
             >
               SOFTWARE DEVELOPMENT &amp; E-COMMERCE
             </span>
@@ -86,7 +86,7 @@ export default function NavBar() {
         </Link>
 
         {/* ── Desktop links ──────────────────────────────────── */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map(link => {
             const active = !link.section && pathname === link.to
 
@@ -95,7 +95,7 @@ export default function NavBar() {
                 <button
                   key={link.label}
                   onClick={() => scrollToSection(link.section!)}
-                  className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                  className="relative px-3 py-2 text-sm font-medium transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                   style={{ color: 'var(--slate)', background: 'none', border: 'none', cursor: 'pointer' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--slate)' }}
@@ -109,7 +109,7 @@ export default function NavBar() {
               <Link
                 key={link.to}
                 to={link.to}
-                className="relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                className="relative px-3 py-2 text-sm font-medium transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
                 style={{
                   color: active ? 'var(--cream)' : 'var(--slate)',
                 }}
@@ -123,7 +123,7 @@ export default function NavBar() {
                   {active && (
                     <motion.span
                       layoutId="nav-underline"
-                      className="absolute bottom-0.5 left-4 right-4 h-px rounded-full"
+                      className="absolute bottom-0.5 left-3 right-3 h-px rounded-full"
                       style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }}
                       initial={{ scaleX: 0, opacity: 0 }}
                       animate={{ scaleX: 1, opacity: 1 }}
@@ -137,7 +137,7 @@ export default function NavBar() {
           })}
 
           {navPlugins.map(p => (
-            <span key={p.id} className="px-4 py-2 text-sm font-medium" style={{ color: 'var(--slate)' }}>
+            <span key={p.id} className="px-3 py-2 text-sm font-medium" style={{ color: 'var(--slate)' }}>
               {p.icon} {p.name}
             </span>
           ))}
@@ -146,7 +146,7 @@ export default function NavBar() {
             href="https://skillvue-production.up.railway.app/demo-entry"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-3 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+            className="ml-3 px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
             style={{
               background: 'linear-gradient(135deg, var(--gold), #b8922a)',
               color: '#0a1628',
@@ -162,7 +162,7 @@ export default function NavBar() {
         {/* ── Mobile toggle ──────────────────────────────────── */}
         <button
           onClick={() => setOpen(o => !o)}
-          className="md:hidden p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+          className="lg:hidden p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
           style={{ color: 'var(--slate)' }}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
@@ -195,7 +195,7 @@ export default function NavBar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.28, ease }}
-            className="md:hidden overflow-hidden"
+            className="lg:hidden overflow-hidden"
             style={{
               background: 'rgba(10, 22, 40, 0.92)',
               backdropFilter: 'blur(20px)',
