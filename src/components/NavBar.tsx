@@ -58,7 +58,7 @@ export default function NavBar() {
         boxShadow:    scrolled ? '0 1px 0 rgba(232,199,102,0.04), 0 8px 32px rgba(0,0,0,0.20)' : 'none',
       }}
     >
-      <nav className="max-w-[1280px] mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+      <nav className="max-w-[1280px] mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
 
         {/* ── Brand ─────────────────────────────────────────── */}
         <Link
@@ -66,12 +66,12 @@ export default function NavBar() {
           className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
           aria-label="Lintejas — home"
         >
-          <BrandMark />
+          <BrandMark size={40} />
 
           {/* Wordmark lockup — gold L signature; descriptor hides below sm */}
           <span className="flex flex-col justify-center select-none">
             <span
-              className="font-display font-semibold text-base leading-tight whitespace-nowrap"
+              className="font-display font-semibold text-xl leading-tight whitespace-nowrap"
               style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
             >
               <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS

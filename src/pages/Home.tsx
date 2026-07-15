@@ -570,7 +570,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           PRICING
       ══════════════════════════════════════════════════════════ */}
-      <section id="pricing" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+      <section id="pricing" className="scroll-mt-24 max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
         <motion.div
           initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
           variants={fadeUp}
@@ -766,7 +766,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           FAQ
       ══════════════════════════════════════════════════════════ */}
-      <section id="faq" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+      <section id="faq" className="scroll-mt-24 max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
         {/* Eyebrow */}
         <motion.div
           initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
