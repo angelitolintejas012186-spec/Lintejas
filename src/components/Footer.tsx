@@ -67,8 +67,23 @@ export default function Footer() {
             <div>
               <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
                 <BrandMark />
-                <span className="font-display font-semibold text-lg" style={{ color: 'var(--cream)' }}>
-                  Linte<span style={{ color: 'var(--gold)' }}>j</span>as
+                {/* Wordmark lockup — gold L + trailing gold rule (footer only) */}
+                <span className="flex flex-col justify-center select-none">
+                  <span className="flex items-center gap-3">
+                    <span
+                      className="font-display font-semibold text-lg leading-tight whitespace-nowrap"
+                      style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
+                    >
+                      <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
+                    </span>
+                    <span aria-hidden="true" className="flex-shrink-0" style={{ width: '34px', height: '1px', background: 'var(--gold)' }} />
+                  </span>
+                  <span
+                    className="text-[9px] leading-tight whitespace-nowrap mt-1"
+                    style={{ color: 'var(--slate)', letterSpacing: '0.26em' }}
+                  >
+                    SOFTWARE DEVELOPMENT &amp; E-COMMERCE
+                  </span>
                 </span>
               </Link>
 

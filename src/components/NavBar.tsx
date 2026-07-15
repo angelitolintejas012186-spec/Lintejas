@@ -68,11 +68,20 @@ export default function NavBar() {
         >
           <BrandMark />
 
-          <span
-            className="font-display font-semibold text-lg tracking-tight select-none whitespace-nowrap"
-            style={{ color: 'var(--cream)' }}
-          >
-            Linte<span style={{ color: 'var(--gold)' }}>j</span>as
+          {/* Wordmark lockup — gold L signature; descriptor hides below sm */}
+          <span className="flex flex-col justify-center select-none">
+            <span
+              className="font-display font-semibold text-base leading-tight whitespace-nowrap"
+              style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
+            >
+              <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
+            </span>
+            <span
+              className="hidden sm:block text-[9px] leading-tight whitespace-nowrap mt-0.5"
+              style={{ color: 'var(--slate)', letterSpacing: '0.26em' }}
+            >
+              SOFTWARE DEVELOPMENT &amp; E-COMMERCE
+            </span>
           </span>
         </Link>
 
