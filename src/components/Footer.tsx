@@ -124,7 +124,7 @@ export default function Footer() {
             style={{ borderColor: 'rgba(212,168,67,0.10)' }}
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              © {year} Lintejas s.r.o. All rights reserved.
+              © {year} Lintejas · Software Development &amp; E-Commerce. All rights reserved.
             </p>
           </div>
         </div>
