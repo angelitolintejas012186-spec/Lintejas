@@ -16,6 +16,9 @@ const NAV = [
     heading: 'Ventures',
     links: [
       { to: '/companies', label: 'SkillVue'           },
+      { to: '/companies', label: 'Negosyo Plans'      },
+      { to: '/companies', label: 'BiyahePH'           },
+      { to: '/companies', label: 'AI Text Converter'  },
       { to: '/companies', label: 'MCIS'               },
       { to: '/companies', label: 'Staff Scheduler Pro' },
     ],

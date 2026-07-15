@@ -9,7 +9,7 @@ import { staggerContainer, staggerItem, ease } from '../lib/motion'
 const STATS = [
   { icon: Calendar,  value: '2024',  label: 'Founded'          },
   { icon: MapPin,    value: 'Remote', label: 'Remote-first'    },
-  { icon: Building2, value: '3',     label: 'Ventures'         },
+  { icon: Building2, value: '6',     label: 'Ventures'         },
   { icon: ShieldCheck, value: 'EU',  label: 'GDPR Compliant'   },
 ]
 

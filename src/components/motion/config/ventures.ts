@@ -5,7 +5,7 @@
 export interface VentureNode {
   id:      string
   label:   string
-  status:  'live' | 'coming-soon'
+  status:  'live' | 'coming-soon' | 'in-development'
   radius:  number   // visual node size (relative units)
   color:   string   // CSS color string
   angle:   number   // initial orbit angle in radians
@@ -46,5 +46,32 @@ export const VENTURE_NODES: VentureNode[] = [
     color:  '#9A7A2E',      // bronze
     angle:  Math.PI * 1.7,
     orbit:  150,
+  },
+  {
+    id:     'negosyo-plans',
+    label:  'Negosyo Plans',
+    status: 'coming-soon',
+    radius: 9,
+    color:  '#9A7A2E',      // bronze
+    angle:  Math.PI * 0.7,
+    orbit:  145,
+  },
+  {
+    id:     'biyaheph',
+    label:  'BiyahePH',
+    status: 'in-development',
+    radius: 9,
+    color:  '#9A7A2E',      // bronze
+    angle:  Math.PI * 1.4,
+    orbit:  155,
+  },
+  {
+    id:     'ai-text-converter',
+    label:  'AI Text Converter',
+    status: 'in-development',
+    radius: 9,
+    color:  '#9A7A2E',      // bronze
+    angle:  Math.PI * 1.95,
+    orbit:  135,
   },
 ]

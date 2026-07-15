@@ -10,7 +10,22 @@ import NetworkGraph from '../components/motion/NetworkGraph'
 import HudFrame    from '../components/motion/HudFrame'
 
 /* ── Data ─────────────────────────────────────────────────────── */
-const VENTURES = [
+interface Venture {
+  id:       string
+  icon:     string
+  name:     string
+  tagline:  string
+  industry: string
+  status:   'live' | 'beta' | 'coming-soon' | 'in-development'
+  desc:     string
+  url:      string
+  tags:     string[]
+  flagship: boolean
+  /** Optional build progress (0–100) — renders a bar on the venture card. */
+  progress?: number
+}
+
+const VENTURES: Venture[] = [
   {
     id:       'skillvue',
     icon:     '🧠',
@@ -22,6 +37,45 @@ const VENTURES = [
     url:      'https://skillvue-production.up.railway.app/demo-entry',
     tags:     ['Safety Management', 'Competency Management', 'Analytics', 'HR Tech'],
     flagship: true,
+  },
+  {
+    id:       'negosyo-plans',
+    icon:     '🛒',
+    name:     'Negosyo Plans',
+    tagline:  'Digital Products E-commerce',
+    industry: 'E-commerce · Philippine Market',
+    status:   'coming-soon' as const,
+    desc:     'A digital-products e-commerce platform for Filipino entrepreneurs — ready-made business plans, templates, and starter kits for launching small businesses in the Philippine market.',
+    url:      '',
+    tags:     ['E-commerce', 'Digital Products'],
+    flagship: false,
+    progress: 85,
+  },
+  {
+    id:       'biyaheph',
+    icon:     '🚌',
+    name:     'BiyahePH',
+    tagline:  'Commuter Companion App',
+    industry: 'Mobility · Philippine Market',
+    status:   'in-development' as const,
+    desc:     'A commuter companion app for the Philippine market — routes, fares, and real-time transit guidance across jeepney, bus, and rail networks. Built in Flutter for Android and iOS.',
+    url:      '',
+    tags:     ['Mobility', 'Consumer App'],
+    flagship: false,
+    progress: 60,
+  },
+  {
+    id:       'ai-text-converter',
+    icon:     '✍️',
+    name:     'AI Text Converter',
+    tagline:  'AI Writing Utility',
+    industry: 'AI Tools · Productivity',
+    status:   'in-development' as const,
+    desc:     'An AI-powered utility for converting text between formats, tones, and styles. Early build.',
+    url:      '',
+    tags:     ['AI', 'Productivity'],
+    flagship: false,
+    progress: 20,
   },
   {
     id:       'mcis',
@@ -53,6 +107,8 @@ const STATUS_CONFIG = {
   live:          { label: 'Live',         color: '#3FB950', bg: 'rgba(63,185,80,0.10)',  border: 'rgba(63,185,80,0.25)',  pulse: true  },
   beta:          { label: 'Beta',         color: '#60A5FA', bg: 'rgba(96,165,250,0.10)', border: 'rgba(96,165,250,0.25)', pulse: false },
   'coming-soon': { label: 'Coming soon',  color: '#D4A843', bg: 'rgba(212,168,67,0.10)', border: 'rgba(212,168,67,0.20)', pulse: false },
+  /* Neutral steel — the site's --slate tone; same badge component, data-only. */
+  'in-development': { label: 'In development', color: '#8A9AB0', bg: 'rgba(138,154,176,0.10)', border: 'rgba(138,154,176,0.25)', pulse: false },
 }
 
 /* ── Animated tag chip ─────────────────────────────────────────── */
@@ -243,6 +299,26 @@ function VentureCard({ v, index }: { v: typeof VENTURES[0]; index: number }) {
           <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: 'var(--slate)' }}>
             {v.desc}
           </p>
+
+          {/* Build progress — only for ventures that declare it */}
+          {v.progress != null && (
+            <div className="mb-5">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-medium" style={{ color: 'var(--slate)' }}>Build progress</span>
+                <span className="text-xs font-medium" style={{ color: 'var(--gold)' }}>{v.progress}%</span>
+              </div>
+              <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(212,168,67,0.10)' }}>
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ background: 'var(--gold)' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${v.progress}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease, delay: 0.2 }}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-1.5">
             {v.tags.map((tag, i) => (
