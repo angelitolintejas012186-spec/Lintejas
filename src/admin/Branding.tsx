@@ -432,7 +432,7 @@ export default function Branding() {
             </div>
             <BrandName className={`block mb-2 text-3xl ${brand.align === 'left' ? 'text-left' : brand.align === 'right' ? 'text-right' : 'text-center'}`} />
             <p className="text-xs text-center max-w-xs" style={{ color: 'var(--text-muted)' }}>
-              Technology Holding Company · Slovakia, EU
+              Technology Holding Company
             </p>
           </div>
 

@@ -132,7 +132,7 @@ const FAQS = [
   },
   {
     q: 'What makes Lintejas different from other tech companies?',
-    a: 'Three things: industry depth, EU base, and bootstrapped focus. We build software for industries we know from the inside. We are based in the EU with full GDPR compliance built in from day one. And we are self-funded — which means our only agenda is making our clients successful, not satisfying investors.',
+    a: 'Three things: industry depth, compliance rigour, and bootstrapped focus. We build software for industries we know from the inside, with full GDPR compliance built in from day one. And we are self-funded — which means our only agenda is making our clients successful, not satisfying investors.',
   },
   {
     q: 'Can I try SkillVue before committing?',
@@ -143,15 +143,15 @@ const FAQS = [
     a: 'Most companies are fully set up within 1-2 weeks. Day 1: create your account, configure departments, upload employees via CSV. Week 1: set up competency requirements and checklists. Week 2: your team starts using it and dashboards fill with real data. We provide dedicated onboarding support on Professional and Enterprise plans.',
   },
   {
-    q: 'Does Lintejas work with companies outside Slovakia?',
-    a: 'Yes. Lintejas Company and SkillVue serve clients globally. Primary markets are Slovakia, Czech Republic, Germany, Austria, and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
+    q: 'Does Lintejas work with companies internationally?',
+    a: 'Yes. Lintejas Company and SkillVue serve clients globally. Primary markets are Central Europe and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
   },
 ]
 
 /* ── Values strip ─────────────────────────────────────────────── */
 const VALUES = [
   { icon: Cpu,        title: 'Precision Engineering', desc: 'Every product is built to exacting standards, designed for the long run and the harshest operational environments.' },
-  { icon: Shield,     title: 'European Values',       desc: 'Founded in Slovakia. Operating across the EU. Our products reflect European standards of quality, privacy, and reliability.' },
+  { icon: Shield,     title: 'Privacy & Reliability', desc: 'Quality, privacy, and reliability are table stakes. GDPR compliance is built into every product from day one.' },
   { icon: TrendingUp, title: 'Compounding Value',     desc: 'We invest in ventures with durable moats — products that get more valuable as the businesses they serve grow.' },
 ]
 
@@ -216,7 +216,7 @@ export default function Home() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
-                  Technology Holding · Slovakia, EU
+                  Technology Holding
                 </span>
               </motion.div>
 
@@ -249,7 +249,7 @@ export default function Home() {
                 className="text-base sm:text-lg leading-relaxed max-w-md"
                 style={{ color: 'var(--slate)' }}
               >
-                From Slovakia, EU — building enduring technology for the industries
+                Building enduring technology for the industries
                 that shape the world. Precision software ventures with durable competitive advantage.
               </motion.p>
 
@@ -540,15 +540,16 @@ export default function Home() {
             </div>
             <div>
               <h2 className="font-display font-semibold text-2xl mb-1" style={{ color: 'var(--cream)' }}>SkillVue</h2>
-              <p className="text-sm font-medium" style={{ color: 'var(--gold)' }}>Competency Intelligence Platform</p>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--slate)' }}>Food Manufacturing · HR Tech</p>
+              <p className="text-sm font-medium" style={{ color: 'var(--gold)' }}>Safety &amp; Workforce Intelligence Platform</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--slate)' }}>Food Manufacturing · Safety &amp; HR Tech</p>
             </div>
           </div>
 
           <p className="text-base leading-relaxed mb-7 max-w-2xl" style={{ color: 'var(--slate)' }}>
-            A comprehensive platform that maps, tracks, and develops employee competencies in food manufacturing
-            environments. Structured training pathways, real-time skill-gap dashboards, and ISO/HACCP-aligned
-            frameworks built for shift-based workforces.
+            The human layer of the smart factory. SkillVue unifies high-hazard safety workflows — digital work
+            permits, LOTO, confined space entry, and risk prediction — with competency tracking, structured
+            training pathways, and real-time skill-gap dashboards. Built for shift-based food manufacturing
+            workforces, with 24/7 approval routing and instant push notifications.
           </p>
 
           <div className="flex flex-wrap gap-3">

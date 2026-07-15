@@ -373,7 +373,7 @@ export default function Contact() {
                     <div>
                       <p className="text-xs mb-1" style={{ color: 'var(--slate)' }}>Location</p>
                       <p className="text-sm font-medium" style={{ color: 'var(--cream)' }}>
-                        European Union
+                        Remote-first
                       </p>
                     </div>
                   </div>

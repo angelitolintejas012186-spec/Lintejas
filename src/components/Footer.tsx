@@ -70,7 +70,7 @@ export default function Footer() {
               </Link>
 
               <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'var(--slate)' }}>
-                A European technology holding company building precision software for industries that
+                A technology holding company building precision software for industries that
                 shape the world.
               </p>
 
@@ -122,9 +122,6 @@ export default function Footer() {
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
               © {year} Lintejas s.r.o. All rights reserved.
-            </p>
-            <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              European Union
             </p>
           </div>
         </div>

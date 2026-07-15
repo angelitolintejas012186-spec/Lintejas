@@ -19,7 +19,7 @@ const SERVICES = [
     icon:    BarChart3,
     title:   'Technology Investment',
     tagline: 'Active capital with conviction',
-    desc:    'We invest in early-stage B2B software companies in industrial sectors across the EU. We take active board positions, contributing engineering and commercial expertise alongside capital.',
+    desc:    'We invest in early-stage B2B software companies in industrial sectors. We take active board positions, contributing engineering and commercial expertise alongside capital.',
     points:  ['Seed & early-stage B2B SaaS', 'Central and Eastern Europe focus', 'Board-level technical advisory', 'Engineering co-founding support'],
   },
   {
@@ -70,7 +70,7 @@ export default function Services() {
           </h1>
           <p className="text-lg max-w-2xl" style={{ color: 'var(--slate)' }}>
             From building products from scratch to investing in exceptional founders — we work with
-            operators, enterprises, and startups across the EU.
+            operators, enterprises, and startups worldwide.
           </p>
         </Reveal>
 

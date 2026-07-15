@@ -8,7 +8,7 @@ import { staggerContainer, staggerItem, ease } from '../lib/motion'
 /* ── Stats ────────────────────────────────────────────────────── */
 const STATS = [
   { icon: Calendar,  value: '2024',  label: 'Founded'          },
-  { icon: MapPin,    value: 'SK',    label: 'Slovakia, EU'     },
+  { icon: MapPin,    value: 'Remote', label: 'Remote-first'    },
   { icon: Building2, value: '3',     label: 'Ventures'         },
   { icon: ShieldCheck, value: 'EU',  label: 'GDPR Compliant'   },
 ]
@@ -17,7 +17,7 @@ const STATS = [
 const SECTIONS = [
   {
     title: 'Our mission',
-    body:  `We exist to demonstrate that European software companies can achieve world-class outcomes —
+    body:  `We exist to demonstrate that software companies can achieve world-class outcomes —
 built with care, designed for longevity, and respectful of the people who use them.
 
 We believe the best technology is invisible: it dissolves into the work, amplifying human
@@ -25,9 +25,9 @@ capability without friction. Every product we build is held to that standard.`,
   },
   {
     title: 'Where we operate',
-    body:  `Headquartered in Slovakia, we operate across the European Union. Our portfolio focuses on
-manufacturing, food production, logistics, and enterprise software — sectors where the gap
-between operational reality and available tooling remains significant.
+    body:  `We operate remote-first, serving clients across Central Europe and the Middle East. Our
+portfolio focuses on manufacturing, food production, logistics, and enterprise software —
+sectors where the gap between operational reality and available tooling remains significant.
 
 These are industries that move physical goods and feed people. We take that responsibility seriously.`,
   },
@@ -45,7 +45,7 @@ Quality over velocity. We would rather ship one product that endures than three 
 const PRINCIPLES = [
   { n: '01', label: 'Precision over speed',  desc: 'We slow down to think before building. Rushed products accumulate debt that compounds silently for years.' },
   { n: '02', label: 'Operators, not tourists', desc: 'We work in the industries we build for. Knowing the domain changes what you build and how you measure success.' },
-  { n: '03', label: 'European by design',    desc: 'Privacy, reliability, and regulatory compliance are not features. They are table stakes, baked in from day one.' },
+  { n: '03', label: 'Compliant by design',   desc: 'Privacy, reliability, and regulatory compliance are not features. They are table stakes, baked in from day one.' },
 ]
 
 /* ── Page ──────────────────────────────────────────────────────── */
@@ -92,7 +92,7 @@ export default function About() {
           </h1>
 
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--slate)' }}>
-            Lintejas is a technology holding company based in the European Union. We identify,
+            Lintejas is a technology holding company. We identify,
             build, and grow software ventures that solve real operational problems in industries
             where precision matters.
           </p>
@@ -160,7 +160,7 @@ export default function About() {
                 </p>
                 <div className="h-px" style={{ background: 'var(--glass-border)' }} />
                 <div className="pt-4 mt-4 space-y-2">
-                  {['Slovakia', 'European Union', 'Remote-first'].map(loc => (
+                  {['Remote-first', 'International clients'].map(loc => (
                     <div key={loc} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full" style={{ background: 'var(--gold)' }} />
                       <span className="text-xs" style={{ color: 'var(--slate)' }}>{loc}</span>
