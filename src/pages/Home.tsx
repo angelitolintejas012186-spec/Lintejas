@@ -93,7 +93,7 @@ const PLANS: readonly Plan[] = [
       'Advanced reporting + managed custom fields',
       'Priority support',
     ],
-    addOn: 'Work Permits add-on — coming soon',
+    addOn: 'Work Permits available as an add-on',
     cta:   'Choose Professional',
     href:  'https://skillvue-production.up.railway.app/register-company?plan=professional',
   },
@@ -106,9 +106,10 @@ const PLANS: readonly Plan[] = [
     popular:   false,
     deltaLead: 'Everything in Professional, plus',
     features: [
-      { text: 'Work Permits', comingSoon: true },
+      'Work Permits',
       'Lockout/Tagout (LOTO) permits',
       'Confined Space Entry (CSE) permits',
+      'Risk Prediction Tool (RPT)',
       'CIP Tasks',
       { text: 'SSO / API & integrations',    comingSoon: true },
       { text: 'Audit Log + Privacy Dashboard', comingSoon: true },
@@ -577,7 +578,7 @@ export default function Home() {
           className="flex items-center gap-4 mb-12"
         >
           <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
-          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>Pricing</span>
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>SkillVue Pricing</span>
           <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
         </motion.div>
 
@@ -587,11 +588,21 @@ export default function Home() {
           className="text-center mb-14"
         >
           <h2 className="font-display font-semibold text-3xl sm:text-4xl mb-4" style={{ color: 'var(--cream)' }}>
-            One platform. Three tiers.
+            SkillVue — one platform, three tiers.
           </h2>
           <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--slate)' }}>
-            Start with the essentials. Unlock the full plant-floor suite when you're ready. Scale to enterprise on your terms.
+            SkillVue is our safety and workforce platform for food manufacturing. Start with the essentials. Unlock the full plant-floor suite when you're ready. Scale to enterprise on your terms.
           </p>
+
+          {/* SkillVue brand chip — same live-badge treatment as the flagship card */}
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mt-5"
+            style={{ background: 'rgba(212,168,67,0.08)', color: 'var(--gold)', border: '1px solid rgba(212,168,67,0.20)' }}
+          >
+            <span className="text-sm leading-none">🧠</span>
+            SkillVue
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3FB950] animate-pulse-live" />
+          </div>
         </motion.div>
 
         <motion.div
