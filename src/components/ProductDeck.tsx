@@ -213,7 +213,10 @@ function CardInner({ c }: { c: Card }) {
   )
 }
 
-export default function ProductDeck() {
+/* compact (mobile < lg): content-height section, top-aligned, so the eyebrow sits right after the hero
+   (no full-vh centring band). scroll-margin clears the fixed header for the "View our portfolio" anchor.
+   Default (false) keeps the desktop deck byte-identical (full-vh, centred). Cards unchanged either way. */
+export default function ProductDeck({ compact = false }: { compact?: boolean } = {}) {
   const stripRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
@@ -311,9 +314,9 @@ export default function ProductDeck() {
       id="ventures-deck"
       aria-label="Our products and ventures"
       className="relative w-full overflow-hidden"
-      style={{ height: vh, background: 'var(--navy)' }}
+      style={{ height: compact ? 'auto' : vh, background: 'var(--navy)', scrollMarginTop: compact ? 'calc(88px + env(safe-area-inset-top))' : undefined }}
     >
-      <div className="h-full flex flex-col justify-center" style={{ paddingTop: pad }}>
+      <div className={compact ? 'flex flex-col' : 'h-full flex flex-col justify-center'} style={{ paddingTop: compact ? 0 : pad, paddingBottom: compact ? 24 : undefined }}>
         <div className="max-w-[1280px] w-full mx-auto px-6 lg:px-8 mb-3 sm:mb-4">
           <div className="flex items-center gap-4">
             <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>

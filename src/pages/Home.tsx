@@ -275,7 +275,8 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           HERO
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* < lg: content-height, no vertical centring (removes the tall empty bands). ≥ lg: unchanged. */}
+      <section className="relative overflow-hidden lg:flex lg:items-center lg:min-h-screen">
         {/* Watermark — assembles on load, fades on scroll; behind all hero content via DOM order */}
         <div
           className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[6%] pointer-events-none"
@@ -292,8 +293,9 @@ export default function Home() {
           <LiquidGold style={{ opacity: 0.55 }} />
         </div>
 
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full py-24 lg:py-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-64px)]">
+        {/* < lg: ~48px below the fixed header (safe-area aware) + ~48px below the trust row. ≥ lg: py-0. */}
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full pt-[calc(64px+env(safe-area-inset-top))] pb-12 lg:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 lg:items-center lg:min-h-[calc(100vh-64px)]">
 
             {isLg ? (
               <>
@@ -349,14 +351,17 @@ export default function Home() {
           style={{ background: 'linear-gradient(to bottom, transparent, var(--navy))' }}
         />
 
-        <ScrollCue />
+        {/* Scroll cue is for the tall desktop hero; on the short mobile hero it would sit in the gap. */}
+        {isLg && <ScrollCue />}
       </section>
 
       {/* ══════════════════════════════════════════════════════════
           PRODUCT DECK — NegosyoPlans family. A normal full-width section directly
           AFTER the hero at every breakpoint (eyebrow + navy background), one instance.
       ══════════════════════════════════════════════════════════ */}
-      <ProductDeck />
+      {/* compact (< lg): content-height section (no full-vh centring band) so the eyebrow sits right
+          after the hero. ≥ lg: full-vh centred deck, unchanged. */}
+      <ProductDeck compact={!isLg} />
 
       {/* ══════════════════════════════════════════════════════════
           VALUES STRIP
