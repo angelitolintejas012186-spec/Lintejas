@@ -9,6 +9,7 @@ import AssemblingInterlock from '../components/motion/AssemblingInterlock'
 import HudFrame            from '../components/motion/HudFrame'
 import LiquidGold          from '../components/motion/LiquidGold'
 import ProductDeck         from '../components/ProductDeck'
+import DeferredLogo        from '../components/DeferredLogo'
 import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 import { useMediaQuery } from '../lib/useMediaQuery'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
@@ -269,6 +270,18 @@ export default function Home() {
     </>
   )
 
+  /* Mobile (< lg): same glow ring, but the 3D is DEFERRED — static SVG paints first,
+     R3F loads after first paint/idle/in-view (DeferredLogo). Desktop keeps logo3D above. */
+  const logo3DMobile = (fallbackSize: number) => (
+    <>
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle at center, rgba(212,168,67,0.10) 0%, transparent 65%)', filter: 'blur(20px)' }}
+      />
+      <DeferredLogo size={fallbackSize} mouseRef={mouseRef} />
+    </>
+  )
+
   return (
     <div style={{ background: 'var(--navy)' }}>
 
@@ -334,7 +347,7 @@ export default function Home() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, delay: 0.2, ease }}
                   >
-                    {logo3D(120)}
+                    {logo3DMobile(120)}
                   </motion.div>
                 </div>
                 {heroLead}

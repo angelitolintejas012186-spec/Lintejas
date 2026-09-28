@@ -5,7 +5,9 @@
     <!-- Favicon (item 121): base is '/', served at lintejas.io root — no /Lintejas/ prefix -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lintejas — Software Development &amp; Services, Philippines</title>
     <meta name="description" content="A. Lintejas Software Development &amp; Services — a DTI-registered software company in the Philippines building precision software ventures: NegosyoPlans, Matthew System, SkillVue and more." />
@@ -21,6 +23,29 @@
     <meta name="twitter:title" content="Lintejas — Software Development &amp; Services, Philippines" />
     <meta name="twitter:description" content="DTI-registered software company in the Philippines building precision software ventures." />
     <meta name="twitter:image" content="https://lintejas.io/favicon-180.png" />
+    <!-- Structured data (B4): Organization + WebSite. No postal address and no sameAs yet
+         (the permanent Facebook page URL is pending — see the NegosyoPlans note). Email
+         matches the address shown on the Contact page + footer. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Lintejas",
+          "legalName": "A. Lintejas Software Development & Services",
+          "url": "https://lintejas.io/",
+          "logo": "https://lintejas.io/favicon-180.png",
+          "email": "hello@lintejas.com"
+        },
+        {
+          "@type": "WebSite",
+          "name": "Lintejas",
+          "url": "https://lintejas.io/"
+        }
+      ]
+    }
+    </script>
     <!-- Apply stored theme CSS vars synchronously before React loads to prevent colour flash -->
     <script>
       (function () {

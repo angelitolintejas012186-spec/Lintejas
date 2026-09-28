@@ -3,8 +3,16 @@ import React, {
 } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { DEFAULT_CONFIG, DEFAULT_THEME_VARS } from './defaults'
-import { supabase, fetchSiteConfig, saveSiteConfig, uploadAsset as supabaseUpload } from './supabase'
 import type { SiteConfig } from './types'
+
+/* B2 (perf): './supabase' is loaded via a dynamic import() so the ~212 KB supabase
+   client is code-split OUT of the public entry graph (no modulepreload on the
+   homepage). The public config read runs AFTER first paint (bundled defaults render
+   immediately); admin actions load it on demand. `getSb()` memoises the one module
+   promise so the client stays a singleton. The type-only `User` import above is
+   erased at build and pulls nothing into the bundle. */
+let _sbPromise: Promise<typeof import('./supabase')> | null = null
+function getSb() { return (_sbPromise ??= import('./supabase')) }
 
 interface SiteConfigCtx {
   config: SiteConfig
@@ -68,28 +76,39 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
     applyThemeVars(config.theme.vars ?? DEFAULT_THEME_VARS)
   }, [config.theme.vars])
 
-  /* Auth listener */
+  /* Auth listener + config read — DEFERRED to after first paint (B2). Supabase is
+     dynamic-imported here, so the public bundle renders defaults with no supabase
+     dependency; the remote read + auth wiring happen on idle. */
   useEffect(() => {
-    if (!supabase) { setIsLoading(false); return }
-    supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_ev, session) => {
-      setUser(session?.user ?? null)
-    })
-    return () => subscription.unsubscribe()
-  }, [])
+    let cancelled = false
+    let unsub: (() => void) | null = null
 
-  /* Load config from Supabase on mount */
-  useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
-      const remote = await fetchSiteConfig()
-      if (remote) {
+    const run = async () => {
+      const sb = await getSb()
+      if (cancelled) return
+      if (!sb.supabase) { setIsLoading(false); return }
+      // auth
+      sb.supabase.auth.getUser().then(({ data }) => { if (!cancelled) setUser(data.user ?? null) })
+      const { data: { subscription } } = sb.supabase.auth.onAuthStateChange((_ev, session) => {
+        if (!cancelled) setUser(session?.user ?? null)
+      })
+      unsub = () => subscription.unsubscribe()
+      // config
+      const remote = await sb.fetchSiteConfig()
+      if (!cancelled && remote) {
         const merged = deepMerge(DEFAULT_CONFIG, remote)
         setConfig(merged)
         localStorage.setItem(LS_KEY, JSON.stringify(merged))
       }
-      setIsLoading(false)
-    })()
+      if (!cancelled) setIsLoading(false)
+    }
+
+    const idle = (window as unknown as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback
+    const kick = () => { if (idle) idle(run); else setTimeout(run, 1) }
+    if (document.readyState === 'complete') kick()
+    else window.addEventListener('load', kick, { once: true })
+
+    return () => { cancelled = true; if (unsub) unsub() }
   }, [])
 
   function updateConfig(patch: Partial<SiteConfig> | ((prev: SiteConfig) => SiteConfig)) {
@@ -102,11 +121,13 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
   }
 
   async function saveConfig() {
+    const { saveSiteConfig } = await getSb()
     await saveSiteConfig(config)
     setIsDirty(false)
   }
 
   async function uploadAsset(file: File, name: string): Promise<string> {
+    const { supabase, uploadAsset: supabaseUpload } = await getSb()
     if (!supabase) {
       return URL.createObjectURL(file)
     }
@@ -114,12 +135,14 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
   }
 
   async function signIn(email: string, password: string) {
+    const { supabase } = await getSb()
     if (!supabase) throw new Error('Supabase not configured')
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
   }
 
   async function signOut() {
+    const { supabase } = await getSb()
     if (!supabase) return
     await supabase.auth.signOut()
     setUser(null)
@@ -130,7 +153,7 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
     if (!isDirty || !user) return
     if (saveTimer.current) clearTimeout(saveTimer.current)
     saveTimer.current = setTimeout(() => {
-      saveSiteConfig(config).catch(console.error)
+      getSb().then(({ saveSiteConfig }) => saveSiteConfig(config).catch(console.error))
       setIsDirty(false)
     }, 2000)
     return () => { if (saveTimer.current) clearTimeout(saveTimer.current) }

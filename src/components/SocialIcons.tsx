@@ -4,7 +4,7 @@ import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 
 const SOCIALS = [
   { label: 'LinkedIn',  href: 'https://linkedin.com/company/lintejas', Icon: Linkedin,  whatsapp: false },
-  { label: 'Facebook',  href: 'https://facebook.com/lintejas',         Icon: Facebook,  whatsapp: false },
+  { label: 'Facebook',  href: 'https://www.facebook.com/share/19JHHNKiee/', Icon: Facebook,  whatsapp: false },
   { label: 'Twitter/X', href: 'https://twitter.com/lintejas',          Icon: Twitter,   whatsapp: false },
   { label: 'Instagram', href: 'https://instagram.com/lintejas',        Icon: Instagram, whatsapp: false },
   { label: 'YouTube',   href: 'https://youtube.com/@lintejas',         Icon: Youtube,   whatsapp: false },

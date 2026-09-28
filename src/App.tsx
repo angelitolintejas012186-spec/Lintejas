@@ -22,14 +22,17 @@ import Companies from './pages/Companies'
 import Services  from './pages/Services'
 import Contact   from './pages/Contact'
 
-import Login          from './admin/Login'
-import AdminLayout    from './admin/AdminLayout'
-import Dashboard      from './admin/Dashboard'
-import Branding       from './admin/Branding'
-import Theme          from './admin/Theme'
-import Plugins        from './admin/Plugins'
-import Settings       from './admin/Settings'
-import ProtectedRoute from './admin/ProtectedRoute'
+/* B2 (perf): the admin app is lazy so its chunks — notably @dnd-kit (only used by
+   admin/Branding) — are code-split OUT of the public entry graph and no longer
+   modulepreloaded on the homepage. Public visitors never download admin JS. */
+const Login          = lazy(() => import('./admin/Login'))
+const AdminLayout    = lazy(() => import('./admin/AdminLayout'))
+const Dashboard      = lazy(() => import('./admin/Dashboard'))
+const Branding       = lazy(() => import('./admin/Branding'))
+const Theme          = lazy(() => import('./admin/Theme'))
+const Plugins        = lazy(() => import('./admin/Plugins'))
+const Settings       = lazy(() => import('./admin/Settings'))
+const ProtectedRoute = lazy(() => import('./admin/ProtectedRoute'))
 
 /* Public shell — wraps all public routes with Lenis + aurora */
 function PublicShell() {
@@ -61,6 +64,8 @@ export default function App() {
       <Analytics />
       <MotionConfig reducedMotion="user">
       <HashRouter>
+        {/* Suspense boundary for the lazy admin routes; public routes are static (never suspend). */}
+        <Suspense fallback={null}>
         <Routes>
           {/* Public site */}
           <Route element={<PublicShell />}>
@@ -71,7 +76,7 @@ export default function App() {
             <Route path="/contact"   element={<Contact />} />
           </Route>
 
-          {/* Admin */}
+          {/* Admin (lazy — code-split from the public bundle) */}
           <Route path="/admin/login" element={<Login />} />
           <Route path="/admin" element={
             <ProtectedRoute>
@@ -85,6 +90,7 @@ export default function App() {
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
+        </Suspense>
       </HashRouter>
       </MotionConfig>
     </SiteConfigProvider>
