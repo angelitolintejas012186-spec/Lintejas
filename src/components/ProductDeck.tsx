@@ -213,10 +213,7 @@ function CardInner({ c }: { c: Card }) {
   )
 }
 
-/* overlay (mobile logo-overlap): content-height section so the cards sit near the top and overlap the
-   logo's lower part (Home.tsx positions the slot). autoplay: gated so it starts only after the deck has
-   risen. Defaults keep the desktop instance byte-identical (full-vh, autoplay on). */
-export default function ProductDeck({ overlay = false, autoplay = true }: { overlay?: boolean; autoplay?: boolean } = {}) {
+export default function ProductDeck() {
   const stripRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
@@ -263,7 +260,7 @@ export default function ProductDeck({ overlay = false, autoplay = true }: { over
   /* Autoplay 3,600 ms; permanently stopped on first pointerdown/touchstart/wheel. */
   useEffect(() => {
     const strip = stripRef.current
-    if (!strip || reduced || !autoplay) return
+    if (!strip || reduced) return
     let stopped = false
     const timer = setInterval(() => {
       const next = (activeRef.current + 1) % CARDS.length
@@ -273,7 +270,7 @@ export default function ProductDeck({ overlay = false, autoplay = true }: { over
     const evs: (keyof HTMLElementEventMap)[] = ['pointerdown', 'touchstart', 'wheel']
     evs.forEach(ev => strip.addEventListener(ev, stop, { passive: true }))
     return () => { clearInterval(timer); evs.forEach(ev => strip.removeEventListener(ev, stop)) }
-  }, [reduced, autoplay])
+  }, [reduced])
 
   /* pd-inview (pause float off-screen) + pd-scrolling (pause during page scroll). */
   useEffect(() => {
@@ -314,12 +311,9 @@ export default function ProductDeck({ overlay = false, autoplay = true }: { over
       id="ventures-deck"
       aria-label="Our products and ventures"
       className="relative w-full overflow-hidden"
-      /* overlay: transparent so the 3D logo shows behind the cards (deck "in front of" the logo). */
-      style={{ height: overlay ? 'auto' : vh, background: overlay ? 'transparent' : 'var(--navy)' }}
+      style={{ height: vh, background: 'var(--navy)' }}
     >
-      <div className={overlay ? 'flex flex-col' : 'h-full flex flex-col justify-center'} style={{ paddingTop: overlay ? 0 : pad, paddingBottom: overlay ? 14 : undefined }}>
-        {/* Section eyebrow — hidden in the mobile overlay (it would sit over the logo art). */}
-        {!overlay && (
+      <div className="h-full flex flex-col justify-center" style={{ paddingTop: pad }}>
         <div className="max-w-[1280px] w-full mx-auto px-6 lg:px-8 mb-3 sm:mb-4">
           <div className="flex items-center gap-4">
             <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
@@ -328,7 +322,6 @@ export default function ProductDeck({ overlay = false, autoplay = true }: { over
             <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
           </div>
         </div>
-        )}
 
         <div className="pd-carousel" ref={stripRef} role="list">
           {CARDS.map((c, i) => {

@@ -162,16 +162,10 @@ const VALUES = [
 export default function Home() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  /* item 121 (Option A) — lg+ = desktop/tablet: hero side-by-side as on main, deck AFTER it.
-     below lg = mobile: 3D logo → deck → hero text. The deck is rendered in exactly ONE slot
-     per breakpoint (the other is never mounted → no autoplay/timers/observer, not tabbable). */
+  /* Mobile (< lg): 2-column hero (headline left, small 3D logo right); the deck is a normal section
+     AFTER the hero. Desktop (≥ lg): side-by-side hero unchanged. isLg is seeded synchronously
+     (useMediaQuery) → correct on first paint, no flash/CLS. */
   const isLg = useMediaQuery('(min-width: 1024px)')
-  const prefersReduced = typeof window !== 'undefined' && window.matchMedia
-    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
-  /* Logo-first intro (mobile only): the deck stays hidden (translated down, space reserved) until it
-     rises — after 2.5 s, or immediately on the first scroll/touch/wheel/keydown. Autoplay + interaction
-     start only once risen. Reduced motion → shown at once, no animation. Desktop deck is unaffected. */
-  const [deckRisen, setDeckRisen] = useState(false)
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -186,22 +180,94 @@ export default function Home() {
     return () => window.removeEventListener('mousemove', onMove)
   }, [])
 
-  useEffect(() => {
-    if (isLg) return                                   // desktop: deck sits after the hero, no rise
-    if (prefersReduced) { setDeckRisen(true); return } // reduced motion: shown immediately
-    let done = false
-    const rise = () => {
-      if (done) return
-      done = true
-      window.clearTimeout(timer)
-      evs.forEach(ev => window.removeEventListener(ev, rise as EventListener))
-      setDeckRisen(true)
-    }
-    const timer = window.setTimeout(rise, 2500)
-    const evs = ['scroll', 'touchstart', 'wheel', 'keydown', 'pointerdown'] as const
-    evs.forEach(ev => window.addEventListener(ev, rise as EventListener, { passive: true }))
-    return () => { window.clearTimeout(timer); evs.forEach(ev => window.removeEventListener(ev, rise as EventListener)) }
-  }, [isLg, prefersReduced])
+  /* ── Shared hero pieces (rendered in the desktop OR mobile arrangement below; one Interlock3D
+       mount per active breakpoint). ─────────────────────────────────────────────────────────── */
+  const heroBadge = (
+    <motion.div variants={fadeUp}>
+      <span
+        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase"
+        style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.20)', color: 'var(--gold)' }}
+      >
+        <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
+        Technology Holding
+      </span>
+    </motion.div>
+  )
+
+  const heroHeadline = (
+    <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
+      {HEADLINE.map((line, i) => (
+        <motion.span
+          key={line}
+          className="block overflow-hidden"
+          initial={{ clipPath: 'inset(0 0 100% 0)' }}
+          animate={{ clipPath: 'inset(0 0 0% 0)' }}
+          transition={{ duration: 0.9, delay: 0.15 + i * 0.11, ease }}
+        >
+          {/* mobile −20% (48px → 2.4rem/38.4px); sm −20% (60→48); desktop lg:text-7xl unchanged.
+              whitespace-nowrap keeps each line 1 line in BOTH the fallback + display font (no wrap
+              reflow on font-swap → no CLS in the narrow mobile column); lines already fit unwrapped. */}
+          <span
+            className={[
+              'block whitespace-nowrap text-[2.4rem] sm:text-5xl lg:text-7xl',
+              i === HEADLINE.length - 1 ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
+            ].join(' ')}
+          >
+            {line}
+          </span>
+        </motion.span>
+      ))}
+    </h1>
+  )
+
+  const heroLead = (
+    /* min-h reserves the 4-line height on mobile so the body-font swap (3↔4 lines) can't change the
+       hero's content height and re-centre it (items-center) → no CLS. Desktop (lg) unchanged. */
+    <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed max-w-md min-h-[104px] sm:min-h-0" style={{ color: 'var(--slate)' }}>
+      Building enduring technology for the industries
+      that shape the world. Precision software ventures with durable competitive advantage.
+    </motion.p>
+  )
+
+  const heroCtas = (
+    <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start gap-4">
+      <MagneticButton onClick={() => { document.getElementById('ventures-deck')?.scrollIntoView({ behavior: 'smooth' }) }}>
+        View our portfolio <ArrowRight size={15} />
+      </MagneticButton>
+      <Link
+        to="/about"
+        className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium border transition-all duration-300 hover:border-[var(--gold)] hover:text-[var(--cream)]"
+        style={{ borderColor: 'rgba(212,168,67,0.20)', color: 'var(--slate)' }}
+      >
+        About Lintejas
+      </Link>
+    </motion.div>
+  )
+
+  const heroTrust = (
+    <HudFrame cornerSize={12} strokeWidth={1.0} delay={1.0} readouts={[{ position: 'tr', label: 'REV', value: 'v2.4' }]}>
+      <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 px-3 pb-2">
+        {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
+          <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
+            <span style={{ color: 'var(--gold)' }}>—</span> {tag}
+          </span>
+        ))}
+      </motion.div>
+    </HudFrame>
+  )
+
+  const logo3D = (fallbackSize: number) => (
+    <>
+      {/* Outer glow ring */}
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle at center, rgba(212,168,67,0.10) 0%, transparent 65%)', filter: 'blur(20px)' }}
+      />
+      <Suspense fallback={<div className="flex items-center justify-center h-full"><TheInterlockLogo size={fallbackSize} className="opacity-70 animate-float" /></div>}>
+        <Interlock3D mouseRef={mouseRef} />
+      </Suspense>
+    </>
+  )
 
   return (
     <div style={{ background: 'var(--navy)' }}>
@@ -229,154 +295,50 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full py-24 lg:py-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-64px)]">
 
-            {/* ── Text column ─────────────────────────────────── */}
-            {/* item 121: mobile order-3 (logo → deck → text); desktop lg:order-1 unchanged (side-by-side) */}
-            <motion.div
-              className="relative z-10 flex flex-col gap-8 order-3 lg:order-1"
-              initial="hidden"
-              animate="show"
-              variants={staggerContainer}
-            >
-              {/* Chip */}
-              <motion.div variants={fadeUp}>
-                <span
-                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase"
-                  style={{
-                    background: 'rgba(212,168,67,0.08)',
-                    border:     '1px solid rgba(212,168,67,0.20)',
-                    color:      'var(--gold)',
-                  }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
-                  Technology Holding
-                </span>
-              </motion.div>
-
-              {/* Headline — per-line mask reveal */}
-              <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
-                {HEADLINE.map((line, i) => (
-                  <motion.span
-                    key={line}
-                    className="block overflow-hidden"
-                    initial={{ clipPath: 'inset(0 0 100% 0)' }}
-                    animate={{ clipPath: 'inset(0 0 0% 0)' }}
-                    transition={{ duration: 0.9, delay: 0.15 + i * 0.11, ease }}
-                  >
-                    <span
-                      className={[
-                        'block text-5xl sm:text-6xl lg:text-7xl',
-                        /* "ventures." — gold accent on last line */
-                        i === HEADLINE.length - 1 ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
-                      ].join(' ')}
-                    >
-                      {line}
-                    </span>
-                  </motion.span>
-                ))}
-              </h1>
-
-              {/* Subtext */}
-              <motion.p
-                variants={fadeUp}
-                className="text-base sm:text-lg leading-relaxed max-w-md"
-                style={{ color: 'var(--slate)' }}
-              >
-                Building enduring technology for the industries
-                that shape the world. Precision software ventures with durable competitive advantage.
-              </motion.p>
-
-              {/* CTA row */}
-              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start gap-4">
-                <MagneticButton
-                  onClick={() => {
-                    document.getElementById('ventures-deck')?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                >
-                  View our portfolio <ArrowRight size={15} />
-                </MagneticButton>
-
-                <Link
-                  to="/about"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-sm font-medium border transition-all duration-300 hover:border-[var(--gold)] hover:text-[var(--cream)]"
-                  style={{ borderColor: 'rgba(212,168,67,0.20)', color: 'var(--slate)' }}
-                >
-                  About Lintejas
-                </Link>
-              </motion.div>
-
-              {/* Trust strip — HUD-framed */}
-              <HudFrame
-                cornerSize={12}
-                strokeWidth={1.0}
-                delay={1.0}
-                readouts={[
-                  { position: 'tr', label: 'REV', value: 'v2.4' },
-                ]}
-              >
-                <motion.div
-                  variants={fadeUp}
-                  className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 px-3 pb-2"
-                >
-                  {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
-                    <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
-                      <span style={{ color: 'var(--gold)' }}>—</span> {tag}
-                    </span>
-                  ))}
+            {isLg ? (
+              <>
+                {/* Text column — left (desktop, unchanged) */}
+                <motion.div className="relative z-10 flex flex-col gap-8" initial="hidden" animate="show" variants={staggerContainer}>
+                  {heroBadge}
+                  {heroHeadline}
+                  {heroLead}
+                  {heroCtas}
+                  {heroTrust}
                 </motion.div>
-              </HudFrame>
-            </motion.div>
 
-            {/* ── 3D column ───────────────────────────────────── */}
-            <motion.div
-              className="relative order-1 lg:order-2 h-[340px] sm:h-[420px] lg:h-[580px]"
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.2, ease }}
-            >
-              {/* Outer glow ring */}
-              <div
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  background: 'radial-gradient(circle at center, rgba(212,168,67,0.10) 0%, transparent 65%)',
-                  filter: 'blur(20px)',
-                }}
-              />
-              <Suspense
-                fallback={
-                  <div className="flex items-center justify-center h-full">
-                    <TheInterlockLogo size={140} className="opacity-70 animate-float" />
-                  </div>
-                }
-              >
-                <Interlock3D mouseRef={mouseRef} />
-              </Suspense>
-            </motion.div>
-
-            {/* item 121 (Option A) — MOBILE deck slot: directly under the 3D logo, before the text.
-                order-2 places it between logo (order-1) and text (order-3). Full-bleed via the
-                margin trick. Rendered ONLY below lg → the single deck instance on mobile; on lg+
-                this is not mounted and the deck lives after the hero (below). */}
-            {!isLg && (
-              <div
-                className="order-2 relative z-30"
-                /* overlap the LOWER part of the 3D logo (top of the logo frame stays visible above the cards);
-                   z-30 keeps the deck above the canvas. Space is reserved from the start → the rise is
-                   transform-only (no CLS). Interlock3D + its canvas are untouched. */
-                style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', marginTop: '-210px' }}
-              >
-                <div
-                  style={{
-                    transform: deckRisen ? 'translateY(0)' : 'translateY(105%)',
-                    opacity: deckRisen ? 1 : 0,
-                    /* not-risen: invisible + off-slot → don't intercept taps on the content below */
-                    pointerEvents: deckRisen ? 'auto' : 'none',
-                    transition: prefersReduced ? 'none' : 'transform 1s cubic-bezier(.2,.8,.2,1), opacity 1s cubic-bezier(.2,.8,.2,1)',
-                    willChange: 'transform, opacity',
-                  }}
+                {/* 3D column — right (desktop, unchanged: big h-580 container) */}
+                <motion.div
+                  className="relative h-[580px]"
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.2, delay: 0.2, ease }}
                 >
-                  <ProductDeck overlay autoplay={deckRisen} />
+                  {logo3D(140)}
+                </motion.div>
+              </>
+            ) : (
+              /* Mobile (< lg): badge on top; headline (left) + small 3D logo (right) as a row,
+                 vertically centred; lead + buttons + trust full width below. */
+              <motion.div className="relative z-10 flex flex-col gap-6" initial="hidden" animate="show" variants={staggerContainer}>
+                {heroBadge}
+                <div className="flex flex-row items-center gap-4">
+                  <div className="flex-1 min-w-0">{heroHeadline}</div>
+                  <motion.div
+                    className="relative flex-none overflow-hidden"
+                    /* ~135×190 at 390, scales down proportionally at 360 (35vw, clamped). The Interlock3D
+                       canvas fills this smaller container (its vertical FOV is fixed) — component untouched. */
+                    style={{ width: 'clamp(118px, 35vw, 140px)', aspectRatio: '135 / 190' }}
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1.2, delay: 0.2, ease }}
+                  >
+                    {logo3D(120)}
+                  </motion.div>
                 </div>
-              </div>
+                {heroLead}
+                {heroCtas}
+                {heroTrust}
+              </motion.div>
             )}
           </div>
         </div>
@@ -391,13 +353,10 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          PRODUCT DECK — NegosyoPlans family (item 121, Option A)
-          lg+ (desktop/tablet): the hero above stays side-by-side exactly as on
-          main, and the deck sits immediately after it. Below lg the deck is
-          rendered inside the hero (between logo and text) instead — see above.
-          Exactly one instance is mounted per breakpoint.
+          PRODUCT DECK — NegosyoPlans family. A normal full-width section directly
+          AFTER the hero at every breakpoint (eyebrow + navy background), one instance.
       ══════════════════════════════════════════════════════════ */}
-      {isLg && <ProductDeck />}
+      <ProductDeck />
 
       {/* ══════════════════════════════════════════════════════════
           VALUES STRIP
