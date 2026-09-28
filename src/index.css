@@ -251,6 +251,21 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pd-card.pd-soon.pd-active{opacity:.7;filter:grayscale(.12) brightness(.95)}
 .pd-card.pd-soon .pd-ci{background:rgba(10,22,40,.06);border-color:rgba(10,22,40,.12);color:var(--nd-ink)}
 .pd-card.pd-soon .pd-mono{font-family:'Figtree',sans-serif;font-weight:800;font-size:26px;color:var(--nd-ink)}
+/* SkillVue rich coming-soon card — the featured card's content in deck style. Navy so the gold
+   tagline + all text stay ≥4.5:1; dimmed via opacity only (no grayscale, which would mute the gold). */
+.pd-card[data-v="skillvue"]{background:radial-gradient(130% 160% at 90% -20%,var(--nd-navy3),var(--nd-navy2) 55%,var(--nd-navy));border:1.5px solid var(--nd-gold);color:#fff}
+.pd-card[data-v="skillvue"].pd-soon{opacity:.6;filter:none}
+.pd-card[data-v="skillvue"].pd-soon.pd-active{opacity:.9;filter:none}
+.pd-card[data-v="skillvue"] .pd-ci{background:rgba(212,168,67,.08);border:1px solid rgba(217,169,60,.35);margin-bottom:14px}   /* same 🧠 tile as the featured card */
+.pd-emoji{font-size:34px;line-height:1}
+.pd-soon-badge{align-self:flex-start;display:inline-flex;align-items:center;background:rgba(138,154,176,.16);color:#B9C2D0;border:1px solid rgba(138,154,176,.32);font-size:11px;font-weight:700;letter-spacing:.4px;border-radius:999px;padding:4px 12px;margin-bottom:16px}
+/* scoped so they win over .pd-card.pd-navy p — tagline stays GOLD, sub-line muted-light */
+.pd-card[data-v="skillvue"] .pd-tagline{font-size:14px;font-weight:700;color:var(--nd-gold-hi);margin-top:8px}
+.pd-card[data-v="skillvue"] .pd-subline{font-size:13px;color:rgba(255,255,255,.75);margin-top:3px}
+.pd-card[data-v="skillvue"] h3{color:#fff}
+.pd-card[data-v="skillvue"] .pd-hook{color:rgba(255,255,255,.92);margin-top:11px}
+.pd-card[data-v="skillvue"] .pd-feat li{color:rgba(255,255,255,.9)}
+.pd-card[data-v="skillvue"] .pd-feat li::before{color:var(--nd-gold-hi)}
 /* Pause float/sheen off-screen or while page-scrolling (npdeck.js parity) */
 #ventures-deck:not(.pd-inview) .pd-card.pd-active,
 #ventures-deck.pd-scrolling .pd-card.pd-active{animation:none}

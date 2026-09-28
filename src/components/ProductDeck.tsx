@@ -42,12 +42,16 @@ type Card = {
   logo?: string
   svg?: ReactNode
   mono?: string           // coming-soon monogram
+  emoji?: string          // coming-soon rich card (SkillVue) — emoji icon tile
   liteTag?: boolean
   cta?: string            // gold pill text
   title?: string
   titleBadge?: string     // e.g. FREE
+  topBadge?: string       // standalone badge above the icon (SkillVue "Coming soon")
   brand?: boolean         // translate="no" on the title
   sub?: string
+  tagline?: string        // gold tagline (SkillVue)
+  subline?: string        // muted sub-line (SkillVue)
   hook?: string
   offers?: Offer[]
   feat?: Feat[]
@@ -107,8 +111,20 @@ const CARDS: Card[] = [
     title: 'Share your business model', hook: 'Real model, no blueprint yet? Tell us how it works.',
     feat: [{ text: 'If selected, we may build a blueprint from it' }, { text: 'Free to share · no guarantee' }, { text: 'Credited or anonymous — your choice' }] },
   // Coming-soon (Lintejas additions) — dimmed, not links, no price
-  { v: 'skillvue', soon: true, mono: 'S', brand: true, title: 'SkillVue', titleBadge: 'Coming soon',
-    hook: 'Workforce skills tracking for food manufacturers.' },
+  // SkillVue = the site's existing SkillVue "Coming soon" featured card content (Home.tsx:553-578),
+  // in deck-card style. Navy card so the gold tagline + all text clear ≥4.5:1 (as on the featured card).
+  { v: 'skillvue', soon: true, navy: true, emoji: '🧠', brand: true, topBadge: 'Coming soon',
+    title: 'SkillVue',
+    tagline: 'Safety & Workforce Intelligence Platform',       // Home.tsx:570
+    subline: 'Food Manufacturing · Safety & HR Tech',          // Home.tsx:571
+    hook: 'The human layer of the smart factory.',             // Home.tsx:576 (first sentence)
+    feat: [                                                    // derived from the description Home.tsx:576-578
+      { text: 'Digital work permits' },
+      { text: 'LOTO and confined space entry' },
+      { text: 'Risk prediction' },
+      { text: 'Competency tracking and training pathways' },
+      { text: 'Real-time skill-gap dashboards' },
+    ] },
   { v: 'biyaheph', soon: true, mono: 'B', brand: true, title: 'BiyahePH', titleBadge: 'Coming soon',
     hook: 'Maps and commute directions for the Philippines.' },
   { v: 'fashion', soon: true, mono: 'L', brand: true, title: 'Lintejas Fashion', titleBadge: 'Coming soon',
@@ -121,6 +137,25 @@ function headerOffset(): number {
 }
 
 function CardInner({ c }: { c: Card }) {
+  // Rich coming-soon card (SkillVue) — mirrors the featured card: badge top-left,
+  // 🧠 tile, title, gold tagline, muted sub-line, hook, checklist. No CTA / link / price.
+  if (c.emoji) {
+    return (
+      <>
+        {c.topBadge && <span className="pd-soon-badge">{c.topBadge}</span>}
+        <div className="pd-ci pd-emoji-tile" aria-hidden="true"><span className="pd-emoji">{c.emoji}</span></div>
+        <h3 translate={c.brand ? 'no' : undefined}>{c.title}</h3>
+        {c.tagline && <p className="pd-tagline">{c.tagline}</p>}
+        {c.subline && <p className="pd-subline">{c.subline}</p>}
+        {c.hook && <p className="pd-hook">{c.hook}</p>}
+        {c.feat && (
+          <ul className="pd-feat">
+            {c.feat.map((f) => <li key={f.text}>{f.text}</li>)}
+          </ul>
+        )}
+      </>
+    )
+  }
   return (
     <>
       <div className="pd-top">
