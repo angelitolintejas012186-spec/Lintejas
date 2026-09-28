@@ -64,7 +64,7 @@ type Card = {
 /* Same order as the original NP deck (index.html #npdeck-carousel), then coming-soon. */
 const CARDS: Card[] = [
   // Business Blueprints — index.html:688-704
-  { v: 'blueprints', href: `${NP}/blueprints`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
+  { v: 'blueprints', href: `${NP}/`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
     title: 'Business Blueprints', hook: 'Stop guessing. Start with a complete plan.',
     feat: [
       { text: 'Complete business plan' }, { text: 'Startup costs & revenue projections' },
@@ -72,7 +72,7 @@ const CARDS: Card[] = [
       { text: 'OFW remote management' }, { text: '90-day launch action plan' },
       { text: 'Food safety & FDA compliance (food)', food: true },
     ],
-    dash: 'Includes Matthew System Basic dashboard →', dashHref: `${NP}/portal/` },
+    dash: 'Includes 30 days of Matthew System Basic →', dashHref: `${NP}/portal/` },
   // Matthew System — index.html:706-718
   { v: 'matthew', href: `${NP}/matthew`, navy: true, frameless: true, svg: MatthewCrest, cta: 'See it →', brand: true,
     title: 'Matthew System', sub: 'Your Comprehensive Business Manager Dashboard.',
