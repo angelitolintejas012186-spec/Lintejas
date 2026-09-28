@@ -10,6 +10,7 @@ import HudFrame            from '../components/motion/HudFrame'
 import LiquidGold          from '../components/motion/LiquidGold'
 import ProductDeck         from '../components/ProductDeck'
 import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
+import { useMediaQuery } from '../lib/useMediaQuery'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
@@ -161,6 +162,10 @@ const VALUES = [
 export default function Home() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  /* item 121 (Option A) — lg+ = desktop/tablet: hero side-by-side as on main, deck AFTER it.
+     below lg = mobile: 3D logo → deck → hero text. The deck is rendered in exactly ONE slot
+     per breakpoint (the other is never mounted → no autoplay/timers/observer, not tabbable). */
+  const isLg = useMediaQuery('(min-width: 1024px)')
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -202,8 +207,9 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center min-h-[calc(100vh-64px)]">
 
             {/* ── Text column ─────────────────────────────────── */}
+            {/* item 121: mobile order-3 (logo → deck → text); desktop lg:order-1 unchanged (side-by-side) */}
             <motion.div
-              className="relative z-10 flex flex-col gap-8 order-2 lg:order-1"
+              className="relative z-10 flex flex-col gap-8 order-3 lg:order-1"
               initial="hidden"
               animate="show"
               variants={staggerContainer}
@@ -322,6 +328,16 @@ export default function Home() {
                 <Interlock3D mouseRef={mouseRef} />
               </Suspense>
             </motion.div>
+
+            {/* item 121 (Option A) — MOBILE deck slot: directly under the 3D logo, before the text.
+                order-2 places it between logo (order-1) and text (order-3). Full-bleed via the
+                margin trick. Rendered ONLY below lg → the single deck instance on mobile; on lg+
+                this is not mounted and the deck lives after the hero (below). */}
+            {!isLg && (
+              <div className="order-2" style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)' }}>
+                <ProductDeck />
+              </div>
+            )}
           </div>
         </div>
 
@@ -335,11 +351,13 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          PRODUCT DECK — NegosyoPlans family (item 121)
-          Placed directly under the 3D-logo hero as a new sibling section
-          (the hero section itself stays byte-identical per the guard).
+          PRODUCT DECK — NegosyoPlans family (item 121, Option A)
+          lg+ (desktop/tablet): the hero above stays side-by-side exactly as on
+          main, and the deck sits immediately after it. Below lg the deck is
+          rendered inside the hero (between logo and text) instead — see above.
+          Exactly one instance is mounted per breakpoint.
       ══════════════════════════════════════════════════════════ */}
-      <ProductDeck />
+      {isLg && <ProductDeck />}
 
       {/* ══════════════════════════════════════════════════════════
           VALUES STRIP
