@@ -133,19 +133,131 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-pulse-gold { animation: pulseGold 2s ease-in-out infinite; }
 
-/* ProductDeck (item 121) — gentle float for the ACTIVE card. Keeps scale(1) so it
-   never clobbers the card's inline transform; only applied to active cards in JS. */
-@keyframes deckFloat {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50%      { transform: translateY(-6px) scale(1); }
+/* ============================================================================
+   ProductDeck — 1:1 port of NegosyoPlans js/npdeck.css (item 121 polish).
+   Values copied verbatim; selectors renamed .npdeck-* → .pd-*, #npdeck-band →
+   #ventures-deck, #npdeck-carousel → .pd-carousel. Motion, sizing, colours,
+   gradients, shadows, side-scale/filter, float + sheen keyframes, transitions,
+   scroll-snap + centering padding are identical to the original.
+   ============================================================================ */
+#ventures-deck{
+  --nd-navy:#0C1830; --nd-navy2:#152442; --nd-navy3:#1C2E52;
+  --nd-gold:#D9A93C; --nd-gold-hi:#EBC15E; --nd-gold-deep:#B78A24; --nd-gold-soft:#F5E7C4;
+  --nd-cream:#FAF7F0; --nd-ink:#18202F; --nd-muted:#5C6579; --nd-line:#E8E1D1;
+  --nd-sh-md:0 2px 4px rgba(0,0,0,.18),0 12px 30px rgba(0,0,0,.28);
+  --nd-sh-lg:0 8px 18px rgba(0,0,0,.30),0 26px 52px rgba(0,0,0,.42);
+  --nd-sh-gold:0 8px 24px rgba(217,169,60,.38),0 2px 6px rgba(183,138,36,.25);
 }
-/* Hide the deck strip's scrollbar (still scrollable / swipeable). */
-.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-/* Safety: no deck float under reduced-motion (JS also disables it). */
-@media (prefers-reduced-motion: reduce) {
-  #ventures-deck [role="listitem"] { animation: none !important; }
+.pd-carousel{
+  display:flex; gap:10px; overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  padding:26px max(calc(50vw - 221px), 10vw) 16px;   /* 221 = half of 442 → first & last cards centrable */
+  -webkit-overflow-scrolling:touch; scrollbar-width:none; max-width:100%;
 }
+.pd-carousel::-webkit-scrollbar{display:none}
+.pd-card{
+  scroll-snap-align:center; flex:none;
+  width:min(442px,80vw); min-height:461px;
+  display:flex; flex-direction:column;
+  background:var(--nd-cream); border:1px solid rgba(232,225,209,.9); border-radius:28px;
+  padding:30px 30px 32px; box-shadow:var(--nd-sh-md);
+  transform:scale(.88); opacity:.92; filter:brightness(.93);
+  transition:transform .35s cubic-bezier(.22,.8,.3,1),opacity .35s,box-shadow .35s,filter .35s;
+  text-align:left; position:relative; overflow:hidden; color:var(--nd-ink); text-decoration:none;
+}
+.pd-card.pd-active{ transform:scale(1); opacity:1; filter:none; box-shadow:var(--nd-sh-lg); animation:pd-floaty 3.4s ease-in-out infinite; }
+@keyframes pd-floaty{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.pd-card.pd-active::after{
+  content:"";position:absolute;top:0;left:-80%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(217,169,60,.16),transparent);
+  animation:pd-sheen 3.4s ease-in-out infinite; pointer-events:none; will-change:transform;
+}
+/* Identical sweep to the original (left −80%→120% = +200% of card width; the ::after is 60% wide
+   → translateX 0→333.33%), but via transform so it is composited and never triggers CLS. */
+@keyframes pd-sheen{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(333.33%)}}
+.pd-card:focus-visible{outline:3px solid var(--nd-gold);outline-offset:3px}
+.pd-ci{
+  width:70px;height:70px;border-radius:24px;flex:none;
+  background:linear-gradient(150deg,var(--nd-navy3),var(--nd-navy));
+  border:1px solid rgba(217,169,60,.35);
+  display:grid;place-items:center;color:var(--nd-gold);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.pd-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.pd-ci svg{width:45px;height:45px;display:block}
+.pd-ci img{width:62px;height:62px;object-fit:contain;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.pd-feat{list-style:none;margin:13px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+.pd-feat li{position:relative;padding-left:26px;font-size:15.5px;line-height:1.3;color:var(--nd-muted)}
+.pd-feat li::before{content:'\2713';position:absolute;left:0;top:-1px;color:var(--nd-gold-deep);font-weight:800;font-size:15px}
+.pd-feat-food::before{content:'\1F373';font-size:12px;top:0}
+.pd-dash{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;line-height:1.3;color:var(--nd-gold-hi);cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(235,193,94,.42);padding-bottom:2px;align-self:flex-start;margin-top:14px}
+.pd-dash:hover,.pd-dash:focus-visible{color:#fff;border-bottom-color:#fff}
+.pd-card h3{font-family:'Figtree',sans-serif;font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.2;margin:0;color:var(--nd-ink)}
+.pd-sub{font-weight:600}
+.pd-hook{font-size:16px;font-weight:800;line-height:1.32;margin:11px 0 0;color:var(--nd-ink)}
+.pd-card p{font-size:17px;color:var(--nd-muted);margin-top:7px;line-height:1.45}
+.pd-go{
+  display:inline-flex;align-items:center;gap:6px;flex:none;
+  background:linear-gradient(135deg,var(--nd-gold-hi),var(--nd-gold) 55%,var(--nd-gold-deep));
+  color:var(--nd-navy);font-weight:800;font-size:14px;padding:9px 16px;border-radius:999px;
+  box-shadow:var(--nd-sh-gold),inset 0 1px 0 rgba(255,255,255,.45);white-space:nowrap;
+}
+.pd-badge{
+  display:inline-flex;align-items:center;vertical-align:middle;margin-left:9px;transform:translateY(-2px);
+  background:linear-gradient(135deg,var(--nd-gold-hi),var(--nd-gold));color:var(--nd-navy);
+  font-size:11px;font-weight:800;letter-spacing:.5px;border-radius:999px;padding:3px 10px;
+}
+.pd-badge--soon{ background:none;border:1px solid var(--nd-gold);color:var(--nd-gold-deep); font-size:9px;letter-spacing:.6px;padding:2px 8px; }
+.pd-card[data-v="courses"] h3{font-size:19px}
+.pd-offer + .pd-offer{margin-top:11px}
+.pd-offer .pd-sub{font-size:14px;margin-top:2px}
+.pd-offer-row{display:flex;align-items:center;flex-wrap:wrap;gap:2px 0}
+.pd-offer-row .pd-badge--soon{transform:none}
+/* navy cards (blueprints, matthew, supplier, contribute) */
+.pd-card.pd-navy{ background:radial-gradient(130% 160% at 90% -20%,var(--nd-navy3),var(--nd-navy2) 55%,var(--nd-navy)); border:1.5px solid var(--nd-gold); color:#fff; }
+.pd-card.pd-navy.pd-active{ box-shadow:var(--nd-sh-lg),0 0 0 1px rgba(217,169,60,.4),0 0 30px rgba(217,169,60,.28); }
+.pd-card.pd-navy:not(.pd-active){ box-shadow:var(--nd-sh-md),0 0 18px rgba(217,169,60,.18); }
+.pd-card.pd-navy h3{color:#fff}
+.pd-card.pd-navy p{color:rgba(255,255,255,.75)}
+.pd-card.pd-navy .pd-hook{color:var(--nd-gold-hi)}
+.pd-card.pd-navy .pd-feat li{color:rgba(255,255,255,.85)}
+.pd-card.pd-navy .pd-feat li::before{color:var(--nd-gold-hi)}
+/* frameless brand-logo tiles */
+.pd-card.pd-frameless .pd-ci{background:transparent;box-shadow:none;border:0;border-radius:0}
+.pd-card.pd-frameless .pd-ci img{width:66px;height:66px}
+/* Matthew cool-matte skin */
+.pd-card[data-v="matthew"]{
+  --mx2-gold:#C2B183; --mx2-pale:#D8CBA0; --mx2-deep:#8D8471; --mx2-ink:#1A1E22;
+  background:radial-gradient(130% 160% at 90% -20%,#2C2F33,#24282C 55%,#1B1E21); border-color:var(--mx2-gold);
+}
+.pd-card[data-v="matthew"] .pd-hook{color:var(--mx2-pale)}
+.pd-card[data-v="matthew"] p{color:rgba(232,231,225,.72)}
+.pd-card[data-v="matthew"] .pd-feat li{color:rgba(232,231,225,.85)}
+.pd-card[data-v="matthew"] .pd-feat li::before{color:var(--mx2-gold)}
+.pd-card[data-v="matthew"] .pd-go{background:linear-gradient(135deg,var(--mx2-pale),var(--mx2-gold) 55%,var(--mx2-deep));color:var(--mx2-ink)}
+/* Matthew Lite — cream, navy text (mango mark) */
+.pd-card[data-v="lite"]{background:#FFFCF5;border:1.5px solid #C9D4E6;color:#1F3354}
+.pd-card[data-v="lite"] .pd-top{justify-content:flex-start;gap:12px}
+.pd-card[data-v="lite"] .pd-ci{background:transparent;box-shadow:none;border:0;border-radius:0;width:auto;height:70px}
+.pd-card[data-v="lite"] .pd-ci img{width:auto;height:70px}
+.pd-lite-tag{font-family:'Figtree',sans-serif;font-weight:800;font-size:20px;letter-spacing:.14em;color:#47679C}
+.pd-card[data-v="lite"] h3{color:#1F3354}
+.pd-card[data-v="lite"] .pd-sub{color:#2F4A72}
+.pd-card[data-v="lite"] .pd-hook{color:#1F3354;background:rgba(47,74,114,.08);border-left:3px solid #47679C;border-radius:0 8px 8px 0;padding:9px 12px;margin-top:13px}
+.pd-litedesc{font-size:16px;line-height:1.45;color:#2F4A72;margin-top:11px}
+.pd-lite-cta{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:#1F3354;color:#FFFCF5;font-weight:800;font-size:15px;line-height:1;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 10px rgba(31,51,84,.28)}
+/* Coming-soon (Lintejas additions — dimmed, not links, no price) */
+.pd-card.pd-soon{opacity:.5;filter:grayscale(.2) brightness(.9);cursor:default}
+.pd-card.pd-soon.pd-active{opacity:.7;filter:grayscale(.12) brightness(.95)}
+.pd-card.pd-soon .pd-ci{background:rgba(10,22,40,.06);border-color:rgba(10,22,40,.12);color:var(--nd-ink)}
+.pd-card.pd-soon .pd-mono{font-family:'Figtree',sans-serif;font-weight:800;font-size:26px;color:var(--nd-ink)}
+/* Pause float/sheen off-screen or while page-scrolling (npdeck.js parity) */
+#ventures-deck:not(.pd-inview) .pd-card.pd-active,
+#ventures-deck.pd-scrolling .pd-card.pd-active{animation:none}
+#ventures-deck:not(.pd-inview) .pd-card.pd-active::after,
+#ventures-deck.pd-scrolling .pd-card.pd-active::after{animation:none;opacity:0}
+/* Reduced motion — static deck (no autoplay handled in JS) */
+@media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
 
 /* Color input */
 input[type="color"] {
