@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Linkedin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
+import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 
 const SOCIALS = [
   { label: 'LinkedIn',  href: 'https://linkedin.com/company/lintejas', Icon: Linkedin,  whatsapp: false },
@@ -7,8 +8,9 @@ const SOCIALS = [
   { label: 'Twitter/X', href: 'https://twitter.com/lintejas',          Icon: Twitter,   whatsapp: false },
   { label: 'Instagram', href: 'https://instagram.com/lintejas',        Icon: Instagram, whatsapp: false },
   { label: 'YouTube',   href: 'https://youtube.com/@lintejas',         Icon: Youtube,   whatsapp: false },
-  { label: 'WhatsApp',  href: 'https://wa.me/421XXXXXXXXX',            Icon: null,      whatsapp: true  },
-]
+  /* item 121 — WhatsApp only appears when a number is configured (whatsappHref). */
+  { label: 'WhatsApp',  href: whatsappHref(),                          Icon: null,      whatsapp: true  },
+].filter(s => !s.whatsapp || WHATSAPP_NUMBER)
 
 function WhatsAppIcon({ size = 20 }: { size?: number }) {
   return (

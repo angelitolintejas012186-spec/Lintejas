@@ -41,15 +41,14 @@ const VENTURES: Venture[] = [
   {
     id:       'negosyo-plans',
     icon:     '🛒',
-    name:     'Negosyo Plans',
+    name:     'NegosyoPlans',
     tagline:  'Digital Products E-commerce',
     industry: 'E-commerce · Philippine Market',
-    status:   'coming-soon' as const,
+    status:   'live' as const,   // item 121 — NegosyoPlans is LIVE
     desc:     'A digital-products e-commerce platform for Filipino entrepreneurs — ready-made business plans, templates, and starter kits for launching small businesses in the Philippine market.',
-    url:      '',
+    url:      'https://negosyoplans.com/',
     tags:     ['E-commerce', 'Digital Products'],
     flagship: false,
-    progress: 85,
   },
   {
     id:       'biyaheph',

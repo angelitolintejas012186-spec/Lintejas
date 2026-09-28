@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 
-const WA_HREF =
-  'https://wa.me/421XXXXXXXXX?text=Hi%20Lintejas!%20I%27m%20interested%20in%20learning%20more%20about%20your%20ventures.'
+const WA_HREF = whatsappHref("Hi Lintejas! I'm interested in learning more about your ventures.")
 
 function WhatsAppSVG() {
   return (
@@ -14,6 +14,9 @@ function WhatsAppSVG() {
 
 export default function FloatingWhatsApp() {
   const [hov, setHov] = useState(false)
+
+  /* item 121 — hidden while no WhatsApp number is configured (component kept). */
+  if (!WHATSAPP_NUMBER) return null
 
   return (
     <div

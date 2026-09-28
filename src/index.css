@@ -133,6 +133,20 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-pulse-gold { animation: pulseGold 2s ease-in-out infinite; }
 
+/* ProductDeck (item 121) — gentle float for the ACTIVE card. Keeps scale(1) so it
+   never clobbers the card's inline transform; only applied to active cards in JS. */
+@keyframes deckFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-6px) scale(1); }
+}
+/* Hide the deck strip's scrollbar (still scrollable / swipeable). */
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+/* Safety: no deck float under reduced-motion (JS also disables it). */
+@media (prefers-reduced-motion: reduce) {
+  #ventures-deck [role="listitem"] { animation: none !important; }
+}
+
 /* Color input */
 input[type="color"] {
   padding: 2px;

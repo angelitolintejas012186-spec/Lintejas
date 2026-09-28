@@ -2,6 +2,11 @@ import { Link } from 'react-router-dom'
 import BrandMark from './BrandMark'
 import SocialIcons from './SocialIcons'
 
+/* Company details (item 121). Real, verifiable facts only — no invented numbers
+   or addresses. TODO: fill these in once available; they render ONLY when set. */
+const DTI_NUMBER = ''       // TODO: DTI Business Name registration no.
+const COMPANY_ADDRESS = ''  // TODO: registered business address
+
 const NAV = [
   {
     heading: 'Company',
@@ -16,7 +21,7 @@ const NAV = [
     heading: 'Ventures',
     links: [
       { to: '/companies', label: 'SkillVue'           },
-      { to: '/companies', label: 'Negosyo Plans'      },
+      { to: '/companies', label: 'NegosyoPlans'       },
       { to: '/companies', label: 'BiyahePH'           },
       { to: '/companies', label: 'AI Text Converter'  },
       { to: '/companies', label: 'MCIS'               },
@@ -140,6 +145,12 @@ export default function Footer() {
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
               © {year} Lintejas · Software Development &amp; E-Commerce. All rights reserved.
+            </p>
+            {/* Company details — verifiable facts only; DTI no. / address render only when set */}
+            <p className="text-xs text-center sm:text-right" style={{ color: 'var(--slate)' }}>
+              A. Lintejas Software Development &amp; Services · DTI-registered · Philippines
+              {DTI_NUMBER && <> · DTI No. {DTI_NUMBER}</>}
+              {COMPANY_ADDRESS && <> · {COMPANY_ADDRESS}</>}
             </p>
           </div>
         </div>

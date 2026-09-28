@@ -5,8 +5,9 @@ import { useSiteConfig } from '../lib/SiteConfigContext'
 import Reveal from '../components/ui/Reveal'
 import SocialIcons from '../components/SocialIcons'
 import { ease } from '../lib/motion'
+import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 
-const WA_HREF = 'https://wa.me/421XXXXXXXXX?text=Hi%20Lintejas!%20I%27d%20like%20to%20get%20in%20touch.'
+const WA_HREF = whatsappHref("Hi Lintejas! I'd like to get in touch.")
 
 const ENQUIRY_TYPES = [
   { value: 'general',     label: 'General enquiry' },
@@ -290,7 +291,8 @@ export default function Contact() {
                         )}
                       </motion.button>
 
-                      {/* WhatsApp alternative */}
+                      {/* WhatsApp alternative — item 121: only shown when a number is configured */}
+                      {WHATSAPP_NUMBER && (<>
                       <div className="flex items-center gap-3 pt-1">
                         <div className="flex-1 h-px" style={{ background: 'var(--glass-border)' }} />
                         <span className="text-xs" style={{ color: 'var(--slate)' }}>or</span>
@@ -312,6 +314,7 @@ export default function Contact() {
                         <WhatsAppSVG />
                         Message us on WhatsApp
                       </a>
+                      </>)}
                     </motion.form>
                   )}
                 </AnimatePresence>

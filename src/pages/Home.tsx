@@ -8,6 +8,8 @@ import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
 import HudFrame            from '../components/motion/HudFrame'
 import LiquidGold          from '../components/motion/LiquidGold'
+import ProductDeck         from '../components/ProductDeck'
+import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
@@ -62,7 +64,7 @@ const PLANS: readonly Plan[] = [
     icon:    Layers,
     name:    'Essentials',
     tagline: 'For skills-first teams',
-    price:   '€500',
+    price:   'Coming soon',
     seats:   'Up to 50 users',
     popular: false,
     features: [
@@ -72,14 +74,14 @@ const PLANS: readonly Plan[] = [
       'Standard dashboards',
       'Email support',
     ],
-    cta:  'Choose Essentials',
-    href: 'https://skillvue-production.up.railway.app/register-company?plan=starter',
+    cta:  'Get notified',
+    href: null,
   },
   {
     icon:      BarChart3,
     name:      'Professional',
     tagline:   'Everything the plant floor needs',
-    price:     '€1,200',
+    price:     'Coming soon',
     seats:     'Up to 250 users',
     popular:   true,
     deltaLead: 'Everything in Essentials, plus',
@@ -94,14 +96,14 @@ const PLANS: readonly Plan[] = [
       'Priority support',
     ],
     addOn: 'Work Permits available as an add-on',
-    cta:   'Choose Professional',
-    href:  'https://skillvue-production.up.railway.app/register-company?plan=professional',
+    cta:   'Get notified',
+    href:  null,
   },
   {
     icon:      Globe,
     name:      'Enterprise',
     tagline:   'Scale, governance & control',
-    price:     '€2,500',
+    price:     'Coming soon',
     seats:     'Custom seats + light-user pricing',
     popular:   false,
     deltaLead: 'Everything in Professional, plus',
@@ -258,7 +260,7 @@ export default function Home() {
               <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start gap-4">
                 <MagneticButton
                   onClick={() => {
-                    document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })
+                    document.getElementById('ventures-deck')?.scrollIntoView({ behavior: 'smooth' })
                   }}
                 >
                   View our portfolio <ArrowRight size={15} />
@@ -331,6 +333,13 @@ export default function Home() {
 
         <ScrollCue />
       </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          PRODUCT DECK — NegosyoPlans family (item 121)
+          Placed directly under the 3D-logo hero as a new sibling section
+          (the hero section itself stays byte-identical per the guard).
+      ══════════════════════════════════════════════════════════ */}
+      <ProductDeck />
 
       {/* ══════════════════════════════════════════════════════════
           VALUES STRIP
@@ -663,10 +672,16 @@ export default function Home() {
                       {plan.tagline}
                     </p>
 
-                    {/* Price */}
+                    {/* Price — SkillVue pricing not announced yet (item 121): show "Coming soon", no currency, no /month */}
                     <div className="mb-1">
-                      <span className="font-display font-semibold text-4xl" style={{ color: 'var(--cream)' }}>{plan.price}</span>
-                      <span className="text-sm ml-1" style={{ color: 'var(--slate)' }}>/month</span>
+                      {plan.price === 'Coming soon' ? (
+                        <span className="font-display font-semibold text-2xl" style={{ color: 'var(--gold)' }}>{plan.price}</span>
+                      ) : (
+                        <>
+                          <span className="font-display font-semibold text-4xl" style={{ color: 'var(--cream)' }}>{plan.price}</span>
+                          <span className="text-sm ml-1" style={{ color: 'var(--slate)' }}>/month</span>
+                        </>
+                      )}
                     </div>
                     <p className="text-xs mb-6 pb-6" style={{ color: 'var(--slate)', borderBottom: '1px solid var(--glass-border)' }}>
                       {plan.seats}
@@ -769,8 +784,8 @@ export default function Home() {
           className="text-center text-xs mt-8"
           style={{ color: 'var(--slate)' }}
         >
-          Prices per tenant, per month.{' '}
-          <span style={{ color: 'var(--gold)' }}>Annual billing and frontline light-user seats available.</span>
+          SkillVue pricing will be announced at launch.{' '}
+          <span style={{ color: 'var(--gold)' }}>Leave your details and we'll notify you.</span>
         </motion.p>
       </section>
 
@@ -890,16 +905,18 @@ export default function Home() {
                 >
                   Contact Us <ArrowRight size={14} />
                 </button>
-                <a
-                  href="https://wa.me/421XXXXXXXXX"
-                  target="_blank" rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
-                  style={{ background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.30)', color: '#25D366' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.18)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.10)' }}
-                >
-                  <span>💬</span> Chat on WhatsApp
-                </a>
+                {WHATSAPP_NUMBER && (
+                  <a
+                    href={whatsappHref()}
+                    target="_blank" rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+                    style={{ background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.30)', color: '#25D366' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.18)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(37,211,102,0.10)' }}
+                  >
+                    <span>💬</span> Chat on WhatsApp
+                  </a>
+                )}
               </div>
 
               <div className="space-y-2 pt-5" style={{ borderTop: '1px solid var(--glass-border)' }}>

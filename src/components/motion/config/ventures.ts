@@ -49,10 +49,10 @@ export const VENTURE_NODES: VentureNode[] = [
   },
   {
     id:     'negosyo-plans',
-    label:  'Negosyo Plans',
-    status: 'coming-soon',
-    radius: 9,
-    color:  '#9A7A2E',      // bronze
+    label:  'NegosyoPlans',
+    status: 'live',         // item 121 — NegosyoPlans is LIVE
+    radius: 11,
+    color:  '#D4A843',      // gold (live)
     angle:  Math.PI * 0.7,
     orbit:  145,
   },

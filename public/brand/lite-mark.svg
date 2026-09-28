@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Matthew Lite">
+  <!-- Matte-1 crest geometry, mango. Dead-flat matte, no gradients. -->
+  <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="#DD7823"/>
+  <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="none" stroke="#FFF4E3" stroke-width="2.5" stroke-opacity="0.8" vector-effect="non-scaling-stroke" transform="translate(50 51) scale(0.86) translate(-50 -51)"/>
+  <path d="M31 64 V34 L50 52 L69 34 V64" fill="none" stroke="#4A2A15" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
