@@ -32,9 +32,9 @@ const VENTURES: Venture[] = [
     name:     'SkillVue',
     tagline:  'Safety & Workforce Intelligence Platform',
     industry: 'Food Manufacturing · Safety & HR Tech',
-    status:   'live' as const,
+    status:   'coming-soon' as const,   // item 121 #2 — SkillVue honesty: coming soon, no dead demo link
     desc:     'The human layer of the smart factory. SkillVue unifies high-hazard safety workflows — digital work permits, LOTO, confined space entry, and risk prediction — with competency tracking, structured training pathways, and real-time skill-gap dashboards. Built for shift-based food manufacturing workforces, with 24/7 approval routing and instant push notifications.',
-    url:      'https://skillvue-production.up.railway.app/demo-entry',
+    url:      '',
     tags:     ['Safety Management', 'Competency Management', 'Analytics', 'HR Tech'],
     flagship: true,
   },
@@ -224,12 +224,15 @@ function FlagshipCard({ v }: { v: typeof VENTURES[0] }) {
               {v.tags.map((tag, i) => <Tag key={tag} label={tag} delay={0.1 + i * 0.07} />)}
             </div>
 
+            {/* item 121 #2 — no dead "Visit Platform" links while the venture has no live URL */}
+            {v.url && (
             <div className="flex flex-wrap items-center gap-5">
               <MagneticButton href={v.url} strength={0.22}>
                 Visit Platform <ArrowRight size={14} />
               </MagneticButton>
               <VisitButton url={v.url} />
             </div>
+            )}
           </div>
 
           {/* Stats column */}

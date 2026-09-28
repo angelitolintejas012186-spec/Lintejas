@@ -6,6 +6,7 @@ import BrandMark from './BrandMark'
 import { useSiteConfig } from '../lib/SiteConfigContext'
 import { PLUGIN_REGISTRY } from '../lib/plugins'
 import { ease } from '../lib/motion'
+import { CLIENT_LOGIN_URL } from '../lib/contact'
 
 const NAV_LINKS: { to: string; label: string; section?: string }[] = [
   { to: '/',          label: 'Home' },
@@ -142,8 +143,9 @@ export default function NavBar() {
             </span>
           ))}
 
+          {CLIENT_LOGIN_URL && (
           <a
-            href="https://skillvue-production.up.railway.app/demo-entry"
+            href={CLIENT_LOGIN_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="ml-3 px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
@@ -157,6 +159,7 @@ export default function NavBar() {
           >
             Client Login
           </a>
+          )}
         </div>
 
         {/* ── Mobile toggle ──────────────────────────────────── */}
@@ -241,13 +244,14 @@ export default function NavBar() {
                   </motion.div>
                 )
               })}
+              {CLIENT_LOGIN_URL && (
               <motion.div
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: NAV_LINKS.length * 0.04, duration: 0.25, ease }}
               >
                 <a
-                  href="https://skillvue-production.up.railway.app/demo-entry"
+                  href={CLIENT_LOGIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center mt-2 px-4 py-3 rounded-xl text-sm font-semibold"
@@ -259,6 +263,7 @@ export default function NavBar() {
                   Client Login
                 </a>
               </motion.div>
+              )}
             </div>
           </motion.div>
         )}

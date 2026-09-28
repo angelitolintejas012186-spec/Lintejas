@@ -532,13 +532,12 @@ export default function Home() {
             }}
           />
 
-          {/* Live badge */}
+          {/* Coming-soon badge (item 121 #2 — SkillVue not live yet; matches the deck coming-soon style) */}
           <div
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
-            style={{ background: 'rgba(63,185,80,0.10)', color: '#3FB950', border: '1px solid rgba(63,185,80,0.25)' }}
+            style={{ background: 'rgba(138,154,176,0.12)', color: 'var(--slate)', border: '1px solid rgba(138,154,176,0.22)' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3FB950] animate-pulse-live" />
-            Live
+            Coming soon
           </div>
 
           <div className="flex items-start gap-5 mb-5">
@@ -562,10 +561,8 @@ export default function Home() {
             workforces, with 24/7 approval routing and instant push notifications.
           </p>
 
+          {/* item 121 #2 — no dead "Visit Platform" link while SkillVue is coming soon; keep the internal portfolio link */}
           <div className="flex flex-wrap gap-3">
-            <MagneticButton href="https://skillvue-production.up.railway.app/demo-entry" strength={0.2}>
-              Visit Platform <ArrowRight size={14} />
-            </MagneticButton>
             <Link
               to="/companies"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border transition-all duration-300 hover:border-[var(--gold)] hover:text-[var(--cream)]"
@@ -610,7 +607,6 @@ export default function Home() {
           >
             <span className="text-sm leading-none">🧠</span>
             SkillVue
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3FB950] animate-pulse-live" />
           </div>
         </motion.div>
 
