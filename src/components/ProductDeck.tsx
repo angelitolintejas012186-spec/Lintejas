@@ -23,9 +23,10 @@ const DECK_ENABLED = true
 const NP = 'https://negosyoplans.com'   // same-tab targets
 
 /* Matthew crest — the exact inline SVG the original deck uses (index.html:708). */
+/* Official Matte-1 crest — navy field rx 22, flat gold shield #D9A93C, navy M. Dead-flat, no hairline. */
 const MatthewCrest = (
   <svg viewBox="0 0 100 100" role="img" aria-label="Matthew System crest">
-    <rect x="1" y="1" width="98" height="98" rx="21" fill="#0D1B2E" stroke="#D9A93C" strokeOpacity=".4" strokeWidth="1.6" />
+    <rect x="0" y="0" width="100" height="100" rx="22" fill="#0D1B2E" />
     <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="#D9A93C" />
     <path d="M31 64 V34 L50 52 L69 34 V64" fill="none" stroke="#0D1B2E" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -44,6 +45,7 @@ type Card = {
   mono?: string           // coming-soon monogram
   emoji?: string          // coming-soon rich card (SkillVue) — emoji icon tile
   liteTag?: boolean
+  lockupBrand?: boolean    // brand shown via a horizontal lockup image → suppress the text h3 title
   cta?: string            // gold pill text
   title?: string
   titleBadge?: string     // e.g. FREE
@@ -82,9 +84,10 @@ const CARDS: Card[] = [
       { text: 'Operations — deliveries, inventory' }, { text: 'Client bookings' },
       { text: 'PRO: daily Business Health Score' },
     ] },
-  // Matthew Lite — index.html:720-731
-  { v: 'lite', href: `${NP}/lite`, frameless: true, logo: '/brand/lite-mark.svg', liteTag: true, brand: true,
-    title: 'Matthew Lite', sub: 'Dashboard for vendors', hook: 'Know every day if you really earned.',
+  // Matthew Lite — Lite brand: cream card + P1 horizontal lockup (shield + "Matthew" brown + "Lite" mango),
+  // mango hook rule, dark-brown body, mango CTA. Matches negosyoplans.com/lite. No blue.
+  { v: 'lite', href: `${NP}/lite`, frameless: true, logo: '/brand/lite-lockup-light.svg', lockupBrand: true, brand: true,
+    title: 'Matthew Lite', hook: 'Know every day if you really earned.',
     litedesc: 'Sales, expenses, profit and your cash split — at a glance. ₱99/month, no contract.',
     liteCta: 'Get started →' },
   // Courses (ZAM) — index.html:733-752
@@ -183,7 +186,7 @@ function CardInner({ c }: { c: Card }) {
             </div>
           ))}
         </div>
-      ) : c.title ? (
+      ) : c.title && !c.lockupBrand ? (
         <h3 translate={c.brand ? 'no' : undefined}>
           {c.title}
           {c.titleBadge && (c.soon
@@ -210,7 +213,10 @@ function CardInner({ c }: { c: Card }) {
   )
 }
 
-export default function ProductDeck() {
+/* overlay (mobile logo-overlap): content-height section so the cards sit near the top and overlap the
+   logo's lower part (Home.tsx positions the slot). autoplay: gated so it starts only after the deck has
+   risen. Defaults keep the desktop instance byte-identical (full-vh, autoplay on). */
+export default function ProductDeck({ overlay = false, autoplay = true }: { overlay?: boolean; autoplay?: boolean } = {}) {
   const stripRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
@@ -257,7 +263,7 @@ export default function ProductDeck() {
   /* Autoplay 3,600 ms; permanently stopped on first pointerdown/touchstart/wheel. */
   useEffect(() => {
     const strip = stripRef.current
-    if (!strip || reduced) return
+    if (!strip || reduced || !autoplay) return
     let stopped = false
     const timer = setInterval(() => {
       const next = (activeRef.current + 1) % CARDS.length
@@ -267,7 +273,7 @@ export default function ProductDeck() {
     const evs: (keyof HTMLElementEventMap)[] = ['pointerdown', 'touchstart', 'wheel']
     evs.forEach(ev => strip.addEventListener(ev, stop, { passive: true }))
     return () => { clearInterval(timer); evs.forEach(ev => strip.removeEventListener(ev, stop)) }
-  }, [reduced])
+  }, [reduced, autoplay])
 
   /* pd-inview (pause float off-screen) + pd-scrolling (pause during page scroll). */
   useEffect(() => {
@@ -308,9 +314,12 @@ export default function ProductDeck() {
       id="ventures-deck"
       aria-label="Our products and ventures"
       className="relative w-full overflow-hidden"
-      style={{ height: vh, background: 'var(--navy)' }}
+      /* overlay: transparent so the 3D logo shows behind the cards (deck "in front of" the logo). */
+      style={{ height: overlay ? 'auto' : vh, background: overlay ? 'transparent' : 'var(--navy)' }}
     >
-      <div className="h-full flex flex-col justify-center" style={{ paddingTop: pad }}>
+      <div className={overlay ? 'flex flex-col' : 'h-full flex flex-col justify-center'} style={{ paddingTop: overlay ? 0 : pad, paddingBottom: overlay ? 14 : undefined }}>
+        {/* Section eyebrow — hidden in the mobile overlay (it would sit over the logo art). */}
+        {!overlay && (
         <div className="max-w-[1280px] w-full mx-auto px-6 lg:px-8 mb-3 sm:mb-4">
           <div className="flex items-center gap-4">
             <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
@@ -319,6 +328,7 @@ export default function ProductDeck() {
             <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
           </div>
         </div>
+        )}
 
         <div className="pd-carousel" ref={stripRef} role="list">
           {CARDS.map((c, i) => {

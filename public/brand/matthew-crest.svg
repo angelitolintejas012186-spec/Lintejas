@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Matthew System crest">
-  <!-- Cool-matte crest — solid steel-gold shield #C2B183, zero gloss/gradient, matte. -->
-  <path d="M100 80 H412 V275 C412 370 348 435 256 470 C164 435 100 370 100 275 Z" fill="#C2B183"/>
-  <!-- M punched as a cool charcoal cutout #1A1E22 -->
-  <path d="M150 355 V175 H206 L256 268 L306 175 H362 V355 H320 V250 L272 338 H240 L192 250 V355 Z" fill="#1A1E22"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Matthew System crest">
+  <!-- Official Matte-1 crest — navy field rx22, flat gold shield, navy M. Dead-flat, no gloss. -->
+  <rect x="0" y="0" width="100" height="100" rx="22" fill="#0D1B2E"/>
+  <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="#D9A93C"/>
+  <path d="M31 64 V34 L50 52 L69 34 V64" fill="none" stroke="#0D1B2E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

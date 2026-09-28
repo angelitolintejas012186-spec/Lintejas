@@ -166,6 +166,12 @@ export default function Home() {
      below lg = mobile: 3D logo → deck → hero text. The deck is rendered in exactly ONE slot
      per breakpoint (the other is never mounted → no autoplay/timers/observer, not tabbable). */
   const isLg = useMediaQuery('(min-width: 1024px)')
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false
+  /* Logo-first intro (mobile only): the deck stays hidden (translated down, space reserved) until it
+     rises — after 2.5 s, or immediately on the first scroll/touch/wheel/keydown. Autoplay + interaction
+     start only once risen. Reduced motion → shown at once, no animation. Desktop deck is unaffected. */
+  const [deckRisen, setDeckRisen] = useState(false)
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -179,6 +185,23 @@ export default function Home() {
     window.addEventListener('mousemove', onMove, { passive: true })
     return () => window.removeEventListener('mousemove', onMove)
   }, [])
+
+  useEffect(() => {
+    if (isLg) return                                   // desktop: deck sits after the hero, no rise
+    if (prefersReduced) { setDeckRisen(true); return } // reduced motion: shown immediately
+    let done = false
+    const rise = () => {
+      if (done) return
+      done = true
+      window.clearTimeout(timer)
+      evs.forEach(ev => window.removeEventListener(ev, rise as EventListener))
+      setDeckRisen(true)
+    }
+    const timer = window.setTimeout(rise, 2500)
+    const evs = ['scroll', 'touchstart', 'wheel', 'keydown', 'pointerdown'] as const
+    evs.forEach(ev => window.addEventListener(ev, rise as EventListener, { passive: true }))
+    return () => { window.clearTimeout(timer); evs.forEach(ev => window.removeEventListener(ev, rise as EventListener)) }
+  }, [isLg, prefersReduced])
 
   return (
     <div style={{ background: 'var(--navy)' }}>
@@ -334,8 +357,25 @@ export default function Home() {
                 margin trick. Rendered ONLY below lg → the single deck instance on mobile; on lg+
                 this is not mounted and the deck lives after the hero (below). */}
             {!isLg && (
-              <div className="order-2" style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)' }}>
-                <ProductDeck />
+              <div
+                className="order-2 relative z-30"
+                /* overlap the LOWER part of the 3D logo (top of the logo frame stays visible above the cards);
+                   z-30 keeps the deck above the canvas. Space is reserved from the start → the rise is
+                   transform-only (no CLS). Interlock3D + its canvas are untouched. */
+                style={{ width: '100vw', marginLeft: 'calc(50% - 50vw)', marginTop: '-210px' }}
+              >
+                <div
+                  style={{
+                    transform: deckRisen ? 'translateY(0)' : 'translateY(105%)',
+                    opacity: deckRisen ? 1 : 0,
+                    /* not-risen: invisible + off-slot → don't intercept taps on the content below */
+                    pointerEvents: deckRisen ? 'auto' : 'none',
+                    transition: prefersReduced ? 'none' : 'transform 1s cubic-bezier(.2,.8,.2,1), opacity 1s cubic-bezier(.2,.8,.2,1)',
+                    willChange: 'transform, opacity',
+                  }}
+                >
+                  <ProductDeck overlay autoplay={deckRisen} />
+                </div>
               </div>
             )}
           </div>

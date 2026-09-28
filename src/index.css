@@ -227,7 +227,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pd-card.pd-frameless .pd-ci img{width:66px;height:66px}
 /* Matthew cool-matte skin */
 .pd-card[data-v="matthew"]{
-  --mx2-gold:#C2B183; --mx2-pale:#D8CBA0; --mx2-deep:#8D8471; --mx2-ink:#1A1E22;
+  /* official Matthew gold (matches the Matte-1 crest shield) — replaces the old muted accent palette */
+  --mx2-gold:#D9A93C; --mx2-pale:#EBC15E; --mx2-deep:#B78A24; --mx2-ink:#1A1E22;
   background:radial-gradient(130% 160% at 90% -20%,#2C2F33,#24282C 55%,#1B1E21); border-color:var(--mx2-gold);
 }
 .pd-card[data-v="matthew"] .pd-hook{color:var(--mx2-pale)}
@@ -236,16 +237,15 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pd-card[data-v="matthew"] .pd-feat li::before{color:var(--mx2-gold)}
 .pd-card[data-v="matthew"] .pd-go{background:linear-gradient(135deg,var(--mx2-pale),var(--mx2-gold) 55%,var(--mx2-deep));color:var(--mx2-ink)}
 /* Matthew Lite — cream, navy text (mango mark) */
-.pd-card[data-v="lite"]{background:#FFFCF5;border:1.5px solid #C9D4E6;color:#1F3354}
+/* Matthew Lite card — Lite brand (mango / cream), matches negosyoplans.com/lite. No blue anywhere.
+   Brand shown via the P1 horizontal lockup image (shield + "Matthew" #4A2A15 + "Lite" #DD7823). */
+.pd-card[data-v="lite"]{background:#FFF5DA;border:1.5px solid #EEDCA8;color:#4A2A15}
 .pd-card[data-v="lite"] .pd-top{justify-content:flex-start;gap:12px}
-.pd-card[data-v="lite"] .pd-ci{background:transparent;box-shadow:none;border:0;border-radius:0;width:auto;height:70px}
-.pd-card[data-v="lite"] .pd-ci img{width:auto;height:70px}
-.pd-lite-tag{font-family:'Figtree',sans-serif;font-weight:800;font-size:20px;letter-spacing:.14em;color:#47679C}
-.pd-card[data-v="lite"] h3{color:#1F3354}
-.pd-card[data-v="lite"] .pd-sub{color:#2F4A72}
-.pd-card[data-v="lite"] .pd-hook{color:#1F3354;background:rgba(47,74,114,.08);border-left:3px solid #47679C;border-radius:0 8px 8px 0;padding:9px 12px;margin-top:13px}
-.pd-litedesc{font-size:16px;line-height:1.45;color:#2F4A72;margin-top:11px}
-.pd-lite-cta{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:#1F3354;color:#FFFCF5;font-weight:800;font-size:15px;line-height:1;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 10px rgba(31,51,84,.28)}
+.pd-card[data-v="lite"] .pd-ci{background:transparent;box-shadow:none;border:0;border-radius:0;width:auto;height:46px}
+.pd-card[data-v="lite"] .pd-ci img{width:auto;height:46px;filter:none}
+.pd-card[data-v="lite"] .pd-hook{color:#4A2A15;background:rgba(221,120,35,.10);border-left:3px solid #DD7823;border-radius:0 8px 8px 0;padding:9px 12px;margin-top:13px}
+.pd-litedesc{font-size:16px;line-height:1.45;color:#5A4326;margin-top:11px}
+.pd-lite-cta{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:#B0550A;color:#FFF4E3;font-weight:800;font-size:15px;line-height:1;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 10px rgba(176,85,10,.28)}
 /* Coming-soon (Lintejas additions — dimmed, not links, no price) */
 .pd-card.pd-soon{opacity:.5;filter:grayscale(.2) brightness(.9);cursor:default}
 .pd-card.pd-soon.pd-active{opacity:.7;filter:grayscale(.12) brightness(.95)}

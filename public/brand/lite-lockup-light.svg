@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" role="img" aria-label="Matthew Lite">
+  <!-- Lockup for cream surfaces: mark + Matthew (#4A2A15) + Lite (#DD7823). Text is live Figtree
+       800 with sans-serif fallback (no font-tooling available to convert to paths). -->
+  <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="#DD7823"/>
+  <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="none" stroke="#FFF4E3" stroke-width="2.5" stroke-opacity="0.8" vector-effect="non-scaling-stroke" transform="translate(50 51) scale(0.86) translate(-50 -51)"/>
+  <path d="M31 64 V34 L50 52 L69 34 V64" fill="none" stroke="#4A2A15" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="112" y="51" dominant-baseline="central" font-family="Figtree, system-ui, sans-serif" font-weight="800" font-size="38" letter-spacing="-0.5"><tspan fill="#4A2A15">Matthew</tspan> <tspan fill="#DD7823">Lite</tspan></text>
+</svg>
