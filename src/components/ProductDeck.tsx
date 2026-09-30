@@ -102,9 +102,12 @@ const CARDS: Card[] = [
       { text: 'Search engine optimization' }, { text: 'From ₱500 per module' },
     ] },
   // Feasibility Study (DAMES) — index.html:754-766
-  { v: 'feasibility', href: `${NP}/feasibility`, frameless: true, logo: '/brand/dames-mark.png', cta: 'Try it free →',
-    title: 'Feasibility Study', titleBadge: 'FREE', hook: 'Test your idea before spending a peso.',
-    feat: [{ text: 'Free area check' }, { text: 'No email, no payment' }, { text: 'Ideas, not promises' }] },
+  // REMOVED from the deck 2026-09-30 (checklist item 148): the free feasibility check already lives
+  // on negosyoplans.com/feasibility, so this card duplicated it. Data object kept (commented) and the
+  // logo asset /brand/dames-mark.png retained per scope-lock — uncomment to restore the card.
+  // { v: 'feasibility', href: `${NP}/feasibility`, frameless: true, logo: '/brand/dames-mark.png', cta: 'Try it free →',
+  //   title: 'Feasibility Study', titleBadge: 'FREE', hook: 'Test your idea before spending a peso.',
+  //   feat: [{ text: 'Free area check' }, { text: 'No email, no payment' }, { text: 'Ideas, not promises' }] },
   // Supplier Registration (WDRICH) — index.html:768-780
   { v: 'supplier', href: `${NP}/supplier/register`, navy: true, frameless: true, logo: '/brand/wdrich-mark.png', cta: 'Register →',
     title: 'Supplier Registration', hook: 'List your business where owners look for suppliers.',
