@@ -874,7 +874,6 @@ export default function Home() {
                 {[
                   { label: 'Visit SkillVue', href: 'https://skillvue.io' },
                   { label: 'Try Demo Account', href: 'https://skillvue.io/onboarding' },
-                  { label: 'Visit Lintejas Fashion', href: 'https://lintejas.store' },
                 ].map(({ label, href }) => (
                   <a
                     key={label}
