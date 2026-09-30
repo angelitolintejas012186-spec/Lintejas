@@ -133,8 +133,10 @@ const CARDS: Card[] = [
     ] },
   { v: 'biyaheph', soon: true, mono: 'B', brand: true, title: 'BiyahePH', titleBadge: 'Coming soon',
     hook: 'Maps and commute directions for the Philippines.' },
-  { v: 'fashion', soon: true, mono: 'L', brand: true, title: 'Lintejas Fashion', titleBadge: 'Coming soon',
-    hook: "Women's fashion for Europe." },
+  // Lintejas Fashion — REMOVED from the deck 2026-09-30: the brand no longer exists.
+  // Data object kept (commented) per scope-lock — uncomment to restore.
+  // { v: 'fashion', soon: true, mono: 'L', brand: true, title: 'Lintejas Fashion', titleBadge: 'Coming soon',
+  //   hook: "Women's fashion for Europe." },
 ]
 
 function headerOffset(): number {
