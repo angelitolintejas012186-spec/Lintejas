@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Linkedin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
+import { Linkedin, Facebook, Instagram } from 'lucide-react'
 import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
 
+// P2a: Twitter/X (x.com/lintejas) and YouTube (@lintejas) both 404'd — removed until a
+// real account exists. LinkedIn, Facebook (→ /Lintejas40) and Instagram resolve.
 const SOCIALS = [
   { label: 'LinkedIn',  href: 'https://linkedin.com/company/lintejas', Icon: Linkedin,  whatsapp: false },
   { label: 'Facebook',  href: 'https://www.facebook.com/share/19JHHNKiee/', Icon: Facebook,  whatsapp: false },
-  { label: 'Twitter/X', href: 'https://twitter.com/lintejas',          Icon: Twitter,   whatsapp: false },
   { label: 'Instagram', href: 'https://instagram.com/lintejas',        Icon: Instagram, whatsapp: false },
-  { label: 'YouTube',   href: 'https://youtube.com/@lintejas',         Icon: Youtube,   whatsapp: false },
   /* item 121 — WhatsApp only appears when a number is configured (whatsappHref). */
   { label: 'WhatsApp',  href: whatsappHref(),                          Icon: null,      whatsapp: true  },
 ].filter(s => !s.whatsapp || WHATSAPP_NUMBER)

@@ -2,7 +2,9 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ExternalLink } from 'lucide-react'
+import { ArrowRight, ExternalLink, GraduationCap, Lightbulb } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { PORTFOLIO } from '../lib/portfolio'
 import TiltCard from '../components/ui/TiltCard'
 import Reveal   from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
@@ -12,37 +14,22 @@ import HudFrame    from '../components/motion/HudFrame'
 import { CARDS } from '../components/ProductDeck'
 
 /* ── Data ─────────────────────────────────────────────────────────
-   Single source of truth (ruling 3): venture facts come from the homepage
-   deck (ProductDeck CARDS) — NOT a second list. We pick which family members
-   to surface here and give each a portfolio display name + one-line purpose;
-   status, link and icon are read straight from the deck card (its `href`/`soon`).
-   NegosyoPlans is the flagship (ruling 4). SkillVue + BiyahePH are coming-soon cards
-   (no link), their status read from the deck's `soon` flag like every other item.    */
-type PortItem = { v: string; name: string; purpose: string; flagship?: boolean }
-const PORTFOLIO: PortItem[] = [
-  { v: 'blueprints', name: 'NegosyoPlans', flagship: true,
-    purpose: 'Ready-made business plans for Filipino entrepreneurs — start with a complete plan, not a guess.' },
-  { v: 'matthew', name: 'Matthew System',
-    purpose: "A comprehensive business-manager dashboard that watches your numbers so you don't go under." },
-  { v: 'lite', name: 'Matthew Lite',
-    purpose: 'Know every day if you really earned — sales, expenses, profit and your cash split at a glance.' },
-  { v: 'courses', name: 'ZAM Academy',
-    purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
-  { v: 'supplier', name: 'WDRICH Supplier Registration',
-    purpose: 'List your business where owners look for suppliers.' },
-  { v: 'contribute', name: 'Share Your Business Model',
-    purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
-  { v: 'skillvue', name: 'SkillVue',
-    purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
-  { v: 'biyaheph', name: 'BiyahePH',
-    purpose: 'Maps and commute directions for the Philippines — planned for Android and iOS.' },
-]
+   The venture list is the shared single source (lib/portfolio.ts). Status, link and
+   base icon come from the homepage deck (ProductDeck CARDS). A few family members have
+   no clean square brand mark, so the Portfolio overrides those icons (legible +
+   distinct) — a view-only concern; the Footer reads the same shared list for its links. */
+const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon }> = {
+  lite:       { src: '/brand/lite-mark.svg' },   // square crest (the deck uses the wide lockup)
+  courses:    { Comp: GraduationCap },            // ZAM crest is illegible at tile size
+  contribute: { Comp: Lightbulb },                // distinct from WDRICH's mark (both were identical)
+}
 
 interface Venture {
   id: string; name: string; purpose: string
   status: 'live' | 'coming-soon'
   url: string
   logo?: string; svg?: ReactNode; emoji?: string; mono?: string
+  iconSrc?: string; IconComp?: LucideIcon
   flagship: boolean
 }
 
@@ -52,11 +39,13 @@ const byId: Record<string, typeof CARDS[number]> =
 const VENTURES: Venture[] = PORTFOLIO.map(p => {
   const c = byId[p.v]
   const soon = !!(c && c.soon)
+  const ov = ICON_OVERRIDE[p.v]
   return {
     id: p.v, name: p.name, purpose: p.purpose,
     status: soon ? 'coming-soon' : 'live',
     url: !soon && c && c.href ? c.href : '',
     logo: c && c.logo, svg: c && c.svg, emoji: c && c.emoji, mono: c && c.mono,
+    iconSrc: ov && ov.src, IconComp: ov && ov.Comp,
     flagship: !!p.flagship,
   }
 })
@@ -74,13 +63,17 @@ function VentureIcon({ v, size }: { v: Venture; size: number }) {
       style={{ width: size, height: size, background: 'rgba(212,168,67,0.08)', border: '1px solid var(--glass-border)' }}
       aria-hidden="true"
     >
-      {v.svg
-        ? <div style={{ width: size * 0.58, height: size * 0.58 }}>{v.svg}</div>
-        : v.logo
-          ? <img src={v.logo} alt="" draggable={false} style={{ width: size * 0.62, height: size * 0.62, objectFit: 'contain' }} />
-          : v.emoji
-            ? <span style={{ fontSize: size * 0.5, lineHeight: 1 }}>{v.emoji}</span>
-            : <span className="font-display font-semibold" style={{ fontSize: size * 0.42, color: 'var(--gold)' }}>{v.mono}</span>}
+      {v.IconComp
+        ? <v.IconComp size={Math.round(size * 0.5)} color="var(--gold)" strokeWidth={1.6} />
+        : v.iconSrc
+          ? <img src={v.iconSrc} alt="" draggable={false} style={{ width: size * 0.6, height: size * 0.6, objectFit: 'contain' }} />
+          : v.svg
+            ? <div style={{ width: size * 0.58, height: size * 0.58 }}>{v.svg}</div>
+            : v.logo
+              ? <img src={v.logo} alt="" draggable={false} style={{ width: size * 0.62, height: size * 0.62, objectFit: 'contain' }} />
+              : v.emoji
+                ? <span style={{ fontSize: size * 0.5, lineHeight: 1 }}>{v.emoji}</span>
+                : <span className="font-display font-semibold" style={{ fontSize: size * 0.42, color: 'var(--gold)' }}>{v.mono}</span>}
     </div>
   )
 }
@@ -139,7 +132,7 @@ function FlagshipCard({ v }: { v: Venture }) {
         <p className="text-base leading-relaxed mb-6 max-w-2xl" style={{ color: 'var(--slate)' }}>{v.purpose}</p>
         {v.url && (
           <div className="flex flex-wrap items-center gap-5">
-            <MagneticButton href={v.url} strength={0.22}>Visit platform <ArrowRight size={14} /></MagneticButton>
+            <MagneticButton href={v.url} strength={0.22}><span className="inline-flex items-center gap-2 whitespace-nowrap">Visit platform <ArrowRight size={14} /></span></MagneticButton>
             <VisitButton url={v.url} />
           </div>
         )}
@@ -251,7 +244,7 @@ export default function Companies() {
             <p className="text-sm mb-2" style={{ color: 'var(--slate)' }}>Interested in partnering or investing?</p>
             <h2 className="font-display font-semibold text-2xl mb-6" style={{ color: 'var(--cream)' }}>Let's build together.</h2>
             <div className="flex justify-center">
-              <MagneticButton onClick={() => navigate('/contact')}>Get in touch <ArrowRight size={15} /></MagneticButton>
+              <MagneticButton onClick={() => navigate('/contact')}><span className="inline-flex items-center gap-2 whitespace-nowrap">Get in touch <ArrowRight size={15} /></span></MagneticButton>
             </div>
           </div>
         </Reveal>

@@ -250,6 +250,9 @@ export default function NetworkGraph() {
         height:        '100%',
         pointerEvents: 'none',
         zIndex:        0,
+        /* keep the graph a faint ambient texture so its centre cluster never reads as a
+           stray decoration between content cards (notably Lite↔ZAM at phone width). */
+        opacity:       0.5,
       }}
     />
   )

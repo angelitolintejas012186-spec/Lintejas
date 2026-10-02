@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import BrandMark from './BrandMark'
 import SocialIcons from './SocialIcons'
+import { PORTFOLIO } from '../lib/portfolio'
 
 /* Company details (item 121). Real, verifiable facts only — no invented numbers
    or addresses. TODO: fill these in once available; they render ONLY when set. */
@@ -19,15 +20,9 @@ const NAV = [
   },
   {
     heading: 'Ventures',
-    // Mirrors the Portfolio venture list (NegosyoPlans family + SkillVue). Flagship first.
-    links: [
-      { to: '/companies', label: 'NegosyoPlans'     },
-      { to: '/companies', label: 'Matthew System'   },
-      { to: '/companies', label: 'Matthew Lite'     },
-      { to: '/companies', label: 'ZAM Academy'      },
-      { to: '/companies', label: 'WDRICH'           },
-      { to: '/companies', label: 'SkillVue'         },
-    ],
+    // Derived from the shared venture list (lib/portfolio.ts) — same source as the
+    // Portfolio page, so it never drifts (includes BiyahePH + Share Your Business Model).
+    links: PORTFOLIO.map(p => ({ to: '/companies', label: p.short ?? p.name })),
   },
   {
     heading: 'Legal',
