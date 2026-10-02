@@ -1,9 +1,12 @@
-/* Shared venture list — the ONE hand-kept mapping of which NegosyoPlans-family
-   members the site surfaces, their display name, flagship flag and one-line purpose.
-   Status, link and base icon are read from the homepage deck (ProductDeck CARDS) by
-   whoever renders it, so this file holds no status/url (no second source of truth).
-   Both the Portfolio page (pages/Companies.tsx) and the Footer ventures column
-   (components/Footer.tsx) derive from this — no second hand-kept list anywhere. */
+/* Shared venture list — DERIVED from the homepage deck's CARDS (the single source
+   of truth). Membership and order come from CARDS itself (PORTFOLIO = CARDS.map),
+   so adding/removing a deck card automatically adds/removes it here — no second
+   hand-kept list to drift. Status, link and base icon are read from the same CARDS
+   by whoever renders (pages/Companies.tsx, components/Footer.tsx), so this file
+   holds no status/url. The only thing it adds is the Portfolio-specific display
+   name + one-line purpose + flagship flag that a deck card doesn't carry. */
+import { CARDS } from '../components/ProductDeck'
+
 export interface PortfolioItem {
   v:        string   // = ProductDeck CARDS `v` id (status/url/base icon come from there)
   name:     string
@@ -12,21 +15,32 @@ export interface PortfolioItem {
   short?:   string   // compact label for tight contexts (footer column); defaults to name
 }
 
-export const PORTFOLIO: PortfolioItem[] = [
-  { v: 'blueprints', name: 'NegosyoPlans', flagship: true,
+/* Portfolio display copy, keyed by the deck CARDS `v` id. NOT a venture list —
+   it only overlays the copy the deck card doesn't hold. A card with no entry
+   here still appears (falls back to its deck title/hook below). */
+const META: Record<string, Omit<PortfolioItem, 'v'>> = {
+  blueprints: { name: 'NegosyoPlans', flagship: true,
     purpose: 'Ready-made business plans for Filipino entrepreneurs — start with a complete plan, not a guess.' },
-  { v: 'matthew', name: 'Matthew System',
+  matthew: { name: 'Matthew System',
     purpose: "A comprehensive business-manager dashboard that watches your numbers so you don't go under." },
-  { v: 'lite', name: 'Matthew Lite',
+  lite: { name: 'Matthew Lite',
     purpose: 'Know every day if you really earned — sales, expenses, profit and your cash split at a glance.' },
-  { v: 'courses', name: 'ZAM Academy',
+  courses: { name: 'ZAM Academy',
     purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
-  { v: 'supplier', name: 'WDRICH Supplier Registration', short: 'WDRICH',
+  supplier: { name: 'WDRICH Supplier Registration', short: 'WDRICH',
     purpose: 'List your business where owners look for suppliers.' },
-  { v: 'contribute', name: 'Share Your Business Model', short: 'Share your model',
+  contribute: { name: 'Share Your Business Model', short: 'Share your model',
     purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
-  { v: 'skillvue', name: 'SkillVue',
+  skillvue: { name: 'SkillVue',
     purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
-  { v: 'biyaheph', name: 'BiyahePH',
+  biyaheph: { name: 'BiyahePH',
     purpose: 'Maps and commute directions for the Philippines — planned for Android and iOS.' },
-]
+}
+
+export const PORTFOLIO: PortfolioItem[] = CARDS.map(c => ({
+  v:        c.v,
+  name:     META[c.v]?.name    ?? c.title ?? c.v,
+  purpose:  META[c.v]?.purpose ?? c.hook  ?? '',
+  flagship: META[c.v]?.flagship,
+  short:    META[c.v]?.short,
+}))

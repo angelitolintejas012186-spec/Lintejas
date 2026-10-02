@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, ExternalLink, GraduationCap, Lightbulb } from 'lucide-react'
+import { ArrowRight, ExternalLink, Lightbulb } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { PORTFOLIO } from '../lib/portfolio'
 import TiltCard from '../components/ui/TiltCard'
@@ -15,13 +15,21 @@ import { CARDS } from '../components/ProductDeck'
 
 /* ── Data ─────────────────────────────────────────────────────────
    The venture list is the shared single source (lib/portfolio.ts). Status, link and
-   base icon come from the homepage deck (ProductDeck CARDS). A few family members have
-   no clean square brand mark, so the Portfolio overrides those icons (legible +
-   distinct) — a view-only concern; the Footer reads the same shared list for its links. */
-const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon }> = {
-  lite:       { src: '/brand/lite-mark.svg' },   // square crest (the deck uses the wide lockup)
-  courses:    { Comp: GraduationCap },            // ZAM crest is illegible at tile size
-  contribute: { Comp: Lightbulb },                // distinct from WDRICH's mark (both were identical)
+   base icon come from the homepage deck (ProductDeck CARDS). A few family members need
+   a square-friendly icon (the deck uses a wide lockup or a detailed crest), so the
+   Portfolio overrides those — official marks only, a view-only concern; the Footer
+   reads the same shared list for its links. `scale` = fraction of the tile the mark fills. */
+const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon; scale?: number }> = {
+  // Official Lite mark = the shield element of the official Lite lockup (public/brand/
+  // lite-lockup-light.svg): same mango #DD7823 + cream stroke. Distinct from the Matthew
+  // System crest (navy field + gold shield) by colour + no navy background.
+  lite:       { src: '/brand/lite-mark.svg' },
+  // Square crop of the REAL ZAM crest (public/brand/zam-mark.png) — emblem only, the
+  // "ZAM ACADEM.CO" text + laurels cropped out so the eagle shield reads at tile size.
+  courses:    { src: '/brand/zam-emblem.png', scale: 0.84 },
+  // "Share your business model" is a WDRICH action with no distinct brand mark of its
+  // own; a lightbulb (idea) keeps it visually distinct from WDRICH Supplier.
+  contribute: { Comp: Lightbulb },
 }
 
 interface Venture {
@@ -29,7 +37,7 @@ interface Venture {
   status: 'live' | 'coming-soon'
   url: string
   logo?: string; svg?: ReactNode; emoji?: string; mono?: string
-  iconSrc?: string; IconComp?: LucideIcon
+  iconSrc?: string; IconComp?: LucideIcon; iconScale?: number
   flagship: boolean
 }
 
@@ -45,7 +53,7 @@ const VENTURES: Venture[] = PORTFOLIO.map(p => {
     status: soon ? 'coming-soon' : 'live',
     url: !soon && c && c.href ? c.href : '',
     logo: c && c.logo, svg: c && c.svg, emoji: c && c.emoji, mono: c && c.mono,
-    iconSrc: ov && ov.src, IconComp: ov && ov.Comp,
+    iconSrc: ov && ov.src, IconComp: ov && ov.Comp, iconScale: ov && ov.scale,
     flagship: !!p.flagship,
   }
 })
@@ -66,7 +74,7 @@ function VentureIcon({ v, size }: { v: Venture; size: number }) {
       {v.IconComp
         ? <v.IconComp size={Math.round(size * 0.5)} color="var(--gold)" strokeWidth={1.6} />
         : v.iconSrc
-          ? <img src={v.iconSrc} alt="" draggable={false} style={{ width: size * 0.6, height: size * 0.6, objectFit: 'contain' }} />
+          ? <img src={v.iconSrc} alt="" draggable={false} style={{ width: size * (v.iconScale ?? 0.6), height: size * (v.iconScale ?? 0.6), objectFit: 'contain' }} />
           : v.svg
             ? <div style={{ width: size * 0.58, height: size * 0.58 }}>{v.svg}</div>
             : v.logo
@@ -172,7 +180,20 @@ export default function Companies() {
 
   return (
     <div className="relative min-h-screen" style={{ background: 'var(--navy)' }}>
-      <NetworkGraph />
+      {/* Background graph CONFINED to the hero band (top) and faded out before the
+          card grid — so no stray nodes ever render in the gaps between cards
+          (notably Lite↔ZAM at 390). overflow-hidden clips; the mask softens the edge. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 overflow-hidden pointer-events-none"
+        style={{
+          height: 'clamp(340px, 50vh, 540px)',
+          WebkitMaskImage: 'linear-gradient(to bottom, #000 58%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, #000 58%, transparent 100%)',
+        }}
+      >
+        <NetworkGraph />
+      </div>
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-8 pt-24 pb-24">
 
         {/* ── Header ───────────────────────────────────────── */}
