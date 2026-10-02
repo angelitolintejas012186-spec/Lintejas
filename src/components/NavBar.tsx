@@ -65,8 +65,9 @@ export default function NavBar() {
         <Link
           to="/"
           className="flex items-center gap-3 group min-w-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
-          aria-label="Lintejas — home"
         >
+          {/* No aria-label: the link's accessible name comes from the visible wordmark
+              below, so it matches the on-screen text (a11y: label-content-name-mismatch). */}
           <BrandMark size={40} />
 
           {/* Wordmark lockup — gold L signature; descriptor hides below sm */}

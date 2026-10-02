@@ -4,13 +4,18 @@ import { ArrowRight, MapPin, Calendar, Building2, ShieldCheck } from 'lucide-rea
 import Reveal from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
 import { staggerContainer, staggerItem, ease } from '../lib/motion'
+import { PORTFOLIO } from '../lib/portfolio'
 
-/* ── Stats ────────────────────────────────────────────────────── */
+/* ── Stats ────────────────────────────────────────────────────────────────────
+   Ventures count derives from the shared venture list so it never drifts. The old
+   "EU · GDPR Compliant" badge was an unverifiable claim (same reason the footer
+   EU-GDPR/ISO/MFA badges were removed) — replaced with the verified DTI credential.
+   NOTE: "Founded 2024" is unconfirmed — flagged for Angie to verify/correct. */
 const STATS = [
-  { icon: Calendar,  value: '2024',  label: 'Founded'          },
-  { icon: MapPin,    value: 'Remote', label: 'Remote-first'    },
-  { icon: Building2, value: '6',     label: 'Ventures'         },
-  { icon: ShieldCheck, value: 'EU',  label: 'GDPR Compliant'   },
+  { icon: Calendar,    value: '2024',                     label: 'Founded'       },
+  { icon: MapPin,      value: 'Remote',                   label: 'Remote-first'  },
+  { icon: Building2,   value: String(PORTFOLIO.length),   label: 'Ventures'      },
+  { icon: ShieldCheck, value: 'DTI',                      label: 'Registered'    },
 ]
 
 /* ── Editorial sections ───────────────────────────────────────── */

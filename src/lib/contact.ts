@@ -31,3 +31,17 @@ export const CLIENT_LOGIN_URL = ''
                  INSTAGRAM_URL = 'https://instagram.com/lintejas'. */
 export const LINKEDIN_URL  = ''
 export const INSTAGRAM_URL = ''
+
+/* ── Company legal facts (Impressum + footer) ────────────────────────────────
+   ONE source for the registered identity. Verified facts are filled in; anything
+   not yet confirmed stays '' and is NOT rendered anywhere — no invented legal
+   facts. Fill an empty one to make it appear site-wide at once (Impressum + footer).
+   (The previous Impressum carried a leftover EU/Slovak identity — "Lintejas s.r.o.",
+   "European Union", "EU VAT: SK", Slovak/EU GDPR — which contradicted the registered
+   PH identity below and has been removed.) ──────────────────────────────────── */
+export const LEGAL_NAME         = 'A. Lintejas Software Development & Services' // verified (footer)
+export const COMPANY_REGISTRY   = 'DTI-registered'  // verified (footer)
+export const COMPANY_COUNTRY    = 'Philippines'     // verified (footer)
+export const DTI_NUMBER         = ''  // MISSING — DTI Business Name registration no.
+export const COMPANY_ADDRESS    = ''  // MISSING — registered business address
+export const RESPONSIBLE_PERSON = ''  // MISSING — person responsible for content

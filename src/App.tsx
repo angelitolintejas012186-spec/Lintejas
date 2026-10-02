@@ -21,6 +21,7 @@ import About     from './pages/About'
 import Companies from './pages/Companies'
 import Services  from './pages/Services'
 import Contact   from './pages/Contact'
+import NotFound  from './pages/NotFound'
 
 /* B2 (perf): the admin app is lazy so its chunks — notably @dnd-kit (only used by
    admin/Branding) — are code-split OUT of the public entry graph and no longer
@@ -74,6 +75,8 @@ export default function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/services"  element={<Services />} />
             <Route path="/contact"   element={<Contact />} />
+            {/* Unknown public hash routes → branded 404 (keeps nav + footer) */}
+            <Route path="*"          element={<NotFound />} />
           </Route>
 
           {/* Admin (lazy — code-split from the public bundle) */}

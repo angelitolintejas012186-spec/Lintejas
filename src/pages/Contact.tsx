@@ -5,7 +5,11 @@ import { useSiteConfig } from '../lib/SiteConfigContext'
 import Reveal from '../components/ui/Reveal'
 import SocialIcons from '../components/SocialIcons'
 import { ease } from '../lib/motion'
-import { WHATSAPP_NUMBER, whatsappHref } from '../lib/contact'
+import {
+  WHATSAPP_NUMBER, whatsappHref, CONTACT_EMAIL,
+  LEGAL_NAME, COMPANY_REGISTRY, COMPANY_COUNTRY,
+  DTI_NUMBER, COMPANY_ADDRESS, RESPONSIBLE_PERSON,
+} from '../lib/contact'
 
 const WA_HREF = whatsappHref("Hi Lintejas! I'd like to get in touch.")
 
@@ -169,9 +173,9 @@ export default function Contact() {
                       >
                         <CheckCircle size={28} style={{ color: 'var(--gold)' }} />
                       </motion.div>
-                      <h3 className="font-display font-semibold text-xl mb-2" style={{ color: 'var(--cream)' }}>
+                      <h2 className="font-display font-semibold text-xl mb-2" style={{ color: 'var(--cream)' }}>
                         Message sent
-                      </h3>
+                      </h2>
                       <p className="text-sm max-w-xs" style={{ color: 'var(--slate)' }}>
                         {successMsg}
                       </p>
@@ -190,7 +194,7 @@ export default function Contact() {
                         <Field label="Full name" required>
                           <input
                             name="name" required value={form.name}
-                            onChange={handleChange}
+                            onChange={handleChange} aria-label="Full name"
                             className={inputClass} style={inputStyle}
                             placeholder="Your name"
                           />
@@ -199,7 +203,7 @@ export default function Contact() {
                           <Field label="Company">
                             <input
                               name="company" value={form.company}
-                              onChange={handleChange}
+                              onChange={handleChange} aria-label="Company"
                               className={inputClass} style={inputStyle}
                               placeholder="Optional"
                             />
@@ -211,9 +215,9 @@ export default function Contact() {
                         <Field label="Phone">
                           <input
                             name="phone" type="tel" value={form.phone}
-                            onChange={handleChange}
+                            onChange={handleChange} aria-label="Phone"
                             className={inputClass} style={inputStyle}
-                            placeholder="+421 …"
+                            placeholder="+63 …"
                           />
                         </Field>
                       )}
@@ -221,7 +225,7 @@ export default function Contact() {
                       <Field label="Email" required>
                         <input
                           name="email" type="email" required value={form.email}
-                          onChange={handleChange}
+                          onChange={handleChange} aria-label="Email"
                           className={inputClass} style={inputStyle}
                           placeholder="you@company.com"
                         />
@@ -231,7 +235,7 @@ export default function Contact() {
                         <div className="relative">
                           <select
                             name="type" value={form.type}
-                            onChange={handleChange}
+                            onChange={handleChange} aria-label="Enquiry type"
                             className={inputClass}
                             style={{ ...inputStyle, appearance: 'none', paddingRight: '2.5rem' } as React.CSSProperties}
                           >
@@ -250,7 +254,7 @@ export default function Contact() {
                       <Field label="Message" required>
                         <textarea
                           name="message" required rows={5} value={form.message}
-                          onChange={handleChange}
+                          onChange={handleChange} aria-label="Message"
                           className={inputClass} style={inputStyle}
                           placeholder="Tell us what you're working on or what you'd like to know…"
                         />
@@ -339,12 +343,12 @@ export default function Contact() {
                   className="absolute inset-x-0 top-0 h-px rounded-t-2xl"
                   style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.15), transparent)' }}
                 />
-                <h3
+                <h2
                   className="font-display font-semibold text-base mb-6"
                   style={{ color: 'var(--cream)' }}
                 >
                   Contact details
-                </h3>
+                </h2>
                 <div className="space-y-5">
                   <div className="flex gap-3">
                     <div
@@ -426,22 +430,33 @@ export default function Contact() {
                   className="absolute inset-x-0 top-0 h-px rounded-t-2xl"
                   style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.12), transparent)' }}
                 />
-                <h3
+                <h2
                   className="font-display font-semibold text-base mb-4"
                   style={{ color: 'var(--cream)' }}
                 >
                   Impressum
-                </h3>
+                </h2>
                 <div className="space-y-1 text-xs leading-relaxed" style={{ color: 'var(--slate)' }}>
-                  <p className="font-medium text-sm" style={{ color: 'var(--cream)' }}>Lintejas s.r.o.</p>
-                  <p>European Union</p>
-                  <p>EU VAT: SK — (registration pending)</p>
+                  <p className="font-medium text-sm" style={{ color: 'var(--cream)' }}>{LEGAL_NAME}</p>
+                  <p>{COMPANY_REGISTRY} · {COMPANY_COUNTRY}</p>
+                  {/* Rendered only once supplied — no invented legal facts. */}
+                  {DTI_NUMBER       && <p>DTI No. {DTI_NUMBER}</p>}
+                  {COMPANY_ADDRESS  && <p>{COMPANY_ADDRESS}</p>}
+                  {RESPONSIBLE_PERSON && <p>Responsible for content: {RESPONSIBLE_PERSON}</p>}
+                  <p>
+                    Contact:{' '}
+                    <a
+                      href={`mailto:${CONTACT_EMAIL}`}
+                      style={{ color: 'var(--cream)' }}
+                      onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--gold)')}
+                      onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--cream)')}
+                    >{CONTACT_EMAIL}</a>
+                  </p>
                   <p
                     className="pt-3 mt-1 border-t text-xs"
                     style={{ borderColor: 'var(--glass-border)', color: 'var(--slate)' }}
                   >
-                    Operated in accordance with applicable Slovak and EU regulations including GDPR
-                    (Regulation 2016/679). For data protection enquiries, use the email above.
+                    For data-protection or privacy enquiries, email us at the address above.
                   </p>
                 </div>
               </div>
