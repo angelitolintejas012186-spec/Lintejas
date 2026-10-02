@@ -343,7 +343,7 @@ export default function Theme() {
               <div className="py-8 px-4 text-center" style={{ background: pv['--bg-primary'] }}>
                 <div className="w-8 h-8 rounded-lg mx-auto mb-2" style={{ background: pv['--accent'] }} />
                 <div className="text-sm font-semibold mb-1" style={{ color: pv['--text-primary'] }}>Lintejas</div>
-                <div className="text-xs mb-3" style={{ color: pv['--text-secondary'] }}>Technology Holding Company</div>
+                <div className="text-xs mb-3" style={{ color: pv['--text-secondary'] }}>Lintejas Engine</div>
                 <span className="inline-block px-4 py-1.5 rounded-lg text-xs font-medium"
                       style={{ background: pv['--accent'], color: pv['--bg-primary'] }}>
                   View Portfolio

@@ -16,7 +16,7 @@ import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
 
 /* ── Headline lines — each reveals with a clip-path mask ──────── */
-const HEADLINE = ['We build', 'precision', 'software', 'ventures.']
+const HEADLINE = ['Software', 'for the', 'Filipino', 'owner.']
 
 /* ── Scroll-cue chevron ───────────────────────────────────────── */
 function ScrollCue() {
@@ -127,36 +127,36 @@ const PLANS: readonly Plan[] = [
 /* ── FAQ ───────────────────────────────────────────────────────── */
 const FAQS = [
   {
-    q: 'Why SkillVue for food manufacturing?',
-    a: 'SkillVue was built by someone who spent 15+ years working in food manufacturing. Unlike generic HR or compliance software, SkillVue understands your specific challenges — LOTO procedures, work permits, HACCP compliance, shift-based workforce, and managing competencies across 200+ employees in a food plant. It was not adapted for food manufacturing. It was built for it.',
+    q: 'What does Lintejas build?',
+    a: 'Software and digital tools for Filipino entrepreneurs and small businesses — NegosyoPlans for a complete business plan, Matthew System and Matthew Lite to track your sales, expenses and profit, ZAM Academy to learn digital marketing, and WDRICH to find and list suppliers.',
   },
   {
-    q: 'Is my data stored safely in Europe?',
-    a: 'Yes. All SkillVue data is stored exclusively on Google Cloud Platform (GCP) in Frankfurt, Germany. Data is encrypted at rest (AES-256) and in transit (TLS 1.2+). We are based in the European Union and operate under EU GDPR. Your data never leaves the European Economic Area.',
+    q: 'Who is it for?',
+    a: "Filipino entrepreneurs and small businesses — sari-sari stores, food carts and kitchens, service shops, online sellers, and the people behind them. Whether you're just starting out or already running, there's a tool for where you are.",
   },
   {
-    q: 'What makes Lintejas different from other tech companies?',
-    a: 'Three things: industry depth, compliance rigour, and bootstrapped focus. We build software for industries we know from the inside, with full GDPR compliance built in from day one. And we are self-funded — which means our only agenda is making our clients successful, not satisfying investors.',
+    q: "What's the difference between Matthew System and Matthew Lite?",
+    a: "Matthew System is the full business-manager dashboard that watches your numbers so you don't go under. Matthew Lite is the simpler, lower-cost version for vendors who just want to know, every day, if they really earned. Both run on your phone.",
   },
   {
-    q: 'Can I try SkillVue before committing?',
-    a: 'Absolutely. SkillVue offers a 30-day free trial with full access to all features. No credit card required. You can also explore our live demo account at skillvue.io/onboarding using the demo credentials — no sign-up needed. See exactly what your team will experience before making any decision.',
+    q: 'I have a business idea but no plan — where do I start?',
+    a: 'Start with NegosyoPlans. Each blueprint gives you a complete business plan — the model, startup costs, revenue projections, risks, marketing, and a 90-day launch plan — so you begin with a plan, not a guess.',
   },
   {
-    q: 'How long does it take to set up SkillVue?',
-    a: 'Most companies are fully set up within 1-2 weeks. Day 1: create your account, configure departments, upload employees via CSV. Week 1: set up competency requirements and checklists. Week 2: your team starts using it and dashboards fill with real data. We provide dedicated onboarding support on Professional and Enterprise plans.',
+    q: 'Is SkillVue available yet?',
+    a: "SkillVue is coming soon — it's a safety and workforce platform for food manufacturing. The rest of the Lintejas family is available today.",
   },
   {
-    q: 'Does Lintejas work with companies internationally?',
-    a: 'Yes. Lintejas and SkillVue serve clients globally. Primary markets are Central Europe and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
+    q: 'How do I get in touch?',
+    a: 'Head to the Contact page and send us a message, or email hello@lintejas.com. We read everything and respond personally.',
   },
 ]
 
 /* ── Values strip ─────────────────────────────────────────────── */
 const VALUES = [
-  { icon: Cpu,        title: 'Precision Engineering', desc: 'Every product is built to exacting standards, designed for the long run and the harshest operational environments.' },
-  { icon: Shield,     title: 'Privacy & Reliability', desc: 'Quality, privacy, and reliability are table stakes. GDPR compliance is built into every product from day one.' },
-  { icon: TrendingUp, title: 'Compounding Value',     desc: 'We invest in ventures with durable moats — products that get more valuable as the businesses they serve grow.' },
+  { icon: Cpu,        title: 'Built for owners', desc: 'Every tool is made for the person behind the counter — simple enough to use on a busy day, dependable when it matters most.' },
+  { icon: Shield,     title: 'Honest numbers',   desc: 'No hype and no vanity metrics. Our tools show the real picture — sales, costs, and whether you actually earned today.' },
+  { icon: TrendingUp, title: 'Taglish-ready',    desc: 'Built for how Filipinos really run a business — Taglish, mobile-first, and ready for the daily grind.' },
 ]
 
 export default function Home() {
@@ -224,8 +224,8 @@ export default function Home() {
     /* min-h reserves the 4-line height on mobile so the body-font swap (3↔4 lines) can't change the
        hero's content height and re-centre it (items-center) → no CLS. Desktop (lg) unchanged. */
     <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed max-w-md min-h-[104px] sm:min-h-0" style={{ color: 'var(--slate)' }}>
-      Building enduring technology for the industries
-      that shape the world. Precision software ventures with durable competitive advantage.
+      Software and digital tools that help Filipino entrepreneurs start, run, and grow
+      a business — simple, dependable, and honest.
     </motion.p>
   )
 
@@ -903,19 +903,28 @@ export default function Home() {
           <TheInterlockLogo size={52} className="mx-auto mb-6 opacity-70" />
 
           <h2 className="font-display font-semibold text-3xl sm:text-4xl mb-4" style={{ color: 'var(--cream)' }}>
-            Build the next venture
+            Build your business
             <span className="block text-transparent bg-clip-text bg-gold-gradient">with us</span>
           </h2>
 
           <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto" style={{ color: 'var(--slate)' }}>
-            We partner with industry operators, investors, and engineering teams to build the next
-            generation of industrial software.
+            Whether you're starting out or already running, there's a Lintejas tool for it. Explore the
+            products, or get in touch and we'll point you to the right one.
           </p>
 
-          <div className="flex justify-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <MagneticButton onClick={() => navigate('/contact')}>
               Get in touch <ArrowRight size={15} />
             </MagneticButton>
+            <button
+              onClick={() => { document.getElementById('ventures-deck')?.scrollIntoView({ behavior: 'smooth' }) }}
+              className="text-sm font-medium transition-colors duration-300"
+              style={{ color: 'var(--slate)' }}
+              onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--gold)')}
+              onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--slate)')}
+            >
+              See the products →
+            </button>
           </div>
         </motion.div>
       </section>
