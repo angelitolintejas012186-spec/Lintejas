@@ -81,7 +81,7 @@ export default function NavBar() {
               className="block text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight truncate mt-0.5"
               style={{ color: 'var(--slate)' }}
             >
-              SOFTWARE DEVELOPMENT &amp; E-COMMERCE
+              SOFTWARE DEVELOPMENT &amp; SERVICES
             </span>
           </span>
         </Link>

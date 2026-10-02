@@ -63,8 +63,10 @@ type Card = {
   liteCta?: string
 }
 
-/* Same order as the original NP deck (index.html #npdeck-carousel), then coming-soon. */
-const CARDS: Card[] = [
+/* Same order as the original NP deck (index.html #npdeck-carousel), then coming-soon.
+   Exported as the single source of truth: the Portfolio page (pages/Companies.tsx)
+   derives its venture list from this same data (ruling 3) — no second list. */
+export const CARDS: Card[] = [
   // Business Blueprints — index.html:688-704
   { v: 'blueprints', href: `${NP}/`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
     title: 'Business Blueprints', hook: 'Stop guessing. Start with a complete plan.',

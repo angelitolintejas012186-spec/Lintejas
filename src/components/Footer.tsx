@@ -19,13 +19,14 @@ const NAV = [
   },
   {
     heading: 'Ventures',
+    // Mirrors the Portfolio venture list (NegosyoPlans family + SkillVue). Flagship first.
     links: [
-      { to: '/companies', label: 'SkillVue'           },
-      { to: '/companies', label: 'NegosyoPlans'       },
-      { to: '/companies', label: 'BiyahePH'           },
-      { to: '/companies', label: 'AI Text Converter'  },
-      { to: '/companies', label: 'MCIS'               },
-      { to: '/companies', label: 'Staff Scheduler Pro' },
+      { to: '/companies', label: 'NegosyoPlans'     },
+      { to: '/companies', label: 'Matthew System'   },
+      { to: '/companies', label: 'Matthew Lite'     },
+      { to: '/companies', label: 'ZAM Academy'      },
+      { to: '/companies', label: 'WDRICH'           },
+      { to: '/companies', label: 'SkillVue'         },
     ],
   },
   {
@@ -87,7 +88,7 @@ export default function Footer() {
                     className="text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight whitespace-nowrap mt-1"
                     style={{ color: 'var(--slate)' }}
                   >
-                    SOFTWARE DEVELOPMENT &amp; E-COMMERCE
+                    SOFTWARE DEVELOPMENT &amp; SERVICES
                   </span>
                 </span>
               </Link>
@@ -144,7 +145,7 @@ export default function Footer() {
             style={{ borderColor: 'rgba(212,168,67,0.10)' }}
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              © {year} Lintejas · Software Development &amp; E-Commerce. All rights reserved.
+              © {year} Lintejas Software Development &amp; Services. All rights reserved.
             </p>
             {/* Company details — verifiable facts only; DTI no. / address render only when set */}
             <p className="text-xs text-center sm:text-right" style={{ color: 'var(--slate)' }}>

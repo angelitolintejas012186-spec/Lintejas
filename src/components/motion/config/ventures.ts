@@ -19,59 +19,71 @@ export const CENTRE_NODE = {
   radius: 18,
 }
 
+// The NegosyoPlans family (same ventures the homepage deck + Portfolio show). Live
+// ventures are gold; the one coming-soon (SkillVue) is bronze. NegosyoPlans is the
+// brightest/largest node (the flagship). Positions are decorative only.
 export const VENTURE_NODES: VentureNode[] = [
-  {
-    id:     'skillvue',
-    label:  'SkillVue',
-    status: 'live',
-    radius: 13,
-    color:  '#D4A843',      // gold
-    angle:  Math.PI * 0.25,
-    orbit:  160,
-  },
-  {
-    id:     'mcis',
-    label:  'MCIS',
-    status: 'coming-soon',
-    radius: 9,
-    color:  '#9A7A2E',      // bronze
-    angle:  Math.PI * 1.1,
-    orbit:  140,
-  },
-  {
-    id:     'scheduler',
-    label:  'Staff Scheduler',
-    status: 'coming-soon',
-    radius: 9,
-    color:  '#9A7A2E',      // bronze
-    angle:  Math.PI * 1.7,
-    orbit:  150,
-  },
   {
     id:     'negosyo-plans',
     label:  'NegosyoPlans',
-    status: 'live',         // item 121 — NegosyoPlans is LIVE
-    radius: 11,
+    status: 'live',         // flagship — the live, selling product
+    radius: 12,
     color:  '#D4A843',      // gold (live)
-    angle:  Math.PI * 0.7,
+    angle:  Math.PI * 0.25,
+    orbit:  150,
+  },
+  {
+    id:     'matthew',
+    label:  'Matthew System',
+    status: 'live',
+    radius: 10,
+    color:  '#D4A843',
+    angle:  Math.PI * 0.70,
     orbit:  145,
   },
   {
-    id:     'biyaheph',
-    label:  'BiyahePH',
-    status: 'in-development',
+    id:     'matthew-lite',
+    label:  'Matthew Lite',
+    status: 'live',
     radius: 9,
-    color:  '#9A7A2E',      // bronze
-    angle:  Math.PI * 1.4,
+    color:  '#D4A843',
+    angle:  Math.PI * 1.05,
     orbit:  155,
   },
   {
-    id:     'ai-text-converter',
-    label:  'AI Text Converter',
-    status: 'in-development',
+    id:     'zam-academy',
+    label:  'ZAM Academy',
+    status: 'live',
     radius: 9,
-    color:  '#9A7A2E',      // bronze
+    color:  '#D4A843',
+    angle:  Math.PI * 1.35,
+    orbit:  140,
+  },
+  {
+    id:     'wdrich',
+    label:  'WDRICH',
+    status: 'live',
+    radius: 9,
+    color:  '#D4A843',
+    angle:  Math.PI * 1.65,
+    orbit:  150,
+  },
+  {
+    id:     'share-model',
+    label:  'Share Model',
+    status: 'live',
+    radius: 8,
+    color:  '#D4A843',
     angle:  Math.PI * 1.95,
     orbit:  135,
+  },
+  {
+    id:     'skillvue',
+    label:  'SkillVue',
+    status: 'coming-soon',   // not live — SkillVue is planned
+    radius: 9,
+    color:  '#9A7A2E',       // bronze (coming-soon)
+    angle:  Math.PI * 0.50,
+    orbit:  162,
   },
 ]

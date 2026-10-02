@@ -1,140 +1,103 @@
 import { useState } from 'react'
+import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 import TiltCard from '../components/ui/TiltCard'
 import Reveal   from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
-import { staggerContainer, staggerItem, ease } from '../lib/motion'
+import { staggerContainer, staggerItem } from '../lib/motion'
 import NetworkGraph from '../components/motion/NetworkGraph'
 import HudFrame    from '../components/motion/HudFrame'
+import { CARDS } from '../components/ProductDeck'
 
-/* ── Data ─────────────────────────────────────────────────────── */
-interface Venture {
-  id:       string
-  icon:     string
-  name:     string
-  tagline:  string
-  industry: string
-  status:   'live' | 'beta' | 'coming-soon' | 'in-development'
-  desc:     string
-  url:      string
-  tags:     string[]
-  flagship: boolean
-  /** Optional build progress (0–100) — renders a bar on the venture card. */
-  progress?: number
-}
-
-const VENTURES: Venture[] = [
-  {
-    id:       'skillvue',
-    icon:     '🧠',
-    name:     'SkillVue',
-    tagline:  'Safety & Workforce Intelligence Platform',
-    industry: 'Food Manufacturing · Safety & HR Tech',
-    status:   'coming-soon' as const,   // item 121 #2 — SkillVue honesty: coming soon, no dead demo link
-    desc:     'The human layer of the smart factory. SkillVue unifies high-hazard safety workflows — digital work permits, LOTO, confined space entry, and risk prediction — with competency tracking, structured training pathways, and real-time skill-gap dashboards. Built for shift-based food manufacturing workforces, with 24/7 approval routing and instant push notifications.',
-    url:      '',
-    tags:     ['Safety Management', 'Competency Management', 'Analytics', 'HR Tech'],
-    flagship: true,
-  },
-  {
-    id:       'negosyo-plans',
-    icon:     '🛒',
-    name:     'NegosyoPlans',
-    tagline:  'Digital Products E-commerce',
-    industry: 'E-commerce · Philippine Market',
-    status:   'live' as const,   // item 121 — NegosyoPlans is LIVE
-    desc:     'A digital-products e-commerce platform for Filipino entrepreneurs — ready-made business plans, templates, and starter kits for launching small businesses in the Philippine market.',
-    url:      'https://negosyoplans.com/',
-    tags:     ['E-commerce', 'Digital Products'],
-    flagship: false,
-  },
-  {
-    id:       'biyaheph',
-    icon:     '🚌',
-    name:     'BiyahePH',
-    tagline:  'Commuter Companion App',
-    industry: 'Mobility · Philippine Market',
-    status:   'in-development' as const,
-    desc:     'A commuter companion app for the Philippine market — routes, fares, and real-time transit guidance across jeepney, bus, and rail networks. Built in Flutter for Android and iOS.',
-    url:      '',
-    tags:     ['Mobility', 'Consumer App'],
-    flagship: false,
-    progress: 60,
-  },
-  {
-    id:       'ai-text-converter',
-    icon:     '✍️',
-    name:     'AI Text Converter',
-    tagline:  'AI Writing Utility',
-    industry: 'AI Tools · Productivity',
-    status:   'in-development' as const,
-    desc:     'An AI-powered utility for converting text between formats, tones, and styles. Early build.',
-    url:      '',
-    tags:     ['AI', 'Productivity'],
-    flagship: false,
-    progress: 20,
-  },
-  {
-    id:       'mcis',
-    icon:     '📦',
-    name:     'MCIS',
-    tagline:  'Material & Consumables Issuance Management',
-    industry: 'Manufacturing · Supply Chain',
-    status:   'coming-soon' as const,
-    desc:     'End-to-end management of materials and consumables issuance across manufacturing operations. Tracks issue-by-line, consumption forecasting, and waste reduction in high-volume production environments.',
-    url:      '',
-    tags:     ['Inventory Management', 'Supply Chain'],
-    flagship: false,
-  },
-  {
-    id:       'scheduler',
-    icon:     '🗓️',
-    name:     'Staff Scheduler Pro',
-    tagline:  'AI-Powered Shift Planning',
-    industry: 'Manufacturing · Healthcare · Retail',
-    status:   'coming-soon' as const,
-    desc:     'AI-powered staff scheduling that respects labour rules, skill requirements, and employee preferences. Handles complex multi-site rotations, compliance alerts, and predictive absence modelling.',
-    url:      '',
-    tags:     ['Workforce Management', 'Automation', 'AI'],
-    flagship: false,
-  },
+/* ── Data ─────────────────────────────────────────────────────────
+   Single source of truth (ruling 3): venture facts come from the homepage
+   deck (ProductDeck CARDS) — NOT a second list. We pick which family members
+   to surface here and give each a portfolio display name + one-line purpose;
+   status, link and icon are read straight from the deck card (its `href`/`soon`).
+   NegosyoPlans is the flagship (ruling 4). SkillVue is a normal coming-soon card.
+   (The deck also carries BiyahePH (coming-soon); it is intentionally left off this
+   list per the approved venture list — add here if that changes.)                   */
+type PortItem = { v: string; name: string; purpose: string; flagship?: boolean }
+const PORTFOLIO: PortItem[] = [
+  { v: 'blueprints', name: 'NegosyoPlans', flagship: true,
+    purpose: 'Ready-made business plans for Filipino entrepreneurs — start with a complete plan, not a guess.' },
+  { v: 'matthew', name: 'Matthew System',
+    purpose: "A comprehensive business-manager dashboard that watches your numbers so you don't go under." },
+  { v: 'lite', name: 'Matthew Lite',
+    purpose: 'Know every day if you really earned — sales, expenses, profit and your cash split at a glance.' },
+  { v: 'courses', name: 'ZAM Academy',
+    purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
+  { v: 'supplier', name: 'WDRICH Supplier Registration',
+    purpose: 'List your business where owners look for suppliers.' },
+  { v: 'contribute', name: 'Share Your Business Model',
+    purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
+  { v: 'skillvue', name: 'SkillVue',
+    purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
 ]
 
-const STATUS_CONFIG = {
-  live:          { label: 'Live',         color: '#3FB950', bg: 'rgba(63,185,80,0.10)',  border: 'rgba(63,185,80,0.25)',  pulse: true  },
-  beta:          { label: 'Beta',         color: '#60A5FA', bg: 'rgba(96,165,250,0.10)', border: 'rgba(96,165,250,0.25)', pulse: false },
-  'coming-soon': { label: 'Coming soon',  color: '#D4A843', bg: 'rgba(212,168,67,0.10)', border: 'rgba(212,168,67,0.20)', pulse: false },
-  /* Neutral steel — the site's --slate tone; same badge component, data-only. */
-  'in-development': { label: 'In development', color: '#8A9AB0', bg: 'rgba(138,154,176,0.10)', border: 'rgba(138,154,176,0.25)', pulse: false },
+interface Venture {
+  id: string; name: string; purpose: string
+  status: 'live' | 'coming-soon'
+  url: string
+  logo?: string; svg?: ReactNode; emoji?: string; mono?: string
+  flagship: boolean
 }
 
-/* ── Animated tag chip ─────────────────────────────────────────── */
-function Tag({ label, delay }: { label: string; delay: number }) {
-  const [hov, setHov] = useState(false)
+const byId: Record<string, typeof CARDS[number]> =
+  Object.fromEntries(CARDS.map(c => [c.v, c]))
+
+const VENTURES: Venture[] = PORTFOLIO.map(p => {
+  const c = byId[p.v]
+  const soon = !!(c && c.soon)
+  return {
+    id: p.v, name: p.name, purpose: p.purpose,
+    status: soon ? 'coming-soon' : 'live',
+    url: !soon && c && c.href ? c.href : '',
+    logo: c && c.logo, svg: c && c.svg, emoji: c && c.emoji, mono: c && c.mono,
+    flagship: !!p.flagship,
+  }
+})
+
+const STATUS_CONFIG = {
+  live:          { label: 'Live',        color: '#3FB950', bg: 'rgba(63,185,80,0.10)',  border: 'rgba(63,185,80,0.25)',  pulse: true  },
+  'coming-soon': { label: 'Coming soon', color: '#D4A843', bg: 'rgba(212,168,67,0.10)', border: 'rgba(212,168,67,0.20)', pulse: false },
+}
+
+/* venture icon — reuses the deck's own logo / crest / emoji / monogram */
+function VentureIcon({ v, size }: { v: Venture; size: number }) {
   return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.85 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.4, ease }}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      className="px-3 py-1 rounded-full text-xs font-medium cursor-default transition-all duration-300"
-      style={{
-        background:  hov ? 'rgba(212,168,67,0.12)' : 'rgba(19,36,59,0.6)',
-        color:       hov ? 'var(--gold)'            : 'var(--slate)',
-        border:      `1px solid ${hov ? 'rgba(212,168,67,0.30)' : 'rgba(212,168,67,0.12)'}`,
-        backdropFilter: 'blur(8px)',
-      }}
+    <div
+      className="rounded-2xl flex items-center justify-center flex-shrink-0"
+      style={{ width: size, height: size, background: 'rgba(212,168,67,0.08)', border: '1px solid var(--glass-border)' }}
+      aria-hidden="true"
     >
-      {label}
-    </motion.span>
+      {v.svg
+        ? <div style={{ width: size * 0.58, height: size * 0.58 }}>{v.svg}</div>
+        : v.logo
+          ? <img src={v.logo} alt="" draggable={false} style={{ width: size * 0.62, height: size * 0.62, objectFit: 'contain' }} />
+          : v.emoji
+            ? <span style={{ fontSize: size * 0.5, lineHeight: 1 }}>{v.emoji}</span>
+            : <span className="font-display font-semibold" style={{ fontSize: size * 0.42, color: 'var(--gold)' }}>{v.mono}</span>}
+    </div>
   )
 }
 
-/* ── Visit platform button with sliding arrow ──────────────────── */
+function StatusPill({ status, big }: { status: Venture['status']; big?: boolean }) {
+  const s = STATUS_CONFIG[status]
+  return (
+    <div
+      className={`inline-flex items-center gap-2 rounded-full font-medium text-xs ${big ? 'px-3 py-1' : 'px-2.5 py-0.5'}`}
+      style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}` }}
+    >
+      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: s.color, animation: s.pulse ? 'pulseGold 2s ease-in-out infinite' : 'none' }} />
+      {s.label}
+    </div>
+  )
+}
+
+/* ── Visit-platform link (live ventures only) — ≥44px tap target ─── */
 function VisitButton({ url }: { url: string }) {
   const [hov, setHov] = useState(false)
   return (
@@ -144,189 +107,63 @@ function VisitButton({ url }: { url: string }) {
       rel="noopener noreferrer"
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded"
+      className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded px-1 min-h-[44px]"
       style={{ color: hov ? 'var(--gold-bright)' : 'var(--gold)' }}
     >
       Visit platform
-      <motion.span
-        animate={{ x: hov ? 4 : 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="inline-flex"
-      >
+      <motion.span animate={{ x: hov ? 4 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="inline-flex">
         <ExternalLink size={13} />
       </motion.span>
     </a>
   )
 }
 
-/* ── Flagship card (SkillVue) ─────────────────────────────────── */
-function FlagshipCard({ v }: { v: typeof VENTURES[0] }) {
-  const stat = STATUS_CONFIG[v.status]
+/* ── Flagship card (NegosyoPlans) ──────────────────────────────── */
+function FlagshipCard({ v }: { v: Venture }) {
   return (
     <TiltCard
       maxTilt={5}
       className="rounded-2xl border"
-      style={{
-        background:     'var(--glass-bg)',
-        borderColor:    'var(--glass-border)',
-        backdropFilter: 'blur(24px)',
-      }}
+      style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(24px)' }}
     >
-      <div className="p-8 sm:p-10">
-        {/* Ambient glow */}
-        <div
-          className="absolute top-0 right-0 w-80 h-80 pointer-events-none"
-          style={{ background: 'radial-gradient(circle at 70% 10%, rgba(212,168,67,0.07), transparent 70%)' }}
-        />
-
-        {/* Status badge */}
-        <div
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-6"
-          style={{ background: stat.bg, color: stat.color, border: `1px solid ${stat.border}` }}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-            style={{
-              background: stat.color,
-              animation: stat.pulse ? 'pulseGold 2s ease-in-out infinite' : 'none',
-            }}
-          />
-          {stat.label}
+      <div className="p-7 sm:p-9">
+        <div className="absolute top-0 right-0 w-80 h-80 pointer-events-none" style={{ background: 'radial-gradient(circle at 70% 10%, rgba(212,168,67,0.07), transparent 70%)' }} />
+        <StatusPill status={v.status} big />
+        <div className="flex items-center gap-4 mt-5 mb-4">
+          <motion.div whileHover={{ scale: 1.06, rotate: 3 }} transition={{ type: 'spring', stiffness: 300, damping: 18 }}>
+            <VentureIcon v={v} size={64} />
+          </motion.div>
+          <h2 className="font-display font-semibold text-2xl" style={{ color: 'var(--cream)' }}>{v.name}</h2>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
-          <div>
-            {/* Icon + name */}
-            <div className="flex items-center gap-4 mb-5">
-              <motion.div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-                style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid var(--glass-border)' }}
-                whileHover={{ scale: 1.08, rotate: 4 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-              >
-                {v.icon}
-              </motion.div>
-              <div>
-                <h2 className="font-display font-semibold text-2xl" style={{ color: 'var(--cream)' }}>
-                  {v.name}
-                </h2>
-                <p className="text-sm font-medium" style={{ color: 'var(--gold)' }}>{v.tagline}</p>
-                <p className="text-xs mt-0.5" style={{ color: 'var(--slate)' }}>{v.industry}</p>
-              </div>
-            </div>
-
-            <p className="text-base leading-relaxed mb-6 max-w-2xl" style={{ color: 'var(--slate)' }}>
-              {v.desc}
-            </p>
-
-            {/* Animated tags */}
-            <div className="flex flex-wrap gap-2 mb-7">
-              {v.tags.map((tag, i) => <Tag key={tag} label={tag} delay={0.1 + i * 0.07} />)}
-            </div>
-
-            {/* item 121 #2 — no dead "Visit Platform" links while the venture has no live URL */}
-            {v.url && (
-            <div className="flex flex-wrap items-center gap-5">
-              <MagneticButton href={v.url} strength={0.22}>
-                Visit Platform <ArrowRight size={14} />
-              </MagneticButton>
-              <VisitButton url={v.url} />
-            </div>
-            )}
+        <p className="text-base leading-relaxed mb-6 max-w-2xl" style={{ color: 'var(--slate)' }}>{v.purpose}</p>
+        {v.url && (
+          <div className="flex flex-wrap items-center gap-5">
+            <MagneticButton href={v.url} strength={0.22}>Visit platform <ArrowRight size={14} /></MagneticButton>
+            <VisitButton url={v.url} />
           </div>
-
-          {/* Stats column */}
-          <div className="hidden lg:flex flex-col gap-3 min-w-[140px]">
-            {[
-              { n: '26',  label: 'User roles' },
-              { n: '12+', label: 'Modules' },
-              { n: 'EU',  label: 'GDPR compliant' },
-            ].map(({ n, label }) => (
-              <div
-                key={label}
-                className="rounded-xl p-4 text-center"
-                style={{ background: 'rgba(212,168,67,0.05)', border: '1px solid var(--glass-border)' }}
-              >
-                <div className="font-display font-semibold text-xl" style={{ color: 'var(--gold)' }}>{n}</div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--slate)' }}>{label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
       </div>
     </TiltCard>
   )
 }
 
 /* ── Standard venture card ─────────────────────────────────────── */
-function VentureCard({ v, index }: { v: typeof VENTURES[0]; index: number }) {
-  const stat = STATUS_CONFIG[v.status]
+function VentureCard({ v }: { v: Venture }) {
   return (
-    <motion.div variants={staggerItem}>
+    <motion.div variants={staggerItem} className="h-full">
       <TiltCard
         maxTilt={7}
         className="rounded-2xl border h-full"
-        style={{
-          background:     'var(--glass-bg)',
-          borderColor:    'var(--glass-border)',
-          backdropFilter: 'blur(20px)',
-        }}
+        style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(20px)' }}
       >
-        <div className="p-7 h-full flex flex-col">
-          {/* Status */}
-          <div
-            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium self-start mb-5"
-            style={{ background: stat.bg, color: stat.color, border: `1px solid ${stat.border}` }}
-          >
-            <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: stat.color }} />
-            {stat.label}
-          </div>
-
-          {/* Icon */}
-          <motion.div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-5 flex-shrink-0"
-            style={{ background: 'rgba(212,168,67,0.06)', border: '1px solid var(--glass-border)' }}
-            whileHover={{ scale: 1.1, rotate: -5 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 16 }}
-          >
-            {v.icon}
-          </motion.div>
-
-          <h3 className="font-display font-semibold text-lg mb-1" style={{ color: 'var(--cream)' }}>
-            {v.name}
-          </h3>
-          <p className="text-sm font-medium mb-1" style={{ color: 'var(--gold)' }}>{v.tagline}</p>
-          <p className="text-xs mb-4" style={{ color: 'var(--slate)' }}>{v.industry}</p>
-
-          <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: 'var(--slate)' }}>
-            {v.desc}
-          </p>
-
-          {/* Build progress — only for ventures that declare it */}
-          {v.progress != null && (
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-medium" style={{ color: 'var(--slate)' }}>Build progress</span>
-                <span className="text-xs font-medium" style={{ color: 'var(--gold)' }}>{v.progress}%</span>
-              </div>
-              <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(212,168,67,0.10)' }}>
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{ background: 'var(--gold)' }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${v.progress}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.9, ease, delay: 0.2 }}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="flex flex-wrap gap-1.5">
-            {v.tags.map((tag, i) => (
-              <Tag key={tag} label={tag} delay={0.05 + index * 0.1 + i * 0.05} />
-            ))}
-          </div>
+        <div className="p-6 h-full flex flex-col">
+          <StatusPill status={v.status} />
+          <div className="mt-5 mb-4"><VentureIcon v={v} size={48} /></div>
+          <h3 className="font-display font-semibold text-lg mb-2" style={{ color: 'var(--cream)' }}>{v.name}</h3>
+          <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: 'var(--slate)' }}>{v.purpose}</p>
+          {v.url
+            ? <VisitButton url={v.url} />
+            : <span className="text-xs font-medium" style={{ color: 'var(--slate)' }}>In the works — not yet available.</span>}
         </div>
       </TiltCard>
     </motion.div>
@@ -342,38 +179,32 @@ export default function Companies() {
   return (
     <div className="relative min-h-screen" style={{ background: 'var(--navy)' }}>
       <NetworkGraph />
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-8 pt-28 pb-28">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-8 pt-24 pb-24">
 
         {/* ── Header ───────────────────────────────────────── */}
-        <Reveal className="mb-16">
+        <Reveal className="mb-8">
           <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase mb-4"
             style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.20)', color: 'var(--gold)' }}
           >
             Portfolio
           </div>
-
-          <div className="flex items-end justify-between flex-wrap gap-4">
+          <div className="flex items-end justify-between flex-wrap gap-3">
             <div>
-              <h1
-                className="font-display font-semibold text-5xl sm:text-6xl leading-tight mb-4"
-                style={{ color: 'var(--cream)' }}
-              >
-                Our Companies
+              <h1 className="font-display font-semibold text-4xl sm:text-5xl leading-tight mb-3" style={{ color: 'var(--cream)' }}>
+                Our Ventures
               </h1>
-              <p className="text-lg max-w-xl" style={{ color: 'var(--slate)' }}>
-                Precision-built software ventures, each solving a distinct operational problem.
+              <p className="text-base sm:text-lg max-w-xl" style={{ color: 'var(--slate)' }}>
+                Products of one company — each solving a real problem for Filipino businesses.
               </p>
             </div>
-            <span className="text-sm" style={{ color: 'var(--slate)' }}>
-              {VENTURES.length} ventures
-            </span>
+            <span className="text-sm whitespace-nowrap" style={{ color: 'var(--slate)' }}>{VENTURES.length} ventures</span>
           </div>
         </Reveal>
 
-        {/* ── Flagship ─────────────────────────────────────── */}
-        <Reveal className="mb-8" delay={0.1}>
-          <p className="text-xs font-medium uppercase tracking-widest mb-5" style={{ color: 'var(--gold)' }}>
+        {/* ── Flagship (NegosyoPlans) ───────────────────────── */}
+        <Reveal className="mb-10" delay={0.1}>
+          <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: 'var(--gold)' }}>
             Flagship venture
           </p>
           {flagship.map(v => (
@@ -383,34 +214,28 @@ export default function Companies() {
               cornerSize={22}
               strokeWidth={1.4}
               scanline
-              readouts={[
-                { position: 'tl', label: 'STATUS', value: 'LIVE' },
-                { position: 'tr', label: 'MODULES', value: '12+' },
-              ]}
+              readouts={[{ position: 'tl', label: 'STATUS', value: 'LIVE' }]}
             >
               <FlagshipCard v={v} />
             </HudFrame>
           ))}
         </Reveal>
 
-        {/* ── Supporting ventures ───────────────────────────── */}
-        <div className="mb-16">
-          <Reveal className="mb-5" delay={0.05}>
+        {/* ── More ventures ─────────────────────────────────── */}
+        <div className="mb-14">
+          <Reveal className="mb-4" delay={0.05}>
             <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--slate)' }}>
-              In development
+              More ventures
             </p>
           </Reveal>
-
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-60px' }}
             variants={staggerContainer}
           >
-            {supporting.map((v, i) => (
-              <VentureCard key={v.id} v={v} index={i} />
-            ))}
+            {supporting.map(v => <VentureCard key={v.id} v={v} />)}
           </motion.div>
         </div>
 
@@ -418,32 +243,14 @@ export default function Companies() {
         <Reveal delay={0.1}>
           <div
             className="relative rounded-2xl p-8 sm:p-10 text-center border overflow-hidden"
-            style={{
-              background:     'var(--glass-bg)',
-              borderColor:    'var(--glass-border)',
-              backdropFilter: 'blur(20px)',
-            }}
+            style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)', backdropFilter: 'blur(20px)' }}
           >
-            <div
-              className="absolute inset-x-0 top-0 h-px"
-              style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.22), transparent)' }}
-            />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.06) 0%, transparent 65%)' }}
-            />
-
-            <p className="text-sm mb-2" style={{ color: 'var(--slate)' }}>
-              Interested in partnering or investing?
-            </p>
-            <h2 className="font-display font-semibold text-2xl mb-6" style={{ color: 'var(--cream)' }}>
-              Let's build together.
-            </h2>
-
+            <div className="absolute inset-x-0 top-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(232,199,102,0.22), transparent)' }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.06) 0%, transparent 65%)' }} />
+            <p className="text-sm mb-2" style={{ color: 'var(--slate)' }}>Interested in partnering or investing?</p>
+            <h2 className="font-display font-semibold text-2xl mb-6" style={{ color: 'var(--cream)' }}>Let's build together.</h2>
             <div className="flex justify-center">
-              <MagneticButton onClick={() => navigate('/contact')}>
-                Get in touch <ArrowRight size={15} />
-              </MagneticButton>
+              <MagneticButton onClick={() => navigate('/contact')}>Get in touch <ArrowRight size={15} /></MagneticButton>
             </div>
           </div>
         </Reveal>
