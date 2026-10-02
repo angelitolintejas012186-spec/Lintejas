@@ -16,9 +16,8 @@ import { CARDS } from '../components/ProductDeck'
    deck (ProductDeck CARDS) — NOT a second list. We pick which family members
    to surface here and give each a portfolio display name + one-line purpose;
    status, link and icon are read straight from the deck card (its `href`/`soon`).
-   NegosyoPlans is the flagship (ruling 4). SkillVue is a normal coming-soon card.
-   (The deck also carries BiyahePH (coming-soon); it is intentionally left off this
-   list per the approved venture list — add here if that changes.)                   */
+   NegosyoPlans is the flagship (ruling 4). SkillVue + BiyahePH are coming-soon cards
+   (no link), their status read from the deck's `soon` flag like every other item.    */
 type PortItem = { v: string; name: string; purpose: string; flagship?: boolean }
 const PORTFOLIO: PortItem[] = [
   { v: 'blueprints', name: 'NegosyoPlans', flagship: true,
@@ -35,6 +34,8 @@ const PORTFOLIO: PortItem[] = [
     purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
   { v: 'skillvue', name: 'SkillVue',
     purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
+  { v: 'biyaheph', name: 'BiyahePH',
+    purpose: 'Maps and commute directions for the Philippines — planned for Android and iOS.' },
 ]
 
 interface Venture {
@@ -88,7 +89,7 @@ function StatusPill({ status, big }: { status: Venture['status']; big?: boolean 
   const s = STATUS_CONFIG[status]
   return (
     <div
-      className={`inline-flex items-center gap-2 rounded-full font-medium text-xs ${big ? 'px-3 py-1' : 'px-2.5 py-0.5'}`}
+      className={`self-start inline-flex items-center gap-2 rounded-full font-medium text-xs ${big ? 'px-3 py-1' : 'px-2.5 py-0.5'}`}
       style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}` }}
     >
       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: s.color, animation: s.pulse ? 'pulseGold 2s ease-in-out infinite' : 'none' }} />
@@ -195,7 +196,7 @@ export default function Companies() {
                 Our Ventures
               </h1>
               <p className="text-base sm:text-lg max-w-xl" style={{ color: 'var(--slate)' }}>
-                Products of one company — each solving a real problem for Filipino businesses.
+                Products of one company — each solving a real business problem.
               </p>
             </div>
             <span className="text-sm whitespace-nowrap" style={{ color: 'var(--slate)' }}>{VENTURES.length} ventures</span>

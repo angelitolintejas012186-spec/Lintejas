@@ -93,19 +93,9 @@ export default function Footer() {
                 </span>
               </Link>
 
-              <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'var(--slate)' }}>
-                A technology holding company building precision software for industries that
-                shape the world.
+              <p className="text-sm leading-relaxed max-w-xs mb-6" style={{ color: 'var(--slate)' }}>
+                Software and digital tools that help Filipino entrepreneurs start and run their businesses.
               </p>
-
-              {/* Trust marks */}
-              <div className="flex flex-wrap gap-x-4 gap-y-1 mb-6">
-                {['EU GDPR', 'ISO/HACCP', 'MFA Security'].map(tag => (
-                  <span key={tag} className="text-xs" style={{ color: 'var(--slate)' }}>
-                    <span style={{ color: 'var(--bronze)' }}>—</span> {tag}
-                  </span>
-                ))}
-              </div>
 
               {/* Social icons */}
               <SocialIcons />
@@ -145,7 +135,7 @@ export default function Footer() {
             style={{ borderColor: 'rgba(212,168,67,0.10)' }}
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              © {year} Lintejas Software Development &amp; Services. All rights reserved.
+              © {year} A. Lintejas Software Development &amp; Services. All rights reserved.
             </p>
             {/* Company details — verifiable facts only; DTI no. / address render only when set */}
             <p className="text-xs text-center sm:text-right" style={{ color: 'var(--slate)' }}>
