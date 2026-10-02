@@ -22,3 +22,12 @@ export const CONTACT_EMAIL = 'hello@lintejas.com'
    https://skillvue-production.up.railway.app/demo-entry — hidden while SkillVue is
    coming soon. Set a real URL to bring the button back everywhere at once. */
 export const CLIENT_LOGIN_URL = ''
+
+/* Social profile URLs — each footer icon renders ONLY when its URL is set (code kept,
+   hidden while empty, same pattern as above). Hidden pending account confirmation:
+   the Lintejas.io Facebook page is linked to Instagram @negosyoplans (not @lintejas),
+   and the LinkedIn/IG @lintejas handles aren't confirmed yet. Facebook is live below.
+   To re-enable: LINKEDIN_URL = 'https://linkedin.com/company/lintejas';
+                 INSTAGRAM_URL = 'https://instagram.com/lintejas'. */
+export const LINKEDIN_URL  = ''
+export const INSTAGRAM_URL = ''
