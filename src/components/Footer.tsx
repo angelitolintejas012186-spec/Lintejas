@@ -72,18 +72,19 @@ export default function Footer() {
                 <span className="flex flex-col justify-center select-none">
                   <span className="flex items-center gap-3">
                     <span
-                      className="font-display font-semibold text-lg leading-tight whitespace-nowrap"
+                      className="brand-shine font-display font-semibold text-lg leading-tight whitespace-nowrap"
                       style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
                     >
                       <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
                     </span>
                     <span aria-hidden="true" className="flex-shrink-0" style={{ width: '34px', height: '1px', background: 'var(--gold)' }} />
                   </span>
+                  {/* Lockup line 2: ENGINE (gold, wide-tracked) — replaces the old descriptor */}
                   <span
-                    className="text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight whitespace-nowrap mt-1"
-                    style={{ color: 'var(--slate)' }}
+                    className="block whitespace-nowrap font-semibold leading-none mt-1.5"
+                    style={{ color: 'var(--gold)', fontSize: '12px', letterSpacing: '0.5em' }}
                   >
-                    SOFTWARE DEVELOPMENT &amp; SERVICES
+                    ENGINE
                   </span>
                 </span>
               </Link>

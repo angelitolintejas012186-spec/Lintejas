@@ -6,7 +6,6 @@ import type { LucideIcon } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
-import HudFrame            from '../components/motion/HudFrame'
 import LiquidGold          from '../components/motion/LiquidGold'
 import ProductDeck         from '../components/ProductDeck'
 import DeferredLogo        from '../components/DeferredLogo'
@@ -149,7 +148,7 @@ const FAQS = [
   },
   {
     q: 'Does Lintejas work with companies internationally?',
-    a: 'Yes. Lintejas Company and SkillVue serve clients globally. Primary markets are Central Europe and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
+    a: 'Yes. Lintejas and SkillVue serve clients globally. Primary markets are Central Europe and the Middle East (UAE, Saudi Arabia). SkillVue supports multiple languages and is designed for international food manufacturers. Geography is not a barrier.',
   },
 ]
 
@@ -190,7 +189,7 @@ export default function Home() {
         style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.20)', color: 'var(--gold)' }}
       >
         <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
-        Technology Holding
+        For Filipino Entrepreneurs
       </span>
     </motion.div>
   )
@@ -243,18 +242,6 @@ export default function Home() {
         About Lintejas
       </Link>
     </motion.div>
-  )
-
-  const heroTrust = (
-    <HudFrame cornerSize={12} strokeWidth={1.0} delay={1.0} readouts={[{ position: 'tr', label: 'REV', value: 'v2.4' }]}>
-      <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 px-3 pb-2">
-        {['EU GDPR Compliant', 'MFA Security', 'ISO/HACCP Aligned'].map(tag => (
-          <span key={tag} className="text-xs font-medium" style={{ color: 'var(--slate)' }}>
-            <span style={{ color: 'var(--gold)' }}>—</span> {tag}
-          </span>
-        ))}
-      </motion.div>
-    </HudFrame>
   )
 
   const logo3D = (fallbackSize: number) => (
@@ -318,7 +305,6 @@ export default function Home() {
                   {heroHeadline}
                   {heroLead}
                   {heroCtas}
-                  {heroTrust}
                 </motion.div>
 
                 {/* 3D column — right (desktop, unchanged: big h-580 container) */}
@@ -352,7 +338,6 @@ export default function Home() {
                 </div>
                 {heroLead}
                 {heroCtas}
-                {heroTrust}
               </motion.div>
             )}
           </div>

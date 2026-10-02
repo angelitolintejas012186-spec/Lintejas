@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Code2, BarChart3, Wrench, Users, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { FileText, BarChart3, GraduationCap, Store, ArrowRight, CheckCircle2 } from 'lucide-react'
 import TiltCard from '../components/ui/TiltCard'
 import Reveal   from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
@@ -9,40 +9,40 @@ import { motion } from 'framer-motion'
 /* ── Data ─────────────────────────────────────────────────────── */
 const SERVICES = [
   {
-    icon:    Code2,
-    title:   'Product Development',
-    tagline: 'From concept to production',
-    desc:    'We design and build software products end-to-end — architecture, engineering, UI/UX, and QA. We specialise in complex operational software for manufacturing and enterprise environments.',
-    points:  ['Technical architecture & system design', 'Full-stack engineering (Laravel, React)', 'UI/UX design & user testing', 'DevOps, CI/CD, and production ops'],
+    icon:    FileText,
+    title:   'Start with a plan',
+    tagline: 'NegosyoPlans',
+    desc:    'Ready-made business blueprints for Filipino entrepreneurs — a complete plan instead of a guess. Each one covers the model, startup costs, revenue projections, risks, marketing, and a 90-day launch plan.',
+    points:  ['Complete business plan', 'Startup costs & revenue projections', 'Risk & marketing strategy', '90-day launch action plan'],
   },
   {
     icon:    BarChart3,
-    title:   'Technology Investment',
-    tagline: 'Active capital with conviction',
-    desc:    'We invest in early-stage B2B software companies in industrial sectors. We take active board positions, contributing engineering and commercial expertise alongside capital.',
-    points:  ['Seed & early-stage B2B SaaS', 'Central and Eastern Europe focus', 'Board-level technical advisory', 'Engineering co-founding support'],
+    title:   'Run your numbers',
+    tagline: 'Matthew System · Matthew Lite',
+    desc:    "A simple business dashboard that watches your money so you don't go under. Track sales, expenses, profit, inventory, and your cash split — so you know every day if you really earned.",
+    points:  ['Daily sales, expenses & profit', 'Inventory & cash tracking', 'Matthew Lite from ₱99/month', 'Works on your phone'],
   },
   {
-    icon:    Wrench,
-    title:   'Operational Digitisation',
-    tagline: 'Paper-to-digital transformation',
-    desc:    'We work with established industrial companies to digitise paper-based processes, build real-time operational dashboards, and integrate legacy systems with modern software stacks.',
-    points:  ['Process mapping & gap analysis', 'Real-time operational dashboards', 'Legacy system integration', 'ISO, HACCP & regulatory compliance'],
+    icon:    GraduationCap,
+    title:   'Learn to market',
+    tagline: 'ZAM Academy',
+    desc:    'Practical digital-marketing courses for small businesses — marketing that sells, not just gets likes. Social media, search, and the basics that actually bring in customers.',
+    points:  ['Social media marketing', 'Search engine marketing & SEO', 'From ₱500 per module', 'Built for small budgets'],
   },
   {
-    icon:    Users,
-    title:   'Fractional CTO',
-    tagline: 'Senior leadership, flexible engagement',
-    desc:    'Technology leadership for scale-up companies. We assess existing architecture, define technical roadmaps, support engineering hiring, and provide executive-level decisions while you hire permanently.',
-    points:  ['Architecture assessment & audit', 'Technical roadmap definition', 'Engineering team structure', 'Vendor & tooling selection'],
+    icon:    Store,
+    title:   'Find & list suppliers',
+    tagline: 'WDRICH',
+    desc:    'A vetted supplier directory where business owners find suppliers — and where your business gets listed so owners can find you.',
+    points:  ['Listed in the supplier directory', 'Listed — ₱1,300/yr', 'Featured — ₱2,500/yr', 'Have a model? Share it — we may build a blueprint'],
   },
 ]
 
 const PROCESS = [
-  { n: '01', label: 'Assess',    desc: 'We audit your current state — processes, systems, constraints — and identify where technology adds the most leverage.' },
-  { n: '02', label: 'Architect', desc: 'We design a solution that solves the real problem, not a theoretical one. Simple, durable, and built for your team to own.' },
-  { n: '03', label: 'Build',     desc: 'Precision engineering: clean code, documented decisions, production-grade security and performance from day one.' },
-  { n: '04', label: 'Operate',   desc: 'We don\'t just hand over and disappear. We stay close through stabilisation and provide on-call support during critical periods.' },
+  { n: '01', label: 'Listen',          desc: 'We learn how real Filipino businesses actually run — the cash, the stock, the daily grind — before we build anything.' },
+  { n: '02', label: 'Build simple',    desc: 'We design tools that are simple to use and dependable, so a busy owner can pick them up without a manual.' },
+  { n: '03', label: 'Test with owners', desc: 'We put every product in front of real owners and fix what trips them up before it ships.' },
+  { n: '04', label: 'Keep improving',  desc: 'We stay close after launch and keep improving the tools alongside the people who use them.' },
 ]
 
 /* ── Page ──────────────────────────────────────────────────────── */
@@ -69,8 +69,8 @@ export default function Services() {
             What we do
           </h1>
           <p className="text-lg max-w-2xl" style={{ color: 'var(--slate)' }}>
-            From building products from scratch to investing in exceptional founders — we work with
-            operators, enterprises, and startups worldwide.
+            Practical software and digital tools for Filipino entrepreneurs and small businesses —
+            to start with a real plan, run the day-to-day, and grow.
           </p>
         </Reveal>
 

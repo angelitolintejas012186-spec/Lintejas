@@ -70,19 +70,20 @@ export default function NavBar() {
               below, so it matches the on-screen text (a11y: label-content-name-mismatch). */}
           <BrandMark size={40} />
 
-          {/* Wordmark lockup — gold L signature; descriptor hides below sm */}
+          {/* Lockup: LINTEJAS (line 1, unchanged font/size/colour + slow shine) over
+              ENGINE (line 2, gold, wide-tracked), replacing the old descriptor. */}
           <span className="flex flex-col justify-center select-none min-w-0">
             <span
-              className="font-display font-semibold text-xl leading-tight whitespace-nowrap"
+              className="brand-shine font-display font-semibold text-xl leading-tight whitespace-nowrap"
               style={{ color: 'var(--cream)', letterSpacing: '0.2em' }}
             >
               <span style={{ color: 'var(--gold)' }}>L</span>INTEJAS
             </span>
             <span
-              className="block text-[8px] sm:text-[9px] tracking-[0.18em] sm:tracking-[0.26em] leading-tight truncate mt-0.5"
-              style={{ color: 'var(--slate)' }}
+              className="block whitespace-nowrap font-semibold leading-none mt-1.5"
+              style={{ color: 'var(--gold)', fontSize: '12px', letterSpacing: '0.5em' }}
             >
-              SOFTWARE DEVELOPMENT &amp; SERVICES
+              ENGINE
             </span>
           </span>
         </Link>

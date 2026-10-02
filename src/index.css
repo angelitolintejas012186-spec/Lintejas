@@ -176,6 +176,18 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
    → translateX 0→333.33%), but via transform so it is composited and never triggers CLS. */
 @keyframes pd-sheen{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(333.33%)}}
 .pd-card:focus-visible{outline:3px solid var(--nd-gold);outline-offset:3px}
+
+/* Brand wordmark shine (header + footer LINTEJAS line) — REUSES the deck's
+   @keyframes pd-sheen above and the exact .pd-card.pd-active::after sweep (same
+   60%-wide 105deg gold band at .16, same 3.4s ease-in-out timing). The deck rules
+   above are untouched; this only adds a second consumer of the shared keyframe.
+   transform-only sweep → composited, no layout shift / CLS. */
+.brand-shine{ position:relative; overflow:hidden; }
+.brand-shine::after{
+  content:"";position:absolute;top:0;left:-80%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(217,169,60,.16),transparent);
+  animation:pd-sheen 3.4s ease-in-out infinite; pointer-events:none; will-change:transform;
+}
 .pd-ci{
   width:70px;height:70px;border-radius:24px;flex:none;
   background:linear-gradient(150deg,var(--nd-navy3),var(--nd-navy));
@@ -356,7 +368,7 @@ input[type="color"] {
      but kill any residual CSS animations here too. */
   .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
   .animate-grain, .animate-shimmer, .animate-float, .animate-pulse-live,
-  .animate-pulse-gold, .glass-glow {
+  .animate-pulse-gold, .glass-glow, .brand-shine::after {
     animation: none !important;
   }
 }

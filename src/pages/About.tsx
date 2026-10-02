@@ -1,46 +1,44 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, MapPin, Calendar, Building2, ShieldCheck } from 'lucide-react'
+import { ArrowRight, MapPin, Building2, ShieldCheck } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
 import { staggerContainer, staggerItem, ease } from '../lib/motion'
 import { PORTFOLIO } from '../lib/portfolio'
 
 /* ── Stats ────────────────────────────────────────────────────────────────────
-   Ventures count derives from the shared venture list so it never drifts. The old
-   "EU · GDPR Compliant" badge was an unverifiable claim (same reason the footer
-   EU-GDPR/ISO/MFA badges were removed) — replaced with the verified DTI credential.
-   NOTE: "Founded 2024" is unconfirmed — flagged for Angie to verify/correct. */
+   Ventures count derives from the shared venture list so it never drifts. Verified
+   facts only — no "Founded" year (unconfirmed) and no unverifiable compliance claim. */
 const STATS = [
-  { icon: Calendar,    value: '2024',                     label: 'Founded'       },
-  { icon: MapPin,      value: 'Remote',                   label: 'Remote-first'  },
-  { icon: Building2,   value: String(PORTFOLIO.length),   label: 'Ventures'      },
-  { icon: ShieldCheck, value: 'DTI',                      label: 'Registered'    },
+  { icon: Building2,   value: String(PORTFOLIO.length),   label: 'Ventures'     },
+  { icon: MapPin,      value: 'PH',                        label: 'Philippines'  },
+  { icon: ShieldCheck, value: 'DTI',                       label: 'Registered'   },
 ]
 
 /* ── Editorial sections ───────────────────────────────────────── */
 const SECTIONS = [
   {
     title: 'Our mission',
-    body:  `We exist to demonstrate that software companies can achieve world-class outcomes —
-built with care, designed for longevity, and respectful of the people who use them.
+    body:  `We build software and digital tools that help Filipino entrepreneurs start and run real
+businesses — made with care, designed to last, and respectful of the people who use them.
 
-We believe the best technology is invisible: it dissolves into the work, amplifying human
-capability without friction. Every product we build is held to that standard.`,
+We believe the best tools are the ones that quietly do their job: they fit into how a small
+business already works and make the hard parts easier. Every product we build is held to that standard.`,
   },
   {
-    title: 'Where we operate',
-    body:  `We operate remote-first, serving clients across Central Europe and the Middle East. Our
-portfolio focuses on manufacturing, food production, logistics, and enterprise software —
-sectors where the gap between operational reality and available tooling remains significant.
+    title: 'Who we serve',
+    body:  `We serve Filipino entrepreneurs and small businesses — sari-sari stores, food carts and
+kitchens, service shops, online sellers, and the people behind them. Our products meet owners
+where they are: NegosyoPlans for a complete business plan, Matthew System and Matthew Lite to
+track sales, expenses and profit, ZAM Academy to learn digital marketing, and WDRICH to find
+and list suppliers.
 
-These are industries that move physical goods and feed people. We take that responsibility seriously.`,
+These are the businesses that feed families and neighbourhoods. We take that responsibility seriously.`,
   },
   {
-    title: 'How we invest',
-    body:  `We take concentrated positions in companies we understand deeply. Rather than spreading
-capital thinly, we commit fully — co-founding teams, contributing architecture decisions,
-and staying patient through long product development cycles.
+    title: 'How we build',
+    body:  `We build for the long run. Rather than chasing features, we ship tools that are simple to
+use, dependable day to day, and improved alongside the owners who actually use them.
 
 Quality over velocity. We would rather ship one product that endures than three that break.`,
   },
@@ -49,8 +47,8 @@ Quality over velocity. We would rather ship one product that endures than three 
 /* ── Principles ───────────────────────────────────────────────── */
 const PRINCIPLES = [
   { n: '01', label: 'Precision over speed',  desc: 'We slow down to think before building. Rushed products accumulate debt that compounds silently for years.' },
-  { n: '02', label: 'Operators, not tourists', desc: 'We work in the industries we build for. Knowing the domain changes what you build and how you measure success.' },
-  { n: '03', label: 'Compliant by design',   desc: 'Privacy, reliability, and regulatory compliance are not features. They are table stakes, baked in from day one.' },
+  { n: '02', label: 'Built for real businesses', desc: 'We build for the small Filipino enterprises we understand — from the ground up. Knowing the day-to-day changes what you build and how you measure success.' },
+  { n: '03', label: 'Dependable by design',   desc: 'Privacy, reliability and clarity are not features. They are table stakes, baked in from day one.' },
 ]
 
 /* ── Page ──────────────────────────────────────────────────────── */
@@ -97,15 +95,14 @@ export default function About() {
           </h1>
 
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--slate)' }}>
-            Lintejas is a technology holding company. We identify,
-            build, and grow software ventures that solve real operational problems in industries
-            where precision matters.
+            Lintejas is a software company building digital tools for Filipino entrepreneurs and
+            small businesses — practical products that help people start, run, and grow a business.
           </p>
         </Reveal>
 
         {/* ── Stats row ──────────────────────────────────────── */}
         <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-20"
+          className="grid grid-cols-3 gap-4 mb-20"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-60px' }}
@@ -158,14 +155,14 @@ export default function About() {
                 <div
                   className="text-4xl font-display font-semibold mb-3 text-transparent bg-clip-text bg-gold-gradient"
                 >
-                  Since 2024
+                  Made in the PH
                 </div>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--slate)' }}>
                   A young company with a long-term view. We build for decades, not quarters.
                 </p>
                 <div className="h-px" style={{ background: 'var(--glass-border)' }} />
                 <div className="pt-4 mt-4 space-y-2">
-                  {['Remote-first', 'International clients'].map(loc => (
+                  {['Remote-first', 'Filipino entrepreneurs'].map(loc => (
                     <div key={loc} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full" style={{ background: 'var(--gold)' }} />
                       <span className="text-xs" style={{ color: 'var(--slate)' }}>{loc}</span>
@@ -273,7 +270,7 @@ export default function About() {
               Work with us.
             </h2>
             <p className="text-sm mb-7 max-w-md mx-auto" style={{ color: 'var(--slate)' }}>
-              Whether you're looking to build a product, invest alongside us, or bring technology expertise into your organisation.
+              Starting a business, or want a tool that fits how your business really runs? Let's talk.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
