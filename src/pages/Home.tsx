@@ -18,6 +18,11 @@ const Interlock3D = lazy(() => import('../components/Interlock3D'))
 /* ── Headline lines — each reveals with a clip-path mask ──────── */
 const HEADLINE = ['Software', 'for the', 'Filipino', 'owner.']
 
+/* SkillVue pricing (Home #pricing) is hidden while SkillVue is "Coming soon" — the
+   section and its PLANS data stay in the tree; flip to true to show it again. SkillVue
+   stays visible only as its Coming-soon card in the product deck + Portfolio. */
+const SKILLVUE_PRICING_ENABLED: boolean = false
+
 /* ── Scroll-cue chevron ───────────────────────────────────────── */
 function ScrollCue() {
   const { scrollY } = useScroll()
@@ -514,8 +519,10 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          PRICING
+          PRICING — hidden via config while SkillVue is "Coming soon" (code kept).
+          Flip SKILLVUE_PRICING_ENABLED to restore. SkillVue stays as its Coming-soon card.
       ══════════════════════════════════════════════════════════ */}
+      {SKILLVUE_PRICING_ENABLED && (
       <section id="pricing" className="scroll-mt-24 max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
         <motion.div
           initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
@@ -723,6 +730,7 @@ export default function Home() {
           <span style={{ color: 'var(--gold)' }}>Leave your details and we'll notify you.</span>
         </motion.p>
       </section>
+      )}
 
       {/* ══════════════════════════════════════════════════════════
           FAQ
