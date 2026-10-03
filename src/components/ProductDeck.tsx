@@ -32,113 +32,151 @@ const MatthewCrest = (
   </svg>
 )
 
-type Feat = { text: string; food?: boolean }
-type Offer = { title: string; sub: string; soon?: boolean }
+/* Premium card system (2026-10-03, approved mock): every card = logo + status pill → kicker →
+   serif name → one-line promise → 3–6 points (line-check icons) → 3-cell stat strip or price
+   boxes → CTA pinned to the bottom. Each brand keeps its colours (index.css .pd-card[data-v]).
+   The legacy fields title / hook / logo / svg / emoji / mono / soon / href are still read by the
+   Portfolio page + footer (lib/portfolio.ts, pages/Companies.tsx) — keep them; deck-only
+   overrides live in deckLogo / deckMono. */
+type Point = { text: string; chip?: string; soon?: boolean }   // soon → clock icon (not live yet)
+type Stat = { b: string; s: string }
+type Price = { label: string; price: string; per: string; featured?: boolean }
 type Card = {
   v: string
   href?: string           // undefined = coming-soon (not a link)
-  navy?: boolean
-  frameless?: boolean
+  navy?: boolean          // gold glow shadow (dark gold-framed cards)
   soon?: boolean
-  logo?: string
+  logo?: string           // also the Portfolio icon
   svg?: ReactNode
-  mono?: string           // coming-soon monogram
-  emoji?: string          // coming-soon rich card (SkillVue) — emoji icon tile
-  liteTag?: boolean
-  lockupBrand?: boolean    // brand shown via a horizontal lockup image → suppress the text h3 title
-  cta?: string            // gold pill text
-  title?: string
-  titleBadge?: string     // e.g. FREE
-  topBadge?: string       // standalone badge above the icon (SkillVue "Coming soon")
-  brand?: boolean         // translate="no" on the title
-  sub?: string
-  tagline?: string        // gold tagline (SkillVue)
-  subline?: string        // muted sub-line (SkillVue)
-  hook?: string
-  offers?: Offer[]
-  feat?: Feat[]
-  dash?: string           // blueprints dashboard dash-link
-  dashHref?: string
-  litedesc?: string
-  liteCta?: string
+  mono?: string           // coming-soon monogram (Portfolio)
+  emoji?: string          // Portfolio icon only — the deck never renders emoji
+  deckLogo?: string       // deck-only logo override
+  deckMono?: string       // deck-only monogram (no logo asset in the repo)
+  title?: string          // aria-label + Portfolio fallback
+  hook?: string           // Portfolio fallback (= the promise unless noted)
+  pill: string
+  kicker: string
+  name: string
+  nameAccent?: string     // trailing part of the name in the brand accent (Matthew <Lite>)
+  promise: string
+  pointsLabel?: string    // e.g. PLANNED MODULES (hollow-circle icons)
+  points?: Point[]
+  stats?: Stat[]
+  prices?: Price[]
+  band?: { lead: string; text: string; href: string }   // secondary link (NP → dashboard)
+  cta?: string
 }
 
-/* Same order as the original NP deck (index.html #npdeck-carousel), then coming-soon.
-   Exported as the single source of truth: the Portfolio page (pages/Companies.tsx)
-   derives its venture list from this same data (ruling 3) — no second list. */
+/* Number of NegosyoPlans blueprints on sale (incl. the bundle) — update when blueprints are added. */
+const NP_PLAN_COUNT = 148
+
+const CHECK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+const CLOCK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l2.5 2.5" /></svg>
+const RING = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8" /></svg>
+
+/* Same order as before (the original NP deck order, then coming-soon). Exported as the single
+   source of truth: the Portfolio page + footer derive their venture list from it — no second list. */
 export const CARDS: Card[] = [
-  // Business Blueprints — index.html:688-704
-  { v: 'blueprints', href: `${NP}/`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
+  { v: 'blueprints', href: `${NP}/`, navy: true, logo: '/brand/np-mark.png',
     title: 'NegosyoPlans', hook: 'Stop guessing. Start with a comprehensive business plan.',
-    feat: [
-      { text: 'Complete business plan' }, { text: 'Startup costs & revenue projections' },
-      { text: 'Risk management' }, { text: 'Marketing & social media strategy' },
-      { text: 'OFW remote management' }, { text: '90-day launch action plan' },
-      { text: 'Food safety & FDA compliance (food)', food: true },
+    pill: 'Live', kicker: 'Business plan blueprints', name: 'NegosyoPlans',
+    promise: 'Stop guessing. Start with a comprehensive business plan.',
+    points: [
+      { text: 'Ready-made plans for real Filipino businesses' },
+      { text: 'Startup costs, pricing & revenue projections' },
+      { text: 'Risk, marketing & a 90-day launch plan' },
+      { text: 'OFW remote-management playbook' },
+      { text: 'Food safety & FDA steps for food plans' },
     ],
-    dash: 'Includes Matthew System: 10 days full access, then Basic for life →', dashHref: `${NP}/portal/` },
-  // Matthew System — index.html:706-718
-  { v: 'matthew', href: `${NP}/matthew`, navy: true, frameless: true, svg: MatthewCrest, cta: 'See it →', brand: true,
-    title: 'Matthew System', sub: 'Your Comprehensive Business Manager Dashboard.',
-    hook: "It doesn't promise profit. It watches so you don't go under.",
-    feat: [
-      { text: 'Launch journey & milestones' }, { text: 'Money Calendar & Results' },
-      { text: 'Operations — deliveries, inventory' }, { text: 'Client bookings' },
-      { text: 'PRO: daily Business Health Score' },
-    ] },
-  // Matthew Lite — Lite brand: cream card + P1 horizontal lockup (shield + "Matthew" brown + "Lite" mango),
-  // mango hook rule, dark-brown body, mango CTA. Matches negosyoplans.com/lite. No blue.
-  { v: 'lite', href: `${NP}/lite`, frameless: true, logo: '/brand/lite-lockup-light.svg', lockupBrand: true, brand: true,
+    stats: [{ b: String(NP_PLAN_COUNT), s: 'plans + bundle' }, { b: 'EN/TL', s: 'language' }, { b: 'Instant', s: 'download' }],
+    band: { lead: 'Bonus:', text: 'Matthew System included — 10 days full access, then Basic for life.', href: `${NP}/portal/` },
+    cta: 'Browse plans' },
+  { v: 'matthew', href: `${NP}/matthew`, navy: true, svg: MatthewCrest,
+    title: 'Matthew System', hook: "It doesn't promise profit. It watches so you don't go under.",
+    pill: 'Live', kicker: 'Business manager dashboard', name: 'Matthew System',
+    promise: "It doesn't promise profit. It watches so you don't go under.",
+    points: [
+      { text: 'Daily sales, expenses & profit — in EN or Taglish' },
+      { text: 'Your own online booking page, with map' },
+      { text: 'Walk-in POS, inventory & deliveries' },
+      { text: 'Utang, ipon & sobre money tools' },
+      { text: 'Counter phone for your kahera' },
+      { text: 'Daily Business Health Score', chip: 'Advanced' },
+    ],
+    stats: [{ b: '10-day', s: 'free trial' }, { b: 'Offline', s: 'keeps saving' }, { b: 'Phone', s: 'first' }],
+    cta: 'See it in action' },
+  { v: 'lite', href: `${NP}/lite`, logo: '/brand/lite-lockup-light.svg', deckLogo: '/brand/lite-mark.svg',
     title: 'Matthew Lite', hook: 'Know every day if you really earned.',
-    litedesc: 'Sales, expenses, profit and your cash split — at a glance. ₱99/month, no contract.',
-    liteCta: 'Get started →' },
-  // Courses (ZAM) — index.html:733-752
-  { v: 'courses', href: `${NP}/courses`, frameless: true, logo: '/brand/zam-mark.png', cta: 'Open →',
-    offers: [
-      { title: 'Digital Marketing', sub: 'Market your business on the Internet' },
-      { title: 'RAG & Agentic AI', sub: 'Improve your skills', soon: true },
+    pill: 'Live · for vendors', kicker: 'For sari-sari & bangketa', name: 'Matthew', nameAccent: 'Lite',
+    promise: 'Know every day if you really earned.',
+    points: [
+      { text: 'Quick sale & expense logging' },
+      { text: "Today's real profit, at a glance" },
+      { text: 'Your cash split, worked out for you' },
+      { text: 'Installs on any phone like an app' },
     ],
-    hook: 'Marketing that sells, not just gets likes.',
-    feat: [
-      { text: 'Social media marketing' }, { text: 'Search engine marketing' },
-      { text: 'Search engine optimization' }, { text: 'From ₱500 per module' },
-    ] },
-  // Feasibility Study (DAMES) — index.html:754-766
-  // REMOVED from the deck 2026-09-30 (checklist item 148): the free feasibility check already lives
-  // on negosyoplans.com/feasibility, so this card duplicated it. Data object kept (commented) and the
-  // logo asset /brand/dames-mark.png retained per scope-lock — uncomment to restore the card.
-  // { v: 'feasibility', href: `${NP}/feasibility`, frameless: true, logo: '/brand/dames-mark.png', cta: 'Try it free →',
-  //   title: 'Feasibility Study', titleBadge: 'FREE', hook: 'Test your idea before spending a peso.',
-  //   feat: [{ text: 'Free area check' }, { text: 'No email, no payment' }, { text: 'Ideas, not promises' }] },
-  // Supplier Registration (WDRICH) — index.html:768-780
-  { v: 'supplier', href: `${NP}/supplier/register`, navy: true, frameless: true, logo: '/brand/wdrich-mark.png', cta: 'Register →',
-    title: 'Supplier Registration', hook: 'List your business where owners look for suppliers.',
-    feat: [{ text: 'Listed in the vetted supplier directory' }, { text: 'Listed — ₱1,300/yr' }, { text: 'Featured — ₱2,500/yr' }] },
-  // Share your business model (WDRICH) — index.html:782-794
-  { v: 'contribute', href: `${NP}/supplier/contribute`, navy: true, frameless: true, logo: '/brand/wdrich-mark.png', cta: 'Share →',
+    stats: [{ b: '₱99', s: 'per month' }, { b: '5-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
+    cta: 'Start free' },
+  { v: 'courses', href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
+    title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',
+    pill: 'Courses', kicker: 'ZAM Academ.co', name: 'Digital Marketing',
+    promise: 'Marketing that sells, not just gets likes.',
+    points: [
+      { text: 'Social media marketing' },
+      { text: 'Search engine marketing' },
+      { text: 'Search engine optimization' },
+      { text: 'RAG & Agentic AI', chip: 'Soon', soon: true },
+    ],
+    stats: [{ b: '₱500', s: 'from / module' }, { b: '3', s: 'tracks now' }, { b: 'Online', s: 'learn anywhere' }],
+    cta: 'View courses' },
+  // Feasibility Study (DAMES) — REMOVED from the deck 2026-09-30 (checklist item 148): the free
+  // feasibility check already lives on negosyoplans.com/feasibility. Logo /brand/dames-mark.png
+  // retained per scope-lock. Restore by re-adding a card with href `${NP}/feasibility`.
+  { v: 'supplier', href: `${NP}/supplier/register`, logo: '/brand/wdrich-mark.png',
+    title: 'Supplier Registration', hook: 'Get found by business owners looking for suppliers.',
+    pill: 'Open for suppliers', kicker: 'WDRICH supplier directory', name: 'Supplier Registration',
+    promise: 'Get found by business owners looking for suppliers.',
+    points: [
+      { text: 'Listed where NegosyoPlans owners look for suppliers' },
+      // Verified 2026-10-03: register → status 'pending'; only an admin approval makes it public
+      // (NP functions/api/supplier/register.js:132, admin/orders/approve.js:114-125, suppliers.js:11).
+      { text: 'Every listing reviewed before it goes live' },
+      { text: 'Buyers contact you directly — no middleman fees' },
+    ],
+    prices: [
+      { label: 'Listed', price: '₱1,300', per: 'per year' },
+      { label: 'Featured', price: '₱2,500', per: 'per year · shown first', featured: true },
+    ],
+    cta: 'Register your business' },
+  // Share your business model (WDRICH) — existing deck copy only.
+  { v: 'contribute', href: `${NP}/supplier/contribute`, logo: '/brand/wdrich-mark.png',
     title: 'Share your business model', hook: 'Real model, no blueprint yet? Tell us how it works.',
-    feat: [{ text: 'If selected, we may build a blueprint from it' }, { text: 'Free to share · no guarantee' }, { text: 'Credited or anonymous — your choice' }] },
-  // Coming-soon (Lintejas additions) — dimmed, not links, no price
-  // SkillVue = the site's existing SkillVue "Coming soon" featured card content (Home.tsx:553-578),
-  // in deck-card style. Navy card so the gold tagline + all text clear ≥4.5:1 (as on the featured card).
-  { v: 'skillvue', href: '/#/skillvue', soon: true, navy: true, emoji: '🧠', brand: true, topBadge: 'Coming soon',
-    title: 'SkillVue',
-    tagline: 'Safety & Workforce Intelligence Platform',       // Home.tsx:570
-    subline: 'Food Manufacturing · Safety & HR Tech',          // Home.tsx:571
-    hook: 'The human layer of the smart factory.',             // Home.tsx:576 (first sentence)
-    feat: [                                                    // derived from the description Home.tsx:576-578
-      { text: 'Digital work permits' },
-      { text: 'LOTO and confined space entry' },
-      { text: 'Risk prediction' },
-      { text: 'Competency tracking and training pathways' },
-      { text: 'Real-time skill-gap dashboards' },
-    ] },
-  { v: 'biyaheph', soon: true, mono: 'B', brand: true, title: 'BiyahePH', titleBadge: 'Coming soon',
-    hook: 'Maps and commute directions for the Philippines.' },
+    pill: 'Open', kicker: 'WDRICH', name: 'Share your business model',
+    promise: 'Real model, no blueprint yet? Tell us how it works.',
+    points: [
+      { text: 'If selected, we may build a blueprint from it' },
+      { text: 'Free to share · no guarantee' },
+      { text: 'Credited or anonymous — your choice' },
+    ],
+    cta: 'Share' },
+  // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
+  { v: 'skillvue', href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
+    title: 'SkillVue', hook: 'The human layer of the smart factory.',
+    pill: 'Coming soon', kicker: 'Food manufacturing · Safety & HR', name: 'SkillVue',
+    promise: 'The human layer of the smart factory.',
+    pointsLabel: 'Planned modules',
+    points: [
+      { text: 'Digital work permits, LOTO & confined-space entry' },
+      { text: 'Competency tracking & training pathways' },
+      { text: 'Skill-gap dashboards & risk prediction' },
+    ],
+    cta: 'See plans & get notified' },
+  // BiyahePH — Coming soon, not a link; existing copy only (deck hook + the Portfolio line).
+  { v: 'biyaheph', soon: true, mono: 'B',
+    title: 'BiyahePH', hook: 'Maps and commute directions for the Philippines.',
+    pill: 'Coming soon', kicker: 'Planned for Android & iOS', name: 'BiyahePH',
+    promise: 'Maps and commute directions for the Philippines.' },
   // Lintejas Fashion — REMOVED from the deck 2026-09-30: the brand no longer exists.
-  // Data object kept (commented) per scope-lock — uncomment to restore.
-  // { v: 'fashion', soon: true, mono: 'L', brand: true, title: 'Lintejas Fashion', titleBadge: 'Coming soon',
-  //   hook: "Women's fashion for Europe." },
 ]
 
 function headerOffset(): number {
@@ -147,75 +185,51 @@ function headerOffset(): number {
 }
 
 function CardInner({ c }: { c: Card }) {
-  // Rich coming-soon card (SkillVue) — mirrors the featured card: badge top-left,
-  // 🧠 tile, title, gold tagline, muted sub-line, hook, checklist. No CTA / link / price.
-  if (c.emoji) {
-    return (
-      <>
-        {c.topBadge && <span className="pd-soon-badge">{c.topBadge}</span>}
-        <div className="pd-ci pd-emoji-tile" aria-hidden="true"><span className="pd-emoji">{c.emoji}</span></div>
-        <h3 translate={c.brand ? 'no' : undefined}>{c.title}</h3>
-        {c.tagline && <p className="pd-tagline">{c.tagline}</p>}
-        {c.subline && <p className="pd-subline">{c.subline}</p>}
-        {c.hook && <p className="pd-hook">{c.hook}</p>}
-        {c.feat && (
-          <ul className="pd-feat">
-            {c.feat.map((f) => <li key={f.text}>{f.text}</li>)}
-          </ul>
-        )}
-      </>
-    )
-  }
+  const logo = c.deckLogo || c.logo
   return (
     <>
-      <div className="pd-top">
-        <div className="pd-ci" aria-hidden={c.soon ? true : undefined}>
-          {c.svg ? c.svg : c.logo ? <img src={c.logo} alt="" draggable={false} /> : <span className="pd-mono">{c.mono}</span>}
+      <div className="pdx-top">
+        <div className="pdx-mark" aria-hidden="true">
+          {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={44} height={44} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
-        {c.liteTag
-          ? <span className="pd-lite-tag" aria-hidden="true">LITE</span>
-          : c.cta
-            ? <span className="pd-go">{c.cta}</span>
-            : c.soon
-              ? <span className="pd-badge pd-badge--soon">Coming soon</span>
-              : null}
+        <span className="pdx-pill">{c.pill}</span>
       </div>
-
-      {c.offers ? (
-        <div>
-          {c.offers.map((o) => (
-            <div className="pd-offer" key={o.title}>
-              <div className="pd-offer-row">
-                <h3>{o.title}</h3>
-                {o.soon && <span className="pd-badge pd-badge--soon">SOON</span>}
-              </div>
-              <p className="pd-sub">{o.sub}</p>
+      <div>
+        <p className="pdx-kicker">{c.kicker}</p>
+        <h3 className="pdx-name" translate="no">{c.name}{c.nameAccent && <> <span className="pdx-accent">{c.nameAccent}</span></>}</h3>
+      </div>
+      <p className="pdx-promise">{c.promise}</p>
+      {c.pointsLabel && <p className="pdx-plabel">{c.pointsLabel}</p>}
+      {c.points && (
+        <ul className="pdx-list">
+          {c.points.map(p => (
+            <li key={p.text}>
+              {c.pointsLabel ? RING : p.soon ? CLOCK : CHECK}
+              <span>{p.text}{p.chip && <span className="pdx-chip">{p.chip}</span>}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {c.stats && (
+        <div className="pdx-stats">
+          {c.stats.map(s => <div className="pdx-stat" key={s.s}><b>{s.b}</b><span>{s.s}</span></div>)}
+        </div>
+      )}
+      {c.prices && (
+        <div className="pdx-prices">
+          {c.prices.map(p => (
+            <div className={'pdx-price' + (p.featured ? ' is-featured' : '')} key={p.label}>
+              <span className="pdx-plab">{p.label}</span><b>{p.price}</b><span className="pdx-per">{p.per}</span>
             </div>
           ))}
         </div>
-      ) : c.title && !c.lockupBrand ? (
-        <h3 translate={c.brand ? 'no' : undefined}>
-          {c.title}
-          {c.titleBadge && (c.soon
-            ? null
-            : <span className="pd-badge">{c.titleBadge}</span>)}
-        </h3>
-      ) : null}
-
-      {c.sub && !c.offers && <p className="pd-sub">{c.sub}</p>}
-      {c.hook && <p className="pd-hook">{c.hook}</p>}
-      {c.litedesc && <p className="pd-litedesc">{c.litedesc}</p>}
-
-      {c.feat && (
-        <ul className="pd-feat">
-          {c.feat.map((f) => <li key={f.text} className={f.food ? 'pd-feat-food' : undefined}>{f.text}</li>)}
-        </ul>
       )}
-
-      {c.dash && (
-        <span className="pd-dash" role="link" tabIndex={0} data-dash={c.dashHref}>{c.dash}</span>
-      )}
-      {c.liteCta && <span className="pd-lite-cta">{c.liteCta}</span>}
+      <div className="pdx-foot">
+        {c.band && (
+          <span className="pd-dash pdx-band" role="link" tabIndex={0} data-dash={c.band.href}><b>{c.band.lead}</b> {c.band.text}</span>
+        )}
+        {c.cta && <span className="pdx-cta">{c.cta} <span aria-hidden="true">→</span></span>}
+      </div>
     </>
   )
 }
@@ -321,9 +335,11 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
       id="ventures-deck"
       aria-label="Our products and ventures"
       className="relative w-full overflow-hidden"
-      style={{ height: compact ? 'auto' : vh, background: 'var(--navy)', scrollMarginTop: compact ? 'calc(88px + env(safe-area-inset-top))' : undefined }}
+      style={{ height: compact ? 'auto' : undefined, minHeight: compact ? undefined : vh, background: 'var(--navy)', scrollMarginTop: compact ? 'calc(88px + env(safe-area-inset-top))' : undefined }}
     >
-      <div className={compact ? 'flex flex-col' : 'h-full flex flex-col justify-center'} style={{ paddingTop: compact ? 0 : pad, paddingBottom: compact ? 24 : undefined }}>
+      {/* desktop: full-viewport band, centred — min-height (not height) so the premium cards are never
+          clipped on short laptop screens (≈ <790px tall); on taller screens it is exactly one viewport. */}
+      <div className={compact ? 'flex flex-col' : 'flex flex-col justify-center'} style={{ paddingTop: compact ? 0 : pad, paddingBottom: compact ? 24 : undefined, minHeight: compact ? undefined : vh, boxSizing: 'border-box' }}>
         <div className="max-w-[1280px] w-full mx-auto px-6 lg:px-8 mb-3 sm:mb-4">
           <div className="flex items-center gap-4">
             <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
@@ -335,7 +351,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
 
         <div className="pd-carousel" ref={stripRef} role="list">
           {CARDS.map((c, i) => {
-            const cls = ['pd-card', c.navy ? 'pd-navy' : '', c.frameless ? 'pd-frameless' : '', c.soon ? 'pd-soon' : ''].filter(Boolean).join(' ')
+            const cls = ['pd-card', 'pdx', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : ''].filter(Boolean).join(' ')
             return c.href ? (
               <a key={c.v} ref={el => { cardRefs.current[i] = el }} href={c.href} data-v={c.v} role="listitem"
                 aria-label={c.title || c.v} className={cls} onClick={e => onCardClick(e, i)}>
