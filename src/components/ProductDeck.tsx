@@ -151,7 +151,7 @@ export const CARDS: Card[] = [
   // Share your business model (WDRICH) — existing deck copy only.
   { v: 'contribute', href: `${NP}/supplier/contribute`, logo: '/brand/wdrich-mark.png',
     title: 'Share your business model', hook: 'Real model, no blueprint yet? Tell us how it works.',
-    pill: 'Open', kicker: 'WDRICH', name: 'Share your business model',
+    pill: 'Open', kicker: 'New blueprint ideas', name: 'Share your business model',
     promise: 'Real model, no blueprint yet? Tell us how it works.',
     points: [
       { text: 'If selected, we may build a blueprint from it' },
