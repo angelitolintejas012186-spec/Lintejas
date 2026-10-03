@@ -22,7 +22,7 @@ const NAV = [
     heading: 'Ventures',
     // Derived from the shared venture list (lib/portfolio.ts) — same source as the
     // Portfolio page, so it never drifts (includes BiyahePH + Share Your Business Model).
-    links: PORTFOLIO.map(p => ({ to: '/companies', label: p.short ?? p.name })),
+    links: PORTFOLIO.map(p => ({ to: p.v === 'skillvue' ? '/skillvue' : '/companies', label: p.short ?? p.name })),
   },
   {
     heading: 'Legal',

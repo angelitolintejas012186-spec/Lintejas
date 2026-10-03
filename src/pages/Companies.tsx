@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, ExternalLink, Lightbulb } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -32,12 +32,17 @@ const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon; scale?: n
   contribute: { Comp: Lightbulb },
 }
 
+/* Coming-soon ventures that have their own page → "Learn more" link instead of
+   "not yet available" (no dead ends). */
+const LEARN_MORE: Record<string, string> = { skillvue: '/skillvue' }
+
 interface Venture {
   id: string; name: string; purpose: string
   status: 'live' | 'coming-soon'
   url: string
   logo?: string; svg?: ReactNode; emoji?: string; mono?: string
   iconSrc?: string; IconComp?: LucideIcon; iconScale?: number
+  learnMore?: string
   flagship: boolean
 }
 
@@ -54,6 +59,7 @@ const VENTURES: Venture[] = PORTFOLIO.map(p => {
     url: !soon && c && c.href ? c.href : '',
     logo: c && c.logo, svg: c && c.svg, emoji: c && c.emoji, mono: c && c.mono,
     iconSrc: ov && ov.src, IconComp: ov && ov.Comp, iconScale: ov && ov.scale,
+    learnMore: LEARN_MORE[p.v],
     flagship: !!p.flagship,
   }
 })
@@ -165,7 +171,17 @@ function VentureCard({ v }: { v: Venture }) {
           <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: 'var(--slate)' }}>{v.purpose}</p>
           {v.url
             ? <VisitButton url={v.url} />
-            : <span className="text-xs font-medium" style={{ color: 'var(--slate)' }}>In the works — not yet available.</span>}
+            : v.learnMore
+              ? <Link
+                  to={v.learnMore}
+                  className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-300 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded"
+                  style={{ color: 'var(--gold)' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--gold-bright)')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--gold)')}
+                >
+                  Learn more <ArrowRight size={13} />
+                </Link>
+              : <span className="text-xs font-medium" style={{ color: 'var(--slate)' }}>In the works — not yet available.</span>}
         </div>
       </TiltCard>
     </motion.div>

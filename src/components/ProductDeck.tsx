@@ -121,7 +121,7 @@ export const CARDS: Card[] = [
   // Coming-soon (Lintejas additions) — dimmed, not links, no price
   // SkillVue = the site's existing SkillVue "Coming soon" featured card content (Home.tsx:553-578),
   // in deck-card style. Navy card so the gold tagline + all text clear ≥4.5:1 (as on the featured card).
-  { v: 'skillvue', soon: true, navy: true, emoji: '🧠', brand: true, topBadge: 'Coming soon',
+  { v: 'skillvue', href: '/#/skillvue', soon: true, navy: true, emoji: '🧠', brand: true, topBadge: 'Coming soon',
     title: 'SkillVue',
     tagline: 'Safety & Workforce Intelligence Platform',       // Home.tsx:570
     subline: 'Food Manufacturing · Safety & HR Tech',          // Home.tsx:571
