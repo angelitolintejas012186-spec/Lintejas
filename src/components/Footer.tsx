@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import BrandMark from './BrandMark'
 import SocialIcons from './SocialIcons'
 import { PORTFOLIO } from '../lib/portfolio'
-import { LEGAL_NAME, DTI_NUMBER, COMPANY_ADDRESS } from '../lib/contact'
+import { LEGAL_NAME, DTI_NUMBER } from '../lib/contact'
 
 /* Company details (item 121) now live in lib/contact (single source, shared with the
    Contact-page Impressum). Real, verifiable facts only — DTI no. / address render ONLY
@@ -125,19 +125,17 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* ── Bottom bar ────────────────────────────────── */}
+          {/* ── Bottom bar — one left-aligned legal block (name shown once) ─── */}
           <div
-            className="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3"
+            className="pt-6 border-t"
             style={{ borderColor: 'rgba(212,168,67,0.10)' }}
           >
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              © {year} {LEGAL_NAME}. All rights reserved.
+              © {year} {LEGAL_NAME}
             </p>
-            {/* Company details — verifiable facts only; DTI no. / address render only when set */}
-            <p className="text-xs text-center sm:text-right" style={{ color: 'var(--slate)' }}>
-              {LEGAL_NAME} · DTI-registered · Philippines
-              {DTI_NUMBER && <> · DTI No. {DTI_NUMBER}</>}
-              {COMPANY_ADDRESS && <> · {COMPANY_ADDRESS}</>}
+            {/* DTI No. appends here once DTI_NUMBER is set in lib/contact */}
+            <p className="text-xs mt-1" style={{ color: 'var(--slate)' }}>
+              DTI-registered{DTI_NUMBER ? ` No. ${DTI_NUMBER}` : ''} · Philippines · All rights reserved.
             </p>
           </div>
         </div>
