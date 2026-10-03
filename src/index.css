@@ -234,7 +234,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pdx-per{font-size:12px;line-height:1.35;color:var(--c-stats)}
 .pdx-price.is-featured .pdx-per{color:#DCD2AE}
 .pdx-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
-.pdx-band{display:block;border-radius:14px;padding:9px 12px;font-size:13.5px;line-height:1.45;color:var(--c-ink);background:rgba(217,174,69,.12);border:1px solid rgba(217,174,69,.38);cursor:pointer;min-height:44px;box-sizing:border-box}
+.pdx-band{display:block;border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.45;color:var(--c-ink);background:rgba(217,174,69,.12);border:1px solid rgba(217,174,69,.38);cursor:pointer;min-height:44px;box-sizing:border-box}
 .pdx-band b{color:var(--c-promise)}
 .pdx-band:hover,.pdx-band:focus-visible{border-color:rgba(240,204,112,.8);outline:none}
 .pdx-cta{min-height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;font-weight:700;font-size:16px;text-align:center;background:var(--c-ctabg);color:var(--c-ctafg);border:1.5px solid var(--c-ctaline)}
