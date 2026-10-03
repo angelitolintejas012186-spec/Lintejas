@@ -194,48 +194,50 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
    kicker → serif name → promise → line-check points → stat strip / price boxes →
    CTA pinned to the bottom (cards stretch to the tallest; margin-top:auto on .pdx-foot).
    Each brand sets its own tokens on .pd-card.pdx[data-v=…]; components read only tokens.
-   Fonts: the site's own Fraunces (names) + Inter (body). ── */
+   Fonts: the site's own Fraunces (names) + Inter (body).
+   Compact pass (2026-10-03, Angie): ~15% shorter via padding/gaps, list line spacing and a
+   44px mark only — font sizes unchanged (body 15px, names 30px), CTA 48px. ── */
 .pd-card.pdx{
   --c-bg:#0D1A36; --c-border:#C99A2E; --c-ink:#F3EBDD; --c-kicker:#E2B84E; --c-promise:#F0CC70; --c-check:#E2B84E;
   --c-markbg:#0A1428; --c-markline:#3A4870; --c-pillbg:#1E3A2A; --c-pillfg:#8EE0A4;
   --c-statbg:#0A1428; --c-statline:#26324C; --c-statb:#F0CC70; --c-stats:#B3BCCE;
   --c-chipfg:#F0CC70; --c-chipline:#8A7434; --c-ctabg:#D9AE45; --c-ctafg:#14110A; --c-ctaline:transparent;
   background:var(--c-bg); border:1.5px solid var(--c-border); color:var(--c-ink);
-  padding:26px 24px 24px; gap:16px; font-family:'Inter',system-ui,sans-serif;
+  padding:20px; gap:10px; font-family:'Inter',system-ui,sans-serif;
 }
 .pdx-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.pdx-mark{width:56px;height:56px;flex:none;border-radius:16px;display:grid;place-items:center;background:var(--c-markbg);border:1px solid var(--c-markline);overflow:hidden}
-.pdx-mark img{width:44px;height:44px;object-fit:contain;display:block}
-.pdx-mark svg{width:56px;height:56px;display:block}
+.pdx-mark{width:44px;height:44px;flex:none;border-radius:13px;display:grid;place-items:center;background:var(--c-markbg);border:1px solid var(--c-markline);overflow:hidden}
+.pdx-mark img{width:36px;height:36px;object-fit:contain;display:block}
+.pdx-mark svg{width:44px;height:44px;display:block}
 .pdx-mono{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:20px;letter-spacing:.5px;color:var(--c-kicker)}
-.pdx-pill{font-size:11px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;padding:7px 11px;border-radius:999px;background:var(--c-pillbg);color:var(--c-pillfg);white-space:nowrap}
-.pdx-kicker{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--c-kicker);line-height:1.35}
+.pdx-pill{font-size:11px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--c-pillbg);color:var(--c-pillfg);white-space:nowrap}
+.pdx-kicker{margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--c-kicker);line-height:1.35}
 .pd-card .pdx-name{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:30px;line-height:1.08;letter-spacing:0;margin:0;color:var(--c-ink);text-wrap:balance}
 .pdx-accent{color:var(--c-check)}
 .pdx-promise{margin:0;font-size:17px;font-weight:600;line-height:1.38;color:var(--c-promise)}
 .pdx-plabel{margin:0;font-size:12px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--c-stats)}
-.pdx-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
-.pdx-list li{display:flex;gap:11px;align-items:flex-start;font-size:15px;line-height:1.4;color:var(--c-ink)}
+.pdx-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.pdx-list li{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.3;color:var(--c-ink)}
 .pdx-ic{flex:none;width:18px;height:18px;margin-top:2px;color:var(--c-check)}
 .pdx-chip{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--c-chipfg);border:1px solid var(--c-chipline);border-radius:999px;padding:1px 7px;vertical-align:1px}
 .pdx-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:16px;overflow:hidden;background:var(--c-statbg);border:1px solid var(--c-statline)}
-.pdx-stat{padding:11px 6px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
+.pdx-stat{padding:8px 6px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
 .pdx-stat + .pdx-stat{border-left:1px solid var(--c-statline)}
 .pdx-stat b{font-size:16px;font-weight:700;color:var(--c-statb);line-height:1.2}
 .pdx-stat span{font-size:11.5px;letter-spacing:.3px;color:var(--c-stats);line-height:1.3}
 .pdx-prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.pdx-price{display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:16px;background:var(--c-statbg);border:1px solid var(--c-statline)}
+.pdx-price{display:flex;flex-direction:column;gap:3px;padding:11px 12px;border-radius:16px;background:var(--c-statbg);border:1px solid var(--c-statline)}
 .pdx-price.is-featured{border:1.5px solid #E2B84E;background:#1A2A20}
 .pdx-plab{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--c-pillfg)}
 .pdx-price.is-featured .pdx-plab{color:#F0CC70}
 .pdx-price b{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:var(--c-ink)}
 .pdx-per{font-size:12px;line-height:1.35;color:var(--c-stats)}
 .pdx-price.is-featured .pdx-per{color:#DCD2AE}
-.pdx-foot{margin-top:auto;display:flex;flex-direction:column;gap:12px}
-.pdx-band{display:block;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.45;color:var(--c-ink);background:rgba(217,174,69,.12);border:1px solid rgba(217,174,69,.38);cursor:pointer;min-height:44px;box-sizing:border-box}
+.pdx-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.pdx-band{display:block;border-radius:14px;padding:9px 12px;font-size:13.5px;line-height:1.45;color:var(--c-ink);background:rgba(217,174,69,.12);border:1px solid rgba(217,174,69,.38);cursor:pointer;min-height:44px;box-sizing:border-box}
 .pdx-band b{color:var(--c-promise)}
 .pdx-band:hover,.pdx-band:focus-visible{border-color:rgba(240,204,112,.8);outline:none}
-.pdx-cta{min-height:50px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;font-weight:700;font-size:16px;text-align:center;background:var(--c-ctabg);color:var(--c-ctafg);border:1.5px solid var(--c-ctaline)}
+.pdx-cta{min-height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;font-weight:700;font-size:16px;text-align:center;background:var(--c-ctabg);color:var(--c-ctafg);border:1.5px solid var(--c-ctaline)}
 /* gold-framed dark cards keep the deck's gold glow shadows */
 .pd-card.pd-navy.pd-active{ box-shadow:var(--nd-sh-lg),0 0 0 1px rgba(217,169,60,.4),0 0 30px rgba(217,169,60,.28); }
 .pd-card.pd-navy:not(.pd-active){ box-shadow:var(--nd-sh-md),0 0 18px rgba(217,169,60,.18); }

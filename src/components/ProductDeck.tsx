@@ -190,7 +190,7 @@ function CardInner({ c }: { c: Card }) {
     <>
       <div className="pdx-top">
         <div className="pdx-mark" aria-hidden="true">
-          {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={44} height={44} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
+          {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
         <span className="pdx-pill">{c.pill}</span>
       </div>
