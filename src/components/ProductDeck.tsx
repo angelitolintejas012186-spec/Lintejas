@@ -69,7 +69,7 @@ type Card = {
 export const CARDS: Card[] = [
   // Business Blueprints — index.html:688-704
   { v: 'blueprints', href: `${NP}/`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
-    title: 'Business Blueprints', hook: 'Stop guessing. Start with a complete plan.',
+    title: 'Negosyo Plans', hook: 'Stop guessing. Start with a comprehensive business plan.',
     feat: [
       { text: 'Complete business plan' }, { text: 'Startup costs & revenue projections' },
       { text: 'Risk management' }, { text: 'Marketing & social media strategy' },
