@@ -69,14 +69,14 @@ type Card = {
 export const CARDS: Card[] = [
   // Business Blueprints — index.html:688-704
   { v: 'blueprints', href: `${NP}/`, navy: true, frameless: true, logo: '/brand/np-mark.png', cta: 'Open →',
-    title: 'Negosyo Plans', hook: 'Stop guessing. Start with a comprehensive business plan.',
+    title: 'NegosyoPlans', hook: 'Stop guessing. Start with a comprehensive business plan.',
     feat: [
       { text: 'Complete business plan' }, { text: 'Startup costs & revenue projections' },
       { text: 'Risk management' }, { text: 'Marketing & social media strategy' },
       { text: 'OFW remote management' }, { text: '90-day launch action plan' },
       { text: 'Food safety & FDA compliance (food)', food: true },
     ],
-    dash: 'Includes 30 days of Matthew System Basic →', dashHref: `${NP}/portal/` },
+    dash: 'Includes Matthew System: 10 days full access, then Basic for life →', dashHref: `${NP}/portal/` },
   // Matthew System — index.html:706-718
   { v: 'matthew', href: `${NP}/matthew`, navy: true, frameless: true, svg: MatthewCrest, cta: 'See it →', brand: true,
     title: 'Matthew System', sub: 'Your Comprehensive Business Manager Dashboard.',
