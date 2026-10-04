@@ -1,3 +1,7 @@
+/* The official Lintejas mark — flat version of the 3D hero (src/components/Interlock3D.tsx):
+   a CLOSED gold frame with a gold cube flush on the inner LEFT bar, vertically centred, on a 0 0 80 80 box.
+   Proportions are the hero's units (frame 2.28 × 2.64, bar 0.18, cube 0.52) scaled to a 64-unit height.
+   Same geometry as public/favicon.svg + public/brand/lintejas-logo.svg (tools/logo/build-icons.mjs). */
 export default function TheInterlockLogo({ size = 48, className = '' }: { size?: number; className?: string }) {
   return (
     <svg
@@ -7,40 +11,31 @@ export default function TheInterlockLogo({ size = 48, className = '' }: { size?:
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      role="img"
+      aria-label="Lintejas"
     >
       <defs>
-        <linearGradient id="lg-gold-a" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="lg-gold-frame" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%"   stopColor="#F0D882" />
           <stop offset="50%"  stopColor="#C9A84C" />
           <stop offset="100%" stopColor="#8A6A00" />
         </linearGradient>
-        <linearGradient id="lg-gold-b" x1="100%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#E8C96C" />
-          <stop offset="100%" stopColor="#C9A84C" />
+        <linearGradient id="lg-gold-cube" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stopColor="#F8E7A8" />
+          <stop offset="55%"  stopColor="#E8C766" />
+          <stop offset="100%" stopColor="#B8862A" />
         </linearGradient>
       </defs>
 
-      {/* Left interlocking bracket */}
+      {/* Closed frame (outer 55.27 × 64, bar 4.36) */}
       <path
-        d="M10 14 L10 66 L32 66 L32 57 L19 57 L19 23 L32 23 L32 14 Z"
-        fill="url(#lg-gold-a)"
+        d="M12.364 8h55.273v64H12.364Z M16.727 12.364v55.273h46.545V12.364Z"
+        fill="url(#lg-gold-frame)"
+        fillRule="evenodd"
       />
 
-      {/* Right interlocking bracket (mirrored) */}
-      <path
-        d="M70 66 L70 14 L48 14 L48 23 L61 23 L61 57 L48 57 L48 66 Z"
-        fill="url(#lg-gold-b)"
-        opacity="0.80"
-      />
-
-      {/* Central interlock bar — sits "through" both brackets */}
-      <rect x="32" y="32" width="16" height="16" fill="url(#lg-gold-a)" opacity="0.95" />
-
-      {/* Top connector — links left and right */}
-      <rect x="19" y="14" width="42" height="9" fill="url(#lg-gold-a)" opacity="0.30" rx="1" />
-
-      {/* Subtle inner highlight */}
-      <rect x="19" y="23" width="9" height="34" fill="url(#lg-gold-b)" opacity="0.15" />
+      {/* Cube — flush on the inner left bar, vertically centred */}
+      <rect x="16.727" y="33.697" width="12.606" height="12.606" fill="url(#lg-gold-cube)" />
     </svg>
   )
 }

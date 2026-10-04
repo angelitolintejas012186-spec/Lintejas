@@ -2,7 +2,7 @@
  * AssemblingInterlock — decorative watermark/divider only.
  * NOT a replacement for TheInterlockLogo.
  *
- * On mount: 5 SVG fragments scatter in from different directions,
+ * On mount: the official mark's 5 pieces (4 frame bars + the cube) scatter in from different directions,
  * snap together with a gold light flash, then settle into a slow
  * breathing idle.  Scroll-linked opacity/parallax when scroll=true.
  */
@@ -22,46 +22,47 @@ interface Frag {
 }
 
 const FRAGS: Frag[] = [
+  /* The official mark (= TheInterlockLogo): four bars of a CLOSED frame + the cube flush on the inner left bar. */
   {
-    id:      'left-bracket',
+    id:      'left-bar',
     from:    { x: -65, y: -24, rotate: -15, opacity: 0, scale: 0.80 },
     delay:   0.04,
     spring:  { stiffness: 185, damping: 28, mass: 1.1 },
     finalOp: 1,
-    content: <path d="M10 14 L10 66 L32 66 L32 57 L19 57 L19 23 L32 23 L32 14 Z" fill="url(#ail-gold-a)" />,
+    content: <rect x="12.364" y="8" width="4.364" height="64" fill="url(#ail-gold-a)" />,
   },
   {
-    id:      'right-bracket',
+    id:      'right-bar',
     from:    { x: 65, y: 24, rotate: 15, opacity: 0, scale: 0.80 },
     delay:   0.14,
     spring:  { stiffness: 185, damping: 28, mass: 1.1 },
-    finalOp: 0.80,
-    content: <path d="M70 66 L70 14 L48 14 L48 23 L61 23 L61 57 L48 57 L48 66 Z" fill="url(#ail-gold-b)" />,
+    finalOp: 1,
+    content: <rect x="63.273" y="8" width="4.364" height="64" fill="url(#ail-gold-a)" />,
   },
   {
     id:      'top-bar',
     from:    { x: 0, y: -52, rotate: 0, opacity: 0, scale: 0.86 },
     delay:   0.24,
     spring:  { stiffness: 220, damping: 22, mass: 0.85 },
-    finalOp: 0.30,
-    content: <rect x="19" y="14" width="42" height="9" fill="url(#ail-gold-a)" rx={1} />,
+    finalOp: 1,
+    content: <rect x="12.364" y="8" width="55.273" height="4.364" fill="url(#ail-gold-a)" />,
   },
   {
-    id:      'inner-highlight',
-    from:    { x: -36, y: 0, rotate: 0, opacity: 0, scale: 0.86 },
+    id:      'bottom-bar',
+    from:    { x: 0, y: 52, rotate: 0, opacity: 0, scale: 0.86 },
     delay:   0.26,
     spring:  { stiffness: 200, damping: 26, mass: 0.9 },
-    finalOp: 0.15,
-    content: <rect x="19" y="23" width="9" height="34" fill="url(#ail-gold-b)" />,
+    finalOp: 1,
+    content: <rect x="12.364" y="67.636" width="55.273" height="4.364" fill="url(#ail-gold-a)" />,
   },
   {
-    id:      'centre-square',
+    id:      'cube',
     from:    { x: 0, y: 0, rotate: 0, opacity: 0, scale: 0 },
     delay:   0.38,
     spring:  { stiffness: 300, damping: 17, mass: 0.65 },
-    finalOp: 0.95,
+    finalOp: 1,
     isLast:  true,
-    content: <rect x="32" y="32" width="16" height="16" fill="url(#ail-gold-a)" />,
+    content: <rect x="16.727" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />,
   },
 ]
 
@@ -94,11 +95,8 @@ export default function AssemblingInterlock({
       <div className={className} style={{ width: size, height: size }}>
         <Defs />
         <svg viewBox="0 0 80 80" width={size} height={size}>
-          <path d="M10 14 L10 66 L32 66 L32 57 L19 57 L19 23 L32 23 L32 14 Z" fill="url(#ail-gold-a)" />
-          <path d="M70 66 L70 14 L48 14 L48 23 L61 23 L61 57 L48 57 L48 66 Z" fill="url(#ail-gold-b)" opacity={0.80} />
-          <rect x="19" y="14" width="42" height="9" fill="url(#ail-gold-a)" opacity={0.30} rx={1} />
-          <rect x="19" y="23" width="9" height="34" fill="url(#ail-gold-b)" opacity={0.15} />
-          <rect x="32" y="32" width="16" height="16" fill="url(#ail-gold-a)" opacity={0.95} />
+          <path d="M12.364 8h55.273v64H12.364Z M16.727 12.364v55.273h46.545V12.364Z" fill="url(#ail-gold-a)" fillRule="evenodd" />
+          <rect x="16.727" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />
         </svg>
       </div>
     )
@@ -181,9 +179,10 @@ function Defs() {
           <stop offset="50%"  stopColor="#C9A84C" />
           <stop offset="100%" stopColor="#8A6A00" />
         </linearGradient>
-        <linearGradient id="ail-gold-b" x1="100%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%"   stopColor="#E8C96C" />
-          <stop offset="100%" stopColor="#C9A84C" />
+        <linearGradient id="ail-gold-b" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stopColor="#F8E7A8" />
+          <stop offset="55%"  stopColor="#E8C766" />
+          <stop offset="100%" stopColor="#B8862A" />
         </linearGradient>
       </defs>
     </svg>
