@@ -1,120 +1,66 @@
-// Lintejas logo pipeline (dev tool, not shipped). One official mark everywhere:
-//   • THE official logo = Angie's image public/brand/lintejas-logo-official.jpg (the 3D hero's closed gold frame with the
-//                 cube on the inner left). Every large asset is cut from it — never re-rendered.
-//   • flat mark = the same shape, front view: CLOSED frame (outer 2.28 × 2.64, bar 0.18 — the hero's units) + cube 0.52
-//                 flush on the INNER LEFT bar, vertically centred, hero gold. Small sizes are pixel-snapped.
-// usage (repo root): node tools/logo/build-icons.mjs
+// Lintejas logo pipeline (dev tool, not shipped). usage (repo root): node tools/logo/build-icons.mjs
+// THE official logo = Angie's picture public/brand/lintejas-logo-original.jpeg (closed gold frame, cube CENTRED), kept
+// as-is. tools/logo/cutout.mjs lifts its own pixels onto true transparency (fake checkerboard + smudges removed). Every
+// logo asset below is that cut-out — never redrawn — EXCEPT the browser-tab favicons (16/32/48/.ico/.svg): a flat
+// redraw of the same shape (closed frame, cube centred), because a photo of this detail is unreadable at 16 px.
 import fs from 'node:fs'; import path from 'node:path'; import sharp from 'sharp';
-const PUB = path.resolve('public'), NAVY = '#0A1628', NAVY_RGB = { r: 10, g: 22, b: 40, alpha: 1 };
-const GOLD = `<linearGradient id="lgF" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F0D882"/><stop offset="50%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#8A6A00"/></linearGradient>`
-  + `<linearGradient id="lgC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F8E7A8"/><stop offset="55%" stop-color="#E8C766"/><stop offset="100%" stop-color="#B8862A"/></linearGradient>`;
-// Hero units → proportions
-const U = { W: 2.28, H: 2.64, BAR: 0.18, CUBE: 0.52 };
-// Mark geometry at height H (px/units) with origin x0,y0 — optional integer snapping for tiny rasters
-function markShapes(x0, y0, H, snap) {
-  const r = (v) => (snap ? Math.round(v) : +v.toFixed(3));
-  const s = H / U.H, W = r(U.W * s), bar = snap ? Math.max(1, Math.round(U.BAR * s)) : r(U.BAR * s), cube = snap ? Math.max(2, Math.round(U.CUBE * s)) : r(U.CUBE * s);
-  const X = r(x0), Y = r(y0), HH = r(H);
-  const frame = `M${X} ${Y}h${W}v${HH}h${-W}Z M${X + bar} ${Y + bar}v${HH - 2 * bar}h${W - 2 * bar}v${-(HH - 2 * bar)}Z`;
-  const cy = snap ? Y + Math.round((HH - cube) / 2) : +(Y + (HH - cube) / 2).toFixed(3);
-  return { W, frame, cube: { x: X + bar, y: cy, s: cube } };
-}
-function markSVG({ size, H, tile, rx, snap }) {
-  const W = U.W * (H / U.H), x0 = (size - (snap ? Math.round(W) : W)) / 2, y0 = (size - H) / 2;
-  const m = markShapes(snap ? Math.round(x0) : x0, snap ? Math.round(y0) : y0, H, snap);
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"${snap ? ' shape-rendering="crispEdges"' : ''}>`
-    + `<defs>${GOLD}</defs>`
-    + (tile ? `<rect width="${size}" height="${size}" rx="${rx || 0}" fill="${NAVY}"/>` : '')
-    + `<path d="${m.frame}" fill="url(#lgF)" fill-rule="evenodd"/>`
-    + `<rect x="${m.cube.x}" y="${m.cube.y}" width="${m.cube.s}" height="${m.cube.s}" fill="url(#lgC)"/></svg>`;
-}
-const write = (f, s) => { fs.writeFileSync(path.join(PUB, f), s); console.log('wrote', f); };
+import { cutout } from './cutout.mjs';
+const PUB = path.resolve('public'), NAVY = '#0A1628', NAVY_RGB = { r: 10, g: 22, b: 40, alpha: 1 }, CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
+const out = (f) => { const p = path.join(PUB, f); fs.mkdirSync(path.dirname(p), { recursive: true }); return p; };
+const say = (f) => console.log('wrote', f);
 
-// 1) Flat SVG masters
-write('brand/lintejas-logo.svg', markSVG({ size: 80, H: 64 }));                              // transparent, 80×80
-write('favicon.svg', markSVG({ size: 80, H: 62, tile: true, rx: 16 }));                       // navy rounded tile (tabs, light + dark)
-// 2) Small rasters — pixel-snapped flat mark on the navy rounded tile
+const C = await cutout(); const meta = await sharp(C.png).metadata(); const LW = meta.width, LH = meta.height;   // trimmed logo
+// Logo of height h (px) — exact cut-out pixels, high-quality downscale
+const logoAt = (h) => sharp(C.png).resize(Math.max(1, Math.round(LW * h / LH)), Math.round(h), { kernel: 'lanczos3' }).png().toBuffer();
+// Canvas W×H, background, logo centred at height h
+async function onCanvas(W, H, bg, h, file) {
+  const lg = await logoAt(h); const m = await sharp(lg).metadata();
+  const img = sharp({ create: { width: W, height: H, channels: 4, background: bg } }).composite([{ input: lg, left: Math.round((W - m.width) / 2), top: Math.round((H - m.height) / 2) }]);
+  const buf = bg.alpha === 0 ? await img.png().toBuffer() : await img.flatten({ background: NAVY }).png().toBuffer();
+  if (file) { fs.writeFileSync(out(file), buf); say(file); } return buf;
+}
+
+// ── Brand files: transparent PNG, navy version (original kept as-is in brand/lintejas-logo-original.jpeg) ──
+fs.writeFileSync(out('brand/lintejas-logo.png'), C.png); say('brand/lintejas-logo.png');
+await onCanvas(1600, 1600, NAVY_RGB, 1216, 'brand/lintejas-logo-navy.png');
+// ── On-page mark (header, footer, everywhere TheInterlockLogo renders): square, transparent, logo full height ──
+for (const s of [64, 128, 256, 512]) await onCanvas(s, s, CLEAR, s, `brand/lintejas-mark-${s}.png`);
+// ── App icons: plain site navy, logo centred (iOS rounds its own corners; Android masks the maskable one) ──
+await onCanvas(180, 180, NAVY_RGB, 126, 'apple-touch-icon.png');        // logo 70% of the height
+await onCanvas(192, 192, NAVY_RGB, 134, 'icon-192.png');
+await onCanvas(512, 512, NAVY_RGB, 358, 'icon-512.png');
+await onCanvas(512, 512, NAVY_RGB, 296, 'icon-maskable-512.png');      // 58%: logo half-diagonal 0.61·h ≈ 180 px < safe radius 204.8 px
+// ── iPhone splash (apple-touch-startup-image): portrait, logo centred, height = 42% of the screen width ──
+export const IOS = [   // [css w, css h, dpr, label]
+  [375, 667, 2, 'iPhone SE / 8'], [414, 736, 3, 'iPhone 8 Plus'], [375, 812, 3, 'iPhone X / XS / 11 Pro / 12-13 mini'],
+  [414, 896, 2, 'iPhone XR / 11'], [414, 896, 3, 'iPhone XS Max / 11 Pro Max'], [390, 844, 3, 'iPhone 12 / 13 / 14'],
+  [428, 926, 3, 'iPhone 12-13 Pro Max / 14 Plus'], [393, 852, 3, 'iPhone 14 Pro / 15 / 15 Pro / 16'], [430, 932, 3, 'iPhone 14 Pro Max / 15 Plus / 15 Pro Max / 16 Plus'],
+  [402, 874, 3, 'iPhone 16 Pro'], [440, 956, 3, 'iPhone 16 Pro Max'],
+];
+for (const [w, h, d] of IOS) await onCanvas(w * d, h * d, NAVY_RGB, Math.round(w * d * 0.42), `splash/apple-splash-${w * d}x${h * d}.png`);
+// ── Share image 1200×630: the cut-out on navy ──
+await onCanvas(1200, 630, NAVY_RGB, 441, 'og-image.png');
+
+// ── Browser-tab favicons ONLY: flat redraw of the same shape (closed frame, cube centred), hero units ──
+const GOLD = `<linearGradient id="lgF" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FCE98A"/><stop offset="50%" stop-color="#F2B640"/><stop offset="100%" stop-color="#B8761A"/></linearGradient>`
+  + `<linearGradient id="lgC" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFF3B0"/><stop offset="55%" stop-color="#F5CF5A"/><stop offset="100%" stop-color="#B8761A"/></linearGradient>`;
+const U = { W: 2.28, H: 2.64, BAR: 0.18, CUBE: 0.52 };
+function flatSVG(size, H, rx, snap) {
+  const r = (v) => (snap ? Math.round(v) : +v.toFixed(3)), s = H / U.H;
+  const W = r(U.W * s), HH = r(H), bar = snap ? Math.max(1, Math.round(U.BAR * s)) : r(U.BAR * s);
+  let cube = snap ? Math.max(2, Math.round(U.CUBE * s)) : r(U.CUBE * s);
+  if (snap && (W - cube) % 2) cube += 1;                       // keep the cube exactly centred on whole pixels
+  const X = r((size - W) / 2), Y = r((size - HH) / 2);
+  const cx = snap ? X + (W - cube) / 2 : +(X + (W - cube) / 2).toFixed(3), cy = snap ? Y + Math.round((HH - cube) / 2) : +(Y + (HH - cube) / 2).toFixed(3);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"${snap ? ' shape-rendering="crispEdges"' : ''}><defs>${GOLD}</defs>`
+    + `<rect width="${size}" height="${size}" rx="${rx}" fill="${NAVY}"/>`
+    + `<path d="M${X} ${Y}h${W}v${HH}h${-W}Z M${X + bar} ${Y + bar}v${HH - 2 * bar}h${W - 2 * bar}v${-(HH - 2 * bar)}Z" fill="url(#lgF)" fill-rule="evenodd"/>`
+    + `<rect x="${cx}" y="${cy}" width="${cube}" height="${cube}" fill="url(#lgC)"/></svg>`;
+}
+fs.writeFileSync(out('favicon.svg'), flatSVG(80, 62, 16)); say('favicon.svg');
 const small = {};
-for (const n of [16, 32, 48]) {
-  const H = Math.round(n * 0.8);
-  small[n] = await sharp(Buffer.from(markSVG({ size: n, H, tile: true, rx: Math.round(n * 0.2), snap: true }))).png().toBuffer();
-  fs.writeFileSync(path.join(PUB, `favicon-${n}.png`), small[n]); console.log('wrote', `favicon-${n}.png`);
-}
-// 3) favicon.ico — PNG-in-ICO container (16, 32, 48)
-{ const imgs = [16, 32, 48].map((n) => small[n]); const head = Buffer.alloc(6 + 16 * imgs.length);
-  head.writeUInt16LE(0, 0); head.writeUInt16LE(1, 2); head.writeUInt16LE(imgs.length, 4);
-  let off = head.length; imgs.forEach((b, i) => { const n = [16, 32, 48][i], o = 6 + 16 * i;
-    head.writeUInt8(n, o); head.writeUInt8(n, o + 1); head.writeUInt8(0, o + 2); head.writeUInt8(0, o + 3);
-    head.writeUInt16LE(1, o + 4); head.writeUInt16LE(32, o + 6); head.writeUInt32LE(b.length, o + 8); head.writeUInt32LE(off, o + 12); off += b.length; });
-  fs.writeFileSync(path.join(PUB, 'favicon.ico'), Buffer.concat([head, ...imgs])); console.log('wrote favicon.ico'); }
-// 4) Large icons — cut from THE official image (public/brand/lintejas-logo-official.jpg, Angie's reference, 1482×1704),
-//    never re-rendered. Frame box in that image: x 578–985, y 247–1352 (measured). Square crops are centred on the
-//    frame; where a crop runs past the picture it is extended by MIRRORING the image's own navy background (no added
-//    colour, no seam). All outputs are full-bleed (no transparent/white corners).
-const OFFICIAL = path.join(PUB, 'brand/lintejas-logo-official.jpg');
-const FR = { x0: 578, y0: 247, x1: 985, y1: 1352 }, FCX = (FR.x0 + FR.x1) / 2, FCY = (FR.y0 + FR.y1) / 2, FH = FR.y1 - FR.y0;
-async function squareCrop(markShare) {
-  const S = Math.round(FH / markShare), meta = await sharp(OFFICIAL).metadata();
-  const L = Math.round(FCX - S / 2), T = Math.round(FCY - S / 2);
-  const pad = { left: Math.max(0, -L), top: Math.max(0, -T), right: Math.max(0, L + S - meta.width), bottom: Math.max(0, T + S - meta.height) };
-  const ext = await sharp(OFFICIAL).extend({ ...pad, extendWith: 'mirror' }).png().toBuffer();
-  return sharp(ext).extract({ left: L + pad.left, top: T + pad.top, width: S, height: S }).png().toBuffer();
-}
-// APP ICONS ONLY (Angie, review 2): the frame + cube lifted off the official picture onto PLAIN site navy — no glow,
-// no background rectangles, so the icon square never shows on a navy splash. The logo pixels are the picture's own
-// (not redrawn): a soft mask keeps gold (R−B high) and the cream inner face (bright on all channels); only large
-// connected shapes survive (sparkle dots dropped); edges keep their anti-aliasing. Share image + official.jpg untouched.
-let _clean = null;
-async function cleanOfficial() {
-  if (_clean) return _clean;
-  const { data, info } = await sharp(OFFICIAL).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-  const W = info.width, H = info.height, N = W * H, a = new Float32Array(N);
-  const ss = (v, e0, e1) => { const t = Math.min(1, Math.max(0, (v - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
-  for (let i = 0; i < N; i++) { const r = data[i * 3], g = data[i * 3 + 1], b = data[i * 3 + 2];
-    a[i] = Math.max(ss(r - b, 22, 58), ss(Math.min(r, g, b), 135, 185)); }
-  // connected components of the solid part (a > 0.5); keep shapes larger than 1500 px (the frame, cube, cream face)
-  const lab = new Int32Array(N).fill(-1), keep = new Uint8Array(N), q = new Int32Array(N);
-  for (let i = 0; i < N; i++) { if (a[i] <= 0.5 || lab[i] !== -1) continue;
-    let h = 0, t = 0; q[t++] = i; lab[i] = i; const comp = [];
-    while (h < t) { const j = q[h++]; comp.push(j); const x = j % W, y = (j / W) | 0;
-      for (const k of [x > 0 ? j - 1 : -1, x < W - 1 ? j + 1 : -1, y > 0 ? j - W : -1, y < H - 1 ? j + W : -1])
-        if (k >= 0 && lab[k] === -1 && a[k] > 0.5) { lab[k] = i; q[t++] = k; } }
-    if (comp.length > 1500) for (const j of comp) keep[j] = 1; }
-  // allow the soft edge ring (3 px around kept pixels) so anti-aliasing survives; everything else → navy
-  const ring = new Uint8Array(N);
-  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (!keep[y * W + x]) continue;
-    for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H) ring[yy * W + xx] = 1; } }
-  const out = Buffer.alloc(N * 3), NV = [10, 22, 40];
-  for (let i = 0; i < N; i++) { const al = keep[i] ? Math.max(a[i], 0.5 + 0.5 * a[i]) : (ring[i] ? a[i] : 0);
-    for (let c = 0; c < 3; c++) out[i * 3 + c] = Math.round(data[i * 3 + c] * al + NV[c] * (1 - al)); }
-  _clean = await sharp(out, { raw: { width: W, height: H, channels: 3 } }).png().toBuffer();
-  return _clean;
-}
-async function cleanSquare(markShare) {   // centred on the frame, padded with plain navy (no mirroring needed)
-  const S = Math.round(FH / markShare), src = await cleanOfficial(), meta = await sharp(src).metadata();
-  const L = Math.round(FCX - S / 2), T = Math.round(FCY - S / 2);
-  const pad = { left: Math.max(0, -L), top: Math.max(0, -T), right: Math.max(0, L + S - meta.width), bottom: Math.max(0, T + S - meta.height) };
-  const ext = await sharp(src).extend({ ...pad, background: NAVY_RGB }).png().toBuffer();
-  return sharp(ext).extract({ left: L + pad.left, top: T + pad.top, width: S, height: S }).png().toBuffer();
-}
-async function icon(size, markShare, file) {
-  const sq = await cleanSquare(markShare);
-  await sharp(sq).resize(size, size, { kernel: 'lanczos3' }).flatten({ background: NAVY }).png().toFile(path.join(PUB, file)); console.log('wrote', file);
-}
-await icon(180, 0.72, 'apple-touch-icon.png');       // iOS rounds the corners itself
-await icon(192, 0.72, 'icon-192.png');
-await icon(512, 0.72, 'icon-512.png');
-await icon(512, 0.62, 'icon-maskable-512.png');      // frame half-diagonal ≈ 0.53·H ≤ 0.40·512 safe-zone radius
-// Square master of the official logo (largest crop the image allows without upscaling: frame at 72%)
-{ const sq = await squareCrop(0.72); await sharp(sq).png().toFile(path.join(PUB, 'brand/lintejas-logo-official-square.png')); console.log('wrote brand/lintejas-logo-official-square.png'); }
-// 1200×630 share image: the official picture (frame at 70% of the height), centred on the site navy, sides feathered
-{ const Hc = Math.round(FH / 0.70), meta = await sharp(OFFICIAL).metadata(), T = Math.round(FCY - Hc / 2);
-  const pad = { top: Math.max(0, -T), bottom: Math.max(0, T + Hc - meta.height), left: 0, right: 0 };
-  const strip = await sharp(await sharp(OFFICIAL).extend({ ...pad, extendWith: 'mirror' }).png().toBuffer()).extract({ left: 0, top: T + pad.top, width: meta.width, height: Hc }).png().toBuffer();
-  const h = 630, w = Math.round(meta.width * h / Hc), f = Math.round(w * 0.12);
-  const fade = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="${f / w}" stop-color="#fff"/><stop offset="${1 - f / w}" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/></svg>`);
-  const piece = await sharp(strip).resize(w, h).ensureAlpha().composite([{ input: fade, blend: 'dest-in' }]).png().toBuffer();
-  // horizontal centre on the frame, not the picture
-  const left = Math.round(600 - FCX * (h / Hc));
-  await sharp({ create: { width: 1200, height: 630, channels: 4, background: { r: 9, g: 21, b: 40, alpha: 1 } } }).composite([{ input: piece, left, top: 0 }]).flatten({ background: NAVY }).png().toFile(path.join(PUB, 'og-image.png'));
-  console.log('wrote og-image.png'); }
+for (const n of [16, 32, 48]) { small[n] = await sharp(Buffer.from(flatSVG(n, Math.round(n * 0.8), Math.round(n * 0.2), true))).png().toBuffer(); fs.writeFileSync(out(`favicon-${n}.png`), small[n]); say(`favicon-${n}.png`); }
+{ const sizes = [16, 32, 48], imgs = sizes.map((n) => small[n]), head = Buffer.alloc(6 + 16 * imgs.length);   // PNG-in-ICO
+  head.writeUInt16LE(0, 0); head.writeUInt16LE(1, 2); head.writeUInt16LE(imgs.length, 4); let off = head.length;
+  imgs.forEach((b, i) => { const o = 6 + 16 * i; head.writeUInt8(sizes[i], o); head.writeUInt8(sizes[i], o + 1); head.writeUInt16LE(1, o + 4); head.writeUInt16LE(32, o + 6); head.writeUInt32LE(b.length, o + 8); head.writeUInt32LE(off, o + 12); off += b.length; });
+  fs.writeFileSync(out('favicon.ico'), Buffer.concat([head, ...imgs])); say('favicon.ico'); }

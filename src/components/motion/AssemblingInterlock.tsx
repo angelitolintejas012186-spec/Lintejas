@@ -22,7 +22,7 @@ interface Frag {
 }
 
 const FRAGS: Frag[] = [
-  /* The official mark (= TheInterlockLogo): four bars of a CLOSED frame + the cube flush on the inner left bar. */
+  /* The official mark's shape: four bars of a CLOSED frame + the cube CENTRED (matches Angie's master logo). */
   {
     id:      'left-bar',
     from:    { x: -65, y: -24, rotate: -15, opacity: 0, scale: 0.80 },
@@ -62,7 +62,7 @@ const FRAGS: Frag[] = [
     spring:  { stiffness: 300, damping: 17, mass: 0.65 },
     finalOp: 1,
     isLast:  true,
-    content: <rect x="16.727" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />,
+    content: <rect x="33.697" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />,
   },
 ]
 
@@ -96,7 +96,7 @@ export default function AssemblingInterlock({
         <Defs />
         <svg viewBox="0 0 80 80" width={size} height={size}>
           <path d="M12.364 8h55.273v64H12.364Z M16.727 12.364v55.273h46.545V12.364Z" fill="url(#ail-gold-a)" fillRule="evenodd" />
-          <rect x="16.727" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />
+          <rect x="33.697" y="33.697" width="12.606" height="12.606" fill="url(#ail-gold-b)" />
         </svg>
       </div>
     )
