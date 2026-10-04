@@ -60,8 +60,45 @@ async function squareCrop(markShare) {
   const ext = await sharp(OFFICIAL).extend({ ...pad, extendWith: 'mirror' }).png().toBuffer();
   return sharp(ext).extract({ left: L + pad.left, top: T + pad.top, width: S, height: S }).png().toBuffer();
 }
+// APP ICONS ONLY (Angie, review 2): the frame + cube lifted off the official picture onto PLAIN site navy — no glow,
+// no background rectangles, so the icon square never shows on a navy splash. The logo pixels are the picture's own
+// (not redrawn): a soft mask keeps gold (R−B high) and the cream inner face (bright on all channels); only large
+// connected shapes survive (sparkle dots dropped); edges keep their anti-aliasing. Share image + official.jpg untouched.
+let _clean = null;
+async function cleanOfficial() {
+  if (_clean) return _clean;
+  const { data, info } = await sharp(OFFICIAL).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const W = info.width, H = info.height, N = W * H, a = new Float32Array(N);
+  const ss = (v, e0, e1) => { const t = Math.min(1, Math.max(0, (v - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+  for (let i = 0; i < N; i++) { const r = data[i * 3], g = data[i * 3 + 1], b = data[i * 3 + 2];
+    a[i] = Math.max(ss(r - b, 22, 58), ss(Math.min(r, g, b), 135, 185)); }
+  // connected components of the solid part (a > 0.5); keep shapes larger than 1500 px (the frame, cube, cream face)
+  const lab = new Int32Array(N).fill(-1), keep = new Uint8Array(N), q = new Int32Array(N);
+  for (let i = 0; i < N; i++) { if (a[i] <= 0.5 || lab[i] !== -1) continue;
+    let h = 0, t = 0; q[t++] = i; lab[i] = i; const comp = [];
+    while (h < t) { const j = q[h++]; comp.push(j); const x = j % W, y = (j / W) | 0;
+      for (const k of [x > 0 ? j - 1 : -1, x < W - 1 ? j + 1 : -1, y > 0 ? j - W : -1, y < H - 1 ? j + W : -1])
+        if (k >= 0 && lab[k] === -1 && a[k] > 0.5) { lab[k] = i; q[t++] = k; } }
+    if (comp.length > 1500) for (const j of comp) keep[j] = 1; }
+  // allow the soft edge ring (3 px around kept pixels) so anti-aliasing survives; everything else → navy
+  const ring = new Uint8Array(N);
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (!keep[y * W + x]) continue;
+    for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < W && yy < H) ring[yy * W + xx] = 1; } }
+  const out = Buffer.alloc(N * 3), NV = [10, 22, 40];
+  for (let i = 0; i < N; i++) { const al = keep[i] ? Math.max(a[i], 0.5 + 0.5 * a[i]) : (ring[i] ? a[i] : 0);
+    for (let c = 0; c < 3; c++) out[i * 3 + c] = Math.round(data[i * 3 + c] * al + NV[c] * (1 - al)); }
+  _clean = await sharp(out, { raw: { width: W, height: H, channels: 3 } }).png().toBuffer();
+  return _clean;
+}
+async function cleanSquare(markShare) {   // centred on the frame, padded with plain navy (no mirroring needed)
+  const S = Math.round(FH / markShare), src = await cleanOfficial(), meta = await sharp(src).metadata();
+  const L = Math.round(FCX - S / 2), T = Math.round(FCY - S / 2);
+  const pad = { left: Math.max(0, -L), top: Math.max(0, -T), right: Math.max(0, L + S - meta.width), bottom: Math.max(0, T + S - meta.height) };
+  const ext = await sharp(src).extend({ ...pad, background: NAVY_RGB }).png().toBuffer();
+  return sharp(ext).extract({ left: L + pad.left, top: T + pad.top, width: S, height: S }).png().toBuffer();
+}
 async function icon(size, markShare, file) {
-  const sq = await squareCrop(markShare);
+  const sq = await cleanSquare(markShare);
   await sharp(sq).resize(size, size, { kernel: 'lanczos3' }).flatten({ background: NAVY }).png().toFile(path.join(PUB, file)); console.log('wrote', file);
 }
 await icon(180, 0.72, 'apple-touch-icon.png');       // iOS rounds the corners itself
