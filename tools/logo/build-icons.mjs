@@ -1,6 +1,6 @@
 // Lintejas logo pipeline (dev tool, not shipped). One official mark everywhere:
-//   • 3D still  = the hero scene (src/components/Interlock3D.tsx geometry/materials/lights) frozen at the official pose
-//                 (ry −2.0, rx −0.06) → public/brand/lintejas-logo-3d-2048(.png|-navy.png), rendered by tools/logo/render.html.
+//   • THE official logo = Angie's image public/brand/lintejas-logo-official.jpg (the 3D hero's closed gold frame with the
+//                 cube on the inner left). Every large asset is cut from it — never re-rendered.
 //   • flat mark = the same shape, front view: CLOSED frame (outer 2.28 × 2.64, bar 0.18 — the hero's units) + cube 0.52
 //                 flush on the INNER LEFT bar, vertically centred, hero gold. Small sizes are pixel-snapped.
 // usage (repo root): node tools/logo/build-icons.mjs
@@ -47,21 +47,37 @@ for (const n of [16, 32, 48]) {
     head.writeUInt8(n, o); head.writeUInt8(n, o + 1); head.writeUInt8(0, o + 2); head.writeUInt8(0, o + 3);
     head.writeUInt16LE(1, o + 4); head.writeUInt16LE(32, o + 6); head.writeUInt32LE(b.length, o + 8); head.writeUInt32LE(off, o + 12); off += b.length; });
   fs.writeFileSync(path.join(PUB, 'favicon.ico'), Buffer.concat([head, ...imgs])); console.log('wrote favicon.ico'); }
-// 4) Large icons from the 3D still — FULL-BLEED navy (no transparent/white corners), mark at a set share of the height
-const STILL = path.join(PUB, 'brand/lintejas-logo-3d-2048-navy.png');
-const MARK_H = 1644;   // the mark's height inside the 2048 still (measured: rows 202 … 1845)
-async function onNavy(size, markShare, file, w) {
-  const W = w || size, scale = (size * markShare) / MARK_H, s = Math.round(2048 * scale);
-  const still = await sharp(STILL).resize(s, s).png().toBuffer();
-  // still is navy + glow; centre it on a full navy canvas (crop if larger)
-  const canvas = sharp({ create: { width: Math.max(W, s), height: Math.max(size, s), channels: 4, background: NAVY_RGB } })
-    .composite([{ input: still, left: Math.round((Math.max(W, s) - s) / 2), top: Math.round((Math.max(size, s) - s) / 2) }]);
-  let buf = await canvas.png().toBuffer();
-  if (s > W || s > size) buf = await sharp(buf).extract({ left: Math.round((Math.max(W, s) - W) / 2), top: Math.round((Math.max(size, s) - size) / 2), width: W, height: size }).png().toBuffer();
-  await sharp(buf).flatten({ background: NAVY }).png().toFile(path.join(PUB, file)); console.log('wrote', file);
+// 4) Large icons — cut from THE official image (public/brand/lintejas-logo-official.jpg, Angie's reference, 1482×1704),
+//    never re-rendered. Frame box in that image: x 578–985, y 247–1352 (measured). Square crops are centred on the
+//    frame; where a crop runs past the picture it is extended by MIRRORING the image's own navy background (no added
+//    colour, no seam). All outputs are full-bleed (no transparent/white corners).
+const OFFICIAL = path.join(PUB, 'brand/lintejas-logo-official.jpg');
+const FR = { x0: 578, y0: 247, x1: 985, y1: 1352 }, FCX = (FR.x0 + FR.x1) / 2, FCY = (FR.y0 + FR.y1) / 2, FH = FR.y1 - FR.y0;
+async function squareCrop(markShare) {
+  const S = Math.round(FH / markShare), meta = await sharp(OFFICIAL).metadata();
+  const L = Math.round(FCX - S / 2), T = Math.round(FCY - S / 2);
+  const pad = { left: Math.max(0, -L), top: Math.max(0, -T), right: Math.max(0, L + S - meta.width), bottom: Math.max(0, T + S - meta.height) };
+  const ext = await sharp(OFFICIAL).extend({ ...pad, extendWith: 'mirror' }).png().toBuffer();
+  return sharp(ext).extract({ left: L + pad.left, top: T + pad.top, width: S, height: S }).png().toBuffer();
 }
-await onNavy(180, 0.72, 'apple-touch-icon.png');       // iOS rounds the corners itself
-await onNavy(192, 0.72, 'icon-192.png');
-await onNavy(512, 0.72, 'icon-512.png');
-await onNavy(512, 0.62, 'icon-maskable-512.png');      // mark half-diagonal ≈ 0.52·H ≤ 0.40·512 safe-zone radius
-await onNavy(630, 0.70, 'og-image.png', 1200);         // 1200×630 share image
+async function icon(size, markShare, file) {
+  const sq = await squareCrop(markShare);
+  await sharp(sq).resize(size, size, { kernel: 'lanczos3' }).flatten({ background: NAVY }).png().toFile(path.join(PUB, file)); console.log('wrote', file);
+}
+await icon(180, 0.72, 'apple-touch-icon.png');       // iOS rounds the corners itself
+await icon(192, 0.72, 'icon-192.png');
+await icon(512, 0.72, 'icon-512.png');
+await icon(512, 0.62, 'icon-maskable-512.png');      // frame half-diagonal ≈ 0.53·H ≤ 0.40·512 safe-zone radius
+// Square master of the official logo (largest crop the image allows without upscaling: frame at 72%)
+{ const sq = await squareCrop(0.72); await sharp(sq).png().toFile(path.join(PUB, 'brand/lintejas-logo-official-square.png')); console.log('wrote brand/lintejas-logo-official-square.png'); }
+// 1200×630 share image: the official picture (frame at 70% of the height), centred on the site navy, sides feathered
+{ const Hc = Math.round(FH / 0.70), meta = await sharp(OFFICIAL).metadata(), T = Math.round(FCY - Hc / 2);
+  const pad = { top: Math.max(0, -T), bottom: Math.max(0, T + Hc - meta.height), left: 0, right: 0 };
+  const strip = await sharp(await sharp(OFFICIAL).extend({ ...pad, extendWith: 'mirror' }).png().toBuffer()).extract({ left: 0, top: T + pad.top, width: meta.width, height: Hc }).png().toBuffer();
+  const h = 630, w = Math.round(meta.width * h / Hc), f = Math.round(w * 0.12);
+  const fade = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="${f / w}" stop-color="#fff"/><stop offset="${1 - f / w}" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g)"/></svg>`);
+  const piece = await sharp(strip).resize(w, h).ensureAlpha().composite([{ input: fade, blend: 'dest-in' }]).png().toBuffer();
+  // horizontal centre on the frame, not the picture
+  const left = Math.round(600 - FCX * (h / Hc));
+  await sharp({ create: { width: 1200, height: 630, channels: 4, background: { r: 9, g: 21, b: 40, alpha: 1 } } }).composite([{ input: piece, left, top: 0 }]).flatten({ background: NAVY }).png().toFile(path.join(PUB, 'og-image.png'));
+  console.log('wrote og-image.png'); }
