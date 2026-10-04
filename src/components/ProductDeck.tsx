@@ -1,5 +1,5 @@
 /* ============================================================================
-   ProductDeck.tsx — NegosyoPlans-family hub deck, a 1:1 port of the live
+   ProductDeck.tsx — Lintejas brands hub deck, a 1:1 port of the live
    NegosyoPlans deck (js/npdeck.js + js/npdeck.css + #npdeck-carousel markup).
 
    Look/motion: styling lives in index.css (.pd-* — verbatim npdeck.css values).
@@ -67,8 +67,8 @@ type Card = {
   cta?: string
 }
 
-/* Number of NegosyoPlans blueprints on sale (incl. the bundle) — update when blueprints are added. */
-const NP_PLAN_COUNT = 148
+/* Number of NegosyoPlans blueprints on sale (= negosyoplans.com "143 businesses") — update when blueprints are added. */
+const NP_PLAN_COUNT = 143
 
 const CHECK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
 const CLOCK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l2.5 2.5" /></svg>
@@ -88,8 +88,8 @@ export const CARDS: Card[] = [
       { text: 'OFW remote-management playbook' },
       { text: 'Food safety & FDA steps for food plans' },
     ],
-    stats: [{ b: String(NP_PLAN_COUNT), s: 'plans + bundle' }, { b: 'EN/TL', s: 'language' }, { b: 'Instant', s: 'download' }],
-    band: { lead: 'Bonus:', text: 'Matthew System included — 10 days full access, then Basic for life.', href: `${NP}/portal/` },
+    stats: [{ b: String(NP_PLAN_COUNT), s: 'plans' }, { b: 'EN/TL', s: 'language' }, { b: 'Online', s: 'blueprint' }],   // read online; emailed once GoTyme payment is confirmed (downloads are off)
+    band: { lead: 'Bonus:', text: 'Matthew System — Basic free for life + 14 days of Advanced free.', href: `${NP}/portal/` },
     cta: 'Browse plans' },
   { v: 'matthew', href: `${NP}/matthew`, navy: true, svg: MatthewCrest,
     title: 'Matthew System', hook: "It doesn't promise profit. It watches so you don't go under.",
@@ -343,7 +343,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
         <div className="max-w-[1280px] w-full mx-auto px-6 lg:px-8 mb-3 sm:mb-4">
           <div className="flex items-center gap-4">
             <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>
-              The <span translate="no">NegosyoPlans</span> family
+              The <span translate="no">Lintejas</span> brands
             </span>
             <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
           </div>

@@ -209,8 +209,8 @@ export default function Home() {
           <LiquidGold style={{ opacity: 0.55 }} />
         </div>
 
-        {/* < lg: ~48px below the fixed header (safe-area aware) + ~48px below the trust row. ≥ lg: py-0. */}
-        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full pt-[calc(64px+env(safe-area-inset-top))] pb-12 lg:py-0">
+        {/* < lg: 48px below the fixed header (main already clears the header + safe area) + ~48px below the trust row. ≥ lg: py-0. */}
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-8 w-full pt-12 pb-12 lg:py-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 lg:items-center lg:min-h-[calc(100vh-64px)]">
 
             {isLg ? (
@@ -270,7 +270,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════
-          PRODUCT DECK — NegosyoPlans family. A normal full-width section directly
+          PRODUCT DECK — The Lintejas brands. A normal full-width section directly
           AFTER the hero at every breakpoint (eyebrow + navy background), one instance.
       ══════════════════════════════════════════════════════════ */}
       {/* compact (< lg): content-height section (no full-vh centring band) so the eyebrow sits right

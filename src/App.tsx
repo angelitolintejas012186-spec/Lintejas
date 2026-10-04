@@ -48,7 +48,7 @@ function PublicShell() {
         <a href="#main-content" className="skip-link">Skip to content</a>
         <AnnouncementBar />
         <NavBar />
-        <main id="main-content" tabIndex={-1} className="pt-16 outline-none">
+        <main id="main-content" tabIndex={-1} className="pt-[calc(80px+env(safe-area-inset-top))] outline-none">
           <Outlet />
         </main>
         <Footer />

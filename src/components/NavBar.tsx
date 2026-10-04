@@ -20,7 +20,6 @@ const NAV_LINKS: { to: string; label: string; section?: string }[] = [
 
 export default function NavBar() {
   const [open,      setOpen]      = useState(false)
-  const [scrolled,  setScrolled]  = useState(false)
   const { pathname } = useLocation()
   const navigate     = useNavigate()
   const { config }   = useSiteConfig()
@@ -33,13 +32,6 @@ export default function NavBar() {
     setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350)
   }
 
-  /* Gain frosted glass on scroll */
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   /* Close mobile menu on route change */
   useEffect(() => { setOpen(false) }, [pathname])
 
@@ -48,15 +40,17 @@ export default function NavBar() {
     .map(p => PLUGIN_REGISTRY.find(r => r.id === p.id))
     .filter((p): p is NonNullable<typeof p> => p?.mountPoint === 'nav')
 
+  /* Solid, static header: opaque site navy (nothing shows through), the SAME look and height at every
+     scroll position (no scroll listener). The 80 px bar sits below the iPhone notch/status bar
+     (safe-area inset; index.html sets viewport-fit=cover) — main content is offset by the same amount. */
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background:   scrolled ? 'rgba(10, 22, 40, 0.75)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(212,168,67,0.10)' : '1px solid transparent',
-        boxShadow:    scrolled ? '0 1px 0 rgba(232,199,102,0.04), 0 8px 32px rgba(0,0,0,0.20)' : 'none',
+        background:   '#0A1628',
+        paddingTop:   'env(safe-area-inset-top)',
+        borderBottom: '1px solid rgba(212,168,67,0.12)',
+        boxShadow:    '0 8px 24px rgba(0,0,0,0.25)',
       }}
     >
       <nav className="max-w-[1280px] mx-auto px-6 lg:px-8 h-20 flex items-center justify-between overflow-x-hidden">
@@ -202,8 +196,7 @@ export default function NavBar() {
             transition={{ duration: 0.28, ease }}
             className="lg:hidden overflow-hidden"
             style={{
-              background: 'rgba(10, 22, 40, 0.92)',
-              backdropFilter: 'blur(20px)',
+              background: '#0A1628',   /* solid like the header — no see-through */
               borderBottom: '1px solid rgba(212,168,67,0.10)',
             }}
           >

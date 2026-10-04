@@ -19,7 +19,7 @@ export const CENTRE_NODE = {
   radius: 18,
 }
 
-// The NegosyoPlans family (same ventures the homepage deck + Portfolio show). Live
+// The Lintejas brands (same ventures the homepage deck + Portfolio show). Live
 // ventures are gold; the one coming-soon (SkillVue) is bronze. NegosyoPlans is the
 // brightest/largest node (the flagship). Positions are decorative only.
 export const VENTURE_NODES: VentureNode[] = [
