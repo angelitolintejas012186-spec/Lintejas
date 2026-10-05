@@ -112,7 +112,7 @@ export default function Home() {
         style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.20)', color: 'var(--gold)' }}
       >
         <span className="w-1.5 h-1.5 rounded-full animate-pulse-live" style={{ background: 'var(--live-green)' }} />
-        For Filipino Entrepreneurs
+        For Vendors, SMEs &amp; Manufacturers
       </span>
     </motion.div>
   )
