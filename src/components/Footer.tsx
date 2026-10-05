@@ -28,6 +28,7 @@ const NAV = [
     heading: 'Legal',
     links: [
       { to: '/contact', label: 'Impressum' },
+      { to: '/security', label: 'Security' },
     ],
   },
 ]

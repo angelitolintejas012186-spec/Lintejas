@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
+import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown, Globe, Lock, KeyRound, Home as HomeIcon } from 'lucide-react'
 import TheInterlockLogo from '../components/TheInterlockLogo'
 import MagneticButton from '../components/ui/MagneticButton'
 import AssemblingInterlock from '../components/motion/AssemblingInterlock'
@@ -81,6 +81,107 @@ const VALUE_THEMES = [
   { cls: 'card-hologram',  accent: '#f59e0b' },   // Honest numbers
   { cls: 'card-cyberpunk', accent: '#a855f7' },   // Taglish-ready
 ]
+
+/* ── Trust & Security ─────────────────────────────────────────── */
+const TRUST = [
+  { icon: Globe,    title: 'Enterprise-grade infrastructure', desc: "Your data lives on Cloudflare's global network — the same infrastructure trusted by millions of businesses worldwide — with your records stored securely in the cloud, never on a laptop or a USB drive." },
+  { icon: Lock,     title: 'Encrypted connections, always',   desc: 'Every login, sale you log, and peso you track travels over an encrypted HTTPS connection (TLS). No one on the network — not even your internet provider — can read it in transit.' },
+  { icon: KeyRound, title: 'Your data is yours',              desc: 'We never sell your business data or share it with advertisers. Your numbers exist for one purpose: running your negosyo. Ask us to delete your account, and your data goes with it.' },
+  { icon: HomeIcon, title: 'Built with Filipino owners in mind', desc: "Designed to respect the spirit of the Philippine Data Privacy Act: we collect only what the product needs, and your customers' details (utang lists, suki records) stay inside your account." },
+]
+
+/* Trust card backgrounds — same technique as the Services process cards: static inline SVG,
+   gold family, anchored top-right (xMaxYMin slice) and faded under the text by the mask so every
+   text/background pairing keeps >=4.5:1. Gradient ids are prefixed trust- (unique page-wide). */
+const TRUST_FADE = { WebkitMaskImage: 'radial-gradient(ellipse 300px 190px at 100% 0%, #000 35%, rgba(0,0,0,.18) 100%)', maskImage: 'radial-gradient(ellipse 300px 190px at 100% 0%, #000 35%, rgba(0,0,0,.18) 100%)' } as CSSProperties
+const SUN_RAYS = Array.from({ length: 8 }, (_, k) => {
+  const a = (k * Math.PI) / 4, p = (r: number, d: number) => `${(330 + r * Math.cos(a + d)).toFixed(1)} ${(78 + r * Math.sin(a + d)).toFixed(1)}`
+  return `M${p(25, -0.17)} L${p(50, 0)} L${p(25, 0.17)} Z`
+}).join(' ')
+const VAULT_TICKS = Array.from({ length: 36 }, (_, k) => {
+  const a = (k * Math.PI) / 18, r2 = k % 3 ? 70 : 76
+  return `M${(330 + 64 * Math.cos(a)).toFixed(1)} ${(92 + 64 * Math.sin(a)).toFixed(1)} L${(330 + r2 * Math.cos(a)).toFixed(1)} ${(92 + r2 * Math.sin(a)).toFixed(1)}`
+}).join(' ')
+const TRUST_MOTIF = [
+  // 1 Infrastructure — globe arcs + connected node mesh, one arc glowing
+  <g key="t1" fill="none" strokeLinecap="round">
+    <g stroke="#c9a84c" strokeWidth="1.3">
+      <circle cx="330" cy="90" r="58" opacity="0.3" />
+      <ellipse cx="330" cy="90" rx="22" ry="58" opacity="0.2" />
+      <ellipse cx="330" cy="90" rx="42" ry="58" opacity="0.15" />
+      <path d="M272 90 H388 M279 62 Q330 74 381 62 M279 118 Q330 106 381 118" opacity="0.18" />
+    </g>
+    <path d="M287 51 A58 58 0 0 1 386 72" stroke="#e0c068" strokeWidth="2" opacity="0.55" />
+    <g stroke="#c9a84c" strokeWidth="1" opacity="0.22">
+      <path d="M287 51 L232 34 L196 82 L272 90 M232 34 L176 40 M196 82 L240 150 L300 182 L360 146 M300 182 L398 178 M386 72 L410 30 M360 146 L398 178" />
+    </g>
+    <g fill="#e0c068" stroke="none">
+      <circle cx="232" cy="34" r="3" opacity="0.45" /><circle cx="196" cy="82" r="2.5" opacity="0.35" /><circle cx="176" cy="40" r="2" opacity="0.25" />
+      <circle cx="240" cy="150" r="2.5" opacity="0.35" /><circle cx="300" cy="182" r="3" opacity="0.4" /><circle cx="398" cy="178" r="2.5" opacity="0.35" />
+      <circle cx="410" cy="30" r="2.5" opacity="0.4" /><circle cx="287" cy="51" r="3.5" opacity="0.6" /><circle cx="386" cy="72" r="3.5" opacity="0.6" />
+    </g>
+  </g>,
+  // 2 Encryption — padlock dissolving into a cipher stream, circuit trace into the lock
+  <g key="t2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <g stroke="#c9a84c" strokeWidth="1.6" opacity="0.4">
+      <path d="M314 82 V64 A24 24 0 0 1 362 64 V82" />
+      <rect x="298" y="82" width="80" height="62" rx="9" />
+      <circle cx="338" cy="106" r="6" /><path d="M338 112 V124" />
+    </g>
+    <g stroke="#e0c068" strokeWidth="1.2" opacity="0.3">
+      <path d="M420 212 H366 L350 196 H338 V144" /><circle cx="366" cy="212" r="2.5" fill="#e0c068" stroke="none" />
+      <path d="M420 230 H392 L380 218" />
+    </g>
+    <g fontFamily="ui-monospace,Menlo,monospace" fontSize="11" letterSpacing="3" fill="#e0c068">
+      <text x="226" y="94" opacity="0.32">1011</text><text x="168" y="94" opacity="0.16">01</text><text x="128" y="94" opacity="0.07">1</text>
+      <text x="236" y="114" opacity="0.28">0110</text><text x="186" y="114" opacity="0.13">10</text><text x="146" y="114" opacity="0.06">0</text>
+      <text x="220" y="134" opacity="0.24">1101</text><text x="162" y="134" opacity="0.11">01</text>
+    </g>
+    <g stroke="#e0c068" strokeWidth="1.2" opacity="0.28">
+      <circle cx="272" cy="70" r="4" /><path d="M276 70 H290 M286 70 V74" />
+      <circle cx="206" cy="150" r="3.5" opacity="0.6" /><path d="M209.5 150 H221 M218 150 V153" opacity="0.6" />
+    </g>
+  </g>,
+  // 3 Your data — vault door rings with ticks, fingerprint-like arcs, "owned" dot at the centre
+  <g key="t3" fill="none" strokeLinecap="round">
+    <g stroke="#c9a84c">
+      <circle cx="330" cy="92" r="64" strokeWidth="1.3" opacity="0.28" />
+      <circle cx="330" cy="92" r="46" strokeWidth="1.2" opacity="0.22" strokeDasharray="10 6" />
+      <circle cx="330" cy="92" r="88" strokeWidth="1" opacity="0.1" />
+      <path d={VAULT_TICKS} strokeWidth="1" opacity="0.26" />
+    </g>
+    <g stroke="#e0c068" strokeWidth="1.4">
+      <path d="M318 92 A12 12 0 0 1 342 92" opacity="0.4" />
+      <path d="M312 98 A18 18 0 0 1 340 76" opacity="0.32" />
+      <path d="M306 92 A24 24 0 0 1 352 80 M354 92 A24 24 0 0 1 344 112" opacity="0.26" />
+      <path d="M300 96 A30 30 0 0 1 330 62 M344 65 A30 30 0 0 1 356 108" opacity="0.2" />
+    </g>
+    <circle cx="330" cy="92" r="4" fill="#e0c068" opacity="0.7" />
+  </g>,
+  // 4 Filipino owners — abstract 8-ray geometric sun over a roofline / home outline
+  <g key="t4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="330" cy="78" r="16" stroke="#e0c068" strokeWidth="1.6" opacity="0.45" />
+    <circle cx="330" cy="78" r="6" fill="#e0c068" opacity="0.3" />
+    <path d={SUN_RAYS} stroke="#c9a84c" strokeWidth="1.2" opacity="0.34" />
+    <circle cx="330" cy="78" r="62" stroke="#c9a84c" strokeWidth="1" opacity="0.1" strokeDasharray="3 6" />
+    <g stroke="#c9a84c" strokeWidth="1.4" opacity="0.3">
+      <path d="M250 196 L330 150 L410 196" />
+      <path d="M266 186 V236 H394 V186" opacity="0.8" />
+      <path d="M316 236 V208 H344 V236" opacity="0.8" />
+    </g>
+    <path d="M200 236 H420" stroke="#c9a84c" strokeWidth="1" opacity="0.14" />
+  </g>,
+]
+function TrustArt({ i }: { i: number }) {
+  const id = 'trust-g' + (i + 1)
+  return (
+    <svg className="w-full h-full" style={TRUST_FADE} aria-hidden="true" viewBox="0 0 420 280" preserveAspectRatio="xMaxYMin slice">
+      <defs><radialGradient id={id} cx="82%" cy="22%" r="70%"><stop offset="0%" stopColor="#c9a84c" stopOpacity="0.13" /><stop offset="100%" stopColor="#c9a84c" stopOpacity="0" /></radialGradient></defs>
+      <rect width="420" height="280" fill={`url(#${id})`} />
+      {TRUST_MOTIF[i]}
+    </svg>
+  )
+}
 
 export default function Home() {
   const navigate = useNavigate()
@@ -585,6 +686,73 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════
+          TRUST & SECURITY
+      ══════════════════════════════════════════════════════════ */}
+      <section id="trust" className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-28">
+        <motion.div
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={fadeUp}
+          className="flex items-center gap-4 mb-12"
+        >
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+          <span className="text-xs font-medium uppercase tracking-widest" style={{ color: 'var(--gold)' }}>Trust &amp; Security</span>
+          <div className="h-px flex-1" style={{ background: 'var(--glass-border)' }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.7, ease }}
+          className="mb-12 max-w-2xl"
+        >
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl mb-4" style={{ color: 'var(--cream)' }}>
+            Your business data, guarded.
+          </h2>
+          <p className="text-base leading-relaxed" style={{ color: 'var(--slate)' }}>
+            Every Lintejas product — NegosyoPlans, Matthew System, Matthew Lite — runs on the same security foundation.
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
+          initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
+          variants={staggerContainer}
+        >
+          {TRUST.map(({ icon: Icon, title, desc }, i) => (
+            <motion.div
+              key={title}
+              variants={staggerItem}
+              className="trust-card relative rounded-2xl p-6 border h-full"
+              style={{ backgroundColor: '#101d38', borderColor: 'rgba(201,168,76,.22)' }}
+            >
+              <div aria-hidden="true" className="absolute inset-0 rounded-[inherit] overflow-hidden pointer-events-none"><TrustArt i={i} /></div>
+              <div
+                className="relative z-10 w-11 h-11 rounded-xl flex items-center justify-center mb-5"
+                style={{ background: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.25)' }}
+              >
+                <Icon size={20} strokeWidth={1.6} style={{ color: 'var(--gold)' }} />
+              </div>
+              <h3 className="relative z-10 font-display font-semibold text-lg mb-3" style={{ color: 'var(--cream)' }}>
+                {title}
+              </h3>
+              <p className="relative z-10 text-sm leading-relaxed" style={{ color: '#b4bfd4' }}>
+                {desc}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <div className="mt-8">
+          <Link
+            to="/security"
+            className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-300 hover:text-[var(--cream)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-md"
+            style={{ color: 'var(--gold)', minHeight: 44 }}
+          >
+            Read how we protect your data →
+          </Link>
         </div>
       </section>
 
