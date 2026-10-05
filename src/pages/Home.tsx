@@ -75,6 +75,13 @@ const VALUES = [
   { icon: TrendingUp, title: 'Taglish-ready',    desc: 'Built for how Filipinos really run a business — Taglish, mobile-first, and ready for the daily grind.' },
 ]
 
+// Per-card background theme (by index, matching VALUES order) — classes live in src/index.css.
+const VALUE_THEMES = [
+  { cls: 'card-tech',      accent: '#38bdf8' },   // Built for owners
+  { cls: 'card-hologram',  accent: '#f59e0b' },   // Honest numbers
+  { cls: 'card-cyberpunk', accent: '#a855f7' },   // Taglish-ready
+]
+
 export default function Home() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -299,17 +306,11 @@ export default function Home() {
           initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}
           variants={staggerContainer}
         >
-          {VALUES.map(({ icon: Icon, title, desc }) => (
+          {VALUES.map(({ icon: Icon, title, desc }, i) => (
             <motion.div
               key={title}
               variants={staggerItem}
-              className="group relative rounded-2xl p-7 border transition-all duration-500 cursor-default"
-              style={{
-                background:   'var(--glass-bg)',
-                borderColor:  'var(--glass-border)',
-                backdropFilter: 'blur(20px)',
-                boxShadow:    'var(--tw-shadow)',
-              }}
+              className={`group relative rounded-2xl p-7 border transition-all duration-500 cursor-default ${VALUE_THEMES[i].cls}`}
               whileHover={{
                 y: -4,
                 transition: { duration: 0.3, ease },
@@ -319,8 +320,8 @@ export default function Home() {
                 ;(e.currentTarget as HTMLElement).style.boxShadow  = '0 8px 40px rgba(0,0,0,0.3), 0 0 24px rgba(212,168,67,0.06)'
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'var(--glass-border)'
-                ;(e.currentTarget as HTMLElement).style.boxShadow  = 'none'
+                (e.currentTarget as HTMLElement).style.borderColor = ''   // back to the card theme's own border
+                ;(e.currentTarget as HTMLElement).style.boxShadow  = ''
               }}
             >
               {/* Top shine */}
@@ -330,19 +331,19 @@ export default function Home() {
               />
 
               <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                className="relative z-10 w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
                 style={{
                   background: 'rgba(212,168,67,0.08)',
-                  border:     '1px solid rgba(212,168,67,0.15)',
+                  border:     `1px solid ${VALUE_THEMES[i].accent}55`,
                 }}
               >
-                <Icon size={20} style={{ color: 'var(--gold)' }} />
+                <Icon size={20} style={{ color: VALUE_THEMES[i].accent }} />
               </div>
 
-              <h3 className="font-display font-semibold text-lg mb-3" style={{ color: 'var(--cream)' }}>
+              <h3 className="relative z-10 font-display font-semibold text-lg mb-3" style={{ color: 'var(--cream)' }}>
                 {title}
               </h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--slate)' }}>
+              <p className="relative z-10 text-sm leading-relaxed" style={{ color: '#b4bfd4' }}>
                 {desc}
               </p>
             </motion.div>

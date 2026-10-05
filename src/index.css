@@ -365,3 +365,11 @@ input[type="color"] {
     animation: none !important;
   }
 }
+
+/* ── Value cards (Home "Our philosophy") — themed backgrounds, pure CSS gradients ── */
+.card-tech{position:relative;background-color:#0d131f;background-image:radial-gradient(circle at 80% 20%,rgba(56,189,248,.15) 0%,transparent 40%),linear-gradient(to right,rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.03) 1px,transparent 1px);background-size:100% 100%,20px 20px,20px 20px;border:1px solid rgba(56,189,248,.2);border-radius:16px;overflow:hidden}
+.card-tech::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#38bdf8,transparent)}
+.card-hologram{position:relative;background-color:#0b101d;background-image:radial-gradient(circle at 50% 50%,rgba(245,158,11,.12) 0%,transparent 60%),linear-gradient(135deg,rgba(56,189,248,.05) 0%,rgba(245,158,11,.05) 100%),repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.02) 3px,rgba(255,255,255,.02) 6px);border:1px solid rgba(245,158,11,.25);border-radius:16px;box-shadow:inset 0 0 20px rgba(245,158,11,.05);overflow:hidden}
+.card-hologram::after{content:'';position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(245,158,11,.3) 0%,transparent 70%);filter:blur(10px)}
+.card-cyberpunk{position:relative;background-color:#080c14;background-image:radial-gradient(ellipse at 20% 80%,rgba(168,85,247,.2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(14,165,233,.2) 0%,transparent 50%),linear-gradient(180deg,rgba(8,12,20,.4) 0%,rgba(8,12,20,.9) 100%);border:1px solid rgba(168,85,247,.3);border-radius:16px;overflow:hidden}
+.card-cyberpunk::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,rgba(168,85,247,.05),transparent 40%,rgba(14,165,233,.05));pointer-events:none}
