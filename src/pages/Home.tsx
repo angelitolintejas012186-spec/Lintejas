@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, Cpu, Shield, TrendingUp, ChevronDown } from 'lucide-react'
@@ -193,7 +193,9 @@ export default function Home() {
   )
 
   return (
-    <div style={{ background: 'var(--navy)' }}>
+    /* Homepage-only lighter page navy: --navy is overridden here, not globally, so the
+       hero fade and the deck section follow it while other routes keep #0A1628. */
+    <div style={{ '--navy': '#111E3A', background: 'var(--navy)' } as CSSProperties}>
 
       {/* ══════════════════════════════════════════════════════════
           HERO
