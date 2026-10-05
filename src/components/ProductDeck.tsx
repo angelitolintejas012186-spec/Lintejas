@@ -133,9 +133,9 @@ export const CARDS: Card[] = [
   // feasibility check already lives on negosyoplans.com/feasibility. Logo /brand/dames-mark.png
   // retained per scope-lock. Restore by re-adding a card with href `${NP}/feasibility`.
   { v: 'supplier', href: `${NP}/supplier/register`, logo: '/brand/wdrich-mark.png',
-    title: 'Supplier Registration', hook: 'Get found by business owners looking for suppliers.',
-    pill: 'Open for suppliers', kicker: 'WDRICH supplier directory', name: 'Supplier Registration',
-    promise: 'Get found by business owners looking for suppliers.',
+    title: 'Supplier Registration', hook: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.',
+    pill: 'Open for suppliers', kicker: 'Suppliers & business models', name: 'Supplier Registration',
+    promise: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.',
     points: [
       { text: 'Listed where NegosyoPlans owners look for suppliers' },
       // Verified 2026-10-03: register → status 'pending'; only an admin approval makes it public
@@ -148,17 +148,8 @@ export const CARDS: Card[] = [
       { label: 'Featured', price: '₱2,500', per: 'per year · shown first', featured: true },
     ],
     cta: 'Register your business' },
-  // Share your business model (WDRICH) — existing deck copy only.
-  { v: 'contribute', href: `${NP}/supplier/contribute`, logo: '/brand/wdrich-mark.png',
-    title: 'Share your business model', hook: 'Real model, no blueprint yet? Tell us how it works.',
-    pill: 'Open', kicker: 'New blueprint ideas', name: 'Share your business model',
-    promise: 'Real model, no blueprint yet? Tell us how it works.',
-    points: [
-      { text: 'If selected, we may build a blueprint from it' },
-      { text: 'Free to share · no guarantee' },
-      { text: 'Credited or anonymous — your choice' },
-    ],
-    cta: 'Share' },
+  // Share your business model (WDRICH) — MERGED into the Supplier Registration card above (2026-10-05): its message
+  // now lives in that card's kicker + promise. The page itself stays at ${NP}/supplier/contribute (not deleted).
   // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
   { v: 'skillvue', href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
     title: 'SkillVue', hook: 'The human layer of the smart factory.',

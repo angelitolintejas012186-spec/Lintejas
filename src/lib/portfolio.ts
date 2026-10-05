@@ -28,7 +28,7 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
   courses: { name: 'ZAM Academy',
     purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
   supplier: { name: 'WDRICH Supplier Registration', short: 'WDRICH',
-    purpose: 'List your business where owners look for suppliers.' },
+    purpose: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.' },
   contribute: { name: 'Share Your Business Model', short: 'Share your model',
     purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
   skillvue: { name: 'SkillVue',
