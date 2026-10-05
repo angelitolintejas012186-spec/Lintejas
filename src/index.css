@@ -410,3 +410,32 @@ input[type="color"] {
   .energy-line::after{ animation:none !important; display:none; }
   .energy-glint > span:first-child img{ animation:none !important; }
 }
+
+/* ── Deck "Energy Line" — light traveling glint on each card's edge (.pd-glint) ──
+   Lighter than the header: ~40° arc, peak .8, no glow, 6s loop, cards staggered by 0.8s
+   (negative delays so every card starts mid-cycle, never in sync). Path: @property --a +
+   conic-gradient, masked to a 1.5px ring. Keep var(--a) WITHOUT a fallback: Chromium (151)
+   freezes var(--a, 0deg) at the fallback inside an <a href>, and 6 of the 7 cards are links;
+   the registered initial-value already covers it. The card is overflow:hidden (clips at the
+   inner border edge), so the ring sits at inset:0 hugging the existing gold border, which
+   stays untouched underneath. Paused off-screen / while scrolling like the sheen; off for
+   reduced motion. Removing .pd-glint restores the exact card. */
+@property --a{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+.pd-card.pd-glint::before{
+  content:"";position:absolute;inset:0;border-radius:26.5px;padding:1.5px;pointer-events:none;
+  background:conic-gradient(from var(--a),transparent 0deg,transparent 320deg,rgba(224,192,104,.55) 340deg,rgba(255,247,221,.8) 350deg,rgba(224,192,104,.55) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:pd-glint-spin 6s linear infinite;
+}
+@keyframes pd-glint-spin{ to{ --a:360deg } }
+.pd-card.pd-glint:nth-child(2)::before{animation-delay:-.8s}
+.pd-card.pd-glint:nth-child(3)::before{animation-delay:-1.6s}
+.pd-card.pd-glint:nth-child(4)::before{animation-delay:-2.4s}
+.pd-card.pd-glint:nth-child(5)::before{animation-delay:-3.2s}
+.pd-card.pd-glint:nth-child(6)::before{animation-delay:-4s}
+.pd-card.pd-glint:nth-child(7)::before{animation-delay:-4.8s}
+.pd-card.pd-glint:nth-child(8)::before{animation-delay:-5.6s}
+#ventures-deck:not(.pd-inview) .pd-card.pd-glint::before,
+#ventures-deck.pd-scrolling .pd-card.pd-glint::before{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){ .pd-card.pd-glint::before{ animation:none !important; display:none; } }
