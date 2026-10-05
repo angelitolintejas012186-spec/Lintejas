@@ -373,3 +373,40 @@ input[type="color"] {
 .card-hologram::after{content:'';position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(245,158,11,.3) 0%,transparent 70%);filter:blur(10px)}
 .card-cyberpunk{position:relative;background-color:#080c14;background-image:radial-gradient(ellipse at 20% 80%,rgba(168,85,247,.2) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(14,165,233,.2) 0%,transparent 50%),linear-gradient(180deg,rgba(8,12,20,.4) 0%,rgba(8,12,20,.9) 100%);border:1px solid rgba(168,85,247,.3);border-radius:16px;overflow:hidden}
 .card-cyberpunk::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,rgba(168,85,247,.05),transparent 40%,rgba(14,165,233,.05));pointer-events:none}
+
+/* ── Header "Energy Line" — gold pulse along the header's bottom edge + logo glint ──
+   Purely presentational: .energy-line (aria-hidden span, absolute bottom:0, so the header
+   height is unchanged) and .energy-glint on the brand link. Removing both restores the
+   exact header. overflow-x:clip stops any horizontal scroll while letting the glow spill
+   a few px vertically (overflow:hidden is the fallback). transform/filter only.
+   The glint fires when the bright centre of the pulse crosses the logo, so its timing
+   follows where the logo sits at each width (--eg-at = fraction of the 4.2s cycle). */
+.energy-line{
+  position:absolute;left:0;right:0;bottom:0;height:2px;pointer-events:none;
+  background:rgba(201,168,76,.18);overflow:hidden;overflow-x:clip;overflow-y:visible;
+}
+.energy-line::after{
+  content:"";position:absolute;top:0;left:0;width:140px;height:100%;
+  background:linear-gradient(90deg,transparent,#e0c068 45%,#fff7dd 50%,#e0c068 55%,transparent);
+  filter:drop-shadow(0 0 6px rgba(224,192,104,.8));
+  transform:translateX(-160px);animation:energy-sweep 4.2s linear infinite;will-change:transform;
+}
+@keyframes energy-sweep{ from{transform:translateX(-160px)} to{transform:translateX(calc(100vw + 20px))} }
+.energy-glint > span:first-child img{
+  --eg-at:.23;
+  animation:energy-glint 4.2s linear infinite;animation-delay:calc(-4.2s * (.5 - var(--eg-at)));
+  will-change:filter;
+}
+@keyframes energy-glint{
+  0%,48%,52%,100%{filter:drop-shadow(0 0 0 rgba(224,192,104,0))}
+  50%{filter:drop-shadow(0 0 8px rgba(224,192,104,.9))}
+}
+@media (min-width:480px){ .energy-glint > span:first-child img{ --eg-at:.18 } }
+@media (min-width:768px){ .energy-glint > span:first-child img{ --eg-at:.13 } }
+@media (min-width:1024px){ .energy-glint > span:first-child img{ --eg-at:.11 } }
+@media (min-width:1440px){ .energy-glint > span:first-child img{ --eg-at:.17 } }
+@media (min-width:1920px){ .energy-glint > span:first-child img{ --eg-at:.22 } }
+@media (prefers-reduced-motion:reduce){
+  .energy-line::after{ animation:none !important; display:none; }
+  .energy-glint > span:first-child img{ animation:none !important; }
+}

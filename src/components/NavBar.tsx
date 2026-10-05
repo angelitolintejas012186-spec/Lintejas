@@ -83,7 +83,7 @@ export default function NavBar() {
         {/* ── Brand ─────────────────────────────────────────── */}
         <Link
           to="/"
-          className="flex items-center gap-3 group min-w-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
+          className="energy-glint flex items-center gap-3 group min-w-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] rounded-lg"
         >
           {/* No aria-label: the link's accessible name comes from the visible wordmark
               below, so it matches the on-screen text (a11y: label-content-name-mismatch). */}
@@ -207,6 +207,9 @@ export default function NavBar() {
           </AnimatePresence>
         </button>
       </nav>
+
+      {/* Energy Line — decorative gold pulse on the bottom edge (styles in index.css). */}
+      <span className="energy-line" aria-hidden="true" />
 
       {/* ── Mobile drawer — "Serif Editorial" side panel (< lg). Portalled to <body> so it sits above
            every page layer (floating WhatsApp 9999, cookie banner 10000). Same items, order, targets and
