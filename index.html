@@ -86,9 +86,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      /* Navy from the first paint (no white flash before the CSS bundle loads) + the pre-app splash. */
+      html, body { background: #0A1628; margin: 0; }
+      .lt-splash { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: #0A1628; perspective: 800px; z-index: 2147483000; }
+      .lt-splash-stage { width: 132px; height: 132px; transform-style: preserve-3d; animation: lt-splash-float 6s ease-in-out infinite; will-change: transform; }
+      .lt-splash-mark { display: block; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; animation: lt-splash-glint 6s ease-in-out infinite; }
+      /* hero-style motion: slow float ±6px + gentle tilt (rotateY ±12°, rotateX ±4°); no spin, bounce or scale */
+      @keyframes lt-splash-float {
+        0%   { transform: translateY(0)    rotateY(-12deg) rotateX(3deg); }
+        25%  { transform: translateY(-6px) rotateY(-4deg)  rotateX(-4deg); }
+        50%  { transform: translateY(0)    rotateY(12deg)  rotateX(-2deg); }
+        75%  { transform: translateY(6px)  rotateY(4deg)   rotateX(4deg); }
+        100% { transform: translateY(0)    rotateY(-12deg) rotateX(3deg); }
+      }
+      /* one brief gold glint per loop (same family as the header Energy Line) */
+      @keyframes lt-splash-glint {
+        0%, 42%, 58%, 100% { filter: drop-shadow(0 0 0 rgba(224,192,104,0)); }
+        50% { filter: drop-shadow(0 0 14px rgba(224,192,104,.85)); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lt-splash-stage, .lt-splash-mark { animation: none; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Pre-app splash (CSS-only, no JS). React's createRoot replaces #root's contents on mount, so this
+           disappears the moment the app renders. Gold mark floats/tilts like the 3D hero, one gold glint per loop. -->
+      <div class="lt-splash" aria-hidden="true">
+        <div class="lt-splash-stage"><img class="lt-splash-mark" src="/brand/lintejas-mark-512.png" width="512" height="512" alt="" decoding="async" fetchpriority="high"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
