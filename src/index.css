@@ -211,6 +211,11 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pdx-mark svg{width:44px;height:44px;display:block}
 .pdx-mono{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:20px;letter-spacing:.5px;color:var(--c-kicker)}
 .pdx-pill{font-size:11px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--c-pillbg);color:var(--c-pillfg);white-space:nowrap}
+/* Gold COMING SOON badge — same slot as the LIVE pill; the dot pulses (opacity only), static under reduced motion */
+.pdx-pill.pdx-soonpill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.12em;padding:6px 12px;background:linear-gradient(135deg,#e0c068,#c9a84c);color:#16213A}
+.pdx-soondot{flex:none;width:6px;height:6px;border-radius:50%;background:#16213A;opacity:.4;animation:pdx-soonpulse 2s ease-in-out infinite}
+@keyframes pdx-soonpulse{0%,100%{opacity:.4}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.pdx-soondot{animation:none;opacity:1}}
 .pdx-kicker{margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--c-kicker);line-height:1.35}
 .pd-card .pdx-name{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:30px;line-height:1.08;letter-spacing:0;margin:0;color:var(--c-ink);text-wrap:balance}
 .pdx-accent{color:var(--c-check)}

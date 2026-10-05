@@ -55,6 +55,7 @@ type Card = {
   title?: string          // aria-label + Portfolio fallback
   hook?: string           // Portfolio fallback (= the promise unless noted)
   pill: string
+  badgeSoon?: boolean     // deck pill → gold COMING SOON badge (replaces the pill text)
   kicker: string
   name: string
   nameAccent?: string     // trailing part of the name in the brand accent (Matthew <Lite>)
@@ -117,7 +118,7 @@ export const CARDS: Card[] = [
     ],
     stats: [{ b: '₱99', s: 'per month' }, { b: '7-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
     cta: 'Start free' },
-  { v: 'courses', href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
+  { v: 'courses', badgeSoon: true, href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
     title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',
     pill: 'Courses', kicker: 'ZAM Academ.co', name: 'Digital Marketing',
     promise: 'Marketing that sells, not just gets likes.',
@@ -132,7 +133,7 @@ export const CARDS: Card[] = [
   // Feasibility Study (DAMES) — REMOVED from the deck 2026-09-30 (checklist item 148): the free
   // feasibility check already lives on negosyoplans.com/feasibility. Logo /brand/dames-mark.png
   // retained per scope-lock. Restore by re-adding a card with href `${NP}/feasibility`.
-  { v: 'supplier', href: `${NP}/supplier/register`, logo: '/brand/wdrich-mark.png',
+  { v: 'supplier', badgeSoon: true, href: `${NP}/supplier/register`, logo: '/brand/wdrich-mark.png',
     title: 'Supplier Registration', hook: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.',
     pill: 'Open for suppliers', kicker: 'Suppliers & business models', name: 'Supplier Registration',
     promise: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.',
@@ -151,7 +152,7 @@ export const CARDS: Card[] = [
   // Share your business model (WDRICH) — MERGED into the Supplier Registration card above (2026-10-05): its message
   // now lives in that card's kicker + promise. The page itself stays at ${NP}/supplier/contribute (not deleted).
   // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
-  { v: 'skillvue', href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
+  { v: 'skillvue', badgeSoon: true, href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
     title: 'SkillVue', hook: 'The human layer of the smart factory.',
     pill: 'Coming soon', kicker: 'Food manufacturing · Safety & HR', name: 'SkillVue',
     promise: 'The human layer of the smart factory.',
@@ -163,7 +164,7 @@ export const CARDS: Card[] = [
     ],
     cta: 'See plans & get notified' },
   // BiyahePH — Coming soon, not a link; existing copy only (deck hook + the Portfolio line).
-  { v: 'biyaheph', soon: true, mono: 'B',
+  { v: 'biyaheph', badgeSoon: true, soon: true, mono: 'B',
     title: 'BiyahePH', hook: 'Maps and commute directions for the Philippines.',
     pill: 'Coming soon', kicker: 'Planned for Android & iOS', name: 'BiyahePH',
     promise: 'Maps and commute directions for the Philippines.' },
@@ -183,7 +184,9 @@ function CardInner({ c }: { c: Card }) {
         <div className="pdx-mark" aria-hidden="true">
           {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
-        <span className="pdx-pill">{c.pill}</span>
+        {c.badgeSoon
+          ? <span className="pdx-pill pdx-soonpill"><span className="pdx-soondot" aria-hidden="true" />Coming soon</span>
+          : <span className="pdx-pill">{c.pill}</span>}
       </div>
       <div>
         <p className="pdx-kicker">{c.kicker}</p>
