@@ -1,8 +1,8 @@
-import { useRef, useMemo, Suspense } from 'react'
+import { useRef, useMemo, useState, Suspense, Component } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
-import type { RefObject } from 'react'
+import type { RefObject, ReactNode } from 'react'
 import TheInterlockLogo from './TheInterlockLogo'
 
 /* ── Shared material props ─────────────────────────────────────── */
@@ -149,6 +149,17 @@ function InterlockFallback() {
   )
 }
 
+/* ── Error boundary: a failed load/WebGL error renders `fallback` instead of unmounting the whole app ── */
+class Guard extends Component<{ fallback: ReactNode; label: string; onError?: () => void; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(err: unknown) { console.warn(`[hero] ${this.props.label} failed — using fallback`, err); this.props.onError?.() }
+  render() { return this.state.failed ? this.props.fallback : this.props.children }
+}
+
+/* Self-hosted copy of drei's "sunset" preset (pmndrs/drei-assets@456060a venice_sunset_1k.hdr) — no runtime CDN. */
+const HDR = '/hdr/venice_sunset_1k.hdr'
+
 /* ── Public API ────────────────────────────────────────────────── */
 export default function Interlock3D({
   mouseRef,
@@ -156,10 +167,12 @@ export default function Interlock3D({
   mouseRef: RefObject<{ x: number; y: number }>
 }) {
   const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  const [envFailed, setEnvFailed] = useState(false)
 
-  if (reduced) return <InterlockFallback />
+  if (reduced || envFailed) return <InterlockFallback />
 
   return (
+    <Guard label="3D hero" fallback={<InterlockFallback />}>
     <Canvas
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -168,8 +181,12 @@ export default function Interlock3D({
     >
       <Suspense fallback={null}>
         <InterlockScene mouseRef={mouseRef} />
-        <Environment preset="sunset" />
+        {/* HDR fails → static gold logo (gold metal reads dark brown without the HDR), never a blank page */}
+        <Guard label="HDR environment" fallback={null} onError={() => setEnvFailed(true)}>
+          <Environment files={HDR} />
+        </Guard>
       </Suspense>
     </Canvas>
+    </Guard>
   )
 }
