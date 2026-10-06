@@ -90,7 +90,7 @@ export const CARDS: Card[] = [
       { text: 'Food safety & FDA steps for food plans' },
     ],
     stats: [{ b: String(NP_PLAN_COUNT), s: 'plans' }, { b: 'EN · TL', s: 'for 112' }, { b: 'Online', s: 'blueprint' }],   // read online; emailed once GoTyme payment is confirmed (downloads are off)
-    band: { lead: 'Bonus:', text: 'Matthew System — Basic free for life + 14 days of Advanced free.', href: `${NP}/portal/` },
+    band: { lead: 'Bonus:', text: 'Matthew System Basic ₱199/month — free for 3 months with any NegosyoPlans blueprint, 14 days without.', href: `${NP}/portal/` },
     cta: 'Browse plans' },
   { v: 'matthew', href: `${NP}/matthew`, navy: true, svg: MatthewCrest,
     title: 'Matthew System', hook: "It doesn't promise profit. It watches so you don't go under.",
