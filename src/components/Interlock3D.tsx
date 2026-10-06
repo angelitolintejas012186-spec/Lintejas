@@ -4,6 +4,7 @@ import { Environment } from '@react-three/drei'
 import * as THREE from 'three'
 import type { RefObject, ReactNode } from 'react'
 import TheInterlockLogo from './TheInterlockLogo'
+import { captureException } from '@sentry/react'
 
 /* ── Shared material props ─────────────────────────────────────── */
 const GOLD_PROPS = {
@@ -153,7 +154,11 @@ function InterlockFallback() {
 class Guard extends Component<{ fallback: ReactNode; label: string; onError?: () => void; children: ReactNode }, { failed: boolean }> {
   state = { failed: false }
   static getDerivedStateFromError() { return { failed: true } }
-  componentDidCatch(err: unknown) { console.warn(`[hero] ${this.props.label} failed — using fallback`, err); this.props.onError?.() }
+  componentDidCatch(err: unknown) {
+    console.warn(`[hero] ${this.props.label} failed — using fallback`, err)
+    captureException(err, { tags: { hero: this.props.label } })
+    this.props.onError?.()
+  }
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
