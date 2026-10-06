@@ -275,19 +275,32 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
     return () => strip.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* Autoplay 3,600 ms; permanently stopped on first pointerdown/touchstart/wheel. */
+  /* Autoplay 3,600 ms; permanently stopped on first pointerdown/touchstart/wheel.
+     Scrolls the strip only (horizontal scrollTo) — scrollIntoView also scrolled the PAGE down to the deck.
+     Runs only while ≥30% of the strip is on screen. */
   useEffect(() => {
     const strip = stripRef.current
     if (!strip || reduced) return
     let stopped = false
-    const timer = setInterval(() => {
-      const next = (activeRef.current + 1) % CARDS.length
-      cardRefs.current[next]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-    }, 3600)
-    const stop = () => { if (!stopped) { stopped = true; clearInterval(timer) } }
+    let timer: ReturnType<typeof setInterval> | null = null
+    const advance = () => {
+      const card = cardRefs.current[(activeRef.current + 1) % CARDS.length]
+      if (!card) return
+      // strip and cards share the section as offsetParent → card position inside the strip, centred
+      const left = card.offsetLeft - strip.offsetLeft + card.offsetWidth / 2 - strip.clientWidth / 2
+      strip.scrollTo({ left, behavior: 'smooth' })
+    }
+    const start = () => { if (!stopped && !timer) timer = setInterval(advance, 3600) }
+    const pause = () => { if (timer) { clearInterval(timer); timer = null } }
+    let io: IntersectionObserver | null = null
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(e => (e[0].isIntersecting ? start() : pause()), { threshold: 0.3 })
+      io.observe(strip)
+    } else { start() }
+    const stop = () => { if (!stopped) { stopped = true; pause(); io?.disconnect() } }
     const evs: (keyof HTMLElementEventMap)[] = ['pointerdown', 'touchstart', 'wheel']
     evs.forEach(ev => strip.addEventListener(ev, stop, { passive: true }))
-    return () => { clearInterval(timer); evs.forEach(ev => strip.removeEventListener(ev, stop)) }
+    return () => { pause(); io?.disconnect(); evs.forEach(ev => strip.removeEventListener(ev, stop)) }
   }, [reduced])
 
   /* pd-inview (pause float off-screen) + pd-scrolling (pause during page scroll). */
