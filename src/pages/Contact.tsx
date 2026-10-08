@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, MapPin, Mail, CheckCircle, ChevronDown } from 'lucide-react'
+import { Send, MapPin, Mail, ChevronDown } from 'lucide-react'
 import { useSiteConfig } from '../lib/SiteConfigContext'
 import Reveal from '../components/ui/Reveal'
 import SocialIcons from '../components/SocialIcons'
@@ -98,7 +98,9 @@ export default function Contact() {
       (form.phone   ? `Phone: ${form.phone}\n`   : '') +
       `Email: ${form.email}\nType: ${form.type}\n\nMessage:\n${form.message}`
     )
-    window.location.href = `mailto:hello@lintejas.com?subject=${subject}&body=${body}`
+    // Opens the visitor's email app with the message pre-filled. Nothing is sent
+    // until they press Send there, so the next screen asks them to do exactly that.
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
 
     await new Promise(r => setTimeout(r, 600))
     setSent(true)
@@ -171,14 +173,27 @@ export default function Contact() {
                           boxShadow:   '0 0 32px rgba(212,168,67,0.18)',
                         }}
                       >
-                        <CheckCircle size={28} style={{ color: 'var(--gold)' }} />
+                        <Mail size={28} style={{ color: 'var(--gold)' }} />
                       </motion.div>
                       <h2 className="font-display font-semibold text-xl mb-2" style={{ color: 'var(--cream)' }}>
-                        Message sent
+                        One last step
                       </h2>
-                      <p className="text-sm max-w-xs" style={{ color: 'var(--slate)' }}>
-                        {successMsg}
+                      <p className="text-sm max-w-xs mb-3" style={{ color: 'var(--slate)' }}>
+                        Your email app should have opened with your message ready.
+                        Press <strong style={{ color: 'var(--cream)' }}>Send</strong> there to reach us. {successMsg}
                       </p>
+                      <p className="text-sm max-w-xs mb-6" style={{ color: 'var(--slate)' }}>
+                        Didn't open? Email us directly at{' '}
+                        <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: 'var(--gold)' }}>{CONTACT_EMAIL}</a>.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setSent(false)}
+                        className="text-xs underline underline-offset-4"
+                        style={{ color: 'var(--slate)' }}
+                      >
+                        Back to the form (your text is kept)
+                      </button>
                     </motion.div>
                   ) : (
                     /* Form */
