@@ -4,9 +4,13 @@
  *   hero → slate-blue  |  content → bronze  |  CTA → gold
  *
  * Desktop-only (≥ 1024px).  Reduced-motion: null.
+ * No WebGL (or software-only GL), a renderer throw, or a lost context → null: it is a decorative
+ * background, so the page simply renders without it (an uncaught R3F error here used to blank every page).
  * Transparent WebGL canvas composites over AuroraBackground.
  */
-import { useRef, useMemo, useEffect, useState } from 'react'
+import { useRef, useMemo, useEffect, useState, Component } from 'react'
+import type { ReactNode } from 'react'
+import { captureException } from '@sentry/react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useScroll } from 'framer-motion'
 import * as THREE from 'three'
@@ -86,8 +90,35 @@ function Scene({ scrollRef }: { scrollRef: React.MutableRefObject<number> }) {
   )
 }
 
+/* ── WebGL pre-check (desktop only, once per page load). failIfMajorPerformanceCaveat: no 3D background
+   on software-only GL. The probe context is released immediately. ─── */
+let webglChecked: boolean | null = null
+function webglOk(): boolean {
+  if (webglChecked !== null) return webglChecked
+  webglChecked = false
+  try {
+    const probe = document.createElement('canvas')
+    const opts = { failIfMajorPerformanceCaveat: true }
+    const gl = (probe.getContext('webgl2', opts) || probe.getContext('webgl', opts)) as WebGLRenderingContext | null
+    if (gl) { webglChecked = true; gl.getExtension('WEBGL_lose_context')?.loseContext() }
+  } catch { webglChecked = false }
+  return webglChecked
+}
+
+/* ── Error boundary: a renderer throw hides the background instead of unmounting the whole app ── */
+class SceneGuard extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  componentDidCatch(err: unknown) {
+    console.warn('[scene] background 3D failed — hidden', err)
+    captureException(err, { tags: { webgl_fallback: 'background' } })
+  }
+  render() { return this.state.failed ? null : this.props.children }
+}
+
 /* ── Inner wrapper (has hooks; only rendered on desktop) ───────── */
 function SceneJourneyInner() {
+  const [lost, setLost]      = useState(false)   // WebGL context lost (GPU reset / tab pressure) → hide
   const scrollRef            = useRef(0)
   const { scrollYProgress }  = useScroll()
 
@@ -95,6 +126,7 @@ function SceneJourneyInner() {
     return scrollYProgress.on('change', v => { scrollRef.current = v })
   }, [scrollYProgress])
 
+  if (lost) return null
   return (
     <div
       aria-hidden="true"
@@ -110,6 +142,7 @@ function SceneJourneyInner() {
         gl={{ antialias: false, alpha: true }}
         dpr={[1, 1.5]}
         style={{ background: 'transparent' }}
+        onCreated={({ gl }) => gl.domElement.addEventListener('webglcontextlost', () => setLost(true), { once: true })}
       >
         <Scene scrollRef={scrollRef} />
       </Canvas>
@@ -130,6 +163,6 @@ export default function SceneJourney() {
     return () => window.removeEventListener('resize', check)
   }, [])
 
-  if (reduced || !desktop) return null
-  return <SceneJourneyInner />
+  if (reduced || !desktop || !webglOk()) return null
+  return <SceneGuard><SceneJourneyInner /></SceneGuard>
 }
