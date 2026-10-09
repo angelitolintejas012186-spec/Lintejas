@@ -25,6 +25,15 @@ Sentry.init({
     /Non-Error promise rejection captured/,
   ],
   denyUrls: [/^(chrome|moz|safari(-web)?)-extension:\/\//],                               // browser extensions
+  // "Error creating WebGL context" that a fallback already handled (hero Guard → tag `hero`, background
+  // SceneGuard → tag `webgl_fallback`) is expected on some phones/in-app browsers: still sent and counted,
+  // but as a WARNING, not an error. Untagged (unhandled) WebGL errors and every other error are unchanged.
+  beforeSend(event) {
+    const msg = (event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].value) || ''
+    const tags = event.tags || {}
+    if (/Error creating WebGL context/i.test(msg) && (tags.hero || tags.webgl_fallback)) event.level = 'warning'
+    return event
+  },
 })
 
 createRoot(document.getElementById('root')!).render(
