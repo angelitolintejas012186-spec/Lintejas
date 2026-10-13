@@ -23,6 +23,7 @@ import Services  from './pages/Services'
 import Contact   from './pages/Contact'
 import SkillVue  from './pages/SkillVue'
 import Security  from './pages/Security'
+import Automation from './pages/Automation'
 import NotFound  from './pages/NotFound'
 
 /* B2 (perf): the admin app is lazy so its chunks — notably @dnd-kit (only used by
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="/contact"   element={<Contact />} />
             <Route path="/skillvue"  element={<SkillVue />} />
             <Route path="/security"  element={<Security />} />
+            <Route path="/automation" element={<Automation />} />
             {/* Unknown public hash routes → branded 404 (keeps nav + footer) */}
             <Route path="*"          element={<NotFound />} />
           </Route>

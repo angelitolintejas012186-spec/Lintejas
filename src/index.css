@@ -268,6 +268,16 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   --c-statbg:#0A1A22; --c-statline:#2C5C5E; --c-stats:#A7C7C2; --c-ctabg:#3FB6A8; --c-ctafg:#06201C;
 }
 .pd-card.pdx[data-v="supplier"].pd-active,.pd-card.pdx[data-v="contribute"].pd-active{box-shadow:var(--nd-sh-lg),0 0 0 1px rgba(63,182,168,.4),0 0 30px rgba(63,182,168,.22)}
+/* Business Automation — its own porcelain + violet identity (not navy); NEW pill = solid violet */
+.pd-card.pdx[data-v="automation"]{
+  --c-bg:linear-gradient(180deg,#FFFFFF 0%,#EEEAFF 100%); --c-border:#BDB0F5; --c-ink:#1A1530; --c-kicker:#5B3FD9; --c-promise:#1A1530; --c-check:#5B3FD9;
+  --c-markbg:transparent; --c-markline:transparent; --c-pillbg:#5B3FD9; --c-pillfg:#FFFFFF;
+  --c-statbg:#FFFFFF; --c-statline:#E6E3F2; --c-statb:#5B3FD9; --c-stats:#5D587A;
+  --c-chipfg:#5B3FD9; --c-chipline:#BDB0F5; --c-ctabg:#5B3FD9; --c-ctafg:#FFFFFF;
+}
+.pd-card.pdx[data-v="automation"] .pdx-mark{border:0}
+.pd-card.pdx[data-v="automation"].pd-active{box-shadow:var(--nd-sh-lg),0 0 0 1px rgba(124,92,255,.45),0 0 30px rgba(124,92,255,.30)}
+.pd-card.pdx[data-v="automation"].pd-active::after{background:linear-gradient(105deg,transparent,rgba(124,92,255,.14),transparent)}
 /* Coming soon — dashed frame + pill instead of the old opacity dim (keeps every line ≥4.5:1) */
 .pd-card.pdx.pd-soon{
   --c-bg:linear-gradient(180deg,#16203A 0%,#0E1528 100%); --c-border:#5A6A90; --c-ink:#E6EAF4; --c-kicker:#A8B9EA; --c-promise:#CBD6F5; --c-check:#9DACD6;

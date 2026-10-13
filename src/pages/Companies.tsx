@@ -34,11 +34,11 @@ const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon; scale?: n
 
 /* Coming-soon ventures that have their own page → "Learn more" link instead of
    "not yet available" (no dead ends). */
-const LEARN_MORE: Record<string, string> = { skillvue: '/skillvue' }
+const LEARN_MORE: Record<string, string> = { skillvue: '/skillvue', automation: '/automation' }
 
 interface Venture {
   id: string; name: string; purpose: string
-  status: 'live' | 'coming-soon'
+  status: 'live' | 'coming-soon' | 'pilot'
   url: string
   logo?: string; svg?: ReactNode; emoji?: string; mono?: string
   iconSrc?: string; IconComp?: LucideIcon; iconScale?: number
@@ -52,11 +52,12 @@ const byId: Record<string, typeof CARDS[number]> =
 const VENTURES: Venture[] = PORTFOLIO.map(p => {
   const c = byId[p.v]
   const soon = !!(c && c.soon)
+  const pilot = !!(c && c.pilot)   // pilot open → own page on this site (Learn more), not "Visit platform"
   const ov = ICON_OVERRIDE[p.v]
   return {
     id: p.v, name: p.name, purpose: p.purpose,
-    status: soon ? 'coming-soon' : 'live',
-    url: !soon && c && c.href ? c.href : '',
+    status: pilot ? 'pilot' : soon ? 'coming-soon' : 'live',
+    url: !soon && !pilot && c && c.href ? c.href : '',
     logo: c && c.logo, svg: c && c.svg, emoji: c && c.emoji, mono: c && c.mono,
     iconSrc: ov && ov.src, IconComp: ov && ov.Comp, iconScale: ov && ov.scale,
     learnMore: LEARN_MORE[p.v],
@@ -67,6 +68,7 @@ const VENTURES: Venture[] = PORTFOLIO.map(p => {
 const STATUS_CONFIG = {
   live:          { label: 'Live',        color: '#3FB950', bg: 'rgba(63,185,80,0.10)',  border: 'rgba(63,185,80,0.25)',  pulse: true  },
   'coming-soon': { label: 'Coming soon', color: '#D4A843', bg: 'rgba(212,168,67,0.10)', border: 'rgba(212,168,67,0.20)', pulse: false },
+  pilot:         { label: 'Pilot open',  color: '#B9A6FF', bg: 'rgba(124,92,255,0.12)', border: 'rgba(124,92,255,0.30)', pulse: true  },
 }
 
 /* venture icon — reuses the deck's own logo / crest / emoji / monogram */

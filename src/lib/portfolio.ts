@@ -31,6 +31,8 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
     purpose: 'Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.' },
   contribute: { name: 'Share Your Business Model', short: 'Share your model',
     purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
+  automation: { name: 'Business Automation', short: 'Business Automation',
+    purpose: 'Ready-made automations for small businesses — pilot open.' },
   skillvue: { name: 'SkillVue',
     purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
   biyaheph: { name: 'BiyahePH',

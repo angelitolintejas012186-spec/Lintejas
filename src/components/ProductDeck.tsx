@@ -32,6 +32,16 @@ const MatthewCrest = (
   </svg>
 )
 
+/* Business Automation mark — violet tile, two linked steps + a check (repeat work, approved). */
+const AutomationMark = (
+  <svg viewBox="0 0 100 100" role="img" aria-label="Business Automation mark">
+    <rect x="0" y="0" width="100" height="100" rx="22" fill="#5B3FD9" />
+    <circle cx="32" cy="34" r="10" fill="none" stroke="#FFFFFF" strokeWidth="7" />
+    <path d="M32 44 V56 Q32 66 42 66 H54" fill="none" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
+    <path d="M58 64 L66 72 L80 54" fill="none" stroke="#CFC2FF" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 /* Premium card system (2026-10-03, approved mock): every card = logo + status pill → kicker →
    serif name → one-line promise → 3–6 points (line-check icons) → 3-cell stat strip or price
    boxes → CTA pinned to the bottom. Each brand keeps its colours (index.css .pd-card[data-v]).
@@ -46,6 +56,7 @@ type Card = {
   href?: string           // undefined = coming-soon (not a link)
   navy?: boolean          // gold glow shadow (dark gold-framed cards)
   soon?: boolean
+  pilot?: boolean         // open for pilot sign-ups (Portfolio status "Pilot open"), still a link
   logo?: string           // also the Portfolio icon
   svg?: ReactNode
   mono?: string           // coming-soon monogram (Portfolio)
@@ -151,6 +162,19 @@ export const CARDS: Card[] = [
     cta: 'Register your business' },
   // Share your business model (WDRICH) — MERGED into the Supplier Registration card above (2026-10-05): its message
   // now lives in that card's kicker + promise. The page itself stays at ${NP}/supplier/contribute (not deleted).
+  // Business Automation — pilot open (2026-10-13). Own porcelain + violet look (index.css data-v="automation");
+  // `pilot` → Portfolio status "Pilot open". No prices, no results — sign-up only after the pilot page.
+  { v: 'automation', href: '/#/automation', pilot: true, svg: AutomationMark,
+    title: 'Business Automation', hook: 'Ready-made automations for small businesses — pilot open.',
+    pill: 'New', kicker: 'Ready-made automations', name: 'Business Automation',
+    promise: 'Let the busy work run itself. You only approve.',
+    points: [
+      { text: 'Online booking page' },
+      { text: 'Win back old customers' },
+      { text: 'Collect late payments politely' },
+      { text: 'Spot customers about to leave' },
+    ],
+    cta: 'Open' },
   // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
   { v: 'skillvue', badgeSoon: true, href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
     title: 'SkillVue', hook: 'The human layer of the smart factory.',
