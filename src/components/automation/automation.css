@@ -119,8 +119,8 @@ textarea.ba-in{min-height:96px;resize:vertical}
 .ba-check:has(input:checked){border-color:var(--ba-violet);background:#F7F5FF}
 .ba-check input{width:20px;height:20px;flex:none;accent-color:var(--ba-violet)}
 .ba-check small{color:var(--ba-ink2);font-weight:600;margin-left:auto;white-space:nowrap;font-size:12px}
-.ba-consent{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;cursor:pointer}
-.ba-consent input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--ba-violet)}
+.ba-consent{display:flex;gap:12px;align-items:center;min-height:44px;font-size:15px;line-height:1.5;cursor:pointer}   /* the whole line is the tap target: ≥ 44px */
+.ba-consent input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--ba-violet)}
 .ba-consent a{color:var(--ba-violet);font-weight:700}
 .ba-hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 .ba-msg{border-radius:16px;padding:14px 16px;font-size:15.5px;line-height:1.5}
@@ -154,3 +154,6 @@ textarea.ba-in{min-height:96px;resize:vertical}
 @media (max-width:1023px){.ba-grid > :last-child:nth-child(odd){grid-column:1/-1}}
 /* form keeps a readable width on tablet landscape + desktop (no 1000px-wide inputs) */
 .ba-form{max-width:880px}
+
+/* Official logo in the hero (public/brand/automation/logo.svg). */
+.ba .ba-logo{display:block;width:64px;height:64px;margin:0 0 14px}

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ListChecks, ShieldCheck, Lock, ChevronDown } from 'lucide-react'
+import { ArrowRight, ListChecks, ShieldCheck, Lock, ChevronDown, ExternalLink } from 'lucide-react'
 import AutomationTiles from '../components/automation/AutomationTiles'
 import PilotForm from '../components/automation/PilotForm'
-import { AUTOMATIONS } from '../components/automation/data'
+import { AUTOMATIONS, BA_APP_OPEN, BA_APP_URL } from '../components/automation/data'
 import type { Automation as AutomationItem } from '../components/automation/data'
 import '../components/automation/automation.css'
 
@@ -15,6 +15,12 @@ import '../components/automation/automation.css'
    Plus Jakarta Sans is loaded here only, so the rest of the site's fonts are unchanged. */
 
 const FONT_HREF = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
+
+const OPEN_COUNT = AUTOMATIONS.filter(a => a.status === 'pilot').length
+const COUNT_WORD = ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven'][OPEN_COUNT] ?? String(OPEN_COUNT)
+const PAGE_TITLE = 'Business Automation — Lintejas'
+const PAGE_DESC = 'Business Automation by Lintejas — ready-made automations for small businesses: payment reminders, win-back and check-in messages, an online booking page, product listings and training guides. You approve everything. Join the pilot.'
+const SHARE_IMAGE = 'https://lintejas.io/brand/automation/og.png'
 
 function scrollToId(id: string) {
   const el = document.getElementById(id)
@@ -41,13 +47,17 @@ export default function Automation() {
   useEffect(() => {
     window.scrollTo(0, 0)
     const prevTitle = document.title
-    document.title = 'Business Automation — Lintejas'
+    document.title = PAGE_TITLE
     const descEl  = document.querySelector('meta[name="description"]')
     const canonEl = document.querySelector('link[rel="canonical"]')
     const prevDesc  = descEl?.getAttribute('content') ?? null
     const prevCanon = canonEl?.getAttribute('href') ?? null
-    descEl?.setAttribute('content', 'Business Automation by Lintejas — ready-made automations for small businesses: online booking, win back old customers, polite payment reminders. You approve everything. Join the pilot.')
+    descEl?.setAttribute('content', PAGE_DESC)
     canonEl?.setAttribute('href', 'https://lintejas.io/#/automation')
+    /* Share tags while on this page (link previews from crawlers use the static /automation/ page instead). */
+    const og: [string, string][] = [['og:title', PAGE_TITLE], ['og:description', PAGE_DESC], ['og:image', SHARE_IMAGE], ['og:url', 'https://lintejas.io/automation/'], ['og:image:alt', 'Business Automation by Lintejas — gear and lightning logo']]
+    const prevOg = og.map(([k]) => { const el = document.querySelector(`meta[property="${k}"]`); return [el, el?.getAttribute('content') ?? null] as const })
+    og.forEach(([, v], i) => prevOg[i][0]?.setAttribute("content", v))
     if (!document.querySelector(`link[href="${FONT_HREF}"]`)) {
       const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = FONT_HREF; document.head.appendChild(l)
     }
@@ -55,6 +65,7 @@ export default function Automation() {
       document.title = prevTitle
       if (prevDesc  !== null) descEl?.setAttribute('content', prevDesc)
       if (prevCanon !== null) canonEl?.setAttribute('href', prevCanon)
+      prevOg.forEach(([el, v]) => { if (el && v !== null) el.setAttribute('content', v) })
     }
   }, [])
 
@@ -68,15 +79,26 @@ export default function Automation() {
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="ba-hero">
         <div className="ba-wrap">
+          <img className="ba-logo" src="/brand/automation/logo.svg" alt="Business Automation logo" width="64" height="64" />
           <span className="ba-eyebrow"><span translate="no">Lintejas</span> · Business Automation</span>
           <h1 className="ba-h1">Automate your business.</h1>
           <p className="ba-lead">Ready-made automations that do the repeat work for you. You approve before anything is sent.</p>
           <div className="ba-ctas">
-            <button type="button" className="ba-btn ba-btn--pri" onClick={() => join()}>Join the pilot <ArrowRight size={18} /></button>
-            <button type="button" className="ba-btn ba-btn--sec" onClick={() => scrollToId('automations')}>See the automations</button>
+            {BA_APP_OPEN ? (
+              <>
+                {/* Shown only when BA_APP_OPEN (data.ts) is true. */}
+                <a className="ba-btn ba-btn--pri" href={BA_APP_URL} target="_blank" rel="noopener">Open the pilot app <ExternalLink size={18} aria-hidden="true" /></a>
+                <button type="button" className="ba-btn ba-btn--sec" onClick={() => join()}>Join the pilot <ArrowRight size={18} /></button>
+              </>
+            ) : (
+              <>
+                <button type="button" className="ba-btn ba-btn--pri" onClick={() => join()}>Join the pilot <ArrowRight size={18} /></button>
+                <button type="button" className="ba-btn ba-btn--sec" onClick={() => scrollToId('automations')}>See the automations</button>
+              </>
+            )}
           </div>
           <ul className="ba-facts">
-            <li className="ba-fact"><ListChecks size={22} aria-hidden="true" />{AUTOMATIONS.length} automations planned</li>
+            <li className="ba-fact"><ListChecks size={22} aria-hidden="true" />{OPEN_COUNT} of {AUTOMATIONS.length} open for the pilot</li>
             <li className="ba-fact"><ShieldCheck size={22} aria-hidden="true" />You approve everything</li>
             <li className="ba-fact"><Lock size={22} aria-hidden="true" />Your data stays yours</li>
           </ul>
@@ -100,7 +122,7 @@ export default function Automation() {
       <section id="automations" className="ba-sec" aria-labelledby="ba-auto-h" style={{ scrollMarginTop: 'calc(88px + env(safe-area-inset-top))' }}>
         <div className="ba-wrap">
           <h2 id="ba-auto-h" className="ba-h2">The automations</h2>
-          <p className="ba-sub">Four are open for the pilot now. The rest are planned — tap any one to see what it does.</p>
+          <p className="ba-sub">{COUNT_WORD} are open for the pilot now. The rest are planned. Tap any one to see what it does.</p>
           <AutomationTiles onJoin={join} />
         </div>
       </section>

@@ -32,13 +32,19 @@ const MatthewCrest = (
   </svg>
 )
 
-/* Business Automation mark — violet tile, two linked steps + a check (repeat work, approved). */
+/* Business Automation mark — the official logo (business-automation public/brand/logo.svg; copy in
+   public/brand/automation/): violet gradient tile, white gear, yellow lightning. Own gradient id. */
 const AutomationMark = (
-  <svg viewBox="0 0 100 100" role="img" aria-label="Business Automation mark">
-    <rect x="0" y="0" width="100" height="100" rx="22" fill="#5B3FD9" />
-    <circle cx="32" cy="34" r="10" fill="none" stroke="#FFFFFF" strokeWidth="7" />
-    <path d="M32 44 V56 Q32 66 42 66 H54" fill="none" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
-    <path d="M58 64 L66 72 L80 54" fill="none" stroke="#CFC2FF" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+  <svg viewBox="0 0 100 100" role="img" aria-label="Business Automation logo">
+    <defs><linearGradient id="ba-deck-vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#8F5CF6" /><stop offset="1" stopColor="#4A2FC8" /></linearGradient></defs>
+    <rect x="4" y="4" width="92" height="92" rx="28" fill="url(#ba-deck-vg)" />
+    <g fill="#FFFFFF">
+      <circle cx="50" cy="50" r="24" fill="none" stroke="#FFFFFF" strokeWidth="7" />
+      <g transform="translate(50 50)">
+        {[0, 60, 120, 180, 240, 300].map(d => <rect key={d} x="-4.5" y="-35" width="9" height="11" rx="2" transform={`rotate(${d})`} />)}
+      </g>
+    </g>
+    <path d="M54 34 L42 53 H50 L46 67 L59 47 H51 Z" fill="#FFE27A" />
   </svg>
 )
 
@@ -169,10 +175,10 @@ export const CARDS: Card[] = [
     pill: 'New', kicker: 'Ready-made automations', name: 'Business Automation',
     promise: 'Let the busy work run itself. You only approve.',
     points: [
-      { text: 'Online booking page' },
-      { text: 'Win back old customers' },
       { text: 'Collect late payments politely' },
-      { text: 'Spot customers about to leave' },
+      { text: 'Win back customers' },
+      { text: 'Online booking page' },
+      { text: 'Product listings and training guides' },
     ],
     cta: 'Open' },
   // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.

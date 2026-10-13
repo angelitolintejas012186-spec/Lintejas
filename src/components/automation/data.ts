@@ -1,6 +1,7 @@
 /* Business Automation (/#/automation) — the automation catalogue. Plain, honest copy only:
-   no results, no figures, no prices, no promised setup times. "pilot" = open for the pilot now;
-   "later" = planned, visitors can ask to be notified. Numbers (#1–#11) are the internal ids. */
+   no results, no figures, no prices, no promised setup times. "pilot" = built and open for the pilot
+   (2026-10-14: #4, #1, #10, #11, #8, #9); "later" = planned, visitors can ask to be notified.
+   Numbers (#1–#11) are the internal ids. */
 import type { LucideIcon } from 'lucide-react'
 import {
   CalendarCheck, HeartHandshake, HandCoins, UserCheck, ShoppingBag, BookOpen,
@@ -33,40 +34,47 @@ export const CAT_TEXT: Record<Category, string> = {
   Customers: '#5B3FD9', Money: '#0B7A64', Documents: '#8F5A08', Team: '#B23158',
 }
 
+/* The pilot app (automation.lintejas.io). The "Open the pilot app" button stays HIDDEN until this is true —
+   switch it on only when the app is actually open for pilots. Until then "Join the pilot" is the main action. */
+export const BA_APP_OPEN = false
+export const BA_APP_URL = 'https://automation.lintejas.io'
+
 export const AUTOMATIONS: Automation[] = [
-  // ── Pilot open ───────────────────────────────────────────────────────────
-  { n: 11, name: 'Online booking page', category: 'Customers', status: 'pilot', icon: CalendarCheck,
-    line: 'Customers book a time themselves; you see every booking in one place.',
-    what: 'Gives your business its own booking page. Customers pick a service and a free time slot, and you get the booking straight away.',
-    how: ['We set up your services and opening hours with you.', 'You share your booking link with customers.', 'New bookings come to you to confirm.'],
-    goodFor: ['Salons & spas', 'Clinics', 'Repair & home services', 'Tutors'] },
-  { n: 1, name: 'Win back old customers', category: 'Customers', status: 'pilot', icon: HeartHandshake,
-    line: 'Finds customers who stopped coming and drafts a friendly hello.',
-    what: 'Looks at who has not bought from you in a while and drafts a short, friendly message to invite them back. Nothing is sent until you approve it.',
-    how: ['We connect your customer list with you.', 'It picks out customers who have gone quiet.', 'You read each draft and approve or skip it.'],
-    goodFor: ['Shops', 'Food service', 'Salons', 'Online sellers'] },
+  // ── Pilot open (built and in the pilot app) ─────────────────────────────
   { n: 4, name: 'Collect late payments', category: 'Money', status: 'pilot', icon: HandCoins,
     line: 'Drafts polite reminders for payments that are overdue.',
-    what: 'Keeps track of who owes you and when it was due, then drafts a polite reminder. You approve every reminder before it goes out.',
-    how: ['We set up your list of open payments with you.', 'It notices when a payment is overdue.', 'You approve the reminder; it never sends on its own.'],
+    what: 'Keeps track of who owes you and when it was due, then drafts a polite reminder. You send every reminder yourself from your own phone; nothing goes out on its own.',
+    how: ['You add your list of open payments, or upload it as a CSV file.', 'It shows who is due for a reminder each day.', 'You send the message yourself and mark payments as paid.'],
     goodFor: ['Credit customers (utang)', 'Wholesale', 'Services billed later'] },
-  { n: 10, name: 'Keep customers from leaving', category: 'Customers', status: 'pilot', icon: UserCheck,
-    line: 'Spots regulars who are coming less often, before they stop.',
-    what: 'Watches for regular customers whose visits or orders are slowing down and flags them for you, with a suggested check-in message to approve.',
-    how: ['We set up what "a regular" means for your business.', 'It flags regulars who are slowing down.', 'You decide who to contact and approve the message.'],
+  { n: 1, name: 'Win back customers', category: 'Customers', status: 'pilot', icon: HeartHandshake,
+    line: 'Finds customers who stopped coming and drafts a friendly hello.',
+    what: 'Looks at who has not visited in a while and drafts a short, friendly message to invite them back. It only includes customers who agreed to receive messages, and nothing is sent until you send it.',
+    how: ['You upload your customer list and mark who agreed to messages.', 'It picks out customers who have gone quiet.', 'You read each draft and send it yourself, or skip it.'],
+    goodFor: ['Shops', 'Food service', 'Salons', 'Online sellers'] },
+  { n: 10, name: 'Check in with regular customers', category: 'Customers', status: 'pilot', icon: UserCheck,
+    line: 'Spots regulars who are coming less often, and drafts a check-in.',
+    what: 'Watches for regular customers who have been away longer than usual and drafts a short check-in message for you to send. Only customers who agreed to messages are included.',
+    how: ['You log visits, or upload a visit history.', 'It notices regulars who are away longer than usual.', 'You decide who to contact and send the message yourself.'],
     goodFor: ['Shops with regulars', 'Subscriptions', 'Salons & clinics'] },
+  { n: 11, name: 'Online booking page', category: 'Customers', status: 'pilot', icon: CalendarCheck,
+    line: 'Customers book a time themselves; you see every booking in one place.',
+    what: 'Gives your business its own booking page. Customers pick a service and a free time, and you accept, decline or move each request.',
+    note: 'An optional deposit uses your own GCash or Maya QR. No payment passes through the app.',
+    how: ['You set up your services, opening hours and booking link.', 'You share the link with your customers.', 'New requests come to you to accept, decline or move.'],
+    goodFor: ['Salons & spas', 'Clinics', 'Repair & home services', 'Tutors'] },
+  { n: 8, name: 'Product listings', category: 'Documents', status: 'pilot', icon: ShoppingBag,
+    line: 'Writes listing text for your online shops from your product facts.',
+    what: 'Turns the product facts you give into a title, highlights and a description for Shopee, Lazada, TikTok Shop, Facebook Marketplace and your own website. Missing details are marked for you to fill in.',
+    note: 'Health, food and cosmetic claims are left out unless you add them yourself. Nothing is posted for you.',
+    how: ['You type the product facts, and add a photo if you want.', 'It writes a listing for each sales channel you choose.', 'You edit it, then copy it into your shop.'],
+    goodFor: ['Online sellers', 'Shops going online'] },
+  { n: 9, name: 'Training guides', category: 'Team', status: 'pilot', icon: BookOpen,
+    line: 'Turns how you work into step-by-step guides for your staff.',
+    what: 'Turns your answers to a few short questions into a step-by-step guide with a checklist and safety notes. Nothing is added that you did not say; missing details are marked for you.',
+    how: ['You answer seven short questions about a task.', 'It writes the steps, a checklist and safety notes.', 'You edit it, then print it or save it as a PDF, with a sign-off sheet for staff.'],
+    goodFor: ['Growing teams', 'New staff training'] },
 
   // ── Coming later ─────────────────────────────────────────────────────────
-  { n: 8, name: 'Write product listings', category: 'Documents', status: 'later', icon: ShoppingBag,
-    line: 'Drafts clear product descriptions for your online shop.',
-    what: 'Turns your product details into clear listing text for your online shop or marketplace page. You edit and approve every listing.',
-    how: ['You give the product name, details and photos.', 'It drafts the title and description.', 'You edit and approve before posting.'],
-    goodFor: ['Online sellers', 'Shops going online'] },
-  { n: 9, name: 'Write SOPs & training', category: 'Team', status: 'later', icon: BookOpen,
-    line: 'Turns how you work into simple step-by-step guides for staff.',
-    what: 'Helps you write down how things are done in your business as simple step-by-step guides your staff can follow.',
-    how: ['You describe a task in your own words.', 'It drafts a step-by-step guide.', 'You check it and share it with your team.'],
-    goodFor: ['Growing teams', 'New staff training'] },
   { n: 3, name: 'Answer tenders & RFPs', category: 'Money', status: 'later', icon: ClipboardList,
     line: 'Helps you prepare answers to tender and quotation requests.',
     what: 'Reads a tender or request for proposal and helps you prepare a first draft of your answer from your own business details. You review everything before you submit.',
