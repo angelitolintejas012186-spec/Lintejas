@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { X, ArrowRight, Bell } from 'lucide-react'
+import { X, ArrowRight, Bell, Plus } from 'lucide-react'
 import { AUTOMATIONS, CATEGORIES, CAT_COLOR, CAT_TEXT } from './data'
 import type { Automation, Category } from './data'
 
@@ -75,7 +75,7 @@ function Sheet({ a, onClose, onJoin }: { a: Automation; onClose: () => void; onJ
   )
 }
 
-export default function AutomationTiles({ onJoin }: { onJoin: (a: Automation) => void }) {
+export default function AutomationTiles({ onJoin }: { onJoin: (a?: Automation) => void }) {
   const [cat, setCat] = useState<Category | 'All'>('All')
   const [open, setOpen] = useState<Automation | null>(null)
   const close = useCallback(() => setOpen(null), [])
@@ -103,6 +103,13 @@ export default function AutomationTiles({ onJoin }: { onJoin: (a: Automation) =>
             <StatusChip a={a} />
           </button>
         ))}
+        {/* 12th cell: fills the grid evenly (2 × 6 / 3 × 4) and asks for what's missing → the form */}
+        <button type="button" className="ba-tile ba-tile--ask" onClick={() => onJoin()}>
+          <span className="ba-tile-top"><span className="ba-ico" style={{ background: 'var(--ba-soft)', color: 'var(--ba-violet)' }} aria-hidden="true"><Plus size={20} strokeWidth={2.2} /></span></span>
+          <span className="ba-tname">Need something else?</span>
+          <span className="ba-line">Tell us in the form what takes most of your time. It helps us choose what to build next.</span>
+          <span className="ba-ask-cta">Tell us <ArrowRight size={16} aria-hidden="true" /></span>
+        </button>
       </div>
 
       {open && <Sheet a={open} onClose={close} onJoin={a => { setOpen(null); onJoin(a) }} />}

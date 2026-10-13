@@ -146,3 +146,11 @@ textarea.ba-in{min-height:96px;resize:vertical}
 
 /* inline text links: 44px-tall tap area without changing the line layout */
 .ba-consent a,.ba-faq .ans a{display:inline-block;padding:12px 0;margin:-12px 0}
+
+/* "Need something else?" cell — dashed violet, closes the grid evenly */
+.ba-tile--ask{background:#F7F5FF;border:1.5px dashed #BDB0F5;box-shadow:none}
+.ba-ask-cta{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--ba-violet)}
+/* 2-column grid (phone + tablet portrait): an odd last cell spans the row — no orphan gap in filtered views */
+@media (max-width:1023px){.ba-grid > :last-child:nth-child(odd){grid-column:1/-1}}
+/* form keeps a readable width on tablet landscape + desktop (no 1000px-wide inputs) */
+.ba-form{max-width:880px}
