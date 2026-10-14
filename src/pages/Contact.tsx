@@ -98,7 +98,7 @@ export default function Contact() {
       (form.phone   ? `Phone: ${form.phone}\n`   : '') +
       `Email: ${form.email}\nType: ${form.type}\n\nMessage:\n${form.message}`
     )
-    window.location.href = `mailto:hello@lintejas.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:hello@lintejas.io?subject=${subject}&body=${body}`
 
     await new Promise(r => setTimeout(r, 600))
     setSent(true)
@@ -360,13 +360,13 @@ export default function Contact() {
                     <div>
                       <p className="text-xs mb-1" style={{ color: 'var(--slate)' }}>Email</p>
                       <a
-                        href="mailto:hello@lintejas.com"
+                        href="mailto:hello@lintejas.io"
                         className="text-sm font-medium transition-colors duration-200"
                         style={{ color: 'var(--cream)' }}
                         onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--gold)')}
                         onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--cream)')}
                       >
-                        hello@lintejas.com
+                        hello@lintejas.io
                       </a>
                     </div>
                   </div>

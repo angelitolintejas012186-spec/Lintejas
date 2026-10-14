@@ -36,7 +36,7 @@ export async function sendPilotSignup(row: PilotSignup): Promise<void> {
     if (/too_many_signups/.test(error.message)) throw new Error('This email has already signed up several times today — we have your details, no need to send again.')
     if (/busy_try_later/.test(error.message)) throw new Error('Too many sign-ups right now. Please try again in a minute.')
     if (error.code === '42P01' || error.code === 'PGRST205' || /does not exist|schema cache/i.test(error.message))
-      throw new Error('Sign-up is not switched on yet. Please email hello@lintejas.com instead. (' + raw + ')')
+      throw new Error('Sign-up is not switched on yet. Please email hello@lintejas.io instead. (' + raw + ')')
     if (/failed to fetch|network|load failed/i.test(error.message))
       throw new Error("Not sent — we couldn't reach the sign-up server. Check your connection and try again. (" + raw + ')')
     throw new Error('Not sent: ' + raw)

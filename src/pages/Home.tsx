@@ -64,7 +64,7 @@ const FAQS = [
   },
   {
     q: 'How do I get in touch?',
-    a: 'Head to the Contact page and send us a message, or email hello@lintejas.com. We read everything and respond personally.',
+    a: 'Head to the Contact page and send us a message, or email hello@lintejas.io. We read everything and respond personally.',
   },
 ]
 

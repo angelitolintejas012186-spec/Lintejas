@@ -15,7 +15,7 @@ export function whatsappHref(text?: string): string {
 }
 
 /** Public contact email (reported, unchanged). */
-export const CONTACT_EMAIL = 'hello@lintejas.com'
+export const CONTACT_EMAIL = 'hello@lintejas.io'
 
 /* Client Login destination (item 121 #2). Empty '' → the NavBar "Client Login" button
    is not rendered (component kept). It previously pointed at

@@ -83,7 +83,7 @@ export default function Login() {
               <label className="block text-xs font-medium mb-2" style={{ color: '#9BAAB8' }}>Email</label>
               <input
                 type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                className={inputClass} style={inputStyle} placeholder="admin@lintejas.com" autoComplete="email"
+                className={inputClass} style={inputStyle} placeholder="admin@lintejas.io" autoComplete="email"
               />
             </div>
 

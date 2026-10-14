@@ -60,7 +60,7 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
     return (
       <div ref={okRef} tabIndex={-1} className="ba-msg ba-msg--ok" role="status" aria-live="polite">
         <strong>Thanks — we'll message you within a few days.</strong>
-        <div style={{ marginTop: 4 }}>Your details were saved. You can ask us to delete them anytime at hello@lintejas.com.</div>
+        <div style={{ marginTop: 4 }}>Your details were saved. You can ask us to delete them anytime at hello@lintejas.io.</div>
       </div>
     )
   }

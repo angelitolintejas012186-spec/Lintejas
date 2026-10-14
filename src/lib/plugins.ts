@@ -51,7 +51,7 @@ export const PLUGIN_REGISTRY: PluginManifest[] = [
     icon: '✉️',
     mountPoint: 'page',
     settingsSchema: {
-      recipient: { type: 'email', label: 'Recipient Email', required: true, placeholder: 'hello@lintejas.com' },
+      recipient: { type: 'email', label: 'Recipient Email', required: true, placeholder: 'hello@lintejas.io' },
       subject:   { type: 'text',  label: 'Subject Prefix',  placeholder: 'Website Enquiry:' },
       successMessage: { type: 'text', label: 'Success Message', placeholder: 'Thank you, we will be in touch.' },
       showPhone:    { type: 'toggle', label: 'Show phone field',   defaultValue: false },
