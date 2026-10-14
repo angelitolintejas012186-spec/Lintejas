@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { Loader2, ArrowRight } from 'lucide-react'
@@ -17,6 +17,18 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
   const [f, setF] = useState({ name: '', business: '', type: '', country: '', email: '', mobile: '', messenger: '', note: '', website: '' })
   const [consent, setConsent] = useState(false)
   const [st, setSt] = useState<State>({ kind: 'idle' })
+  /* After a successful save the tall form is replaced by a short thank-you box, so the page gets much shorter and
+     the box ended up above the screen (the visitor saw the FAQ instead). Bring it into view and move focus to it
+     so screen readers announce it. Instant scroll: the site's smooth scroller (Lenis) follows native scrolling. */
+  const okRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (st.kind !== 'ok' || !okRef.current) return
+    const el = okRef.current
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ block: 'center', behavior: 'auto' })
+      el.focus({ preventScroll: true })
+    })
+  }, [st.kind])
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF(p => ({ ...p, [k]: e.target.value }))
 
   const toggle = (n: number) => setPicked(picked.includes(n) ? picked.filter(x => x !== n) : [...picked, n])
@@ -46,7 +58,7 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
 
   if (st.kind === 'ok') {
     return (
-      <div className="ba-msg ba-msg--ok" role="status" aria-live="polite">
+      <div ref={okRef} tabIndex={-1} className="ba-msg ba-msg--ok" role="status" aria-live="polite">
         <strong>Thanks — we'll message you within a few days.</strong>
         <div style={{ marginTop: 4 }}>Your details were saved. You can ask us to delete them anytime at hello@lintejas.com.</div>
       </div>

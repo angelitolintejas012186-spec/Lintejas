@@ -157,3 +157,8 @@ textarea.ba-in{min-height:96px;resize:vertical}
 
 /* Official logo in the hero (public/brand/automation/logo.svg). */
 .ba .ba-logo{display:block;width:64px;height:64px;margin:0 0 14px}
+
+/* The thank-you box receives focus after a sign-up (screen readers); show a clear ring only for keyboard focus. */
+.ba .ba-msg--ok{scroll-margin:96px 0}
+.ba .ba-msg--ok:focus{outline:none}
+.ba .ba-msg--ok:focus-visible{outline:3px solid var(--ba-violet);outline-offset:3px}

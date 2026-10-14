@@ -1,0 +1,45 @@
+name: Keep Supabase awake
+
+# The free Supabase project (lintejas-site) pauses after 7 days without activity, and the pilot sign-up form on
+# /#/automation would then fail. Every 3 days this makes ONE harmless read: one row's updated_at from site_config
+# (the same table the public site reads on every visit). It never inserts, updates or deletes anything and never
+# touches pilot_signups. It uses only the public anon key, from the same repository secrets the deploy uses.
+# If the request fails (for example the project is paused), the run goes red and GitHub emails the repo owner.
+
+on:
+  schedule:
+    - cron: "23 3 */3 * *"   # 03:23 UTC on day 1, 4, 7 … of each month (a gap of at most 3 days)
+  workflow_dispatch: {}       # "Run workflow" button for a manual check
+
+permissions:
+  contents: read
+
+concurrency:
+  group: keep-supabase-awake
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read one row from site_config (read-only)
+        env:
+          SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "::error::Missing repository secret VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY."
+            exit 1
+          fi
+          url="${SUPABASE_URL%/}/rest/v1/site_config?select=updated_at&limit=1"
+          code=$(curl -sS -o body.json -w '%{http_code}' --max-time 30 --retry 2 --retry-delay 10 \
+            -H "apikey: ${SUPABASE_ANON_KEY}" -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Accept: application/json" "$url") || code="000"
+          if [ "$code" != "200" ]; then
+            echo "::error::Supabase read failed with HTTP $code. The project may be paused: open the Supabase dashboard and restore it."
+            head -c 300 body.json 2>/dev/null || true
+            exit 1
+          fi
+          echo "Supabase answered (HTTP 200). The project stays active."
