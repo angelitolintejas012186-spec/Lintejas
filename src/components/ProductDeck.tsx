@@ -50,7 +50,8 @@ const AutomationMark = (
 
 /* Premium card system (2026-10-03, approved mock): every card = logo + status pill → kicker →
    serif name → one-line promise → 3–6 points (line-check icons) → 3-cell stat strip or price
-   boxes → CTA pinned to the bottom. Each brand keeps its colours (index.css .pd-card[data-v]).
+   boxes → CTA pinned to the bottom. Obsidian & Gold look (2026-10-17): one dark surface for all
+   cards, each brand's accent set in index.css .pd-card.pdx[data-v] (--acc).
    The legacy fields title / hook / logo / svg / emoji / mono / soon / href are still read by the
    Portfolio page + footer (lib/portfolio.ts, pages/Companies.tsx) — keep them; deck-only
    overrides live in deckLogo / deckMono. */
@@ -90,6 +91,7 @@ const NP_PLAN_COUNT = 143
 
 const CHECK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
 const CLOCK = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l2.5 2.5" /></svg>
+const ARROW = <svg className="pdx-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
 const RING = <svg className="pdx-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8" /></svg>
 
 /* Same order as before (the original NP deck order, then coming-soon). Exported as the single
@@ -180,6 +182,7 @@ export const CARDS: Card[] = [
       { text: 'Online booking page' },
       { text: 'Product listings and training guides' },
     ],
+    stats: [{ b: 'You', s: 'approve first' }, { b: 'Ready-made', s: 'no coding' }, { b: 'Web', s: 'any device' }],   // placeholder (Oct 17)
     cta: 'Open' },
   // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
   { v: 'skillvue', badgeSoon: true, href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
@@ -192,12 +195,21 @@ export const CARDS: Card[] = [
       { text: 'Competency tracking & training pathways' },
       { text: 'Skill-gap dashboards & risk prediction' },
     ],
+    stats: [{ b: '3', s: 'modules planned' }, { b: 'Web', s: 'any device' }, { b: 'B2B', s: 'food plants' }],   // placeholder (Oct 17)
     cta: 'See plans & get notified' },
-  // BiyahePH — Coming soon, not a link; existing copy only (deck hook + the Portfolio line).
+  // BiyahePH — Coming soon, not a link; deck hook + the Portfolio line, plus placeholder planned features + stats.
   { v: 'biyaheph', badgeSoon: true, soon: true, mono: 'B',
     title: 'BiyahePH', hook: 'Maps and commute directions for the Philippines.',
     pill: 'Coming soon', kicker: 'Planned for Android & iOS', name: 'BiyahePH',
-    promise: 'Maps and commute directions for the Philippines.' },
+    promise: 'Maps and commute directions for the Philippines.',
+    pointsLabel: 'Planned features',
+    points: [   // placeholder (Oct 17)
+      { text: 'Offline maps when the signal drops' },
+      { text: 'Commute routes — jeep, bus & train' },
+      { text: 'Turn-by-turn directions, Taglish ready' },
+      { text: 'Built for Philippine roads & addresses' },
+    ],
+    stats: [{ b: 'Offline', s: '+ online' }, { b: 'Android', s: 'planned' }, { b: 'iOS', s: 'planned' }] },   // placeholder (Oct 17)
   // Lintejas Fashion — REMOVED from the deck 2026-09-30: the brand no longer exists.
 ]
 
@@ -206,21 +218,36 @@ function headerOffset(): number {
   return h ? Math.round(h.getBoundingClientRect().height) : 80
 }
 
-function CardInner({ c }: { c: Card }) {
+/* Title split for the accent word: explicit nameAccent, else the last word, else the camel-case tail
+   (Negosyo|Plans, Skill|Vue, Biyahe|PH). The rendered text is unchanged. */
+function splitName(c: Card): [string, string] {
+  if (c.nameAccent) return [c.name + ' ', c.nameAccent]
+  const sp = c.name.lastIndexOf(' ')
+  if (sp > 0) return [c.name.slice(0, sp + 1), c.name.slice(sp + 1)]
+  const m = c.name.match(/^(.*[a-z])([A-Z].*)$/)
+  return m ? [m[1], m[2]] : [c.name, '']
+}
+
+/* Obsidian & Gold (2026-10-17): status chip kind — LIVE (green), NEW (violet), COMING SOON (gold). */
+const chipKind = (c: Card) => (c.badgeSoon ? 'soon' : c.pill.startsWith('Live') ? 'live' : 'new')
+
+function CardInner({ c, n }: { c: Card; n: number }) {
   const logo = c.deckLogo || c.logo
+  const [head, accent] = splitName(c)
+  const kind = chipKind(c)
   return (
     <>
+      {/* decorative layers behind the content (z-index −1 inside the card's stacking context) */}
+      <span className="pdx-fx" aria-hidden="true"><span className="pdx-hair" /><span className="pdx-motif" /></span>
       <div className="pdx-top">
         <div className="pdx-mark" aria-hidden="true">
           {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
-        {c.badgeSoon
-          ? <span className="pdx-pill pdx-soonpill"><span className="pdx-soondot" aria-hidden="true" />Coming soon</span>
-          : <span className="pdx-pill">{c.pill}</span>}
+        <span className={`pdx-pill pdx-pill-${kind}`}><span className="pdx-dot" aria-hidden="true" />{c.badgeSoon ? 'Coming soon' : c.pill}</span>
       </div>
       <div>
         <p className="pdx-kicker">{c.kicker}</p>
-        <h3 className="pdx-name" translate="no">{c.name}{c.nameAccent && <> <span className="pdx-accent">{c.nameAccent}</span></>}</h3>
+        <h3 className="pdx-name" translate="no">{head}{accent && <span className="pdx-accent">{accent}</span>}</h3>
       </div>
       <p className="pdx-promise">{c.promise}</p>
       {c.pointsLabel && <p className="pdx-plabel">{c.pointsLabel}</p>}
@@ -252,8 +279,9 @@ function CardInner({ c }: { c: Card }) {
         {c.band && (
           <span className="pd-dash pdx-band" role="link" tabIndex={0} data-dash={c.band.href}><b>{c.band.lead}</b> {c.band.text}</span>
         )}
-        {c.cta && <span className="pdx-cta">{c.cta} <span aria-hidden="true">→</span></span>}
+        {c.cta && <span className="pdx-cta">{c.cta} {ARROW}</span>}
       </div>
+      <span className="pdx-index" aria-hidden="true">{String(n).padStart(2, '0')} / {String(CARDS.length).padStart(2, '0')}</span>
     </>
   )
 }
@@ -388,16 +416,16 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
 
         <div className="pd-carousel" ref={stripRef} role="list">
           {CARDS.map((c, i) => {
-            const cls = ['pd-card', 'pdx', 'pd-glint', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : ''].filter(Boolean).join(' ')
+            const cls = ['pd-card', 'pdx', 'pd-glint', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : '', chipKind(c) === 'live' ? 'pdx-live' : ''].filter(Boolean).join(' ')
             return c.href ? (
               <a key={c.v} ref={el => { cardRefs.current[i] = el }} href={c.href} data-v={c.v} role="listitem"
                 aria-label={c.title || c.v} className={cls} onClick={e => onCardClick(e, i)}>
-                <CardInner c={c} />
+                <CardInner c={c} n={i + 1} />
               </a>
             ) : (
               <div key={c.v} ref={el => { cardRefs.current[i] = el }} data-v={c.v} role="listitem"
                 aria-label={`${c.title} — coming soon`} className={cls} onClick={e => onCardClick(e, i)}>
-                <CardInner c={c} />
+                <CardInner c={c} n={i + 1} />
               </div>
             )
           })}
