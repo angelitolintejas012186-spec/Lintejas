@@ -1,5 +1,8 @@
 import { useEffect, type ReactNode } from 'react'
 import Reveal from '../components/ui/Reveal'
+
+// Supabase project lintejas-site: Project Settings → General → Region. ⚠ Angie confirms before merge (PR stays draft).
+const SUPABASE_REGION = 'REGION-TO-CONFIRM'
 import { CONTACT_EMAIL } from '../lib/contact'
 
 /* Plain-language security page (/#/security) — linked from the homepage Trust & Security
@@ -67,6 +70,23 @@ export default function Security() {
             If you install the app, it keeps a working copy on <em>your</em> phone so you can keep logging when
             the signal drops. That copy syncs back to your account when you're online.
           </p>
+        </Block>
+
+        <Block title="If you sign up for the Business Automation pilot">
+          <p>
+            The "Join the pilot" form saves your name, your business name, type and country, your email and, if you
+            give them, your mobile number, Messenger link and note. It is stored with Supabase, our database
+            provider, in its {SUPABASE_REGION} region.
+          </p>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Only the Lintejas team (Angie) reads it, in the private Business Automation admin page.</li>
+            <li>It is used only to contact you about the pilot. It is never shown publicly, sold or shared.</li>
+            <li>
+              It is deleted 12 months after you signed up if you do not join the pilot, straight away if you ask,
+              and once you have been invited to the pilot, because your pilot account then holds the details we need.
+            </li>
+            <li>To have it deleted sooner, email <Mail />.</li>
+          </ul>
         </Block>
 
         <Block title="How it's protected">
