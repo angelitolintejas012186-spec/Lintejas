@@ -310,30 +310,46 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 /* Reduced motion — static deck (no autoplay handled in JS) */
 @media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
 
-/* ── Homepage obsidian background (Oct 18) ───────────────────────────────────
-   Additive layers behind the homepage content (Home.tsx ObsidianBackdrop). The wrapper keeps
-   --navy #111E3A; this layer spans the full page height (absolute, not fixed → no scroll
-   repaint), is static (no animation, no backdrop-filter) and sits at z 0 under .home-content.
-   Stack: depth gradients → sheen → facets/seams/veins (SVG) → grain → vignette. */
+/* ── Homepage obsidian background v2 (Oct 18) — the Obsidian.dc.html mock ───────────────────
+   Additive layers behind the homepage content (Home.tsx ObsidianBackdrop); the wrapper keeps
+   --navy #111E3A. Spans the full page (absolute, not fixed → no scroll repaint), static, z 0
+   under .home-content. Stack: depth gradients + sheen (CSS, not tiled) → facet/vein tile
+   (public/bg, repeated vertically at native proportions, never stretched) → grain → vignette.
+   --tile-y is set per breakpoint so veins and bright faces fall between text blocks. */
 .home-root{position:relative;contain:paint}
 .home-content{position:relative;z-index:1}
-.home-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;--glow-a:640px 420px at 88% 6%;
+.home-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
   background:
     conic-gradient(from 210deg at 70% 30%,transparent 0deg,rgba(255,255,255,.035) 40deg,transparent 80deg,rgba(212,175,55,.06) 150deg,transparent 200deg,rgba(255,255,255,.03) 300deg,transparent 360deg),
-    radial-gradient(var(--glow-a),rgba(241,215,122,.16),rgba(212,175,55,.05) 45%,transparent 68%),
+    radial-gradient(640px 420px at 88% 6vh,rgba(241,215,122,.16),rgba(212,175,55,.05) 45%,transparent 68%),
     radial-gradient(520px 520px at 6% 38%,rgba(111,160,255,.10),transparent 62%),
     radial-gradient(700px 560px at 78% 70%,rgba(212,175,55,.09),transparent 62%),
     radial-gradient(500px 400px at 20% 96%,rgba(127,196,232,.07),transparent 62%),
     linear-gradient(180deg,rgba(0,0,0,.30) 0%,transparent 16%,transparent 84%,rgba(0,0,0,.42) 100%),
     linear-gradient(118deg,#0B1530 0%,#111E3A 38%,#0D1932 62%,#111E3A 100%)}
-.home-bg-art,.home-bg-grain{position:absolute;inset:0;width:100%;height:100%;display:block}
-.home-bg-grain{opacity:.09;mix-blend-mode:overlay}
+.home-bg-tile{position:absolute;inset:0;--tile-y:360px;background:url(/bg/bg-phone.svg) 0 var(--tile-y)/100% auto repeat-y}
+.home-bg-grain{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.09;mix-blend-mode:overlay}
 .home-bg-vignette{position:absolute;inset:0;box-shadow:inset 0 0 180px rgba(2,6,16,.75),inset 0 0 40px rgba(2,6,16,.4)}
-/* phone: seams + veins that would cross text (measured at 390) are hidden, and the top-right gold
-   glow follows the 3D logo (row 2, beside the sub-line; centre ≈76% / 344–353px at 390–360). It is
-   narrow (120px) so it fades out before the sub-line column — at 6% of the tall phone page the
-   desktop glow sat behind the sub-line (4.2:1). */
-@media (max-width:767px){ .home-bg-desk{display:none} .home-bg{--glow-a:120px 200px at 76% 348px} }
+/* tile offsets (routed on the measured layout at 390 / 360 / 820 / 1280: no vein within 8px of text,
+   light facets kept off text as far as the layout allows) */
+@media (max-width:374px){ .home-bg-tile{--tile-y:648px} }
+@media (min-width:768px){ .home-bg-tile{background-image:url(/bg/bg-wide.svg);--tile-y:1036px} }
+@media (min-width:1024px){ .home-bg-tile{--tile-y:868px} }
+
+/* ── Homepage phone (< 768px) compaction (Oct 18) ──────────────────────────────────────────
+   Our philosophy: all three value cards fit one phone screen under the label — icon inline left
+   of the title, tighter type/padding. Card textures, colours and copy unchanged. Then the logo
+   divider before "Our belief": ~48px above and below. Tablet/laptop untouched (no rules ≥768). */
+@media (max-width:767px){
+  .value-grid{gap:12px}
+  .value-card.value-card{padding:18px 18px 16px}
+  .value-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .value-icon.value-icon{width:40px;height:40px;margin-bottom:0}
+  .value-title.value-title{font-size:20px;line-height:1.2;margin-bottom:0}
+  .value-body.value-body{font-size:14.5px;line-height:1.45}
+  .values-section.values-section{padding-bottom:48px}
+  .belief-divider.belief-divider{padding-top:0;padding-bottom:48px}
+}
 
 /* Color input */
 input[type="color"] {
