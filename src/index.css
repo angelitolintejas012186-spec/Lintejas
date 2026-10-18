@@ -310,6 +310,29 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 /* Reduced motion — static deck (no autoplay handled in JS) */
 @media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
 
+/* ── Homepage obsidian background (Oct 18) ───────────────────────────────────
+   Additive layers behind the homepage content (Home.tsx ObsidianBackdrop). The wrapper keeps
+   --navy #111E3A; this layer spans the full page height (absolute, not fixed → no scroll
+   repaint), is static (no animation, no backdrop-filter) and sits at z 0 under .home-content.
+   Stack: depth gradients → sheen → facets/seams/veins (SVG) → grain → vignette. */
+.home-root{position:relative;contain:paint}
+.home-content{position:relative;z-index:1}
+.home-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;--glow-a:640px 420px at 88% 6%;
+  background:
+    conic-gradient(from 210deg at 70% 30%,transparent 0deg,rgba(255,255,255,.035) 40deg,transparent 80deg,rgba(212,175,55,.06) 150deg,transparent 200deg,rgba(255,255,255,.03) 300deg,transparent 360deg),
+    radial-gradient(var(--glow-a),rgba(241,215,122,.16),rgba(212,175,55,.05) 45%,transparent 68%),
+    radial-gradient(520px 520px at 6% 38%,rgba(111,160,255,.10),transparent 62%),
+    radial-gradient(700px 560px at 78% 70%,rgba(212,175,55,.09),transparent 62%),
+    radial-gradient(500px 400px at 20% 96%,rgba(127,196,232,.07),transparent 62%),
+    linear-gradient(180deg,rgba(0,0,0,.30) 0%,transparent 16%,transparent 84%,rgba(0,0,0,.42) 100%),
+    linear-gradient(118deg,#0B1530 0%,#111E3A 38%,#0D1932 62%,#111E3A 100%)}
+.home-bg-art,.home-bg-grain{position:absolute;inset:0;width:100%;height:100%;display:block}
+.home-bg-grain{opacity:.09;mix-blend-mode:overlay}
+.home-bg-vignette{position:absolute;inset:0;box-shadow:inset 0 0 180px rgba(2,6,16,.75),inset 0 0 40px rgba(2,6,16,.4)}
+/* phone: seams + veins that would cross text (measured at 390) are hidden, and the top-right gold
+   glow is anchored on the 3D logo — at 6% of the tall phone page it sat behind the hero sub-line (4.2:1) */
+@media (max-width:767px){ .home-bg-desk{display:none} .home-bg{--glow-a:300px 200px at 88% 230px} }
+
 /* Color input */
 input[type="color"] {
   padding: 2px;

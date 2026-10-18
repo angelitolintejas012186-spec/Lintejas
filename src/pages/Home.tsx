@@ -15,7 +15,13 @@ import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
 
 /* ── Headline lines — each reveals with a clip-path mask ──────── */
-const HEADLINE = ['Software', 'for the', 'Filipino', 'owner.']
+/* Each line renders unwrapped (whitespace-nowrap, CLS guard), so the break points are fixed per
+   width: ≥ sm the 3-line set fits the column (widest "Filipino owners." 354px at 48px / 506px at
+   72px); below sm the phone column (~190px at 38.4px) fits one word per line only. Gold = the
+   "Filipino owners." accent (same gold-gradient class as before). */
+type HeadLine = { text: string; gold?: boolean }
+const HEADLINE: HeadLine[] = [{ text: 'The business' }, { text: 'system behind' }, { text: 'Filipino owners.', gold: true }]
+const HEADLINE_PHONE: HeadLine[] = [{ text: 'The' }, { text: 'business' }, { text: 'system' }, { text: 'behind' }, { text: 'Filipino', gold: true }, { text: 'owners.', gold: true }]
 
 /* ── Scroll-cue chevron ───────────────────────────────────────── */
 function ScrollCue() {
@@ -183,6 +189,122 @@ function TrustArt({ i }: { i: number }) {
   )
 }
 
+/* ── Obsidian page background (Oct 18) — facets, fracture seams, gold veins ─────────────────
+   Generated once (scratch script, not shipped) on a 1440×4800 canvas that is stretched to the
+   homepage (preserveAspectRatio none). Facets that would meet under text are merged, so every
+   face boundary, seam and vein runs on an edge that clears every text block sitting on the page
+   background at 390, 820 and 1280 (measured, 12px margin), and regions holding text only get the
+   dark (shadow) face types; hairline/vein edges that
+   clear 820 + 1280 but not 390 carry .home-bg-desk and are hidden below 768px. Strokes, nodes and
+   ridges are non-scaling so the stretch never thickens or smears them. Static: no animation. */
+const BG_FACES: [string, string][] = [
+  ['s', 'M1440 0L1440 259.2L1228.3 357.6L1125.4 558.9L884.4 594.3L496.3 598.6L259.3 732.8L0 734.8L0 387.3L0 0L277.4 0L612.2 0L869.8 0L1151.5 0Z'],
+  ['g', 'M1228.3 357.6L1440 259.2L1440 661.6L1125.4 558.9Z'],
+  ['g', 'M0 734.8L259.3 732.8L0 1031Z'],
+  ['l', 'M0 1031L256.5 995.3L259.3 732.8Z'],
+  ['t', 'M259.3 732.8L256.5 995.3L581.3 1000.8L496.3 598.6Z'],
+  ['t', 'M884.4 594.3L943.9 967.7L581.3 1000.8L496.3 598.6Z'],
+  ['t', 'M943.9 967.7L1130.1 955.4L1125.4 558.9L884.4 594.3Z'],
+  ['l', 'M1130.1 955.4L1440 661.6L1125.4 558.9Z'],
+  ['s', 'M1130.1 955.4L1440 1003.5L1440 661.6Z'],
+  ['t', 'M0 1382.1L256.5 995.3L0 1031Z'],
+  ['s', 'M0 1382.1L256.5 995.3L366 1239.7Z'],
+  ['t', 'M510.7 1371.7L816.5 1317.1L1130.1 955.4L943.9 967.7L581.3 1000.8L256.5 995.3Z'],
+  ['l', 'M366 1239.7L510.7 1371.7L256.5 995.3Z'],
+  ['t', 'M816.5 1317.1L1130.1 955.4L1095 1280.4Z'],
+  ['l', 'M1130.1 955.4L1440 1003.5L1440 1325.9L1095 1280.4Z'],
+  ['s', 'M366 1239.7L265.3 1584.6L0 1382.1Z'],
+  ['l', 'M0 1382.1L0 1692.7L265.3 1584.6Z'],
+  ['l', 'M366 1239.7L510.7 1371.7L625.4 1603.7Z'],
+  ['s', 'M366 1239.7L265.3 1584.6L625.4 1603.7Z'],
+  ['t', 'M510.7 1371.7L816.5 1317.1L800.8 1567.1Z'],
+  ['l', 'M625.4 1603.7L800.8 1567.1L510.7 1371.7Z'],
+  ['s', 'M1095 1280.4L1109.9 1652.8L816.5 1317.1Z'],
+  ['l', 'M800.8 1567.1L1109.9 1652.8L816.5 1317.1Z'],
+  ['t', 'M1095 1280.4L1109.9 1652.8L1440 1325.9Z'],
+  ['l', 'M1440 1325.9L1440 1630.2L1109.9 1652.8Z'],
+  ['s', 'M0 1692.7L265.3 1584.6L0 1835.3Z'],
+  ['s', 'M539.3 2214.6L922.1 2168.9L1092.4 2184.2L1440 2172.6L1440 1870L1224.9 1912.9L877.4 1917.1L800.8 1567.1L625.4 1603.7L265.3 1584.6L0 1835.3L0 2199.3L267.8 2220.9Z'],
+  ['s', 'M1109.9 1652.8L1224.9 1912.9L800.8 1567.1Z'],
+  ['l', 'M800.8 1567.1L877.4 1917.1L1224.9 1912.9Z'],
+  ['t', 'M1109.9 1652.8L1440 1630.2L1440 1870L1224.9 1912.9Z'],
+  ['s', 'M539.3 2214.6L922.1 2168.9L1092.4 2184.2L1440 2172.6L1440 2539.6L1440 2889.9L1440 3202.3L1216.2 3546.7L868.2 3894.1L541.8 3922.1L260.3 3859.8L0 3822.9L0 3465.4L0 3173.3L0 2860.7L0 2659L0 2199.3L267.8 2220.9Z'],
+  ['s', 'M1216.2 3546.7L1440 3563.1L1440 3202.3Z'],
+  ['s', 'M868.2 3894.1L1191.2 3780L1216.2 3546.7Z'],
+  ['t', 'M1191.2 3780L1440 3563.1L1216.2 3546.7Z'],
+  ['t', 'M1191.2 3780L1440 3563.1L1440 3836Z'],
+  ['t', 'M0 3822.9L260.3 3859.8L224.2 4071.8Z'],
+  ['s', 'M0 4073.2L224.2 4071.8L0 3822.9Z'],
+  ['l', 'M260.3 3859.8L653.4 4152.7L541.8 3922.1Z'],
+  ['s', 'M846.6 4203.3L1106.6 4080.1L1211.6 4495.4L1440 4491.6L1213.2 4800L935.9 4800L505.3 4800L366.6 4800L0 4406.9L0 4073.2L224.2 4071.8L260.3 3859.8L653.4 4152.7Z'],
+  ['l', 'M541.8 3922.1L868.2 3894.1L653.4 4152.7Z'],
+  ['l', 'M653.4 4152.7L846.6 4203.3L868.2 3894.1Z'],
+  ['l', 'M868.2 3894.1L1191.2 3780L1106.6 4080.1L846.6 4203.3Z'],
+  ['l', 'M1191.2 3780L1106.6 4080.1L1440 3836Z'],
+  ['l', 'M1440 3836L1440 4073.1L1106.6 4080.1Z'],
+  ['g', 'M1106.6 4080.1L1440 4073.1L1440 4491.6Z'],
+  ['l', 'M1106.6 4080.1L1211.6 4495.4L1440 4491.6Z'],
+  ['t', 'M0 4800L366.6 4800L0 4406.9Z'],
+  ['t', 'M1213.2 4800L1440 4491.6L1440 4800Z'],
+]
+const BG_SEAMS = 'M0 1692.7L0 1835.3 M1092.4 2184.2L1440 2172.6 M0 1835.3L265.3 1584.6 M496.3 598.6L884.4 594.3 M0 3822.9L0 4073.2 M539.3 2214.6L922.1 2168.9 M884.4 594.3L1125.4 558.9 M1106.6 4080.1L1440 4073.1 M277.4 0L612.2 0 M505.3 4800L935.9 4800 M1216.2 3546.7L1440 3563.1 M935.9 4800L1213.2 4800 M877.4 1917.1L1224.9 1912.9 M800.8 1567.1L1224.9 1912.9 M0 734.8L0 1031 M1228.3 357.6L1125.4 558.9 M1440 2172.6L1440 2539.6 M1130.1 955.4L1440 661.6 M1151.5 0L1440 0 M0 4406.9L0 4800 M0 1382.1L256.5 995.3 M260.3 3859.8L541.8 3922.1 M1216.2 3546.7L1191.2 3780 M612.2 0L869.8 0 M496.3 598.6L581.3 1000.8 M0 4406.9L254 4426.3 M366 1239.7L625.4 1603.7 M869.8 0L1151.5 0 M1440 1003.5L1440 1325.9 M1440 0L1440 259.2 M1216.2 3546.7L1440 3202.3 M1440 4073.1L1440 4491.6 M0 3822.9L224.2 4071.8 M1109.9 1652.8L1224.9 1912.9 M265.3 1584.6L625.4 1603.7 M366 1239.7L265.3 1584.6 M1440 2889.9L1440 3202.3 M1440 3836L1440 4073.1 M1211.6 4495.4L1440 4491.6 M0 1692.7L265.3 1584.6 M653.4 4152.7L846.6 4203.3 M0 0L277.4 0 M1440 259.2L1440 661.6 M1224.9 1912.9L1440 1870 M0 2860.7L0 3173.3 M1440 4491.6L1440 4800 M816.5 1317.1L1095 1280.4 M922.1 2168.9L1092.4 2184.2 M0 3465.4L0 3822.9 M0 1382.1L366 1239.7 M541.8 3922.1L653.4 4152.7 M366 1239.7L510.7 1371.7 M0 0L0 387.3 M0 734.8L259.3 732.8 M510.7 1371.7L625.4 1603.7 M0 4800L366.6 4800 M943.9 967.7L1130.1 955.4 M259.3 732.8L256.5 995.3 M1440 3202.3L1440 3563.1 M1191.2 3780L1440 3836 M0 1031L259.3 732.8 M0 1382.1L0 1692.7 M260.3 3859.8L224.2 4071.8 M1440 1870L1440 2172.6 M868.2 3894.1L1216.2 3546.7 M0 4073.2L224.2 4071.8 M1125.4 558.9L1440 661.6 M256.5 995.3L581.3 1000.8 M1106.6 4080.1L1440 4491.6 M0 4406.9L366.6 4800 M1191.2 3780L1106.6 4080.1 M816.5 1317.1L1130.1 955.4 M259.3 732.8L496.3 598.6 M1213.2 4800L1440 4491.6 M1109.9 1652.8L1440 1630.2 M800.8 1567.1L877.4 1917.1 M366.6 4800L505.3 4800 M1130.1 955.4L1440 1003.5 M0 4073.2L0 4406.9 M625.4 1603.7L800.8 1567.1 M510.7 1371.7L800.8 1567.1 M1125.4 558.9L1130.1 955.4 M1440 2539.6L1440 2889.9 M816.5 1317.1L1109.9 1652.8 M581.3 1000.8L943.9 967.7 M846.6 4203.3L1106.6 4080.1 M1228.3 357.6L1440 259.2 M1095 1280.4L1440 1325.9 M1191.2 3780L1440 3563.1 M1106.6 4080.1L1211.6 4495.4 M868.2 3894.1L846.6 4203.3 M1440 1630.2L1440 1870 M800.8 1567.1L1109.9 1652.8 M1130.1 955.4L1095 1280.4 M1440 3563.1L1440 3836 M816.5 1317.1L800.8 1567.1 M1106.6 4080.1L1440 3836 M1095 1280.4L1109.9 1652.8 M0 2199.3L267.8 2220.9 M653.4 4152.7L868.2 3894.1 M541.8 3922.1L868.2 3894.1 M1109.9 1652.8L1440 1325.9 M0 387.3L0 734.8 M868.2 3894.1L1191.2 3780 M0 3173.3L0 3465.4 M256.5 995.3L510.7 1371.7 M0 1031L256.5 995.3 M510.7 1371.7L816.5 1317.1 M0 2199.3L0 2659 M1440 1325.9L1440 1630.2 M0 2659L0 2860.7 M1440 661.6L1440 1003.5 M884.4 594.3L943.9 967.7 M267.8 2220.9L539.3 2214.6 M0 1382.1L265.3 1584.6 M256.5 995.3L366 1239.7 M0 1031L0 1382.1 M0 1835.3L0 2199.3 M0 3822.9L260.3 3859.8 M260.3 3859.8L653.4 4152.7 M1213.2 4800L1440 4800'
+const BG_SEAMS_DESK = 'M902.4 264.4L1228.3 357.6 M869.8 0L902.4 264.4 M943.9 967.7L816.5 1317.1 M1228.3 357.6L1440 0 M1151.5 0L1228.3 357.6 M630.6 1965.8L877.4 1917.1 M902.4 264.4L884.4 594.3 M612.2 0L902.4 264.4 M869.8 0L1228.3 357.6 M581.3 1000.8L510.7 1371.7 M902.4 264.4L1125.4 558.9 M1211.6 4495.4L1213.2 4800'
+const BG_VEINS = [
+  { id: 'home-vein-1', desk: false, d: 'M1130.1 955.4L816.5 1317.1L1109.9 1652.8L1224.9 1912.9L800.8 1567.1L510.7 1371.7L256.5 995.3L0 1382.1L366 1239.7L625.4 1603.7', nodes: 'M816.5 1317.1h0 M1109.9 1652.8h0 M1224.9 1912.9h0 M800.8 1567.1h0 M510.7 1371.7h0 M256.5 995.3h0 M0 1382.1h0 M366 1239.7h0' },
+  { id: 'home-vein-2', desk: false, d: 'M1440 4073.1L1440 4491.6L1106.6 4080.1L1440 3836L1440 3563.1L1440 3202.3L1216.2 3546.7L868.2 3894.1L653.4 4152.7L260.3 3859.8', nodes: 'M1440 4491.6h0 M1106.6 4080.1h0 M1440 3836h0 M1440 3563.1h0 M1440 3202.3h0 M1216.2 3546.7h0 M868.2 3894.1h0 M653.4 4152.7h0' },
+  { id: 'home-vein-3', desk: true, d: 'M869.8 0L1228.3 357.6L1440 0L1440 259.2L1440 661.6L1125.4 558.9L902.4 264.4L884.4 594.3L496.3 598.6L581.3 1000.8', nodes: 'M1228.3 357.6h0 M1440 0h0 M1440 259.2h0 M1440 661.6h0 M1125.4 558.9h0 M902.4 264.4h0 M884.4 594.3h0 M496.3 598.6h0' },
+  { id: 'home-vein-4', desk: false, d: 'M0 4800L366.6 4800L0 4406.9L0 4073.2L0 3822.9L0 3465.4L0 3173.3L0 2860.7L0 2659L0 2199.3', nodes: 'M366.6 4800h0 M0 4406.9h0 M0 4073.2h0 M0 3822.9h0 M0 3465.4h0 M0 3173.3h0 M0 2860.7h0 M0 2659h0' },
+]
+const BG_GLOW_NODES = 'M510.7 1371.7h0 M1440 3202.3h0 M1125.4 558.9h0'
+const BG_RIDGES = ['M0 1692.7L0 1835.3', 'M922.1 2168.9L1092.4 2184.2', 'M1213.2 4800L1440 4800']
+const NS = { vectorEffect: 'non-scaling-stroke' } as CSSProperties
+
+function ObsidianBackdrop() {
+  return (
+    <div className="home-bg" aria-hidden="true">
+      <svg className="home-bg-art" viewBox="0 0 1440 4800" preserveAspectRatio="none" focusable="false">
+        <defs>
+          <linearGradient id="home-bg-l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".075" /><stop offset="1" stopColor="#fff" stopOpacity="0" /></linearGradient>
+          <linearGradient id="home-bg-g" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#F1D77A" stopOpacity=".07" /><stop offset="1" stopColor="#F1D77A" stopOpacity="0" /></linearGradient>
+          <linearGradient id="home-bg-s" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#000" stopOpacity=".38" /><stop offset="1" stopColor="#000" stopOpacity=".04" /></linearGradient>
+          <linearGradient id="home-bg-t" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#000" stopOpacity=".30" /><stop offset="1" stopColor="#000" stopOpacity="0" /></linearGradient>
+          <linearGradient id="home-bg-vein" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#F1D77A" /><stop offset="1" stopColor="#FFF2B8" /></linearGradient>
+        </defs>
+        {BG_FACES.map(([t, d], i) => <path key={i} d={d} fillRule="evenodd" fill={`url(#home-bg-${t})`} />)}
+        <g fill="none" stroke="#DCE3F1" strokeOpacity=".09" strokeWidth="1">
+          <path d={BG_SEAMS} style={NS} />
+          <path className="home-bg-desk" d={BG_SEAMS_DESK} style={NS} />
+        </g>
+        {BG_VEINS.map(v => (
+          <g key={v.id} id={v.id} className={v.desk ? 'home-bg-desk' : undefined} fill="none" strokeLinecap="round" strokeLinejoin="round">
+            {/* bloom: 7px #D4AF37 at 28% (core), blurred by stacking two wider, fainter passes — no SVG filter */}
+            <path d={v.d} stroke="#D4AF37" strokeOpacity=".06" strokeWidth="13" style={NS} />
+            <path d={v.d} stroke="#D4AF37" strokeOpacity=".09" strokeWidth="10" style={NS} />
+            <path d={v.d} stroke="#D4AF37" strokeOpacity=".16" strokeWidth="7" style={NS} />
+            <path d={v.d} stroke="url(#home-bg-vein)" strokeWidth="1.4" style={NS} />
+            <path d={v.nodes} stroke="#FFF2B8" strokeWidth="2" style={NS} />
+          </g>
+        ))}
+        <g fill="none" strokeLinecap="round">
+          <path d={BG_GLOW_NODES} stroke="#FFF2B8" strokeOpacity=".12" strokeWidth="16" style={NS} />
+          <path d={BG_GLOW_NODES} stroke="#FFF2B8" strokeOpacity=".3" strokeWidth="7" style={NS} />
+          <path d={BG_GLOW_NODES} stroke="#FFF2B8" strokeWidth="2.5" style={NS} />
+          {BG_RIDGES.map((d, i) => <path key={i} d={d} stroke="#fff" strokeOpacity={[.22, .18, .16][i]} strokeWidth="1.5" style={NS} />)}
+        </g>
+      </svg>
+      {/* grain in its own un-stretched SVG (user-space px), so the noise stays round at every width */}
+      <svg className="home-bg-grain" width="100%" height="100%" focusable="false">
+        <filter id="home-bg-noise" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves={3} stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#home-bg-noise)" />
+      </svg>
+      <div className="home-bg-vignette" />
+    </div>
+  )
+}
+
 export default function Home() {
   const navigate = useNavigate()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -190,6 +312,8 @@ export default function Home() {
      AFTER the hero. Desktop (≥ lg): side-by-side hero unchanged. isLg is seeded synchronously
      (useMediaQuery) → correct on first paint, no flash/CLS. */
   const isLg = useMediaQuery('(min-width: 1024px)')
+  const isSm = useMediaQuery('(min-width: 640px)')
+  const headline = isSm ? HEADLINE : HEADLINE_PHONE
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -220,9 +344,9 @@ export default function Home() {
 
   const heroHeadline = (
     <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
-      {HEADLINE.map((line, i) => (
+      {headline.map((line, i) => (
         <motion.span
-          key={line}
+          key={line.text}
           className="block overflow-hidden"
           initial={{ clipPath: 'inset(0 0 100% 0)' }}
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
@@ -234,10 +358,10 @@ export default function Home() {
           <span
             className={[
               'block whitespace-nowrap text-[2.4rem] sm:text-5xl lg:text-7xl',
-              i === HEADLINE.length - 1 ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
+              line.gold ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
             ].join(' ')}
           >
-            {line}
+            {line.text}
           </span>
         </motion.span>
       ))}
@@ -248,8 +372,7 @@ export default function Home() {
     /* min-h reserves the 4-line height on mobile so the body-font swap (3↔4 lines) can't change the
        hero's content height and re-centre it (items-center) → no CLS. Desktop (lg) unchanged. */
     <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed max-w-md min-h-[104px] sm:min-h-0" style={{ color: 'var(--slate)' }}>
-      Software and digital tools that help Filipino entrepreneurs start, run, and grow
-      a business — simple, dependable, and honest.
+      Blueprints, a daily dashboard, suppliers and automations that all talk to each other.
     </motion.p>
   )
 
@@ -295,8 +418,12 @@ export default function Home() {
 
   return (
     /* Homepage-only lighter page navy: --navy is overridden here, not globally, so the
-       hero fade and the deck section follow it while other routes keep #0A1628. */
-    <div style={{ '--navy': '#111E3A', background: 'var(--navy)' } as CSSProperties}>
+       hero fade and the deck section follow it while other routes keep #0A1628.
+       .home-root: position:relative + contain:paint for the obsidian backdrop (z 0) behind
+       .home-content (z 1). Sections with their own backgrounds (deck, cards) cover it as before. */
+    <div className="home-root" style={{ '--navy': '#111E3A', background: 'var(--navy)' } as CSSProperties}>
+      <ObsidianBackdrop />
+      <div className="home-content">
 
       {/* ══════════════════════════════════════════════════════════
           HERO
@@ -806,6 +933,7 @@ export default function Home() {
         </motion.div>
       </section>
 
+      </div>
     </div>
   )
 }
