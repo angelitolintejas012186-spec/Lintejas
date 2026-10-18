@@ -293,7 +293,18 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 /* active card: same depth as before, on the new surface */
 .pd-card.pdx.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35),var(--nd-sh-lg)}
 .pd-card.pdx.pdx-live.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--nd-sh-lg),0 0 0 1px rgba(212,175,55,.10),0 0 70px -24px rgba(212,175,55,.35)}
-/* phone (card = 80vw): ceiling 668px */
+/* Gap ruling (Oct 18). Tablet + laptop: cards stay equal height; the leftover space is split in two —
+   above the bullet group (label + list) and above the footer (stats / prices) — instead of one band
+   over the stats. Phone: each card is its own height (no stretch), so there is no leftover space. */
+@media (min-width:768px){
+  .pdx-plabel,.pdx-list{margin-top:auto}
+  .pdx-plabel + .pdx-list{margin-top:0}
+}
+@media (max-width:767px){
+  .pd-carousel{align-items:flex-start}
+  .pd-card.pdx{min-height:0}   /* the deck's base 461px would re-open a gap on short cards */
+}
+/* phone (card = 80vw) */
 @media (max-width:552px){
   .pd-card.pdx{padding:20px 18px}
   .pd-card .pdx-name{font-size:28px}
