@@ -1,8 +1,8 @@
 import { useEffect, type ReactNode } from 'react'
 import Reveal from '../components/ui/Reveal'
 
-// Supabase project lintejas-site: Project Settings → General → Region. ⚠ Angie confirms before merge (PR stays draft).
-const SUPABASE_REGION = 'REGION-TO-CONFIRM'
+// Supabase project lintejas-site: Project Settings → General → Region (confirmed by Angie, 18 Oct 2026).
+const SUPABASE_REGION = 'Central EU (Frankfurt)'
 import { CONTACT_EMAIL } from '../lib/contact'
 
 /* Plain-language security page (/#/security) — linked from the homepage Trust & Security
