@@ -327,19 +327,24 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
     radial-gradient(500px 400px at 20% 96%,rgba(127,196,232,.07),transparent 62%),
     linear-gradient(180deg,rgba(0,0,0,.30) 0%,transparent 16%,transparent 84%,rgba(0,0,0,.42) 100%),
     linear-gradient(118deg,#0B1530 0%,#111E3A 38%,#0D1932 62%,#111E3A 100%)}
-.home-bg-tile{position:absolute;inset:0;--tile-y:360px;background:url(/bg/bg-phone.svg) 0 var(--tile-y)/100% auto repeat-y}
+.home-bg-tile{position:absolute;inset:0;--tile-y:1532px;background:url(/bg/bg-phone.svg) 0 var(--tile-y)/100% auto repeat-y}
 .home-bg-grain{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.09;mix-blend-mode:overlay}
 .home-bg-vignette{position:absolute;inset:0;box-shadow:inset 0 0 180px rgba(2,6,16,.75),inset 0 0 40px rgba(2,6,16,.4)}
 /* tile offsets (routed on the measured layout at 390 / 360 / 820 / 1280: no vein within 8px of text,
    light facets kept off text as far as the layout allows) */
-@media (max-width:374px){ .home-bg-tile{--tile-y:648px} }
-@media (min-width:768px){ .home-bg-tile{background-image:url(/bg/bg-wide.svg);--tile-y:1036px} }
-@media (min-width:1024px){ .home-bg-tile{--tile-y:868px} }
+@media (max-width:374px){ .home-bg-tile{--tile-y:1732px} }
+@media (min-width:768px){ .home-bg-tile{background-image:url(/bg/bg-wide.svg);--tile-y:944px} }
+@media (min-width:1024px){ .home-bg-tile{--tile-y:1740px} }
 
-/* ── Homepage phone (< 768px) compaction (Oct 18) ──────────────────────────────────────────
-   Our philosophy: all three value cards fit one phone screen under the label — icon inline left
-   of the title, tighter type/padding. Card textures, colours and copy unchanged. Then the logo
-   divider before "Our belief": ~48px above and below. Tablet/laptop untouched (no rules ≥768). */
+/* ── Homepage philosophy + belief spacing (Oct 18) ─────────────────────────────────────────
+   All widths: the logo divider before "Our belief" gets 48px above and below, and the belief
+   section's own top padding is capped at 64px. Phone (< 768px) only: the three value cards fit
+   one screen under the label — icon inline left of the title, tighter type/padding (from 768px
+   the cards already sit in one row that fits the viewport, so they keep the stacked-icon card).
+   Card textures, colours and copy unchanged. */
+.values-section.values-section{padding-bottom:48px}
+.belief-divider.belief-divider{padding-top:0;padding-bottom:48px}
+.belief-section.belief-section{padding-top:64px}
 @media (max-width:767px){
   .value-grid{gap:12px}
   .value-card.value-card{padding:18px 18px 16px}
@@ -347,8 +352,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   .value-icon.value-icon{width:40px;height:40px;margin-bottom:0}
   .value-title.value-title{font-size:20px;line-height:1.2;margin-bottom:0}
   .value-body.value-body{font-size:14.5px;line-height:1.45}
-  .values-section.values-section{padding-bottom:48px}
-  .belief-divider.belief-divider{padding-top:0;padding-bottom:48px}
 }
 
 /* Color input */

@@ -515,7 +515,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════
           MANIFESTO STRIP — full-bleed editorial
       ══════════════════════════════════════════════════════════ */}
-      <section className="relative py-24 overflow-hidden mb-20">
+      <section className="belief-section relative py-24 overflow-hidden mb-20">
         {/* Background gradient */}
         <div
           className="absolute inset-0 pointer-events-none"
