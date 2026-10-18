@@ -15,13 +15,11 @@ import { fadeUp, staggerContainer, staggerItem, ease } from '../lib/motion'
 const Interlock3D = lazy(() => import('../components/Interlock3D'))
 
 /* ── Headline lines — each reveals with a clip-path mask ──────── */
-/* Each line renders unwrapped (whitespace-nowrap, CLS guard), so the break points are fixed per
-   width: ≥ sm the 3-line set fits the column (widest "Filipino owners." 354px at 48px / 506px at
-   72px); below sm the phone column (~190px at 38.4px) fits one word per line only. Gold = the
-   "Filipino owners." accent (same gold-gradient class as before). */
+/* Each line renders unwrapped (whitespace-nowrap, CLS guard). The 3 lines fit every column: widest
+   "Filipino owners." is 285px at 38.4px (phone, full-width H1 ≈342px at 390), 354px at 48px and
+   506px at 72px. Gold = the "Filipino owners." accent (same gold-gradient class as before). */
 type HeadLine = { text: string; gold?: boolean }
 const HEADLINE: HeadLine[] = [{ text: 'The business' }, { text: 'system behind' }, { text: 'Filipino owners.', gold: true }]
-const HEADLINE_PHONE: HeadLine[] = [{ text: 'The' }, { text: 'business' }, { text: 'system' }, { text: 'behind' }, { text: 'Filipino', gold: true }, { text: 'owners.', gold: true }]
 
 /* ── Scroll-cue chevron ───────────────────────────────────────── */
 function ScrollCue() {
@@ -312,8 +310,9 @@ export default function Home() {
      AFTER the hero. Desktop (≥ lg): side-by-side hero unchanged. isLg is seeded synchronously
      (useMediaQuery) → correct on first paint, no flash/CLS. */
   const isLg = useMediaQuery('(min-width: 1024px)')
-  const isSm = useMediaQuery('(min-width: 640px)')
-  const headline = isSm ? HEADLINE : HEADLINE_PHONE
+  /* Phone (< md, Oct 18 ruling): H1 full width on its own row, then sub-line left + 3D logo right.
+     md → lg keeps the Sep 29 arrangement (headline left, logo right). Seeded synchronously → no CLS. */
+  const isMd = useMediaQuery('(min-width: 768px)')
   /* Mouse ref for 3D parallax — tracked at page level */
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
 
@@ -344,7 +343,7 @@ export default function Home() {
 
   const heroHeadline = (
     <h1 className="font-display font-semibold leading-[1.06] tracking-tight" style={{ color: 'var(--cream)' }}>
-      {headline.map((line, i) => (
+      {HEADLINE.map((line, i) => (
         <motion.span
           key={line.text}
           className="block overflow-hidden"
@@ -416,6 +415,21 @@ export default function Home() {
     </>
   )
 
+  /* Small 3D logo tile (< lg): beside the headline on tablet, beside the lead on phone. */
+  const logoSmall = (
+    <motion.div
+      className="relative flex-none overflow-hidden"
+      /* ~135×190 at 390, scales down proportionally at 360 (35vw, clamped). The Interlock3D
+         canvas fills this smaller container (its vertical FOV is fixed) — component untouched. */
+      style={{ width: 'clamp(118px, 35vw, 140px)', aspectRatio: '135 / 190' }}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1.2, delay: 0.2, ease }}
+    >
+      {logo3DMobile(120)}
+    </motion.div>
+  )
+
   return (
     /* Homepage-only lighter page navy: --navy is overridden here, not globally, so the
        hero fade and the deck section follow it while other routes keep #0A1628.
@@ -471,27 +485,31 @@ export default function Home() {
                 </motion.div>
               </>
             ) : (
-              /* Mobile (< lg): badge on top; headline (left) + small 3D logo (right) as a row,
-                 vertically centred; lead + buttons + trust full width below. */
-              <motion.div className="relative z-10 flex flex-col gap-6" initial="hidden" animate="show" variants={staggerContainer}>
-                {heroBadge}
-                <div className="flex flex-row items-center gap-4">
-                  <div className="flex-1 min-w-0">{heroHeadline}</div>
-                  <motion.div
-                    className="relative flex-none overflow-hidden"
-                    /* ~135×190 at 390, scales down proportionally at 360 (35vw, clamped). The Interlock3D
-                       canvas fills this smaller container (its vertical FOV is fixed) — component untouched. */
-                    style={{ width: 'clamp(118px, 35vw, 140px)', aspectRatio: '135 / 190' }}
-                    initial={{ opacity: 0, scale: 0.92 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1.2, delay: 0.2, ease }}
-                  >
-                    {logo3DMobile(120)}
-                  </motion.div>
-                </div>
-                {heroLead}
-                {heroCtas}
-              </motion.div>
+              isMd ? (
+                /* Tablet (md → lg, unchanged): badge on top; headline (left) + small 3D logo (right) as a row,
+                   vertically centred; lead + buttons full width below. */
+                <motion.div className="relative z-10 flex flex-col gap-6" initial="hidden" animate="show" variants={staggerContainer}>
+                  {heroBadge}
+                  <div className="flex flex-row items-center gap-4">
+                    <div className="flex-1 min-w-0">{heroHeadline}</div>
+                    {logoSmall}
+                  </div>
+                  {heroLead}
+                  {heroCtas}
+                </motion.div>
+              ) : (
+                /* Phone (< md, Oct 18): badge + full-width headline; then lead (left) + the same small 3D
+                   logo (right), vertically centred to the lead; buttons below. */
+                <motion.div className="relative z-10 flex flex-col gap-6" initial="hidden" animate="show" variants={staggerContainer}>
+                  {heroBadge}
+                  {heroHeadline}
+                  <div className="flex flex-row items-center gap-4">
+                    <div className="flex-1 min-w-0">{heroLead}</div>
+                    {logoSmall}
+                  </div>
+                  {heroCtas}
+                </motion.div>
+              )
             )}
           </div>
         </div>

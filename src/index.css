@@ -330,8 +330,10 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .home-bg-grain{opacity:.09;mix-blend-mode:overlay}
 .home-bg-vignette{position:absolute;inset:0;box-shadow:inset 0 0 180px rgba(2,6,16,.75),inset 0 0 40px rgba(2,6,16,.4)}
 /* phone: seams + veins that would cross text (measured at 390) are hidden, and the top-right gold
-   glow is anchored on the 3D logo — at 6% of the tall phone page it sat behind the hero sub-line (4.2:1) */
-@media (max-width:767px){ .home-bg-desk{display:none} .home-bg{--glow-a:300px 200px at 88% 230px} }
+   glow follows the 3D logo (row 2, beside the sub-line; centre ≈76% / 344–353px at 390–360). It is
+   narrow (120px) so it fades out before the sub-line column — at 6% of the tall phone page the
+   desktop glow sat behind the sub-line (4.2:1). */
+@media (max-width:767px){ .home-bg-desk{display:none} .home-bg{--glow-a:120px 200px at 76% 348px} }
 
 /* Color input */
 input[type="color"] {
