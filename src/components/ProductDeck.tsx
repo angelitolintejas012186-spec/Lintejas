@@ -268,7 +268,7 @@ function CardInner({ c, n }: { c: Card; n: number }) {
       )}
       {c.stats && (
         <div className="pdx-stats">
-          {c.stats.map(s => <div className="pdx-stat" key={s.s}><b>{s.b}</b><span>{s.s}</span></div>)}
+          {c.stats.map(s => <div className="pdx-stat" key={`${s.b}|${s.s}`}><b>{s.b}</b><span>{s.s}</span></div>)}
         </div>
       )}
       {c.prices && (
