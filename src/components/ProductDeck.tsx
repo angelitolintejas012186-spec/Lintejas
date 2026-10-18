@@ -134,6 +134,7 @@ export const CARDS: Card[] = [
       { text: "Today's real profit, at a glance" },
       { text: 'Your cash split, worked out for you' },
       { text: 'Installs on any phone like an app' },
+      { text: 'Works offline — saves when the signal drops' },   // added Oct 18
     ],
     stats: [{ b: '₱99', s: 'per month' }, { b: '7-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
     cta: 'Start free' },
@@ -145,6 +146,7 @@ export const CARDS: Card[] = [
       { text: 'Social media marketing' },
       { text: 'Search engine marketing' },
       { text: 'Search engine optimization' },
+      { text: 'Taught in Taglish with Filipino examples' },   // added Oct 18
       { text: 'RAG & Agentic AI', chip: 'Soon', soon: true },
     ],
     stats: [{ b: '₱500', s: 'from / module' }, { b: '3', s: 'tracks now' }, { b: 'Online', s: 'learn anywhere' }],
@@ -181,6 +183,7 @@ export const CARDS: Card[] = [
       { text: 'Win back customers' },
       { text: 'Online booking page' },
       { text: 'Product listings and training guides' },
+      { text: 'AI voice receptionist answers missed calls' },   // added Oct 18
     ],
     stats: [{ b: 'You', s: 'approve first' }, { b: 'Ready-made', s: 'no coding' }, { b: 'Web', s: 'any device' }],   // placeholder (Oct 17)
     cta: 'Open' },
@@ -194,6 +197,7 @@ export const CARDS: Card[] = [
       { text: 'Digital work permits, LOTO & confined-space entry' },
       { text: 'Competency tracking & training pathways' },
       { text: 'Skill-gap dashboards & risk prediction' },
+      { text: 'Audit-ready training records for FDA & GMP' },   // added Oct 18
     ],
     stats: [{ b: '3', s: 'modules planned' }, { b: 'Web', s: 'any device' }, { b: 'B2B', s: 'food plants' }],   // placeholder (Oct 17)
     cta: 'See plans & get notified' },
@@ -208,6 +212,7 @@ export const CARDS: Card[] = [
       { text: 'Commute routes — jeep, bus & train' },
       { text: 'Turn-by-turn directions, Taglish ready' },
       { text: 'Built for Philippine roads & addresses' },
+      { text: 'Jeepney & bus route numbers, not just streets' },   // added Oct 18
     ],
     stats: [{ b: 'Offline', s: '+ online' }, { b: 'Android', s: 'planned' }, { b: 'iOS', s: 'planned' }] },   // placeholder (Oct 17)
   // Lintejas Fashion — REMOVED from the deck 2026-09-30: the brand no longer exists.
