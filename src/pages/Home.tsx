@@ -278,7 +278,7 @@ export default function Home() {
     /* min-h reserves the 4-line height on mobile so the body-font swap (3↔4 lines) can't change the
        hero's content height and re-centre it (items-center) → no CLS. Desktop (lg) unchanged. */
     <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed max-w-md min-h-[104px] sm:min-h-0" style={{ color: 'var(--slate)' }}>
-      Blueprints, a daily dashboard, suppliers and automations that work together — for businesses in Asia, Europe and the Middle East.
+      Blueprints, dashboards, suppliers and automations — for businesses in Asia, Europe and the Middle East.
     </motion.p>
   )
 
