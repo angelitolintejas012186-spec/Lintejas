@@ -36,6 +36,14 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
 
+      # One HTML file per page (/about → about.html …) with its own content, title and share tags, plus the
+      # app 404.html. Fails the deploy (the live site stays as it is) if any page does not render.
+      - name: Install headless Chromium (prerender)
+        run: npx playwright install --with-deps chromium
+
+      - name: Prerender pages
+        run: npm run prerender
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

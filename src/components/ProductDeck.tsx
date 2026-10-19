@@ -175,7 +175,7 @@ export const CARDS: Card[] = [
   // now lives in that card's kicker + promise. The page itself stays at ${NP}/supplier/contribute (not deleted).
   // Business Automation — pilot open (2026-10-13). Own porcelain + violet look (index.css data-v="automation");
   // `pilot` → Portfolio status "Pilot open". No prices, no results — sign-up only after the pilot page.
-  { v: 'automation', href: '/#/automation', pilot: true, svg: AutomationMark,
+  { v: 'automation', href: '/automation', pilot: true, svg: AutomationMark,
     title: 'Business Automation', hook: 'Ready-made automations for small businesses — pilot open.',
     pill: 'New', kicker: 'Ready-made automations', name: 'Business Automation',
     promise: 'Let the busy work run itself. You only approve.',

@@ -1,4 +1,4 @@
-/* Business Automation (/#/automation) — the automation catalogue. Plain, honest copy only:
+/* Business Automation (/automation) — the automation catalogue. Plain, honest copy only:
    no results, no figures, no prices, no promised setup times. "pilot" = built and open for the pilot
    (2026-10-14: #4, #1, #10, #11, #8, #9); "later" = planned, visitors can ask to be notified.
    Numbers (#1–#11) are the internal ids. */

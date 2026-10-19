@@ -2,6 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Old #/ links (Oct 2026: the site moved from /#/about to /about). Rewrites the address before the app starts,
+         so bookmarks, QR codes and links from other sites keep working: /#/about → /about, /#/ → /. -->
+    <script>
+      (function () {
+        var h = location.hash;
+        if (h.indexOf('#/') === 0) history.replaceState(null, '', h.slice(1) || '/');
+      })();
+    </script>
     <!-- Favicon (item 121): base is '/', served at lintejas.io root — no /Lintejas/ prefix -->
     <!-- One official mark (logo-unify): flat favicon set + full-bleed navy app icons from the 3D hero still. ?v=3 = new mark. -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
@@ -141,10 +149,10 @@
           <nav aria-label="Main">
             <ul>
               <li><a href="/">Home</a></li>
-              <li><a href="/#/about">About</a></li>
-              <li><a href="/#/companies">Brands</a></li>
-              <li><a href="/#/services">Services</a></li>
-              <li><a href="/#/contact">Contact</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/companies">Brands</a></li>
+              <li><a href="/services">Services</a></li>
+              <li><a href="/contact">Contact</a></li>
             </ul>
           </nav>
         </header>
@@ -179,7 +187,7 @@
             <ul><li>Listed where NegosyoPlans owners look for suppliers</li><li>Every listing reviewed before it goes live</li><li>Buyers contact you directly — no middleman fees</li></ul>
           </section>
           <section>
-            <h3><a href="/#/automation">Business Automation</a></h3>
+            <h3><a href="/automation">Business Automation</a></h3>
             <p><strong>Ready-made automations.</strong> Let the busy work run itself. You only approve.</p>
             <ul><li>Collect late payments politely</li><li>Win back customers</li><li>Online booking page</li><li>Product listings and training guides</li><li>AI voice receptionist answers missed calls</li></ul>
           </section>
@@ -214,22 +222,22 @@
           <h3>Is RomLet available yet?</h3>
           <p>RomLet is in its pilot programme. Request a pilot at <a href="https://romlet.tech/">romlet.tech</a>.</p>
           <h3>How do I get in touch?</h3>
-          <p>Head to the <a href="/#/contact">Contact page</a> and send us a message, or email <a href="mailto:hello@lintejas.io">hello@lintejas.io</a>. We read everything and respond personally.</p>
+          <p>Head to the <a href="/contact">Contact page</a> and send us a message, or email <a href="mailto:hello@lintejas.io">hello@lintejas.io</a>. We read everything and respond personally.</p>
 
           <h2>Your business data, guarded.</h2>
-          <p>Every Lintejas product — NegosyoPlans, Matthew System, Matthew Lite — runs on the same security foundation. Read <a href="/#/security">how we protect your data</a>.</p>
+          <p>Every Lintejas product — NegosyoPlans, Matthew System, Matthew Lite — runs on the same security foundation. Read <a href="/security">how we protect your data</a>.</p>
 
           <h2>Build your business with us</h2>
-          <p>Whether you're starting out or already running, there's a Lintejas tool for it. <a href="/#/companies">Explore the products</a>, or <a href="/#/contact">get in touch</a> and we'll point you to the right one.</p>
+          <p>Whether you're starting out or already running, there's a Lintejas tool for it. <a href="/companies">Explore the products</a>, or <a href="/contact">get in touch</a> and we'll point you to the right one.</p>
         </main>
         <footer>
           <p>Software and digital tools that help Filipino entrepreneurs start and run their businesses.</p>
           <ul>
-            <li><a href="/#/about">About</a></li>
-            <li><a href="/#/companies">Portfolio</a></li>
-            <li><a href="/#/services">Services</a></li>
-            <li><a href="/#/contact">Contact</a></li>
-            <li><a href="/#/security">Security</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/companies">Portfolio</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/security">Security</a></li>
           </ul>
           <p>© 2026 Lintejas Company s.r.o. · Zvolen, Slovakia<br>A. Lintejas Software Development &amp; Services · <span style="white-space:nowrap">DTI-registered, Philippines</span></p>
         </footer>

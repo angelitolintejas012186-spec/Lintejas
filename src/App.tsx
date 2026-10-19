@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
-import { HashRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
+import PageMeta from './components/PageMeta'
 import { MotionConfig } from 'framer-motion'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
 import { SmoothScrollProvider } from './lib/SmoothScroll'
@@ -49,6 +50,7 @@ function PublicShell() {
         {/* Skip-to-content — visible only on keyboard focus */}
         <a href="#main-content" className="skip-link">Skip to content</a>
         <AnnouncementBar />
+        <PageMeta />
         <NavBar />
         <main id="main-content" tabIndex={-1} className="pt-[calc(80px+env(safe-area-inset-top))] outline-none">
           <Outlet />
@@ -67,7 +69,7 @@ export default function App() {
       <SeoManager />
       <Analytics />
       <MotionConfig reducedMotion="user">
-      <HashRouter>
+      <BrowserRouter>
         {/* Suspense boundary for the lazy admin routes; public routes are static (never suspend). */}
         <Suspense fallback={null}>
         <Routes>
@@ -82,7 +84,7 @@ export default function App() {
             <Route path="/skillvue"  element={<Navigate to="/romlet" replace />} />   {/* renamed 19 Oct 2026 */}
             <Route path="/security"  element={<Security />} />
             <Route path="/automation" element={<Automation />} />
-            {/* Unknown public hash routes → branded 404 (keeps nav + footer) */}
+            {/* Unknown public addresses → branded 404 (keeps nav + footer) */}
             <Route path="*"          element={<NotFound />} />
           </Route>
 
@@ -101,7 +103,7 @@ export default function App() {
           </Route>
         </Routes>
         </Suspense>
-      </HashRouter>
+      </BrowserRouter>
       </MotionConfig>
     </SiteConfigProvider>
   )

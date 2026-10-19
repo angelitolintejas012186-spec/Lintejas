@@ -181,7 +181,7 @@ export default function About() {
                 </p>
                 <div className="h-px" style={{ background: 'var(--glass-border)' }} />
                 <div className="pt-4 mt-4 space-y-2">
-                  {['Remote-first', 'Filipino entrepreneurs'].map(loc => (
+                  {['Remote-first', 'Global clients'].map(loc => (
                     <div key={loc} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full" style={{ background: 'var(--gold)' }} />
                       <span className="text-xs" style={{ color: 'var(--slate)' }}>{loc}</span>

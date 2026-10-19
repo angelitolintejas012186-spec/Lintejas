@@ -1,11 +1,11 @@
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import Reveal from '../components/ui/Reveal'
 
 // Supabase project lintejas-site: Project Settings → General → Region (confirmed by Angie, 18 Oct 2026).
 const SUPABASE_REGION = 'Central EU (Frankfurt)'
 import { CONTACT_EMAIL } from '../lib/contact'
 
-/* Plain-language security page (/#/security) — linked from the homepage Trust & Security
+/* Plain-language security page (/security) — linked from the homepage Trust & Security
    section and the footer. Specific and plain: no hype or absolute-security claims. */
 const LAST_UPDATED = '5 October 2026'
 
@@ -27,12 +27,6 @@ const Mail = () => (
 )
 
 export default function Security() {
-  useEffect(() => {
-    const prev = document.title
-    document.title = 'How we protect your data — Lintejas'
-    return () => { document.title = prev }
-  }, [])
-
   return (
     <div className="min-h-screen" style={{ background: 'var(--navy)' }}>
       <div className="max-w-[760px] mx-auto px-6 lg:px-8 pt-28 pb-28">
