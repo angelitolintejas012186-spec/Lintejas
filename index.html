@@ -28,23 +28,24 @@
     <link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/apple-splash-1290x2796.png?v=3" />
     <link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/apple-splash-1206x2622.png?v=3" />
     <link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/splash/apple-splash-1320x2868.png?v=3" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <title>Lintejas Engine — Software Development &amp; Services, Philippines</title>
-    <meta name="description" content="A. Lintejas Software Development &amp; Services — a DTI-registered software company in the Philippines building digital tools for Filipino entrepreneurs: NegosyoPlans, Matthew System, ZAM Academy and more." />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Lintejas Engine — Software Development, Philippines</title>
+    <meta name="description" content="Digital tools for Filipino entrepreneurs from a DTI-registered Philippine software company: NegosyoPlans, Matthew System, ZAM Academy and RomLet." />
     <link rel="canonical" href="https://lintejas.io/" />
     <!-- Open Graph / social -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Lintejas Engine" />
-    <meta property="og:title" content="Lintejas Engine — Software Development &amp; Services, Philippines" />
-    <meta property="og:description" content="DTI-registered software company in the Philippines building digital tools for Filipino entrepreneurs — NegosyoPlans, Matthew System, and more." />
+    <meta property="og:title" content="Lintejas Engine — Software Development, Philippines" />
+    <meta property="og:description" content="Digital tools for Filipino entrepreneurs from a DTI-registered Philippine software company: NegosyoPlans, Matthew System, ZAM Academy and RomLet." />
     <meta property="og:url" content="https://lintejas.io/" />
     <meta property="og:image" content="https://lintejas.io/og-image.png?v=3" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Lintejas logo — a gold frame with a gold cube in the centre" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Lintejas Engine — Software Development &amp; Services, Philippines" />
-    <meta name="twitter:description" content="DTI-registered software company in the Philippines building precision software ventures." />
+    <meta name="twitter:title" content="Lintejas Engine — Software Development, Philippines" />
+    <meta name="twitter:description" content="Digital tools for Filipino entrepreneurs from a DTI-registered Philippine software company: NegosyoPlans, Matthew System, ZAM Academy and RomLet." />
+    <meta name="twitter:image:alt" content="Lintejas logo — a gold frame with a gold cube in the centre" />
     <meta name="twitter:image" content="https://lintejas.io/og-image.png?v=3" />
     <!-- Structured data (B4): Organization + WebSite. No postal address and no sameAs yet
          (the permanent Facebook page URL is pending — see the NegosyoPlans note). Email
@@ -108,14 +109,130 @@
       @media (prefers-reduced-motion: reduce) {
         .lt-splash-stage, .lt-splash-mark { animation: none; }
       }
+
+      /* SEO content (Oct 2026): the homepage's real wording as plain HTML, for crawlers and visitors without
+         JavaScript. A browser running JavaScript never shows it (html.js, set in <head>), and React replaces
+         #root's contents on mount. Without JavaScript the splash is hidden instead (noscript below). */
+      .js .lt-static { display: none; }
+      .lt-static { max-width: 46rem; margin: 0 auto; padding: 32px max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left)); color: #F3EFE4; font: 16px/1.6 Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+      .lt-static h1, .lt-static h2, .lt-static h3 { font-family: Fraunces, Georgia, serif; line-height: 1.25; font-weight: 600; text-wrap: balance; }
+      .lt-static h1 { font-size: 2.25rem; margin: 1.2em 0 .4em; }
+      .lt-static h2 { font-size: 1.6rem; color: #D4A843; margin: 2.2em 0 .6em; }
+      .lt-static h3 { font-size: 1.2rem; margin: 1.4em 0 .3em; }
+      .lt-static p { margin: 0 0 .8em; }
+      .lt-static main ul { list-style: disc; padding-left: 1.3em; margin: 0 0 1em; }
+      .lt-static a { color: #E8C766; }
+      .lt-static nav ul, .lt-static footer ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+      .lt-static p, .lt-static li { color: #C9CFDA; }
     </style>
+    <script>document.documentElement.classList.add('js')</script>
+    <noscript><style>.lt-splash { display: none; }</style></noscript>
   </head>
   <body>
     <div id="root">
       <!-- Pre-app splash (CSS-only, no JS). React's createRoot replaces #root's contents on mount, so this
            disappears the moment the app renders. Gold mark floats/tilts like the 3D hero, one gold glint per loop. -->
       <div class="lt-splash" aria-hidden="true">
-        <div class="lt-splash-stage"><img class="lt-splash-mark" src="/brand/lintejas-mark-512.png" width="512" height="512" alt="" decoding="async" fetchpriority="high"></div>
+        <div class="lt-splash-stage"><img class="lt-splash-mark" src="/brand/lintejas-mark-512.png" width="512" height="512" alt="Lintejas Engine logo" decoding="async" fetchpriority="high"></div>
+      </div>
+      <div class="lt-static">
+        <header>
+          <p><a href="/"><strong>Lintejas Engine</strong></a></p>
+          <nav aria-label="Main">
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/#/about">About</a></li>
+              <li><a href="/#/companies">Brands</a></li>
+              <li><a href="/#/services">Services</a></li>
+              <li><a href="/#/contact">Contact</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          <h1>The business system behind Filipino owners.</h1>
+          <p>Blueprints, a daily dashboard, suppliers and automations that all talk to each other.</p>
+
+          <h2>The Lintejas brands</h2>
+          <section>
+            <h3><a href="https://negosyoplans.com/">NegosyoPlans</a></h3>
+            <p><strong>Business plan blueprints.</strong> Stop guessing. Start with a comprehensive business plan.</p>
+            <ul><li>Ready-made plans for real Filipino businesses</li><li>Startup costs, pricing &amp; revenue projections</li><li>Risk, marketing &amp; a 90-day launch plan</li><li>OFW remote-management playbook</li><li>Food safety &amp; FDA steps for food plans</li></ul>
+          </section>
+          <section>
+            <h3><a href="https://negosyoplans.com/matthew">Matthew System</a></h3>
+            <p><strong>Business manager dashboard.</strong> It doesn't promise profit. It watches so you don't go under.</p>
+            <ul><li>Daily sales, expenses &amp; profit — in EN or Taglish</li><li>Your own online booking page, with map</li><li>Walk-in POS, inventory &amp; deliveries</li><li>Utang, ipon &amp; sobre money tools</li><li>Counter phone for your kahera</li><li>Daily Business Health Score</li></ul>
+          </section>
+          <section>
+            <h3><a href="https://negosyoplans.com/lite">Matthew Lite</a></h3>
+            <p><strong>For sari-sari &amp; bangketa.</strong> Know every day if you really earned.</p>
+            <ul><li>Quick sale &amp; expense logging</li><li>Today's real profit, at a glance</li><li>Your cash split, worked out for you</li><li>Installs on any phone like an app</li><li>Works offline — saves when the signal drops</li></ul>
+          </section>
+          <section>
+            <h3><a href="https://negosyoplans.com/courses">ZAM Academy — Digital Marketing</a></h3>
+            <p><strong>ZAM Academy.</strong> Marketing that sells, not just gets likes.</p>
+            <ul><li>Social media marketing</li><li>Search engine marketing</li><li>Search engine optimization</li><li>Taught in Taglish with Filipino examples</li></ul>
+          </section>
+          <section>
+            <h3><a href="https://negosyoplans.com/supplier/register">WDRICH Supplier Registration</a></h3>
+            <p><strong>Suppliers &amp; business models.</strong> Register as a supplier for Filipino entrepreneurs — or share your own business model and get credited in a blueprint.</p>
+            <ul><li>Listed where NegosyoPlans owners look for suppliers</li><li>Every listing reviewed before it goes live</li><li>Buyers contact you directly — no middleman fees</li></ul>
+          </section>
+          <section>
+            <h3><a href="/#/automation">Business Automation</a></h3>
+            <p><strong>Ready-made automations.</strong> Let the busy work run itself. You only approve.</p>
+            <ul><li>Collect late payments politely</li><li>Win back customers</li><li>Online booking page</li><li>Product listings and training guides</li><li>AI voice receptionist answers missed calls</li></ul>
+          </section>
+          <section>
+            <h3><a href="https://romlet.tech/">RomLet</a></h3>
+            <p><strong>Food manufacturing · Workforce competency.</strong> Competency records your auditor can actually read.</p>
+            <ul><li>Competency matrix by line &amp; role</li><li>Training records &amp; sign-offs on the floor</li><li>Gap analysis &amp; re-certification alerts</li><li>Audit-ready exports (HACCP, ISO 22000, FSSC, BRCGS, IFS)</li></ul>
+          </section>
+          <section>
+            <h3>BiyahePH</h3>
+            <p><strong>Planned for Android &amp; iOS.</strong> Maps and commute directions for the Philippines.</p>
+            <ul><li>Offline maps when the signal drops</li><li>Commute routes — jeep, bus &amp; train</li><li>Turn-by-turn directions, Taglish ready</li><li>Built for Philippine roads &amp; addresses</li></ul>
+          </section>
+
+          <h2>How we build</h2>
+          <h3>Built for owners</h3>
+          <p>Every tool is made for the person behind the counter — simple enough to use on a busy day, dependable when it matters most.</p>
+          <h3>Honest numbers</h3>
+          <p>No hype and no vanity metrics. Our tools show the real picture — sales, costs, and whether you actually earned today.</p>
+          <h3>Taglish-ready</h3>
+          <p>Built for how Filipinos really run a business — Taglish, mobile-first, and ready for the daily grind.</p>
+
+          <h2>Frequently Asked Questions</h2>
+          <h3>What does Lintejas build?</h3>
+          <p>Software and digital tools for Filipino entrepreneurs and small businesses — NegosyoPlans for a complete business plan, Matthew System and Matthew Lite to track your sales, expenses and profit, ZAM Academy to learn digital marketing, and WDRICH to find and list suppliers.</p>
+          <h3>Who is it for?</h3>
+          <p>Filipino entrepreneurs and small businesses — sari-sari stores, food carts and kitchens, service shops, online sellers, and the people behind them. Whether you're just starting out or already running, there's a tool for where you are.</p>
+          <h3>What&#39;s the difference between Matthew System and Matthew Lite?</h3>
+          <p>Matthew System is the full business-manager dashboard that watches your numbers so you don't go under. Matthew Lite is the simpler, lower-cost version for vendors who just want to know, every day, if they really earned. Both run on your phone.</p>
+          <h3>I have a business idea but no plan — where do I start?</h3>
+          <p>Start with NegosyoPlans. Each blueprint gives you a complete business plan — the model, startup costs, revenue projections, risks, marketing, and a 90-day launch plan — so you begin with a plan, not a guess.</p>
+          <h3>Is RomLet available yet?</h3>
+          <p>RomLet is in its pilot programme. Request a pilot at <a href="https://romlet.tech/">romlet.tech</a>.</p>
+          <h3>How do I get in touch?</h3>
+          <p>Head to the <a href="/#/contact">Contact page</a> and send us a message, or email <a href="mailto:hello@lintejas.io">hello@lintejas.io</a>. We read everything and respond personally.</p>
+
+          <h2>Your business data, guarded.</h2>
+          <p>Every Lintejas product — NegosyoPlans, Matthew System, Matthew Lite — runs on the same security foundation. Read <a href="/#/security">how we protect your data</a>.</p>
+
+          <h2>Build your business with us</h2>
+          <p>Whether you're starting out or already running, there's a Lintejas tool for it. <a href="/#/companies">Explore the products</a>, or <a href="/#/contact">get in touch</a> and we'll point you to the right one.</p>
+        </main>
+        <footer>
+          <p>Software and digital tools that help Filipino entrepreneurs start and run their businesses.</p>
+          <ul>
+            <li><a href="/#/about">About</a></li>
+            <li><a href="/#/companies">Portfolio</a></li>
+            <li><a href="/#/services">Services</a></li>
+            <li><a href="/#/contact">Contact</a></li>
+            <li><a href="/#/security">Security</a></li>
+          </ul>
+          <p>© 2026 A. Lintejas Software Development &amp; Services · DTI-registered · Philippines</p>
+        </footer>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>

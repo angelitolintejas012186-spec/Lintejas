@@ -82,11 +82,11 @@ function VentureIcon({ v, size }: { v: Venture; size: number }) {
       {v.IconComp
         ? <v.IconComp size={Math.round(size * 0.5)} color="var(--gold)" strokeWidth={1.6} />
         : v.iconSrc
-          ? <img src={v.iconSrc} alt="" draggable={false} style={{ width: size * (v.iconScale ?? 0.6), height: size * (v.iconScale ?? 0.6), objectFit: 'contain' }} />
+          ? <img src={v.iconSrc} alt={`${v.name} logo`} draggable={false} style={{ width: size * (v.iconScale ?? 0.6), height: size * (v.iconScale ?? 0.6), objectFit: 'contain' }} />
           : v.svg
             ? <div style={{ width: size * 0.58, height: size * 0.58 }}>{v.svg}</div>
             : v.logo
-              ? <img src={v.logo} alt="" draggable={false} style={{ width: size * 0.62, height: size * 0.62, objectFit: 'contain' }} />
+              ? <img src={v.logo} alt={`${v.name} logo`} draggable={false} style={{ width: size * 0.62, height: size * 0.62, objectFit: 'contain' }} />
               : v.emoji
                 ? <span style={{ fontSize: size * 0.5, lineHeight: 1 }}>{v.emoji}</span>
                 : <span className="font-display font-semibold" style={{ fontSize: size * 0.42, color: 'var(--gold)' }}>{v.mono}</span>}
