@@ -167,7 +167,7 @@ export default function About() {
                 <div
                   className="text-4xl font-display font-semibold mb-3 text-transparent bg-clip-text bg-gold-gradient"
                 >
-                  Built in the Philippines and Slovakia
+                  Built for Global Business Markets
                 </div>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--slate)' }}>
                   A young company with a long-term view. We build for decades, not quarters.
