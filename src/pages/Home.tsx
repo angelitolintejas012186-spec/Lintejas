@@ -19,7 +19,8 @@ const Interlock3D = lazy(() => import('../components/Interlock3D'))
    "Filipino owners." is 285px at 38.4px (phone, full-width H1 ≈342px at 390), 354px at 48px and
    506px at 72px. Gold = the "Filipino owners." accent (same gold-gradient class as before). */
 type HeadLine = { text: string; gold?: boolean }
-const HEADLINE: HeadLine[] = [{ text: 'The business' }, { text: 'system behind' }, { text: 'Filipino owners.', gold: true }]
+// 4 short lines: each stays on one line at every width (measured 360–1440, Oct 2026).
+const HEADLINE: HeadLine[] = [{ text: 'Global software' }, { text: 'development' }, { text: 'for growing' }, { text: 'businesses.', gold: true }]
 
 /* ── Scroll-cue chevron ───────────────────────────────────────── */
 function ScrollCue() {
@@ -261,7 +262,8 @@ export default function Home() {
               reflow on font-swap → no CLS in the narrow mobile column); lines already fit unwrapped. */}
           <span
             className={[
-              'block whitespace-nowrap text-[2.4rem] sm:text-5xl lg:text-7xl',
+              // lg (1024–1279) one size down: the hero column there is too narrow for text-7xl (it clipped the old last line too)
+              'block whitespace-nowrap text-[2.4rem] sm:text-5xl lg:text-6xl xl:text-7xl',
               line.gold ? 'text-transparent bg-clip-text bg-gold-gradient' : '',
             ].join(' ')}
           >
@@ -276,7 +278,7 @@ export default function Home() {
     /* min-h reserves the 4-line height on mobile so the body-font swap (3↔4 lines) can't change the
        hero's content height and re-centre it (items-center) → no CLS. Desktop (lg) unchanged. */
     <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed max-w-md min-h-[104px] sm:min-h-0" style={{ color: 'var(--slate)' }}>
-      Blueprints, a daily dashboard, suppliers and automations that all talk to each other.
+      Blueprints, a daily dashboard, suppliers and automations that work together — for businesses in Asia, Europe and the Middle East.
     </motion.p>
   )
 
@@ -843,7 +845,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <MagneticButton onClick={() => navigate('/contact')}>
-              Get in touch <ArrowRight size={15} />
+              Tell us about your business <ArrowRight size={15} />
             </MagneticButton>
             <button
               onClick={() => { document.getElementById('ventures-deck')?.scrollIntoView({ behavior: 'smooth' }) }}

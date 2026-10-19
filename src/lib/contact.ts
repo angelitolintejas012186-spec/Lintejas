@@ -30,6 +30,7 @@ export const CLIENT_LOGIN_URL = ''
    To re-enable: LINKEDIN_URL = 'https://linkedin.com/company/lintejas';
                  INSTAGRAM_URL = 'https://instagram.com/lintejas'. */
 export const LINKEDIN_URL  = ''
+export const FACEBOOK_URL  = 'https://www.facebook.com/Lintejas40'   // also in index.html structured data (sameAs)
 export const INSTAGRAM_URL = ''
 
 /* ── Company legal facts (Impressum + footer) ────────────────────────────────
