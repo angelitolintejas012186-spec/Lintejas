@@ -5,7 +5,7 @@
 export interface VentureNode {
   id:      string
   label:   string
-  status:  'live' | 'coming-soon' | 'in-development'
+  status:  'live' | 'coming-soon' | 'pilot' | 'in-development'
   radius:  number   // visual node size (relative units)
   color:   string   // CSS color string
   angle:   number   // initial orbit angle in radians
@@ -20,7 +20,7 @@ export const CENTRE_NODE = {
 }
 
 // The Lintejas brands (same ventures the homepage deck + Portfolio show). Live
-// ventures are gold; the one coming-soon (SkillVue) is bronze. NegosyoPlans is the
+// ventures are gold; RomLet (pilot programme) is bronze. NegosyoPlans is the
 // brightest/largest node (the flagship). Positions are decorative only.
 export const VENTURE_NODES: VentureNode[] = [
   {
@@ -79,10 +79,10 @@ export const VENTURE_NODES: VentureNode[] = [
   },
   {
     id:     'skillvue',
-    label:  'SkillVue',
-    status: 'coming-soon',   // not live — SkillVue is planned
+    label:  'RomLet',        // formerly SkillVue (renamed 19 Oct 2026)
+    status: 'pilot',         // pilot programme open at romlet.tech — not live yet
     radius: 9,
-    color:  '#9A7A2E',       // bronze (coming-soon)
+    color:  '#9A7A2E',       // bronze (not live)
     angle:  Math.PI * 0.50,
     orbit:  162,
   },

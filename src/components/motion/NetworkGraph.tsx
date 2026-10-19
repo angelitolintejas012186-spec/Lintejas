@@ -172,7 +172,7 @@ export default function NetworkGraph() {
         ctx.fillStyle = glow
         ctx.fill()
 
-        /* SkillVue live pulsing ring */
+        /* live pulsing ring */
         if (v.status === 'live') {
           const pulse = 0.35 + Math.sin(now * 0.002) * 0.28
           ctx.beginPath()
