@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { ArrowRight, Check } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
 
-/* ── RomLet brand card (/#/romlet; /#/skillvue redirects here) ───────────────────
+/* ── RomLet brand card (/romlet; /skillvue and old /#/ links redirect here) ───────────────────
    SkillVue was renamed RomLet (19 Oct 2026) and now has its own site, romlet.tech,
    with the tiers, pricing and pilot sign-up. This page is a short hand-off only:
    the deck card's copy plus two links out. Styling reuses the former SkillVue page
@@ -18,24 +18,9 @@ const ROMLET = {
 }
 
 export default function Romlet() {
-  /* Land at the top; set page-specific SEO and restore it on leave. */
+  /* Land at the top. (Title, description and share tags: components/PageMeta.) */
   useEffect(() => {
     window.scrollTo(0, 0)
-    const prevTitle = document.title
-    document.title = 'RomLet — Workforce competency for food manufacturers · Lintejas Engine'
-
-    const descEl  = document.querySelector('meta[name="description"]')
-    const canonEl = document.querySelector('link[rel="canonical"]')
-    const prevDesc  = descEl?.getAttribute('content') ?? null
-    const prevCanon = canonEl?.getAttribute('href') ?? null
-    descEl?.setAttribute('content', 'RomLet — workforce competency and compliance for food manufacturers, from Lintejas Engine. Pilot programme open at romlet.tech.')
-    canonEl?.setAttribute('href', 'https://lintejas.io/#/romlet')
-
-    return () => {
-      document.title = prevTitle
-      if (prevDesc  !== null) descEl?.setAttribute('content', prevDesc)
-      if (prevCanon !== null) canonEl?.setAttribute('href', prevCanon)
-    }
   }, [])
 
   return (

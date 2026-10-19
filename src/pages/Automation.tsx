@@ -8,7 +8,7 @@ import { AUTOMATIONS, BA_APP_OPEN, BA_APP_URL } from '../components/automation/d
 import type { Automation as AutomationItem } from '../components/automation/data'
 import '../components/automation/automation.css'
 
-/* ── Business Automation (/#/automation) ───────────────────────────────────────
+/* ── Business Automation (/automation) ───────────────────────────────────────
    Public page + "Join the pilot" sign-up. Sold only after pilots: no prices, no results,
    no testimonials, no promised setup time. The shared header/footer stay as they are;
    only this page body uses the porcelain + violet identity (automation.css, scoped .ba).
@@ -18,9 +18,6 @@ const FONT_HREF = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wg
 
 const OPEN_COUNT = AUTOMATIONS.filter(a => a.status === 'pilot').length
 const COUNT_WORD = ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven'][OPEN_COUNT] ?? String(OPEN_COUNT)
-const PAGE_TITLE = 'Business Automation — Lintejas'
-const PAGE_DESC = 'Business Automation by Lintejas — ready-made automations for small businesses: payment reminders, win-back and check-in messages, an online booking page, product listings and training guides. You approve everything. Join the pilot.'
-const SHARE_IMAGE = 'https://lintejas.io/brand/automation/og.png'
 
 function scrollToId(id: string) {
   const el = document.getElementById(id)
@@ -43,29 +40,11 @@ const FAQ: { q: string; a: ReactNode }[] = [
 export default function Automation() {
   const [picked, setPicked] = useState<number[]>([])
 
-  /* Land at the top; page-specific SEO (restored on leave); load the page font once. */
+  /* Land at the top; load the page font once. (Title, description and share tags: components/PageMeta.) */
   useEffect(() => {
     window.scrollTo(0, 0)
-    const prevTitle = document.title
-    document.title = PAGE_TITLE
-    const descEl  = document.querySelector('meta[name="description"]')
-    const canonEl = document.querySelector('link[rel="canonical"]')
-    const prevDesc  = descEl?.getAttribute('content') ?? null
-    const prevCanon = canonEl?.getAttribute('href') ?? null
-    descEl?.setAttribute('content', PAGE_DESC)
-    canonEl?.setAttribute('href', 'https://lintejas.io/#/automation')
-    /* Share tags while on this page (link previews from crawlers use the static /automation/ page instead). */
-    const og: [string, string][] = [['og:title', PAGE_TITLE], ['og:description', PAGE_DESC], ['og:image', SHARE_IMAGE], ['og:url', 'https://lintejas.io/automation/'], ['og:image:alt', 'Business Automation by Lintejas — gear and lightning logo']]
-    const prevOg = og.map(([k]) => { const el = document.querySelector(`meta[property="${k}"]`); return [el, el?.getAttribute('content') ?? null] as const })
-    og.forEach(([, v], i) => prevOg[i][0]?.setAttribute("content", v))
     if (!document.querySelector(`link[href="${FONT_HREF}"]`)) {
       const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = FONT_HREF; document.head.appendChild(l)
-    }
-    return () => {
-      document.title = prevTitle
-      if (prevDesc  !== null) descEl?.setAttribute('content', prevDesc)
-      if (prevCanon !== null) canonEl?.setAttribute('href', prevCanon)
-      prevOg.forEach(([el, v]) => { if (el && v !== null) el.setAttribute('content', v) })
     }
   }, [])
 

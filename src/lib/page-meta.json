@@ -1,0 +1,37 @@
+{
+  "_note": "One source for each public page's title, description and share image (Oct 2026, real addresses). Used by the app (components/PageMeta.tsx) and by scripts/prerender.mjs, which writes one HTML file per page. Titles stay under 580px and descriptions under 1000px (Arial 20/14px).",
+  "/": {
+    "title": "Lintejas Engine — Global Software Development",
+    "description": "Global software for businesses across Asia, Europe and the Middle East: NegosyoPlans, Matthew System, ZAM Academy and RomLet."
+  },
+  "/about": {
+    "title": "About Lintejas Engine — Building technology with purpose",
+    "description": "Lintejas is a software company building digital tools for businesses in Asia, Europe and the Middle East, with roots in the Philippines."
+  },
+  "/companies": {
+    "title": "Our Ventures — Lintejas Engine",
+    "description": "Products of one company — each solving a real business problem: NegosyoPlans, Matthew System, ZAM Academy, WDRICH, RomLet and more."
+  },
+  "/services": {
+    "title": "What we do — Lintejas Engine",
+    "description": "Practical software and digital tools for Filipino entrepreneurs and small businesses — to start with a real plan, run the day-to-day, and grow."
+  },
+  "/contact": {
+    "title": "Get in touch — Lintejas Engine",
+    "description": "Demos, investment discussions, partnerships, or just a conversation — we read everything and respond personally."
+  },
+  "/security": {
+    "title": "How we protect your data — Lintejas",
+    "description": "NegosyoPlans, Matthew System and Matthew Lite run on the same foundation: what we keep, where it lives and how we look after it, in plain words."
+  },
+  "/automation": {
+    "title": "Business Automation — Lintejas",
+    "description": "Ready-made automations for small businesses. You approve every message. Join the pilot.",
+    "image": "https://lintejas.io/brand/automation/og.png",
+    "imageAlt": "Business Automation by Lintejas — gear and lightning logo"
+  },
+  "/romlet": {
+    "title": "RomLet — Workforce competency · Lintejas Engine",
+    "description": "RomLet — workforce competency and compliance for food manufacturers, from Lintejas Engine. Pilot programme open at romlet.tech."
+  }
+}

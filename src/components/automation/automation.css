@@ -1,4 +1,4 @@
-/* Business Automation page (/#/automation) — its own porcelain + violet identity.
+/* Business Automation page (/automation) — its own porcelain + violet identity.
    Scoped to .ba so the shared header/footer and every other page are untouched.
    Contrast (WCAG AA): ink #1A1530 / ink2 #5D587A / violet #5B3FD9 all ≥ 4.5:1 on #F9F8FD and #FFF. */
 .ba{

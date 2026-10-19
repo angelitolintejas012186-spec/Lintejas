@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
 import MagneticButton from '../components/ui/MagneticButton'
 
-/* Branded in-app 404 for unknown hash routes (/#/anything-unmatched). Rendered
+/* Branded in-app 404 for unknown addresses (/anything-unmatched). Rendered
    inside the public shell, so it keeps the nav, footer and the <main> landmark. */
 export default function NotFound() {
   const navigate = useNavigate()

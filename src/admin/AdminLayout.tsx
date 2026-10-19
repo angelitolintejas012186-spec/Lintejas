@@ -115,7 +115,7 @@ export default function AdminLayout() {
               <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Site owner</p>
             </div>
           )}
-          <a href={`${import.meta.env.BASE_URL}#/`} target="_blank" rel="noopener noreferrer" title="View site"
+          <a href={import.meta.env.BASE_URL} target="_blank" rel="noopener noreferrer" title="View site"
              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs transition-all hover:bg-[var(--bg-card)]"
              style={{ color: 'var(--text-muted)' }}>
             <Globe size={14} />

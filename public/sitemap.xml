@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- HashRouter SPA: search engines ignore everything after "#", so /#/about, /#/romlet … are the homepage to them,
-     and /automation/ is a share-preview page that redirects at once. The homepage is the one crawlable page; real
-     per-page addresses (/about, /romlet …) are Phase B. -->
+<!-- Real addresses since Oct 2026 (one prerendered HTML file per page). Keep in step with src/lib/page-meta.json. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lintejas.io/</loc>
     <lastmod>2026-10-19</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/about</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/companies</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/services</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/contact</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/security</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/automation</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lintejas.io/romlet</loc>
+    <lastmod>2026-10-19</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
