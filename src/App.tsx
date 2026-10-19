@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { HashRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import { MotionConfig } from 'framer-motion'
 import { SiteConfigProvider } from './lib/SiteConfigContext'
 import { SmoothScrollProvider } from './lib/SmoothScroll'
@@ -21,7 +21,7 @@ import About     from './pages/About'
 import Companies from './pages/Companies'
 import Services  from './pages/Services'
 import Contact   from './pages/Contact'
-import SkillVue  from './pages/SkillVue'
+import Romlet    from './pages/Romlet'
 import Security  from './pages/Security'
 import Automation from './pages/Automation'
 import NotFound  from './pages/NotFound'
@@ -78,7 +78,8 @@ export default function App() {
             <Route path="/companies" element={<Companies />} />
             <Route path="/services"  element={<Services />} />
             <Route path="/contact"   element={<Contact />} />
-            <Route path="/skillvue"  element={<SkillVue />} />
+            <Route path="/romlet"    element={<Romlet />} />
+            <Route path="/skillvue"  element={<Navigate to="/romlet" replace />} />   {/* renamed 19 Oct 2026 */}
             <Route path="/security"  element={<Security />} />
             <Route path="/automation" element={<Automation />} />
             {/* Unknown public hash routes → branded 404 (keeps nav + footer) */}

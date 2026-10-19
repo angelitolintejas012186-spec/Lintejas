@@ -33,8 +33,8 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
     purpose: 'Have a real model but no blueprint yet? Tell us how it works — we may build it next.' },
   automation: { name: 'Business Automation', short: 'Business Automation',
     purpose: 'Ready-made automations for small businesses — pilot open.' },
-  skillvue: { name: 'SkillVue',
-    purpose: 'The human layer of the smart factory — a safety and workforce platform planned for food manufacturing.' },
+  skillvue: { name: 'RomLet',
+    purpose: 'Workforce competency & compliance for food manufacturers — pilot programme open at romlet.tech.' },
   biyaheph: { name: 'BiyahePH',
     purpose: 'Maps and commute directions for the Philippines — planned for Android and iOS.' },
 }

@@ -9,7 +9,7 @@ import { LEGAL_NAME, DTI_NUMBER } from '../lib/contact'
    when set there. */
 
 /* Ventures with their own page on this site; the rest link to the Portfolio. */
-const OWN_PAGE: Record<string, string> = { skillvue: '/skillvue', automation: '/automation' }
+const OWN_PAGE: Record<string, string> = { skillvue: 'https://romlet.tech', automation: '/automation' }   // RomLet (ex-SkillVue) → its own site
 
 const NAV = [
   {
@@ -113,6 +113,19 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {col.links.map(l => (
                     <li key={l.label}>
+                      {/^https?:/.test(l.to) ? (
+                        <a
+                          href={l.to}
+                          target="_blank"
+                          rel="noopener"
+                          className="text-sm transition-colors duration-200"
+                          style={{ color: 'var(--slate)' }}
+                          onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--cream)')}
+                          onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--slate)')}
+                        >
+                          {l.label}
+                        </a>
+                      ) : (
                       <Link
                         to={l.to}
                         className="text-sm transition-colors duration-200"
@@ -122,6 +135,7 @@ export default function Footer() {
                       >
                         {l.label}
                       </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

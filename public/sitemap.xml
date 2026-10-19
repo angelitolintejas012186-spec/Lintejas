@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- HashRouter SPA: most routes (/#/about, /#/companies …) aren't separately crawlable.
-     The homepage and the SkillVue + Business Automation pages are the listed surfaces. -->
+     The homepage and the RomLet + Business Automation pages are the listed surfaces. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lintejas.io/</loc>
@@ -9,7 +9,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://lintejas.io/#/skillvue</loc>
+    <loc>https://lintejas.io/#/romlet</loc>
     <lastmod>2026-10-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
