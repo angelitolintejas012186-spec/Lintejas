@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- HashRouter SPA: most routes (/#/about, /#/companies …) aren't separately crawlable.
-     The homepage and the RomLet + Business Automation pages are the listed surfaces. -->
+<!-- HashRouter SPA: search engines ignore everything after "#", so /#/about, /#/romlet … are the homepage to them,
+     and /automation/ is a share-preview page that redirects at once. The homepage is the one crawlable page; real
+     per-page addresses (/about, /romlet …) are Phase B. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lintejas.io/</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://lintejas.io/#/romlet</loc>
-    <lastmod>2026-10-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://lintejas.io/#/automation</loc>
-    <lastmod>2026-10-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>

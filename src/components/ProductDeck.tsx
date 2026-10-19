@@ -249,7 +249,7 @@ function CardInner({ c, n }: { c: Card; n: number }) {
       <span className="pdx-fx" aria-hidden="true"><span className="pdx-hair" /><span className="pdx-motif" /></span>
       <div className="pdx-top">
         <div className="pdx-mark" aria-hidden="true">
-          {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
+          {c.svg ? c.svg : logo ? <img src={logo} alt={`${c.name} logo`} draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
         <span className={`pdx-pill pdx-pill-${kind}`}><span className="pdx-dot" aria-hidden="true" />{c.badgeSoon ? (c.soonLabel ?? 'Coming soon') : c.pill}</span>
       </div>
