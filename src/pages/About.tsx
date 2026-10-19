@@ -12,7 +12,7 @@ import { PORTFOLIO } from '../lib/portfolio'
    facts only — no "Founded" year (unconfirmed) and no unverifiable compliance claim. */
 const STATS = [
   { icon: Building2,   value: String(PORTFOLIO.length),   label: 'Ventures'     },
-  { icon: MapPin,      value: 'PH',                        label: 'Philippines'  },
+  { icon: MapPin,      value: '3 regions',                 label: 'Asia\u00a0· Europe\u00a0· Middle\u00a0East' },   // no-break spaces: a line never starts with "·"
   { icon: ShieldCheck, value: 'DTI',                       label: 'Registered'   },
 ]
 
@@ -96,8 +96,9 @@ export default function About() {
           </h1>
 
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--slate)' }}>
-            Lintejas is a software company building digital tools for Filipino entrepreneurs and
-            small businesses — practical products that help people start, run, and grow a business.
+            Lintejas is a software company building digital tools for businesses in Asia, Europe and the
+            Middle East, with roots in the Philippines — practical products that help people start, run, and
+            grow a business.
           </p>
         </Reveal>
 
@@ -110,9 +111,9 @@ export default function About() {
           variants={staggerContainer}
         >
           {STATS.map(({ icon: Icon, value, label }) => (
-            <motion.div key={label} variants={staggerItem}>
+            <motion.div key={label} variants={staggerItem} className="h-full">
               <div
-                className="rounded-2xl p-5 border text-center"
+                className="rounded-2xl py-5 px-2 sm:px-5 border text-center h-full"
                 style={{
                   background:     'var(--glass-bg)',
                   borderColor:    'var(--glass-border)',
@@ -120,7 +121,8 @@ export default function About() {
                 }}
               >
                 <Icon size={16} className="mx-auto mb-3" style={{ color: 'var(--gold)' }} />
-                <div className="font-display font-semibold text-2xl mb-1" style={{ color: 'var(--cream)' }}>
+                {/* a longer value ("3 regions") steps down on phones so it fits the third-width box */}
+                <div className={`font-display font-semibold ${value.length > 4 ? 'text-lg sm:text-2xl' : 'text-2xl'} mb-1`} style={{ color: 'var(--cream)' }}>
                   {value}
                 </div>
                 <div className="text-xs" style={{ color: 'var(--slate)' }}>{label}</div>
@@ -172,7 +174,7 @@ export default function About() {
                 <div
                   className="text-4xl font-display font-semibold mb-3 text-transparent bg-clip-text bg-gold-gradient"
                 >
-                  Made in the PH
+                  Built in the Philippines and Slovakia
                 </div>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--slate)' }}>
                   A young company with a long-term view. We build for decades, not quarters.
