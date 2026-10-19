@@ -191,7 +191,7 @@ export const CARDS: Card[] = [
   // RomLet (formerly SkillVue, renamed 19 Oct 2026) — pilot programme; the card links out to romlet.tech.
   // v stays 'skillvue': the card's accent/CTA colours are keyed on data-v in index.css (styling unchanged).
   // Same gold badge as Coming soon, with its own text (soonLabel). No logo asset in the repo → deck monogram.
-  { v: 'skillvue', badgeSoon: true, soonLabel: 'Pilot programme', href: 'https://romlet.tech', soon: true, emoji: '🧠', deckMono: 'R',
+  { v: 'skillvue', badgeSoon: true, soonLabel: 'Pilot programme', href: 'https://romlet.tech', soon: true, pilot: true, emoji: '🧠', deckMono: 'R',
     title: 'RomLet', hook: 'Competency records your auditor can actually read.',
     pill: 'Pilot programme', kicker: 'Food manufacturing · Workforce competency', name: 'RomLet',
     promise: 'Competency records your auditor can actually read.',

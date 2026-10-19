@@ -15,7 +15,7 @@ const WA_HREF = whatsappHref("Hi Lintejas! I'd like to get in touch.")
 
 const ENQUIRY_TYPES = [
   { value: 'general',     label: 'General enquiry' },
-  { value: 'demo',        label: 'Product demo — SkillVue' },
+  { value: 'demo',        label: 'Product demo — RomLet' },
   { value: 'investment',  label: 'Investment discussion' },
   { value: 'partnership', label: 'Partnership opportunity' },
   { value: 'enterprise',  label: 'Enterprise sales' },

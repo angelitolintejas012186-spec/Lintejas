@@ -63,8 +63,8 @@ const FAQS = [
     a: 'Start with NegosyoPlans. Each blueprint gives you a complete business plan — the model, startup costs, revenue projections, risks, marketing, and a 90-day launch plan — so you begin with a plan, not a guess.',
   },
   {
-    q: 'Is SkillVue available yet?',
-    a: "SkillVue is coming soon — it's a safety and workforce platform for food manufacturing. The rest of the Lintejas family is available today.",
+    q: 'Is RomLet available yet?',
+    a: 'RomLet is in its pilot programme. Request a pilot at romlet.tech.',
   },
   {
     q: 'How do I get in touch?',
@@ -720,8 +720,7 @@ export default function Home() {
               <div className="space-y-2 pt-5" style={{ borderTop: '1px solid var(--glass-border)' }}>
                 <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Quick links</p>
                 {[
-                  { label: 'Visit SkillVue', href: 'https://skillvue.io' },
-                  { label: 'Try Demo Account', href: 'https://skillvue.io/onboarding' },
+                  { label: 'Visit romlet.tech →', href: 'https://romlet.tech' },   // RomLet (ex-SkillVue); demo logins retired 19 Oct 2026
                 ].map(({ label, href }) => (
                   <a
                     key={label}
