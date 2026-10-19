@@ -74,6 +74,7 @@ type Card = {
   hook?: string           // Portfolio fallback (= the promise unless noted)
   pill: string
   badgeSoon?: boolean     // deck pill → gold COMING SOON badge (replaces the pill text)
+  soonLabel?: string      // text for that gold badge when it is not "Coming soon" (RomLet: Pilot programme)
   kicker: string
   name: string
   nameAccent?: string     // trailing part of the name in the brand accent (Matthew <Lite>)
@@ -187,20 +188,22 @@ export const CARDS: Card[] = [
     ],
     stats: [{ b: 'You', s: 'approve first' }, { b: 'Ready-made', s: 'no coding' }, { b: 'Web', s: 'any device' }],   // placeholder (Oct 17)
     cta: 'Open' },
-  // SkillVue — Coming soon (dashed). No logo asset in the repo → deck monogram; 🧠 stays the Portfolio icon.
-  { v: 'skillvue', badgeSoon: true, href: '/#/skillvue', soon: true, emoji: '🧠', deckMono: 'SV',
-    title: 'SkillVue', hook: 'The human layer of the smart factory.',
-    pill: 'Coming soon', kicker: 'Food manufacturing · Safety & HR', name: 'SkillVue',
-    promise: 'The human layer of the smart factory.',
-    pointsLabel: 'Planned modules',
+  // RomLet (formerly SkillVue, renamed 19 Oct 2026) — pilot programme; the card links out to romlet.tech.
+  // v stays 'skillvue': the card's accent/CTA colours are keyed on data-v in index.css (styling unchanged).
+  // Same gold badge as Coming soon, with its own text (soonLabel). No logo asset in the repo → deck monogram.
+  { v: 'skillvue', badgeSoon: true, soonLabel: 'Pilot programme', href: 'https://romlet.tech', soon: true, emoji: '🧠', deckMono: 'R',
+    title: 'RomLet', hook: 'Competency records your auditor can actually read.',
+    pill: 'Pilot programme', kicker: 'Food manufacturing · Workforce competency', name: 'RomLet',
+    promise: 'Competency records your auditor can actually read.',
+    pointsLabel: 'Modules',
     points: [
-      { text: 'Digital work permits, LOTO & confined-space entry' },
-      { text: 'Competency tracking & training pathways' },
-      { text: 'Skill-gap dashboards & risk prediction' },
-      { text: 'Audit-ready training records for FDA & GMP' },   // added Oct 18
+      { text: 'Competency matrix by line & role' },
+      { text: 'Training records & sign-offs on the floor' },
+      { text: 'Gap analysis & re-certification alerts' },
+      { text: 'Audit-ready exports (HACCP, ISO 22000, FSSC, BRCGS, IFS)' },
     ],
-    stats: [{ b: '3', s: 'modules planned' }, { b: 'Web', s: 'any device' }, { b: 'B2B', s: 'food plants' }],   // placeholder (Oct 17)
-    cta: 'See plans & get notified' },
+    stats: [{ b: 'EN·SK·DE·FR', s: 'languages' }, { b: 'Web', s: 'any device' }, { b: 'B2B', s: 'food plants' }],
+    cta: 'Visit romlet.tech' },
   // BiyahePH — Coming soon, not a link; deck hook + the Portfolio line, plus placeholder planned features + stats.
   { v: 'biyaheph', badgeSoon: true, soon: true, mono: 'B',
     title: 'BiyahePH', hook: 'Maps and commute directions for the Philippines.',
@@ -248,7 +251,7 @@ function CardInner({ c, n }: { c: Card; n: number }) {
         <div className="pdx-mark" aria-hidden="true">
           {c.svg ? c.svg : logo ? <img src={logo} alt="" draggable={false} width={36} height={36} /> : <span className="pdx-mono">{c.deckMono || c.mono}</span>}
         </div>
-        <span className={`pdx-pill pdx-pill-${kind}`}><span className="pdx-dot" aria-hidden="true" />{c.badgeSoon ? 'Coming soon' : c.pill}</span>
+        <span className={`pdx-pill pdx-pill-${kind}`}><span className="pdx-dot" aria-hidden="true" />{c.badgeSoon ? (c.soonLabel ?? 'Coming soon') : c.pill}</span>
       </div>
       <div>
         <p className="pdx-kicker">{c.kicker}</p>
@@ -394,7 +397,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
       return
     }
     if (!CARDS[i].href) e.preventDefault()   // active but not a link (coming-soon) → no-op
-    /* active + link → default <a> navigation (SAME tab) */
+    /* active + link → default <a> navigation (SAME tab; an external https link such as romlet.tech opens a new tab) */
   }
 
   if (!DECK_ENABLED) return null
@@ -424,6 +427,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
             const cls = ['pd-card', 'pdx', 'pd-glint', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : '', chipKind(c) === 'live' ? 'pdx-live' : ''].filter(Boolean).join(' ')
             return c.href ? (
               <a key={c.v} ref={el => { cardRefs.current[i] = el }} href={c.href} data-v={c.v} role="listitem"
+                {...(/^https?:/.test(c.href) ? { target: '_blank', rel: 'noopener' } : {})}
                 aria-label={c.title || c.v} className={cls} onClick={e => onCardClick(e, i)}>
                 <CardInner c={c} n={i + 1} />
               </a>

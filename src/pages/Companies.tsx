@@ -34,7 +34,7 @@ const ICON_OVERRIDE: Record<string, { src?: string; Comp?: LucideIcon; scale?: n
 
 /* Coming-soon ventures that have their own page → "Learn more" link instead of
    "not yet available" (no dead ends). */
-const LEARN_MORE: Record<string, string> = { skillvue: '/skillvue', automation: '/automation' }
+const LEARN_MORE: Record<string, string> = { skillvue: '/romlet', automation: '/automation' }
 
 interface Venture {
   id: string; name: string; purpose: string
