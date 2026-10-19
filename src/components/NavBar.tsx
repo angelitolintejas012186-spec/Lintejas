@@ -7,10 +7,9 @@ import BrandMark from './BrandMark'
 import { useSiteConfig } from '../lib/SiteConfigContext'
 import { PLUGIN_REGISTRY } from '../lib/plugins'
 import { ease } from '../lib/motion'
-import { CLIENT_LOGIN_URL, CONTACT_EMAIL, LEGAL_NAME } from '../lib/contact'
+import { CLIENT_LOGIN_URL, CONTACT_EMAIL, LEGAL_NAME, FACEBOOK_URL } from '../lib/contact'
 
 /* Same public Facebook page the footer icons link to (SocialIcons.tsx). */
-const FACEBOOK_URL = 'https://www.facebook.com/share/19JHHNKiee/'
 
 const NAV_LINKS: { to: string; label: string; section?: string }[] = [
   { to: '/',          label: 'Home' },

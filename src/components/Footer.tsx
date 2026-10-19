@@ -15,10 +15,11 @@ const NAV = [
   {
     heading: 'Company',
     links: [
-      { to: '/about',     label: 'About'    },
-      { to: '/companies', label: 'Portfolio' },
-      { to: '/services',  label: 'Services'  },
-      { to: '/contact',   label: 'Contact'   },
+      // Worded differently from the main menu (Oct 2026: repeated link texts are an SEO finding).
+      { to: '/about',     label: 'Our story'  },
+      { to: '/companies', label: 'Portfolio'  },
+      { to: '/services',  label: 'What we do' },
+      { to: '/contact',   label: 'Talk to us' },
     ],
   },
   {
@@ -70,7 +71,8 @@ export default function Footer() {
 
             {/* Brand */}
             <div>
-              <Link to="/" className="inline-flex items-center gap-3 mb-5 group">
+              {/* Not a link: the header logo already links home (avoids a repeated "Lintejas Engine" link). */}
+              <div className="inline-flex items-center gap-3 mb-5 group">
                 <BrandMark />
                 {/* Wordmark lockup — gold L + trailing gold rule (footer only) */}
                 <span className="flex flex-col justify-center select-none">
@@ -91,7 +93,7 @@ export default function Footer() {
                     ENGINE
                   </span>
                 </span>
-              </Link>
+              </div>
 
               <p className="text-sm leading-relaxed max-w-xs mb-6" style={{ color: 'var(--slate)' }}>
                 Software and digital tools that help Filipino entrepreneurs start and run their businesses.

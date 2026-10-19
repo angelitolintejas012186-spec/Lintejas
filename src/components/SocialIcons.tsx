@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Linkedin, Facebook, Instagram } from 'lucide-react'
-import { WHATSAPP_NUMBER, whatsappHref, LINKEDIN_URL, INSTAGRAM_URL } from '../lib/contact'
+import { WHATSAPP_NUMBER, whatsappHref, LINKEDIN_URL, INSTAGRAM_URL, FACEBOOK_URL } from '../lib/contact'
 
 // P2a: Twitter/X (x.com/lintejas) and YouTube (@lintejas) both 404'd — removed until a
 // real account exists. Facebook (→ /Lintejas40) is live. LinkedIn + Instagram are kept
 // in the tree but hidden until their accounts are confirmed — each renders only when its
 // URL is set in lib/contact (LINKEDIN_URL / INSTAGRAM_URL), same switch as Client Login.
 const SOCIALS = [
-  { label: 'LinkedIn',  href: LINKEDIN_URL,                            Icon: Linkedin,  whatsapp: false },
-  { label: 'Facebook',  href: 'https://www.facebook.com/share/19JHHNKiee/', Icon: Facebook,  whatsapp: false },
+  { label: 'Lintejas on LinkedIn', href: LINKEDIN_URL,                 Icon: Linkedin,  whatsapp: false },   // shows once LINKEDIN_URL is set
+  { label: 'Lintejas on Facebook', href: FACEBOOK_URL,                 Icon: Facebook,  whatsapp: false },
   { label: 'Instagram', href: INSTAGRAM_URL,                           Icon: Instagram, whatsapp: false },
   /* item 121 — WhatsApp only appears when a number is configured (whatsappHref). */
   { label: 'WhatsApp',  href: whatsappHref(),                          Icon: null,      whatsapp: true  },
