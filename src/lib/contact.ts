@@ -42,8 +42,5 @@ export const LEGAL_NAME         = 'A. Lintejas Software Development & Services' 
 export const COMPANY_REGISTRY   = 'DTI-registered'  // verified (footer)
 export const COMPANY_COUNTRY    = 'Philippines'     // verified (footer)
 export const DTI_NUMBER         = ''  // MISSING — DTI Business Name registration no.
-/* Second entity (Angie, 19 Oct 2026: Lintejas is a global provider — show both companies in the footer + About). */
-export const EU_LEGAL_NAME      = 'Lintejas Company s.r.o.'
-export const EU_LOCATION        = 'Zvolen, Slovakia'
 export const COMPANY_ADDRESS    = ''  // MISSING — registered business address
 export const RESPONSIBLE_PERSON = ''  // MISSING — person responsible for content

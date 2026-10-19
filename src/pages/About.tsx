@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, MapPin, Building2, ShieldCheck } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
-import { LEGAL_NAME, EU_LEGAL_NAME, EU_LOCATION } from '../lib/contact'
+import { LEGAL_NAME } from '../lib/contact'
 import MagneticButton from '../components/ui/MagneticButton'
 import { staggerContainer, staggerItem, ease } from '../lib/motion'
 import { PORTFOLIO } from '../lib/portfolio'
@@ -131,19 +131,12 @@ export default function About() {
           ))}
         </motion.div>
 
-        {/* ── Company details (both entities — global provider, Oct 2026) ── */}
+        {/* ── Company details (the one registered company, Oct 2026) ── */}
         <Reveal className="-mt-12 mb-20">
           <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--gold)' }}>Company details</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { name: EU_LEGAL_NAME, where: EU_LOCATION },
-              { name: LEGAL_NAME, where: 'DTI-registered, Philippines' },
-            ].map(c => (
-              <div key={c.name} className="rounded-2xl border p-5" style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}>
-                <p className="font-semibold text-sm" style={{ color: 'var(--cream)' }}>{c.name}</p>
-                <p className="text-sm mt-1" style={{ color: 'var(--slate)' }}>{c.where}</p>
-              </div>
-            ))}
+          <div className="rounded-2xl border p-5" style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}>
+            <p className="font-semibold text-sm" style={{ color: 'var(--cream)' }}>{LEGAL_NAME}</p>
+            <p className="text-sm mt-1" style={{ color: 'var(--slate)' }}>DTI-registered, Philippines</p>
           </div>
         </Reveal>
 

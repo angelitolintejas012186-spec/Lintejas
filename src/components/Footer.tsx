@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import BrandMark from './BrandMark'
 import SocialIcons from './SocialIcons'
 import { PORTFOLIO } from '../lib/portfolio'
-import { LEGAL_NAME, DTI_NUMBER, EU_LEGAL_NAME, EU_LOCATION } from '../lib/contact'
+import { LEGAL_NAME, DTI_NUMBER } from '../lib/contact'
 
 /* Company details (item 121) now live in lib/contact (single source, shared with the
    Contact-page Impressum). Real, verifiable facts only — DTI no. / address render ONLY
@@ -148,12 +148,9 @@ export default function Footer() {
             className="pt-6 border-t"
             style={{ borderColor: 'rgba(212,168,67,0.10)' }}
           >
-            {/* Both companies (global provider). DTI No. appends once DTI_NUMBER is set in lib/contact. */}
+            {/* The one registered company (Angie, 19 Oct 2026). DTI No. appends once DTI_NUMBER is set in lib/contact. */}
             <p className="text-xs" style={{ color: 'var(--slate)' }}>
-              © {year} {EU_LEGAL_NAME} · {EU_LOCATION}
-            </p>
-            <p className="text-xs mt-1" style={{ color: 'var(--slate)' }}>
-              {LEGAL_NAME} · <span className="whitespace-nowrap">DTI-registered{DTI_NUMBER ? ` No. ${DTI_NUMBER}` : ''}, Philippines</span>
+              © {year} {LEGAL_NAME} · <span className="whitespace-nowrap">DTI-registered{DTI_NUMBER ? ` No. ${DTI_NUMBER}` : ''}, Philippines</span>
             </p>
             <p className="text-xs mt-1" style={{ color: 'var(--slate)' }}>All rights reserved.</p>
           </div>
