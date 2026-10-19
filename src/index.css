@@ -514,3 +514,9 @@ input[type="color"] {
 #ventures-deck:not(.pd-inview) .pd-card.pd-glint::before,
 #ventures-deck.pd-scrolling .pd-card.pd-glint::before{animation-play-state:paused}
 @media (prefers-reduced-motion:reduce){ .pd-card.pd-glint::before{ animation:none !important; display:none; } }
+
+/* Phones: form fields at 16px so iPhone Safari does not zoom in when one is tapped (pinch zoom is allowed since
+   Oct 2026, so the old maximum-scale=1 no longer suppresses that). Tablets and desktop keep their sizes. */
+@media (max-width: 767px) {
+  input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]), select, textarea { font-size: 16px !important; }
+}
