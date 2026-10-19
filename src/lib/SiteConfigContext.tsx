@@ -19,11 +19,17 @@ interface SiteConfigCtx {
   isLoading: boolean
   isDirty: boolean
   user: User | null
+  /* Admin = the account in the database's site_admins list (checked by the database, Oct 2026). null = not checked yet. */
+  isAdmin: boolean | null
+  /* true once the first sign-in check has finished (the reset page waits for it). */
+  authReady: boolean
   updateConfig: (patch: Partial<SiteConfig> | ((prev: SiteConfig) => SiteConfig)) => void
   saveConfig: () => Promise<void>
   uploadAsset: (file: File, name: string) => Promise<string>
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
+  requestPasswordReset: (email: string) => Promise<void>
+  updatePassword: (password: string) => Promise<void>
 }
 
 const Ctx = createContext<SiteConfigCtx | null>(null)
@@ -69,6 +75,8 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(true)
   const [isDirty, setIsDirty] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null)
+  const [authReady, setAuthReady] = useState(false)
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   /* Apply theme vars on every config change */
@@ -86,9 +94,9 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
     const run = async () => {
       const sb = await getSb()
       if (cancelled) return
-      if (!sb.supabase) { setIsLoading(false); return }
+      if (!sb.supabase) { setIsLoading(false); setAuthReady(true); return }
       // auth
-      sb.supabase.auth.getUser().then(({ data }) => { if (!cancelled) setUser(data.user ?? null) })
+      sb.supabase.auth.getUser().then(({ data }) => { if (!cancelled) { setUser(data.user ?? null); setAuthReady(true) } })
       const { data: { subscription } } = sb.supabase.auth.onAuthStateChange((_ev, session) => {
         if (!cancelled) setUser(session?.user ?? null)
       })
@@ -110,6 +118,19 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
 
     return () => { cancelled = true; if (unsub) unsub() }
   }, [])
+
+  /* Ask the database whether the signed-in account is the site admin (public.is_site_admin). Fails closed. */
+  useEffect(() => {
+    if (!user) { setIsAdmin(null); return }
+    let cancelled = false
+    setIsAdmin(null)
+    getSb().then(async ({ supabase }) => {
+      if (!supabase) { if (!cancelled) setIsAdmin(false); return }
+      const { data, error } = await supabase.rpc('is_site_admin')
+      if (!cancelled) setIsAdmin(!error && data === true)
+    }).catch(() => { if (!cancelled) setIsAdmin(false) })
+    return () => { cancelled = true }
+  }, [user])
 
   function updateConfig(patch: Partial<SiteConfig> | ((prev: SiteConfig) => SiteConfig)) {
     setConfig(prev => {
@@ -148,9 +169,25 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
     setUser(null)
   }
 
+  /* "Forgot password?": Supabase emails a link back to /admin/reset. Says nothing about whether the email exists. */
+  async function requestPasswordReset(email: string) {
+    const { supabase } = await getSb()
+    if (!supabase) throw new Error('Supabase not configured')
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/admin/reset` })
+    if (error) throw error
+  }
+
+  /* /admin/reset: set a new password for the account the email link signed in. */
+  async function updatePassword(password: string) {
+    const { supabase } = await getSb()
+    if (!supabase) throw new Error('Supabase not configured')
+    const { error } = await supabase.auth.updateUser({ password })
+    if (error) throw error
+  }
+
   /* Auto-save 2s after changes when logged in */
   useEffect(() => {
-    if (!isDirty || !user) return
+    if (!isDirty || !user || !isAdmin) return
     if (saveTimer.current) clearTimeout(saveTimer.current)
     saveTimer.current = setTimeout(() => {
       getSb().then(({ saveSiteConfig }) => saveSiteConfig(config).catch(console.error))
@@ -160,7 +197,7 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
   }, [config, isDirty, user])
 
   return (
-    <Ctx.Provider value={{ config, isLoading, isDirty, user, updateConfig, saveConfig, uploadAsset, signIn, signOut }}>
+    <Ctx.Provider value={{ config, isLoading, isDirty, user, isAdmin, authReady, updateConfig, saveConfig, uploadAsset, signIn, signOut, requestPasswordReset, updatePassword }}>
       {children}
     </Ctx.Provider>
   )

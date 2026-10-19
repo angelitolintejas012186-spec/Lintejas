@@ -38,6 +38,7 @@ const Theme          = lazy(() => import('./admin/Theme'))
 const Plugins        = lazy(() => import('./admin/Plugins'))
 const Settings       = lazy(() => import('./admin/Settings'))
 const ProtectedRoute = lazy(() => import('./admin/ProtectedRoute'))
+const ResetPassword  = lazy(() => import('./admin/ResetPassword'))
 
 /* Public shell — wraps all public routes with Lenis + aurora */
 function PublicShell() {
@@ -90,6 +91,7 @@ export default function App() {
 
           {/* Admin (lazy — code-split from the public bundle) */}
           <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin/reset" element={<ResetPassword />} />   {/* "Forgot password?" email lands here */}
           <Route path="/admin" element={
             <ProtectedRoute>
               <AdminLayout />

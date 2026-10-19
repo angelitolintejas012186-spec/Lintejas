@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "prerender": "node scripts/prerender.mjs",
+    "test:db": "node tests/db-site-admins.test.mjs",
+    "test:admin": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/admin-auth.e2e.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.2.17",
     "@types/colorthief": "^2.4.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
