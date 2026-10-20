@@ -155,6 +155,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   -webkit-overflow-scrolling:touch; scrollbar-width:none; max-width:100%;
 }
 .pd-carousel::-webkit-scrollbar{display:none}
+#ventures-deck .pd-carousel{align-items:center}   /* content-fit cards, centred in a row as tall as the tallest */
 .pd-card{
   scroll-snap-align:center; flex:none;
   width:min(442px,80vw); min-height:461px;
@@ -195,9 +196,9 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
    check icons, accent word and accent CTA. --acc-ink = the text-safe accent (≥4.5:1; differs
    only for Automation, whose #7C63E8 is 3.6:1 as text). Decorative layers live in .pdx-fx
    (z-index −1 inside the card's stacking context), so the glint + sheen still paint on top.
-   Height ceiling (Angie, Oct 17): 553px ≥553px wide, 668px below — cards never grow past it;
-   .pdx-foot margin-top:auto pins footers so every card shares the height. Fit step (a) applied:
-   stat cells 7px (NegosyoPlans sat exactly at 553 with 9px — no headroom).
+   Height (Angie, 20 Oct 2026): each card fits its own content — the stats/prices/footer follow the
+   list with a 24px gap (card gap 11px + margin-top 13px); the deck row keeps the tallest card's
+   height and centres the others, so the page never jumps while swiping. Stat cells 7px.
    Fonts: Fraunces (names) + Inter 400–700 (700 loaded in index.html; no faux bold). ── */
 .pd-card.pdx{
   --acc:#6FA0FF; --acc-ink:var(--acc); --stat-b:#F6F2E8;
@@ -205,13 +206,11 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   --cta-fg:#0A1326; --cta-line:transparent;
   background:linear-gradient(165deg,#15223F 0%,#0C1529 58%,#0A1326 100%);
   border:1px solid rgba(255,255,255,.10); border-radius:26px; color:#F6F2E8;
-  padding:24px 22px 20px; gap:11px; min-height:553px; font-family:'Inter',system-ui,sans-serif;
+  padding:24px 22px 20px; gap:11px; min-height:0; font-family:'Inter',system-ui,sans-serif;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35);
 }
-.pd-card.pdx.pd-glint::before{border-radius:25px}   /* glint ring follows the new 26px radius (1px border) */
-.pd-card.pdx.pdx-live{
-  border-color:rgba(212,175,55,.42);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35),0 0 0 1px rgba(212,175,55,.10),0 0 70px -24px rgba(212,175,55,.35);
+.pd-card.pdx.pdx-live{   /* no gold border (Angie, 20 Oct 2026) — the soft gold halo stays */
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35),0 0 70px -24px rgba(212,175,55,.35);
 }
 /* per-brand accents */
 .pd-card.pdx[data-v="blueprints"]{--acc:#6FA0FF; --stat-b:#F1D77A}
@@ -268,14 +267,14 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pdx-ic{flex:none;width:16px;height:16px;margin-top:2px;color:var(--acc-ink)}
 .pdx-chip{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#F1D77A;border:1px solid rgba(212,175,55,.55);border-radius:999px;padding:1px 7px;vertical-align:1px}
 /* footer: stat strip → note / prices → CTA */
-.pdx-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
-.pdx-stats{margin-top:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
+.pdx-foot{margin-top:13px;display:flex;flex-direction:column;gap:10px}
+.pdx-stats{margin-top:13px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
 .pdx-stats + .pdx-foot{margin-top:0}
 .pdx-stat{padding:7px 6px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
 .pdx-stat + .pdx-stat{border-left:1px solid rgba(255,255,255,.08)}
 .pdx-stat b{font-size:15px;font-weight:700;color:var(--stat-b);line-height:1.2}
 .pdx-stat span{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9AA7C2;line-height:1.3}
-.pdx-prices{margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pdx-prices{margin-top:13px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .pdx-prices + .pdx-foot{margin-top:0}
 .pdx-price{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
 .pdx-price.is-featured{border-color:rgba(212,175,55,.55);background:rgba(212,175,55,.08)}
@@ -291,10 +290,10 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pdx-arrow{flex:none;width:18px;height:18px}
 /* active card: same depth as before, on the new surface */
 .pd-card.pdx.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35),var(--nd-sh-lg)}
-.pd-card.pdx.pdx-live.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--nd-sh-lg),0 0 0 1px rgba(212,175,55,.10),0 0 70px -24px rgba(212,175,55,.35)}
-/* phone (card = 80vw): ceiling 668px */
+.pd-card.pdx.pdx-live.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--nd-sh-lg),0 0 70px -24px rgba(212,175,55,.35)}
+/* phone (card = 80vw) */
 @media (max-width:552px){
-  .pd-card.pdx{padding:20px 18px;min-height:668px}
+  .pd-card.pdx{padding:20px 18px}
   .pd-card .pdx-name{font-size:28px}
   .pdx-promise{font-size:14.5px}
   .pdx-index{right:18px}
@@ -486,34 +485,7 @@ input[type="color"] {
   .energy-glint > span:first-child img{ animation:none !important; }
 }
 
-/* ── Deck "Energy Line" — light traveling glint on each card's edge (.pd-glint) ──
-   Lighter than the header: ~40° arc, peak .8, no glow, 6s loop, cards staggered by 0.8s
-   (negative delays so every card starts mid-cycle, never in sync). Path: @property --a +
-   conic-gradient, masked to a 1.5px ring. Keep var(--a) WITHOUT a fallback: Chromium (151)
-   freezes var(--a, 0deg) at the fallback inside an <a href>, and 6 of the 7 cards are links;
-   the registered initial-value already covers it. The card is overflow:hidden (clips at the
-   inner border edge), so the ring sits at inset:0 hugging the existing gold border, which
-   stays untouched underneath. Paused off-screen / while scrolling like the sheen; off for
-   reduced motion. Removing .pd-glint restores the exact card. */
-@property --a{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
-.pd-card.pd-glint::before{
-  content:"";position:absolute;inset:0;border-radius:26.5px;padding:1.5px;pointer-events:none;
-  background:conic-gradient(from var(--a),transparent 0deg,transparent 320deg,rgba(224,192,104,.55) 340deg,rgba(255,247,221,.8) 350deg,rgba(224,192,104,.55) 360deg);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  animation:pd-glint-spin 6s linear infinite;
-}
-@keyframes pd-glint-spin{ to{ --a:360deg } }
-.pd-card.pd-glint:nth-child(2)::before{animation-delay:-.8s}
-.pd-card.pd-glint:nth-child(3)::before{animation-delay:-1.6s}
-.pd-card.pd-glint:nth-child(4)::before{animation-delay:-2.4s}
-.pd-card.pd-glint:nth-child(5)::before{animation-delay:-3.2s}
-.pd-card.pd-glint:nth-child(6)::before{animation-delay:-4s}
-.pd-card.pd-glint:nth-child(7)::before{animation-delay:-4.8s}
-.pd-card.pd-glint:nth-child(8)::before{animation-delay:-5.6s}
-#ventures-deck:not(.pd-inview) .pd-card.pd-glint::before,
-#ventures-deck.pd-scrolling .pd-card.pd-glint::before{animation-play-state:paused}
-@media (prefers-reduced-motion:reduce){ .pd-card.pd-glint::before{ animation:none !important; display:none; } }
+/* Deck "Energy Line" (light travelling round each card's edge) removed — Angie, 20 Oct 2026. */
 
 /* Phones: form fields at 16px so iPhone Safari does not zoom in when one is tapped (pinch zoom is allowed since
    Oct 2026, so the old maximum-scale=1 no longer suppresses that). Tablets and desktop keep their sizes. */
