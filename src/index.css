@@ -155,7 +155,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   -webkit-overflow-scrolling:touch; scrollbar-width:none; max-width:100%;
 }
 .pd-carousel::-webkit-scrollbar{display:none}
-#ventures-deck .pd-carousel{align-items:center}   /* content-fit cards, centred in a row as tall as the tallest */
+#ventures-deck .pd-carousel{align-items:stretch}   /* equal heights: every card as tall as the tallest */
 .pd-card{
   scroll-snap-align:center; flex:none;
   width:min(442px,80vw); min-height:461px;
@@ -168,14 +168,20 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 }
 .pd-card.pd-active{ transform:scale(1); opacity:1; filter:none; box-shadow:var(--nd-sh-lg); animation:pd-floaty 3.4s ease-in-out infinite; }
 @keyframes pd-floaty{0%,100%{translate:0 0}50%{translate:0 -5px}}
-/* The deck's diagonal shine across the centred card was removed (Angie, 20 Oct 2026). The keyframe stays:
-   the brand wordmark shine below uses it (60%-wide band, left −80% → translateX 0→333.33%, composited). */
+.pd-card.pd-active::after{
+  content:"";position:absolute;top:0;left:-80%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(217,169,60,.16),transparent);
+  animation:pd-sheen 3.4s ease-in-out infinite; pointer-events:none; will-change:transform;
+}
+/* Identical sweep to the original (left −80%→120% = +200% of card width; the ::after is 60% wide
+   → translateX 0→333.33%), but via transform so it is composited and never triggers CLS.
+   Restored 20 Oct 2026 (Angie); only the moving edge light stays removed. */
 @keyframes pd-sheen{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(333.33%)}}
 .pd-card:focus-visible{outline:3px solid var(--nd-gold);outline-offset:3px}
 
 /* Brand wordmark shine (header + footer LINTEJAS line) — REUSES the deck's
-   @keyframes pd-sheen above (60%-wide 105deg gold band at .16, 3.4s ease-in-out timing —
-   the same sweep the deck cards had until Oct 2026).
+   @keyframes pd-sheen above and the exact .pd-card.pd-active::after sweep (same
+   60%-wide 105deg gold band at .16, same 3.4s ease-in-out timing).
    transform-only sweep → composited, no layout shift / CLS. */
 .brand-shine{ position:relative; overflow:hidden; }
 .brand-shine::after{
@@ -190,9 +196,9 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
    check icons, accent word and accent CTA. --acc-ink = the text-safe accent (≥4.5:1; differs
    only for Automation, whose #7C63E8 is 3.6:1 as text). Decorative layers live in .pdx-fx
    (z-index −1 inside the card's stacking context), so the glint + sheen still paint on top.
-   Height (Angie, 20 Oct 2026): each card fits its own content — the stats/prices/footer follow the
-   list with a 24px gap (card gap 11px + margin-top 13px); the deck row keeps the tallest card's
-   height and centres the others, so the page never jumps while swiping. Stat cells 7px.
+   Height (Angie, 20 Oct 2026): all 8 cards share one height (the tallest card's: 579px at 390px
+   wide); stats/prices/footer sit at the bottom (margin-top:auto). Phone spacing is tightened
+   (padding, gaps, line spacing) with the same font sizes. Stat cells 7px (6px on phones).
    Fonts: Fraunces (names) + Inter 400–700 (700 loaded in index.html; no faux bold). ── */
 .pd-card.pdx{
   --acc:#6FA0FF; --acc-ink:var(--acc); --stat-b:#F6F2E8;
@@ -261,14 +267,14 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pdx-ic{flex:none;width:16px;height:16px;margin-top:2px;color:var(--acc-ink)}
 .pdx-chip{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#F1D77A;border:1px solid rgba(212,175,55,.55);border-radius:999px;padding:1px 7px;vertical-align:1px}
 /* footer: stat strip → note / prices → CTA */
-.pdx-foot{margin-top:13px;display:flex;flex-direction:column;gap:10px}
-.pdx-stats{margin-top:13px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
+.pdx-foot{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+.pdx-stats{margin-top:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
 .pdx-stats + .pdx-foot{margin-top:0}
 .pdx-stat{padding:7px 6px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
 .pdx-stat + .pdx-stat{border-left:1px solid rgba(255,255,255,.08)}
 .pdx-stat b{font-size:15px;font-weight:700;color:var(--stat-b);line-height:1.2}
 .pdx-stat span{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9AA7C2;line-height:1.3}
-.pdx-prices{margin-top:13px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pdx-prices{margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .pdx-prices + .pdx-foot{margin-top:0}
 .pdx-price{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10)}
 .pdx-price.is-featured{border-color:rgba(212,175,55,.55);background:rgba(212,175,55,.08)}
@@ -287,7 +293,16 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pd-card.pdx.pdx-live.pd-active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),var(--nd-sh-lg),0 0 70px -24px rgba(212,175,55,.35)}
 /* phone (card = 80vw) */
 @media (max-width:552px){
-  .pd-card.pdx{padding:20px 18px}
+  .pd-card.pdx{padding:16px 16px 18px;gap:8px}
+  .pdx-kicker{margin-bottom:3px}
+  .pdx-promise{line-height:1.3}
+  .pdx-list{gap:4px}
+  .pdx-list li{line-height:1.27}
+  .pdx-foot{gap:8px}
+  .pdx-band{padding:7px 11px;line-height:1.35}
+  .pdx-stat{padding:6px}
+  .pdx-prices{gap:8px}
+  .pdx-price{padding:8px 11px}
   .pd-card .pdx-name{font-size:28px}
   .pdx-promise{font-size:14.5px}
   .pdx-index{right:18px}
@@ -298,6 +313,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 /* Pause float/sheen off-screen or while page-scrolling (npdeck.js parity) */
 #ventures-deck:not(.pd-inview) .pd-card.pd-active,
 #ventures-deck.pd-scrolling .pd-card.pd-active{animation:none}
+#ventures-deck:not(.pd-inview) .pd-card.pd-active::after,
+#ventures-deck.pd-scrolling .pd-card.pd-active::after{animation:none;opacity:0}
 /* Reduced motion — static deck (no autoplay handled in JS) */
 @media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
 
