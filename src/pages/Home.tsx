@@ -582,7 +582,7 @@ export default function Home() {
             >
               It dissolves into the work, amplifying human capability without friction.
               Every product we build is held to that standard — precision-engineered for
-              the people who depend on it every day.
+              the people who depend on it every day. We provide global software development for growing businesses across Asia, Europe and the Middle East.
             </motion.p>
           </div>
         </div>
