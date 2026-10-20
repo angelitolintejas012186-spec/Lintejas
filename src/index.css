@@ -168,20 +168,14 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 }
 .pd-card.pd-active{ transform:scale(1); opacity:1; filter:none; box-shadow:var(--nd-sh-lg); animation:pd-floaty 3.4s ease-in-out infinite; }
 @keyframes pd-floaty{0%,100%{translate:0 0}50%{translate:0 -5px}}
-.pd-card.pd-active::after{
-  content:"";position:absolute;top:0;left:-80%;width:60%;height:100%;
-  background:linear-gradient(105deg,transparent,rgba(217,169,60,.16),transparent);
-  animation:pd-sheen 3.4s ease-in-out infinite; pointer-events:none; will-change:transform;
-}
-/* Identical sweep to the original (left −80%→120% = +200% of card width; the ::after is 60% wide
-   → translateX 0→333.33%), but via transform so it is composited and never triggers CLS. */
+/* The deck's diagonal shine across the centred card was removed (Angie, 20 Oct 2026). The keyframe stays:
+   the brand wordmark shine below uses it (60%-wide band, left −80% → translateX 0→333.33%, composited). */
 @keyframes pd-sheen{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(333.33%)}}
 .pd-card:focus-visible{outline:3px solid var(--nd-gold);outline-offset:3px}
 
 /* Brand wordmark shine (header + footer LINTEJAS line) — REUSES the deck's
-   @keyframes pd-sheen above and the exact .pd-card.pd-active::after sweep (same
-   60%-wide 105deg gold band at .16, same 3.4s ease-in-out timing). The deck rules
-   above are untouched; this only adds a second consumer of the shared keyframe.
+   @keyframes pd-sheen above (60%-wide 105deg gold band at .16, 3.4s ease-in-out timing —
+   the same sweep the deck cards had until Oct 2026).
    transform-only sweep → composited, no layout shift / CLS. */
 .brand-shine{ position:relative; overflow:hidden; }
 .brand-shine::after{
@@ -205,7 +199,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
   --cta-bg:linear-gradient(180deg,color-mix(in srgb,var(--acc) 82%,#fff),var(--acc) 55%,color-mix(in srgb,var(--acc) 90%,#000));
   --cta-fg:#0A1326; --cta-line:transparent;
   background:linear-gradient(165deg,#15223F 0%,#0C1529 58%,#0A1326 100%);
-  border:1px solid rgba(255,255,255,.10); border-radius:26px; color:#F6F2E8;
+  border:1px solid rgba(255,255,255,.16); border-radius:26px; color:#F6F2E8;   /* 16% (was 10%): cards stand out without the gold border */
   padding:24px 22px 20px; gap:11px; min-height:0; font-family:'Inter',system-ui,sans-serif;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 28px 60px -30px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.35);
 }
@@ -304,8 +298,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 /* Pause float/sheen off-screen or while page-scrolling (npdeck.js parity) */
 #ventures-deck:not(.pd-inview) .pd-card.pd-active,
 #ventures-deck.pd-scrolling .pd-card.pd-active{animation:none}
-#ventures-deck:not(.pd-inview) .pd-card.pd-active::after,
-#ventures-deck.pd-scrolling .pd-card.pd-active::after{animation:none;opacity:0}
 /* Reduced motion — static deck (no autoplay handled in JS) */
 @media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
 
