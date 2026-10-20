@@ -424,7 +424,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
 
         <div className="pd-carousel" ref={stripRef} role="list">
           {CARDS.map((c, i) => {
-            const cls = ['pd-card', 'pdx', 'pd-glint', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : '', chipKind(c) === 'live' ? 'pdx-live' : ''].filter(Boolean).join(' ')
+            const cls = ['pd-card', 'pdx', c.navy ? 'pd-navy' : '', c.soon ? 'pd-soon' : '', chipKind(c) === 'live' ? 'pdx-live' : ''].filter(Boolean).join(' ')
             return c.href ? (
               <a key={c.v} ref={el => { cardRefs.current[i] = el }} href={c.href} data-v={c.v} role="listitem"
                 {...(/^https?:/.test(c.href) ? { target: '_blank', rel: 'noopener' } : {})}
