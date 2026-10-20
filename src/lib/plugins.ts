@@ -25,7 +25,7 @@ export const PLUGIN_REGISTRY: PluginManifest[] = [
     category: 'utility',
     icon: '🔍',
     settingsSchema: {
-      defaultTitle:       { type: 'text',     label: 'Default Page Title',       placeholder: 'Lintejas Engine — Software Development & Services' },
+      defaultTitle:       { type: 'text',     label: 'Default Page Title',       placeholder: 'Lintejas Engine — Global Software Development' },
       defaultDescription: { type: 'textarea', label: 'Default Meta Description', placeholder: 'Software and digital tools for Filipino entrepreneurs…' },
       ogTitle:            { type: 'text',     label: 'OG Title Override' },
     },
