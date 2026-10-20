@@ -297,6 +297,57 @@ function CardInner({ c, n }: { c: Card; n: number }) {
 /* compact (mobile < lg): content-height section, top-aligned, so the eyebrow sits right after the hero
    (no full-vh centring band). scroll-margin clears the fixed header for the "View our portfolio" anchor.
    Default (false) keeps the desktop deck byte-identical (full-vh, centred). Cards unchanged either way. */
+/* Deck-section backdrop (Angie, 20 Oct 2026): deep space behind the cards only — navy base, nebulae,
+   two star layers (the bright one twinkles), a ringed planet on the right edge, two faint light beams,
+   a drifting aurora, a gold horizon over a glossy floor, rising gold dust and faint scan lines.
+   Decorative (aria-hidden, pointer-events:none); styling in index.css (.pds-*). Motion = aurora,
+   twinkle and dust only (transform/opacity); all of it stops for reduced motion. */
+const STARS = (() => {
+  let a = 20261020   // fixed seed → the same sky on every visit and build
+  const rnd = () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296 }
+  const tint = () => { const r = rnd(); return r < 0.7 ? '#FFFFFF' : r < 0.85 ? '#F3D58A' : '#A9C6FF' }
+  const dim = Array.from({ length: 150 }, () => ({ x: rnd() * 1440, y: rnd() * 560, r: 0.5 + rnd() * 0.6, o: 0.25 + rnd() * 0.4, f: tint() }))
+  const bright = Array.from({ length: 42 }, (_, i) => ({ x: rnd() * 1440, y: rnd() * 540, r: 1 + rnd() * 0.7, o: 0.7 + rnd() * 0.3, f: tint(), g: i % 3 }))
+  return { dim, bright }
+})()
+const DUST = Array.from({ length: 16 }, (_, i) => ({ left: `${(i * 37 + 11) % 100}%`, dur: `${11 + (i * 7) % 8}s`, delay: `-${(i * 1.9) % 14}s`, size: 1.5 + (i % 3) * 0.6 }))
+
+function DeckSpace() {
+  const sky = (stars: typeof STARS.dim) => (
+    <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+      {stars.map((s, i) => <circle key={i} cx={s.x.toFixed(1)} cy={s.y.toFixed(1)} r={s.r.toFixed(2)} fill={s.f} opacity={s.o.toFixed(2)} />)}
+    </svg>
+  )
+  return (
+    <div className="pds" aria-hidden="true">
+      <span className="pds-base" />
+      <span className="pds-neb" />
+      <span className="pds-stars">{sky(STARS.dim)}</span>
+      {[0, 1, 2].map(g => <span key={g} className={`pds-stars pds-tw pds-tw${g}`}>{sky(STARS.bright.filter(s => s.g === g))}</span>)}
+      <span className="pds-beam pds-beam1" /><span className="pds-beam pds-beam2" />
+      <span className="pds-planet">
+        <svg viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="pds-sphere" cx="38%" cy="34%" r="70%"><stop offset="0" stopColor="#1B3566" /><stop offset=".55" stopColor="#0B1838" /><stop offset="1" stopColor="#040A1C" /></radialGradient>
+            <radialGradient id="pds-rim" cx="50%" cy="50%" r="50%"><stop offset=".86" stopColor="#5B8CFF" stopOpacity="0" /><stop offset=".97" stopColor="#7FA8FF" stopOpacity=".55" /><stop offset="1" stopColor="#9FC0FF" stopOpacity=".9" /></radialGradient>
+            <linearGradient id="pds-ring" x1="0" x2="1"><stop offset="0" stopColor="#D9A93C" stopOpacity="0" /><stop offset=".3" stopColor="#EBC15E" stopOpacity=".7" /><stop offset=".7" stopColor="#D9A93C" stopOpacity=".55" /><stop offset="1" stopColor="#D9A93C" stopOpacity="0" /></linearGradient>
+          </defs>
+          <g transform="rotate(-16 200 200)">
+            <path d="M28 200 A172 34 0 0 1 372 200" fill="none" stroke="url(#pds-ring)" strokeWidth="1.6" />
+            <circle cx="200" cy="200" r="118" fill="url(#pds-sphere)" />
+            <circle cx="200" cy="200" r="118" fill="url(#pds-rim)" />
+            <path d="M28 200 A172 34 0 0 0 372 200" fill="none" stroke="url(#pds-ring)" strokeWidth="2" />
+          </g>
+        </svg>
+      </span>
+      <span className="pds-aurora pds-aurora-gold" /><span className="pds-aurora pds-aurora-blue" />
+      <span className="pds-floor" /><span className="pds-haze" /><span className="pds-horizon" />
+      {DUST.map((d, i) => <span key={i} className="pds-dust" style={{ left: d.left, width: d.size, height: d.size, animationDuration: d.dur, animationDelay: d.delay }} />)}
+      <span className="pds-scan" />
+    </div>
+  )
+}
+
 export default function ProductDeck({ compact = false }: { compact?: boolean } = {}) {
   const stripRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
@@ -410,6 +461,7 @@ export default function ProductDeck({ compact = false }: { compact?: boolean } =
       className="relative w-full overflow-hidden"
       style={{ height: compact ? 'auto' : undefined, minHeight: compact ? undefined : vh, background: 'var(--navy)', scrollMarginTop: compact ? 'calc(88px + env(safe-area-inset-top))' : undefined }}
     >
+      <DeckSpace />
       {/* desktop: full-viewport band, centred — min-height (not height) so the premium cards are never
           clipped on short laptop screens (≈ <790px tall); on taller screens it is exactly one viewport. */}
       <div className={compact ? 'flex flex-col' : 'flex flex-col justify-center'} style={{ paddingTop: compact ? 0 : pad, paddingBottom: compact ? 24 : undefined, minHeight: compact ? undefined : vh, boxSizing: 'border-box' }}>
