@@ -329,50 +329,37 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 @media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} #ventures-deck .pd-card.pd-active::after{display:none} }
 
 /* ── Deck-section space backdrop (Angie, 20 Oct 2026) — ProductDeck.tsx <DeckSpace/> ─────────────
-   Behind the cards only: the section isolates, the backdrop sits at z −1 (above the section's navy,
-   below the eyebrow and cards). Soft mask fades at the top and bottom blend into the navy around it.
-   Motion: aurora drift (18s/22s), star twinkle, rising dust — transform/opacity only; paused while
-   the deck is off-screen; all of it stops for reduced motion (the rule above covers #ventures-deck *). */
-#ventures-deck{isolation:isolate}
-.pds{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 13%,#000 87%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 13%,#000 87%,transparent 100%)}
+   Performance pass (real-phone scroll test): the static look — base, nebulae, beams, planet, horizon,
+   haze, floor, scan lines, stars, top/bottom fades — is ONE pre-rendered image per size (AVIF, WebP
+   fallback), baked from the approved #27 layers. Live on top: aurora drift (18s/22s, transform), one
+   twinkling star layer (opacity) and rising dust (transform/opacity); no blur, blend modes or masks.
+   All of it pauses while the page scrolls and while the deck is off-screen, and stops for reduced
+   motion (the rule above covers #ventures-deck *). The section isolates and contains its paint. */
+#ventures-deck{isolation:isolate;contain:paint}
+.pds{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .pds>*{position:absolute;display:block}
-.pds svg{display:block;width:100%;height:100%}
-.pds-base{inset:0;background:radial-gradient(ellipse 75% 70% at 50% 46%,#0d1c3a 0%,#081330 42%,#040a1a 74%,#02050d 100%)}
-.pds-neb{inset:-10% -5%;mix-blend-mode:screen;opacity:.55;background:
-  radial-gradient(ellipse 34% 30% at 12% 40%,rgba(64,118,255,.30),rgba(64,118,255,.10) 45%,transparent 72%),
-  radial-gradient(ellipse 30% 26% at 50% 30%,rgba(140,92,255,.24),rgba(140,92,255,.08) 48%,transparent 74%),
-  radial-gradient(ellipse 30% 28% at 88% 54%,rgba(230,170,70,.22),rgba(230,170,70,.07) 48%,transparent 74%)}
-.pds-stars{inset:0}
-.pds-tw{animation:pds-twinkle 5.5s ease-in-out infinite;will-change:opacity}
-.pds-tw1{animation-duration:7s;animation-delay:-2.3s}
-.pds-tw2{animation-duration:6.2s;animation-delay:-4.1s}
-@keyframes pds-twinkle{0%,100%{opacity:1}50%{opacity:.35}}
-.pds-beam{top:-20%;height:150%;width:18%;transform:rotate(24deg);transform-origin:50% 0;
-  background:linear-gradient(90deg,transparent,rgba(110,160,255,.06) 40%,rgba(140,180,255,.09) 50%,rgba(110,160,255,.06) 60%,transparent)}
-.pds-beam1{left:18%}
-.pds-beam2{left:44%;width:10%;opacity:.7}
-.pds-planet{width:clamp(170px,26vw,380px);aspect-ratio:1;right:calc(clamp(170px,26vw,380px) * -.42);top:9%;
-  filter:drop-shadow(0 0 28px rgba(80,130,255,.35))}
-.pds-aurora{left:-15%;width:130%;height:26%;border-radius:50%;will-change:transform;mix-blend-mode:screen}
+.pds-img{inset:0;background:#111E3A center/cover no-repeat;
+  background-image:url(/bg/deck-space-phone.webp);
+  background-image:image-set(url(/bg/deck-space-phone.avif) type("image/avif"),url(/bg/deck-space-phone.webp) type("image/webp"))}
+@media (min-width:768px){.pds-img{
+  background-image:url(/bg/deck-space-tablet.webp);
+  background-image:image-set(url(/bg/deck-space-tablet.avif) type("image/avif"),url(/bg/deck-space-tablet.webp) type("image/webp"))}}
+@media (min-width:1024px){.pds-img{
+  background-image:url(/bg/deck-space-desktop.webp);
+  background-image:image-set(url(/bg/deck-space-desktop.avif) type("image/avif"),url(/bg/deck-space-desktop.webp) type("image/webp"))}}
+.pds-aurora{left:-15%;width:130%;height:26%;border-radius:50%}
 .pds-aurora-gold{bottom:24%;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(235,193,94,.26),rgba(235,193,94,.08) 50%,transparent 72%);
   animation:pds-drift 18s ease-in-out infinite alternate}
 .pds-aurora-blue{bottom:31%;height:30%;background:radial-gradient(ellipse 48% 50% at 46% 50%,rgba(110,120,255,.24),rgba(150,100,255,.08) 52%,transparent 74%);
   animation:pds-drift 22s ease-in-out infinite alternate-reverse}
 @keyframes pds-drift{0%{transform:translateX(-6%)}100%{transform:translateX(6%)}}
-.pds-floor{left:0;right:0;bottom:0;height:22%;background:
-  radial-gradient(ellipse 55% 60% at 50% 0%,rgba(235,193,94,.16),rgba(235,193,94,.04) 55%,transparent 80%),
-  linear-gradient(to bottom,#0a1428 0%,#050b19 55%,#02050d 100%)}
-.pds-haze{left:0;right:0;bottom:12%;height:22%;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(235,193,94,.18),rgba(217,169,60,.05) 55%,transparent 78%)}
-.pds-horizon{left:4%;right:4%;bottom:22%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(235,193,94,.55) 22%,rgba(255,226,150,.95) 50%,rgba(235,193,94,.55) 78%,transparent);
-  box-shadow:0 0 10px 1px rgba(235,193,94,.45),0 0 28px 4px rgba(217,169,60,.22)}
+.pds-tw{inset:0;animation:pds-twinkle 5.5s ease-in-out infinite}   /* the 14 stars that twinkled in #27, same spots */
+.pds-tw svg{display:block;width:100%;height:100%}
+@keyframes pds-twinkle{0%,100%{opacity:1}50%{opacity:.35}}
 .pds-dust{bottom:14%;border-radius:50%;background:#F3D58A;box-shadow:0 0 6px rgba(243,213,138,.8);opacity:0;
-  animation:pds-rise 14s linear infinite;will-change:transform,opacity}
+  animation:pds-rise 14s linear infinite}
 @keyframes pds-rise{0%{transform:translateY(0);opacity:0}12%{opacity:.75}70%{opacity:.45}100%{transform:translateY(-320px);opacity:0}}
-.pds-scan{inset:0;opacity:.5;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.018) 0 1px,transparent 1px 3px)}
-#ventures-deck:not(.pd-inview) .pds *{animation-play-state:paused}
+#ventures-deck:not(.pd-inview) .pds *,#ventures-deck.pd-scrolling .pds *{animation-play-state:paused}
 
 /* ── Homepage obsidian background v2 (Oct 18) — the Obsidian.dc.html mock ───────────────────
    Additive layers behind the homepage content (Home.tsx ObsidianBackdrop); the wrapper keeps
