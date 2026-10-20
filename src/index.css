@@ -316,7 +316,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 #ventures-deck:not(.pd-inview) .pd-card.pd-active::after,
 #ventures-deck.pd-scrolling .pd-card.pd-active::after{animation:none;opacity:0}
 /* Reduced motion — static deck (no autoplay handled in JS) */
-@media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} }
+@media (prefers-reduced-motion:reduce){ #ventures-deck *{transition:none!important;animation:none!important} #ventures-deck .pd-card.pd-active::after{display:none} }
 
 /* ── Homepage obsidian background v2 (Oct 18) — the Obsidian.dc.html mock ───────────────────
    Additive layers behind the homepage content (Home.tsx ObsidianBackdrop); the wrapper keeps
