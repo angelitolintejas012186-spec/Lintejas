@@ -39,7 +39,7 @@ export const INSTAGRAM_URL = ''
    facts. Fill an empty one to make it appear site-wide at once (Impressum + footer).
    (The Impressum previously carried a leftover non-PH identity that contradicted the
    registered PH identity below; it has been removed.) ──────────────────────────── */
-export const LEGAL_NAME         = 'A. Lintejas Software Development & Services' // verified (footer)
+export const LEGAL_NAME         = 'A. Lintejas Software Development Services' // exact DTI-registered name, no "&" (Angie, 20 Oct 2026)
 export const COMPANY_REGISTRY   = 'DTI-registered'  // verified (footer)
 export const COMPANY_COUNTRY    = 'Philippines'     // verified (footer)
 export const DTI_NUMBER         = ''  // MISSING — DTI Business Name registration no.
