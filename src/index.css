@@ -231,10 +231,12 @@ input:focus-visible, textarea:focus-visible, select:focus-visible {
 .pd-card.pdx[data-v="automation"]{--acc:#7C63E8; --acc-ink:#9D8BFF; --cta-bg:linear-gradient(180deg,#6E55E2,#5B3FD9 55%,#5236C9); --cta-fg:#FFFFFF}
 .pd-card.pdx[data-v="skillvue"]{--acc:#7FC4E8}
 .pd-card.pdx[data-v="biyaheph"]{--acc:#F0A35A; cursor:default}
+.pd-card.pdx[data-v="yta"]{--acc:#5CC8C2; cursor:default}   /* YTA – Your Tax Account (teal); coming soon, not a link yet */
+.pd-card.pdx[data-v="yta"] .pdx-mono{font-size:15px;letter-spacing:.02em}   /* 3-letter monogram fits the 48px mark */
 .pd-card.pdx[data-v="blueprints"],.pd-card.pdx[data-v="matthew"]{--cta-bg:linear-gradient(180deg,#F1D77A,#D4AF37 55%,#B8932B)}
 .pd-card.pdx[data-v="skillvue"],.pd-card.pdx[data-v="biyaheph"]{--cta-bg:transparent; --cta-fg:#F1D77A; --cta-line:rgba(212,175,55,.55)}
 .pd-card.pdx.pd-soon{cursor:pointer}
-.pd-card.pdx[data-v="biyaheph"].pd-soon{cursor:default}
+.pd-card.pdx[data-v="biyaheph"].pd-soon,.pd-card.pdx[data-v="yta"].pd-soon{cursor:default}
 /* decorative layers */
 .pdx-fx{position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;--glow:420px 220px;
   background:
