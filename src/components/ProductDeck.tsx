@@ -218,6 +218,18 @@ export const CARDS: Card[] = [
       { text: 'Jeepney & bus route numbers, not just streets' },   // added Oct 18
     ],
     stats: [{ b: 'Offline', s: '+ online' }, { b: 'Android', s: 'planned' }, { b: 'iOS', s: 'planned' }] },   // placeholder (Oct 17)
+  // YTA – Your Tax Account (Oct 25, 2026, mock approved: option B). Coming soon, NOT a link until the /yta page is
+  // approved (then add href: '/yta'). Always the full name. No price, no launch date, no user counts, no "accredited" claims.
+  { v: 'yta', badgeSoon: true, soon: true, mono: 'YTA',
+    title: 'YTA – Your Tax Account', hook: 'BIR taxes, books and deadlines for Filipino small businesses.',
+    pill: 'Coming soon', kicker: 'by Lintejas', name: 'YTA –', nameAccent: 'Your Tax Account',
+    promise: 'BIR taxes, books and deadlines for Filipino small businesses.',
+    points: [
+      { text: 'Know your tax type (8% or graduated) and what you owe each quarter' },
+      { text: 'Sales and expense books, ready for your accountant' },
+      { text: 'Never miss a BIR deadline again' },
+    ],
+    stats: [{ b: 'Both', s: '8% & graduated' }, { b: 'You file', s: 'it prepares' }, { b: 'EN · TL', s: 'languages' }] },
   // Lintejas Fashion — REMOVED from the deck 2026-09-30: the brand no longer exists.
 ]
 
