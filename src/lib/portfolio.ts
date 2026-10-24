@@ -39,6 +39,8 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
     purpose: 'Workforce competency & compliance for food manufacturers — pilot programme open at romlet.tech.' },
   biyaheph: { name: 'BiyahePH',
     purpose: 'Maps and commute directions for the Philippines — planned for Android and iOS.' },
+  yta: { name: 'YTA – Your Tax Account',
+    purpose: 'BIR taxes, books and deadlines for Filipino small businesses.' },
 }
 
 export const PORTFOLIO: PortfolioItem[] = CARDS.map(c => ({
