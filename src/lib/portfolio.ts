@@ -25,6 +25,8 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
     purpose: "A comprehensive business-manager dashboard that watches your numbers so you don't go under." },
   lite: { name: 'Matthew Lite',
     purpose: 'Know every day if you really earned — sales, expenses, profit and your cash split at a glance.' },
+  staycation: { name: 'Staycation Booking',
+    purpose: 'Direct booking for staycation owners — your own booking page, prices and house agreement. Coming soon.' },
   courses: { name: 'ZAM Academy',
     purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
   supplier: { name: 'WDRICH Supplier Registration', short: 'WDRICH',

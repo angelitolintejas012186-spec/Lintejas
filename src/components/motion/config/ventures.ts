@@ -51,6 +51,15 @@ export const VENTURE_NODES: VentureNode[] = [
     orbit:  155,
   },
   {
+    id:     'staycation',
+    label:  'Staycation Booking',
+    status: 'coming-soon',   // coming soon (27 Oct 2026) — not open to customers yet
+    radius: 8,
+    color:  '#9A7A2E',       // bronze (not live)
+    angle:  Math.PI * 1.20,
+    orbit:  168,
+  },
+  {
     id:     'zam-academy',
     label:  'ZAM Academy',
     status: 'live',

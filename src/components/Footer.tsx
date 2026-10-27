@@ -9,7 +9,7 @@ import { LEGAL_NAME, DTI_NUMBER } from '../lib/contact'
    when set there. */
 
 /* Ventures with their own page on this site; the rest link to the Portfolio. */
-const OWN_PAGE: Record<string, string> = { skillvue: 'https://romlet.tech', automation: '/automation' }   // RomLet (ex-SkillVue) → its own site
+const OWN_PAGE: Record<string, string> = { skillvue: 'https://romlet.tech', automation: '/automation', staycation: '/staycation' }   // RomLet (ex-SkillVue) → its own site
 
 const NAV = [
   {
