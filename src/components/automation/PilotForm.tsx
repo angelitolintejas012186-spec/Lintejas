@@ -6,15 +6,18 @@ import { AUTOMATIONS, BUSINESS_TYPES, COUNTRIES } from './data'
 import { cooldownLeft, sendPilotSignup } from './submit'
 
 /* Join-the-pilot form. `picked` = automation numbers ticked (lifted to the page so a tile's sheet can
-   pre-tick one). Says "Thanks" ONLY after the database confirmed the save; otherwise shows the real error. */
+   pre-tick one). Says "Thanks" ONLY after the database confirmed the save; otherwise shows the real error.
+   `tag` (2026-10-27, /staycation): a product page's own sign-up — the automation list is hidden and the row is
+   tagged in `automations` (e.g. ['Staycation booking']), so no database change is needed; `defaultType` pre-picks the
+   business type (still changeable). Without `tag` the form is exactly as before (/automation). */
 
 const MAX_NOTE = 300
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
 type State = { kind: 'idle' } | { kind: 'sending' } | { kind: 'ok' } | { kind: 'err'; msg: string }
 
-export default function PilotForm({ picked, setPicked }: { picked: number[]; setPicked: (n: number[]) => void }) {
-  const [f, setF] = useState({ name: '', business: '', type: '', country: '', email: '', mobile: '', messenger: '', note: '', website: '' })
+export default function PilotForm({ picked = [], setPicked = () => {}, tag, defaultType = '' }: { picked?: number[]; setPicked?: (n: number[]) => void; tag?: string; defaultType?: string }) {
+  const [f, setF] = useState({ name: '', business: '', type: defaultType, country: '', email: '', mobile: '', messenger: '', note: '', website: '' })
   const [consent, setConsent] = useState(false)
   const [st, setSt] = useState<State>({ kind: 'idle' })
   /* After a successful save the tall form is replaced by a short thank-you box, so the page gets much shorter and
@@ -47,7 +50,7 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
       await sendPilotSignup({
         name: f.name.trim(), business_name: f.business.trim(), business_type: f.type, country: f.country,
         email: f.email.trim(), mobile: f.mobile.trim() || null, messenger: f.messenger.trim() || null,
-        automations: AUTOMATIONS.filter(a => picked.includes(a.n)).map(a => `#${a.n} ${a.name}`),
+        automations: tag ? [tag] : AUTOMATIONS.filter(a => picked.includes(a.n)).map(a => `#${a.n} ${a.name}`),
         time_sink: f.note.trim() || null, consent: true,
       })
       setSt({ kind: 'ok' })
@@ -103,6 +106,9 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
         <input id="ba-msgr" className="ba-in" maxLength={100} value={f.messenger} onChange={set('messenger')} />
       </div>
 
+      {tag ? (
+        <p className="ba-full ba-tagline">Interested in: <strong>{tag}</strong></p>
+      ) : (
       <fieldset className="ba-fs ba-full">
         <legend className="ba-legend">Automations you're interested in <span className="ba-opt">(optional)</span></legend>
         <div className="ba-checks">
@@ -115,6 +121,7 @@ export default function PilotForm({ picked, setPicked }: { picked: number[]; set
           ))}
         </div>
       </fieldset>
+      )}
 
       <div className="ba-field ba-full">
         <label htmlFor="ba-note">What takes most of your time? <span className="ba-opt">(optional)</span></label>

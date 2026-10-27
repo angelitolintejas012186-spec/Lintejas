@@ -37,6 +37,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lintejas.io/staycation</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://lintejas.io/romlet</loc>
     <lastmod>2026-10-19</lastmod>
     <priority>0.8</priority>
