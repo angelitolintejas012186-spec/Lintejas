@@ -166,7 +166,7 @@ export const CARDS: Card[] = [
       { text: 'OFW-friendly: book for family, pay from abroad' },
       { text: 'Check-in / check-out inventory checklist' },
     ],
-    stats: [{ b: 'Multi-unit', s: 'villas & rooms' }, { b: 'Owner-ruled', s: 'pricing' }, { b: 'Book direct', s: 'your own link' }],
+    stats: [{ b: 'Multi-unit', s: 'villas & rooms' }, { b: 'Your rules', s: 'prices & promos' }, { b: 'Direct', s: 'your own link' }],   // facts, no figures
     cta: "See what's coming" },
   { v: 'courses', badgeSoon: true, href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
     title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',
