@@ -162,3 +162,7 @@ textarea.ba-in{min-height:96px;resize:vertical}
 .ba .ba-msg--ok{scroll-margin:96px 0}
 .ba .ba-msg--ok:focus{outline:none}
 .ba .ba-msg--ok:focus-visible{outline:3px solid var(--ba-violet);outline-offset:3px}
+
+/* product-page sign-up (PilotForm `tag`, e.g. /staycation): the one product it is about */
+.ba-tagline{margin:0;font-size:15px;color:var(--ba-ink2)}
+.ba-tagline strong{color:var(--ba-ink)}

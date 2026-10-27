@@ -30,6 +30,12 @@
     "image": "https://lintejas.io/brand/automation/og.png",
     "imageAlt": "Business Automation by Lintejas — gear and lightning logo"
   },
+  "/staycation": {
+    "title": "Staycation Booking — coming soon · Lintejas",
+    "description": "Direct booking for staycation owners: your own page, prices, house agreement and deposits in one link. Coming soon — join the pilot.",
+    "image": "https://lintejas.io/brand/staycation/01-guest-page.jpg",
+    "imageAlt": "Staycation Booking — a sample guest page with SAMPLE data"
+  },
   "/romlet": {
     "title": "RomLet — Workforce competency · Lintejas Engine",
     "description": "RomLet — workforce competency and compliance for food manufacturers, from Lintejas Engine. Pilot programme open at romlet.tech."
