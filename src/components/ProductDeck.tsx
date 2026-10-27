@@ -48,6 +48,19 @@ const AutomationMark = (
   </svg>
 )
 
+/* Staycation Booking mark (2026-10-27): our own simple drawing — a house with a small calendar in the doorway,
+   sea-teal tile, obsidian-friendly. No real resort's logo or artwork. */
+export const StayMark = (
+  <svg viewBox="0 0 100 100" role="img" aria-label="Staycation Booking mark">
+    <rect x="4" y="4" width="92" height="92" rx="26" fill="#0E3B3C" />
+    <path d="M22 50 L50 27 L78 50" fill="none" stroke="#2EC4B6" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M30 46 V74 H70 V46" fill="none" stroke="#2EC4B6" strokeWidth="6" strokeLinejoin="round" />
+    <rect x="40" y="52" width="20" height="18" rx="3" fill="#F6F2E8" />
+    <rect x="40" y="52" width="20" height="5" rx="2" fill="#2EC4B6" />
+    <circle cx="46" cy="63" r="1.8" fill="#0E3B3C" /><circle cx="54" cy="63" r="1.8" fill="#0E3B3C" />
+  </svg>
+)
+
 /* Premium card system (2026-10-03, approved mock): every card = logo + status pill → kicker →
    serif name → one-line promise → 3–6 points (line-check icons) → 3-cell stat strip or price
    boxes → CTA pinned to the bottom. Obsidian & Gold look (2026-10-17): one dark surface for all
@@ -139,6 +152,22 @@ export const CARDS: Card[] = [
     ],
     stats: [{ b: '₱99', s: 'per month' }, { b: '7-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
     cta: 'Start free' },
+  // Staycation Booking — COMING SOON (2026-10-27): direct booking for staycation owners, built on the Business Automation
+  // platform and not open to customers yet. Own page /staycation (pilot sign-up only). Sea-teal accent (index.css
+  // data-v="staycation"). Stats are facts, not figures. Placed directly after Matthew Lite.
+  { v: 'staycation', badgeSoon: true, soon: true, href: '/staycation', svg: StayMark,
+    title: 'Staycation Booking', hook: 'Your own booking page — guests pick dates, sign the house agreement and send the deposit, all in one link.',
+    pill: 'Coming soon', kicker: 'Direct booking for staycation owners', name: 'Staycation Booking',
+    promise: 'Your own booking page — guests pick dates, sign the house agreement and send the deposit, all in one link.',
+    pointsLabel: 'Planned features',
+    points: [
+      { text: 'Per-unit availability calendar' },
+      { text: 'Owner-set prices, promos and packages' },
+      { text: 'OFW-friendly: book for family, pay from abroad' },
+      { text: 'Check-in / check-out inventory checklist' },
+    ],
+    stats: [{ b: 'Multi-unit', s: 'villas & rooms' }, { b: 'Owner-ruled', s: 'pricing' }, { b: 'Book direct', s: 'your own link' }],
+    cta: "See what's coming" },
   { v: 'courses', badgeSoon: true, href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
     title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',
     pill: 'Courses', kicker: 'ZAM Academ.co', name: 'Digital Marketing',
