@@ -95,4 +95,13 @@ export const VENTURE_NODES: VentureNode[] = [
     angle:  Math.PI * 0.50,
     orbit:  162,
   },
+  {
+    id:     'yta',
+    label:  'YTA – Your Tax Account',
+    status: 'coming-soon',   // coming soon (Oct 2026) — not a link yet
+    radius: 8,
+    color:  '#9A7A2E',       // bronze (not live)
+    angle:  Math.PI * 1.80,
+    orbit:  170,
+  },
 ]
