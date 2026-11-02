@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, FormEvent } from 'react'
-import { Send, ShieldCheck, Link2, Wallet, FileSignature, CheckCircle2 } from 'lucide-react'
+import { Send, ShieldCheck, Link2, Wallet, FileSignature, CheckCircle2, Plus } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
 import { sendPilotSignup } from '../components/automation/submit'
+import { SOCIAL_MAX, SOCIAL_PLATFORMS, checkSocialRows } from '../lib/socialLinks'
+import type { SocialCheck } from '../lib/socialLinks'
 
 /* ── Affiliates (/affiliates) — Angie, 2 Nov 2026 ─────────────────────────────────────────────────────────────
    One page, one form, every Lintejas brand. Taglish / English switch (the agent pages' copy, word for word where
@@ -14,6 +16,8 @@ import { sendPilotSignup } from '../components/automation/submit'
      sent to the shop's own form instead — nothing is lost.
    • Any "coming soon" brand ticked → a waiting list row in Supabase pilot_signups (insert-only, the same table the
      Business Automation pilot uses), tagged "Affiliate waitlist: <brand>" in `automations`. No database change.
+   • Social links (2 Nov 2026): with NegosyoPlans ticked, the applicant adds 1–4 links to the page(s) / account(s) they
+     will share on (sent as `social`); the shop checks them again and Angie opens each one in Admin before approving.
    Honest copy only: no income promises, rates only where a program is open, an application is not an approval. */
 
 const NP = 'https://negosyoplans.com'
@@ -62,6 +66,15 @@ const S = {
     e_bot: 'Hindi tumakbo ang security check dito. Mag-apply na lang sa NegosyoPlans mismo:', e_closed: 'Sarado muna ang NegosyoPlans agent program. Subukan ulit sa susunod.',
     e_generic: 'Hindi maipadala ngayon. Subukan ulit mamaya.', e_wait: 'Hindi naisama sa waiting list:',
     privacy: 'Hindi namin ipinapakita sa customer ang pangalan o email mo.',
+    soc_h: 'Saan mo ibabahagi ang link mo?', soc_p: 'Gumawa ng Facebook page o TikTok account para sa pag-share, o gamitin ang personal mong account. Ilagay ang link — titingnan namin bago i-approve ang application mo.',
+    soc_p2: 'Create a Facebook page or TikTok account for sharing, or use your personal account. We check it before approving.',
+    soc_row: 'Link', soc_opt: '(opsyonal)', soc_plat: 'Platform', soc_add: 'Magdagdag ng link (hanggang 4)',
+    soc_tip_b: 'Wala pang page?', soc_tip: 'Ok lang gamitin ang personal mong Facebook o TikTok. Siguraduhing Public ito para makita namin.',
+    p_facebook_page: 'Facebook page', p_facebook_account: 'Facebook account', p_tiktok: 'TikTok', p_instagram: 'Instagram', p_youtube: 'YouTube', p_x: 'X (Twitter)', p_threads: 'Threads', p_other: 'Iba pa',
+    soc_ok: '✓ {p} link — tama ang format', soc_ok_other: '✓ Tama ang format ng link', sr_wrong_host: 'Hindi {p} link ito. Palitan ang platform o ang link.',
+    sr_http: 'Gamitin ang link na nagsisimula sa https:// (hindi http://).', sr_bad_url: 'Hindi ito mukhang link. Halimbawa: facebook.com/pangalan',
+    sr_too_long: 'Masyadong mahaba ang link (hanggang 200 letra).', sr_duplicate: 'Nailagay mo na ang link na ito.',
+    sr_own_site: 'Ilagay ang link ng sarili mong page o account, hindi ng NegosyoPlans o Lintejas.', e_social: 'Maglagay ng kahit isang tamang social media link.',
   },
   en: {
     chip: 'Lintejas Affiliate Program', h1a: 'Share a Lintejas brand.', h1b: 'Earn every month.',
@@ -97,12 +110,23 @@ const S = {
     e_bot: 'The security check couldn’t run here. Please apply on NegosyoPlans directly:', e_closed: 'The NegosyoPlans agent program is closed for now. Please try again later.',
     e_generic: 'Couldn’t send right now. Please try again in a few minutes.', e_wait: 'Couldn’t add you to the waiting list:',
     privacy: 'We never show your name or email to customers.',
+    soc_h: 'Where will you share your link?', soc_p: 'Create a Facebook page or TikTok account for sharing, or use your personal account. We check it before approving.',
+    soc_p2: '',
+    soc_row: 'Link', soc_opt: '(optional)', soc_plat: 'Platform', soc_add: 'Add another link (up to 4)',
+    soc_tip_b: 'No page yet?', soc_tip: 'It’s fine to use your personal Facebook or TikTok. Make sure it’s Public so we can see it.',
+    p_facebook_page: 'Facebook page', p_facebook_account: 'Facebook account', p_tiktok: 'TikTok', p_instagram: 'Instagram', p_youtube: 'YouTube', p_x: 'X (Twitter)', p_threads: 'Threads', p_other: 'Other',
+    soc_ok: '✓ {p} link — the format is right', soc_ok_other: '✓ The link format is right', sr_wrong_host: 'This link isn’t from {p}. Change the platform or the link.',
+    sr_http: 'Use a link that starts with https:// (not http://).', sr_bad_url: 'This doesn’t look like a link. Example: facebook.com/yourname',
+    sr_too_long: 'The link is too long (200 characters max).', sr_duplicate: 'You already added this link.',
+    sr_own_site: 'Use the link of your own page or account, not a NegosyoPlans or Lintejas link.', e_social: 'Add at least one valid social media link.',
   },
 } as const
 type Key = keyof typeof S.en
 
 const CHANNELS = ['facebook', 'groups', 'friends', 'own_business', 'other'] as const
 const CH_KEY: Record<string, Key> = { facebook: 'ch_fb', groups: 'ch_groups', friends: 'ch_friends', own_business: 'ch_biz', other: 'ch_other' }
+const SOC_SHORT: Record<string, string> = { facebook_page: 'Facebook', facebook_account: 'Facebook', x: 'X' }
+type SocRow = { platform: string; url: string; touched: boolean }
 
 declare global {
   interface Window { turnstile?: { render: (el: HTMLElement, o: Record<string, unknown>) => string; reset: (id?: string) => void } }
@@ -158,11 +182,33 @@ export default function Affiliates() {
   const [done, setDone] = useState<{ np: boolean; wait: string[] } | null>(null)
   const doneRef = useRef<HTMLDivElement>(null)
   const bot = useShopBotCheck(!!brands.negosyoplans)
+  const [soc, setSoc] = useState<SocRow[]>([{ platform: 'facebook_page', url: '', touched: false }])
+  const socSent = useRef<number[]>([])
+  const socChecks = checkSocialRows(soc)
+  const setRow = (i: number, p: Partial<SocRow>) => setSoc(rows => rows.map((r, j) => (j === i ? { ...r, ...p } : r)))
+  const socMsg = (r: SocRow, c: SocialCheck): { cls: '' | 'ok' | 'bad'; text: string } => {
+    const name = SOC_SHORT[r.platform] || t(('p_' + r.platform) as Key)
+    if (c.url) return { cls: 'ok', text: r.platform === 'other' ? t('soc_ok_other') : t('soc_ok').replace('{p}', name) }
+    if (c.reason === 'empty' || !r.touched) return { cls: '', text: '' }
+    const k = ('sr_' + (c.reason === 'credentials' || c.reason === 'bad_platform' ? 'bad_url' : c.reason)) as Key
+    return { cls: 'bad', text: t(k).replace('{p}', name) }
+  }
+  const focusRow = (i: number) => setTimeout(() => document.getElementById('aff-soc-url-' + i)?.focus(), 0)
+  /* → the links to send, or the row to fix (-1 = none filled in). Empty rows are skipped. */
+  function socCollect(): { social: { platform: string; url: string }[] } | { bad: number } {
+    const out: { platform: string; url: string }[] = [], sent: number[] = []; let bad = -2
+    socChecks.forEach((c, i) => { if (c.reason === 'empty') return; if (c.url) { out.push({ platform: soc[i].platform, url: c.url }); sent.push(i) } else if (bad === -2) bad = i })
+    setSoc(rows => rows.map(r => (r.url.trim() ? { ...r, touched: true } : r)))
+    socSent.current = sent
+    if (bad !== -2) return { bad }
+    if (!out.length) return { bad: -1 }
+    return { social: out }
+  }
   const up = (k: keyof typeof f) => (e: { target: { value: string } }) => setF(p => ({ ...p, [k]: e.target.value }))
 
   useEffect(() => { if (done) doneRef.current?.focus() }, [done])
 
-  function check(): string | null {
+  function check(): string | null {   // (the social links are checked in submit, after these)
     const m = f.mobile.replace(/[\s-]/g, '')
     if (f.name.trim().length < 2) return t('e_name')
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) return t('e_email')
@@ -178,6 +224,12 @@ export default function Affiliates() {
     e.preventDefault()
     if (busy) return
     const bad = check(); if (bad) { setErr({ msg: bad }); return }
+    let social: { platform: string; url: string }[] = []
+    if (brands.negosyoplans) {
+      const sc = socCollect()
+      if ('bad' in sc) { if (sc.bad === -1) setRow(0, { touched: true }); setErr({ msg: t('e_social') }); focusRow(Math.max(0, sc.bad)); return }
+      social = sc.social
+    }
     setErr(null); setBusy(true)
     let npOk = false
     try {
@@ -186,13 +238,17 @@ export default function Affiliates() {
           const r = await fetch(NP + '/api/agent/apply', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: f.name.trim(), email: f.email.trim(), mobile: f.mobile.replace(/[\s-]/g, ''), walletType: f.walletType,
-              city: f.city.trim(), channel: f.channel, note: f.note.trim(), agree: true, lang, source: 'lintejas', turnstileToken: bot.token }),
+              city: f.city.trim(), channel: f.channel, social, note: f.note.trim(), agree: true, lang, source: 'lintejas', turnstileToken: bot.token }),
           })
           bot.reset()
           if (r.status === 403) { setErr({ msg: t('e_bot'), fallback: true }); return }
           if (r.status === 404) { setErr({ msg: t('e_closed') }); return }
           if (r.status === 429) { setErr({ msg: t('e_many') }); return }
-          if (r.status === 400) { const j = await r.json().catch(() => ({})); const k = ('e_' + String(j.field || '')) as Key; setErr({ msg: k in S[lang] ? t(k) : t('e_generic') }); return }
+          if (r.status === 400) {
+            const j = await r.json().catch(() => ({}))
+            if (j.field === 'social') { const i0 = j.errors?.[0]?.i; const row = typeof i0 === 'number' && socSent.current[i0] !== undefined ? socSent.current[i0] : 0; setErr({ msg: t('e_social') }); focusRow(row); return }
+            const k = ('e_' + String(j.field || '')) as Key; setErr({ msg: k in S[lang] ? t(k) : t('e_generic') }); return
+          }
           if (!r.ok) { setErr({ msg: t('e_generic') }); return }
           npOk = true
         }
@@ -351,6 +407,46 @@ export default function Affiliates() {
                       ))}
                     </div>
                   </fieldset>
+                  {brands.negosyoplans && (
+                    <section id="aff-social" aria-labelledby="aff-soc-h" className="grid gap-3 min-w-0 rounded-xl border p-4" style={{ borderColor: 'rgba(212,168,67,0.30)', background: 'rgba(10,22,40,0.35)' }}>
+                      <div className="grid gap-1.5">
+                        <h3 id="aff-soc-h" className="font-display font-semibold text-xl" style={{ color: 'var(--cream)' }}>{t('soc_h')}</h3>
+                        <p className="text-sm leading-relaxed" style={{ color: 'var(--cream)', opacity: 0.9 }}>{t('soc_p')}</p>
+                        {t('soc_p2') && <p className="text-[13px] leading-relaxed" style={{ color: 'var(--slate)' }}>{t('soc_p2')}</p>}
+                      </div>
+                      {soc.map((r, i) => {
+                        const m = socMsg(r, socChecks[i])
+                        const border = m.cls === 'ok' ? 'rgba(46,196,182,0.6)' : m.cls === 'bad' ? 'rgba(243,180,168,0.7)' : 'var(--glass-border)'
+                        return (
+                          <div key={i} data-row={i} className={'aff-soc-row grid gap-1.5 rounded-xl border p-3 min-w-0' + (m.cls ? ' ' + m.cls : '')}
+                            style={{ borderColor: border, borderWidth: 1.5, background: m.cls === 'ok' ? 'rgba(46,196,182,0.06)' : m.cls === 'bad' ? 'rgba(243,180,168,0.06)' : 'transparent' }}>
+                            <label htmlFor={'aff-soc-url-' + i} className="text-[12.5px] font-bold" style={{ color: 'var(--cream)' }}>
+                              {t('soc_row')} {i + 1}{i > 0 && <span className="font-semibold" style={{ color: 'var(--slate)' }}> {t('soc_opt')}</span>}
+                            </label>
+                            <div className="grid gap-2 min-w-0 grid-cols-1 sm:grid-cols-[160px_minmax(0,1fr)]">
+                              <select aria-label={t('soc_plat') + ' ' + (i + 1)} className={input} style={inputStyle} value={r.platform} onChange={e => setRow(i, { platform: e.target.value })}>
+                                {SOCIAL_PLATFORMS.map(p => <option key={p} value={p}>{t(('p_' + p) as Key)}</option>)}
+                              </select>
+                              <input id={'aff-soc-url-' + i} type="url" inputMode="url" autoComplete="url" spellCheck={false} autoCapitalize="off" maxLength={220} placeholder="facebook.com/…"
+                                className={input + ' min-w-0'} style={{ ...inputStyle, ...(m.cls === 'bad' ? { borderColor: 'rgba(243,180,168,0.7)' } : {}) }} value={r.url}
+                                aria-invalid={m.cls === 'bad'} aria-describedby={'aff-soc-msg-' + i}
+                                onChange={e => { const v = e.target.value; setSoc(rows => rows.map((x, j) => (j === i ? { ...x, url: v, touched: x.touched || !!checkSocialRows([{ platform: x.platform, url: v }])[0].url } : x))) }}
+                                onBlur={() => { if (r.url.trim()) setRow(i, { touched: true }) }} />
+                            </div>
+                            <p id={'aff-soc-msg-' + i} aria-live="polite" className="text-[13px] font-bold leading-snug empty:hidden" style={{ color: m.cls === 'ok' ? '#2EC4B6' : '#F3B4A8' }}>{m.text}</p>
+                          </div>
+                        )
+                      })}
+                      {soc.length < SOCIAL_MAX && (
+                        <button type="button" id="aff-soc-add" onClick={() => { setSoc(rows => [...rows, { platform: 'tiktok', url: '', touched: false }]); focusRow(soc.length) }}
+                          className="inline-flex items-center justify-center gap-2 w-full min-h-[48px] rounded-xl border border-dashed font-bold text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                          style={{ borderColor: 'rgba(212,168,67,0.55)', color: 'var(--gold-bright, #E8C766)' }}><Plus size={16} aria-hidden="true" />{t('soc_add')}</button>
+                      )}
+                      <p className="text-[13px] leading-relaxed rounded-xl border px-3 py-2.5" style={{ color: 'var(--cream)', borderColor: 'rgba(212,168,67,0.40)', background: 'rgba(212,168,67,0.10)' }}>
+                        <b style={{ color: 'var(--gold-bright, #E8C766)' }}>{t('soc_tip_b')}</b> {t('soc_tip')}
+                      </p>
+                    </section>
+                  )}
                   <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-note">{t('f_note')}<textarea id="aff-note" rows={3} className={input + ' resize-y'} style={inputStyle} value={f.note} onChange={up('note')} maxLength={300} /></label>
                   <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
                     <input tabIndex={-1} autoComplete="off" value={f.website} onChange={up('website')} />

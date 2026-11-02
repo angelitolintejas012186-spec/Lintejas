@@ -9,7 +9,8 @@
     "prerender": "node scripts/prerender.mjs",
     "test:db": "node tests/db-site-admins.test.mjs",
     "test:admin": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/admin-auth.e2e.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:affiliates": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/affiliates-social.test.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
