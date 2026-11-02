@@ -16,6 +16,7 @@ const NAV_LINKS: { to: string; label: string; section?: string }[] = [
   { to: '/about',     label: 'About' },
   { to: '/companies', label: 'Brands' },
   { to: '/services',  label: 'Services' },
+  { to: '/affiliates', label: 'Affiliates' },   // 2 Nov 2026: one application for every Lintejas brand
   { to: '/',          label: 'Pricing', section: 'pricing' },
   { to: '/',          label: 'FAQ',     section: 'faq'     },
   { to: '/contact',   label: 'Contact' },
