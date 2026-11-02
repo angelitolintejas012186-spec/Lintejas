@@ -26,6 +26,7 @@ import Romlet    from './pages/Romlet'
 import Security  from './pages/Security'
 import Automation from './pages/Automation'
 import Staycation from './pages/Staycation'
+import Affiliates from './pages/Affiliates'
 import NotFound  from './pages/NotFound'
 
 /* B2 (perf): the admin app is lazy so its chunks — notably @dnd-kit (only used by
@@ -86,7 +87,8 @@ export default function App() {
             <Route path="/skillvue"  element={<Navigate to="/romlet" replace />} />   {/* renamed 19 Oct 2026 */}
             <Route path="/security"  element={<Security />} />
             <Route path="/automation" element={<Automation />} />
-            <Route path="/staycation" element={<Staycation />} />   {/* Staycation Booking — coming soon (27 Oct 2026) */}
+            <Route path="/staycation" element={<Staycation />} />
+            <Route path="/affiliates" element={<Affiliates />} />   {/* Affiliate program: one form for every brand (2 Nov 2026) */}   {/* Staycation Booking — coming soon (27 Oct 2026) */}
             {/* Unknown public addresses → branded 404 (keeps nav + footer) */}
             <Route path="*"          element={<NotFound />} />
           </Route>

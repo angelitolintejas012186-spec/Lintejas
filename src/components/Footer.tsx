@@ -19,6 +19,7 @@ const NAV = [
       { to: '/about',     label: 'Our story'  },
       { to: '/companies', label: 'Portfolio'  },
       { to: '/services',  label: 'What we do' },
+      { to: '/affiliates', label: 'Become an affiliate' },
       { to: '/contact',   label: 'Talk to us' },
     ],
   },
