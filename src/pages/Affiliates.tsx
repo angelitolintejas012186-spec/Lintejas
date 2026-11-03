@@ -19,6 +19,9 @@ import { npBlueprintRate, npBlueprintRateIsNew } from '../lib/npRates'
      Business Automation pilot uses), tagged "Affiliate waitlist: <brand>" in `automations`. No database change.
    • Social links (2 Nov 2026): with NegosyoPlans ticked, the applicant adds 1–4 links to the page(s) / account(s) they
      will share on (sent as `social`); the shop checks them again and Angie opens each one in Admin before approving.
+   • 3 Nov 2026 (Angie approved the "Agent Approval & Payout Flow" mock): the form asks only name, email, mobile,
+     city/province and the social links — the SAME fields as negosyoplans.com/become-an-agent, sent to the same endpoint.
+     No payout details here: after approval the agent adds GCash / Maya / bank on the shop's agent page.
    Honest copy only: no income promises, rates only where a program is open, an application is not an approval. */
 
 const NP = 'https://negosyoplans.com'
@@ -48,11 +51,10 @@ const S = {
     s3_h: 'Ibahagi ang link mo', s3_p: 'Nasa agent page mo ang link, QR card at handang post. Email lang, walang password.',
     s4_h: 'Matanggap ang kita', s4_p: 'Makikita mo ang mga customer at kita mo. Ipinapadala kada buwan sa GCash o Maya.',
     form_h: 'Mag-apply bilang affiliate', form_p: 'Parehong tanong sa NegosyoPlans agent form, at kung aling brand ang gusto mong ibahagi.',
-    f_name: 'Buong pangalan', f_email: 'Email', f_mobile: 'GCash / Maya number', f_wallet: 'Saan ipapadala ang kita', f_city: 'Lungsod o probinsya',
-    f_channel: 'Saan mo ibabahagi ang link?', ch_pick: 'Pumili…', ch_fb: 'Facebook (sariling page o profile)', ch_groups: 'Facebook groups o group chats',
-    ch_friends: 'Pamilya at kaibigan', ch_biz: 'Sa sarili kong negosyo o mga kliyente', ch_other: 'Iba pa',
-    f_brands: 'Mga brand na gusto mong ibahagi', f_note: 'Kaunting kuwento tungkol sa iyo (hindi kailangan)',
-    f_agree: 'Nabasa ko ang mga patakaran at sumasang-ayon ako. 18 taong gulang pataas ako at akin ang GCash o Maya na ito.',
+    f_name: 'Buong pangalan', f_email: 'Email', f_mobile: 'Mobile number', f_city: 'Lungsod o probinsya',
+    f_brands: 'Mga brand na gusto mong ibahagi',
+    pay_note_b: 'Wala pang bayad na details dito.', pay_note: 'Pagka-approve, saka mo ilalagay ang GCash / Maya / bank mo.',
+    f_agree: 'Nabasa ko ang mga patakaran at sumasang-ayon ako. 18 taong gulang pataas ako.',
     rules_h: 'Mga patakaran',
     k1: 'Ang customer mismo ang magbabayad sa official checkout. Huwag kailanman tumanggap ng cash o bayad sa personal mong GCash o Maya.',
     k2: 'Laging sabihin sa customer na may commission ka.', k3: 'Walang pangakong kita — huwag mangako ng kikitain ng customer o ng sinuman.',
@@ -62,7 +64,7 @@ const S = {
     done_np: 'Salamat! Natanggap namin ang NegosyoPlans application mo. Kokontakin ka namin sa email sa loob ng ilang araw.',
     done_wait: 'Nasa waiting list ka na para sa: {list}. Sasabihan ka namin kapag bukas na.',
     e_name: 'Ilagay ang buong pangalan mo.', e_email: 'Ilagay ang tamang email.', e_mobile: 'Ang number ay 11 digits at nagsisimula sa 09.',
-    e_city: 'Ilagay ang lungsod o probinsya mo.', e_channel: 'Pumili kung saan mo ibabahagi ang link.', e_agree: 'Pakitsek ang kahon para sumang-ayon sa mga patakaran.',
+    e_city: 'Ilagay ang lungsod o probinsya mo.', e_agree: 'Pakitsek ang kahon para sumang-ayon sa mga patakaran.',
     e_brand: 'Pumili ng kahit isang brand.', e_many: 'Masyadong maraming subok — maghintay nang kaunti at subukan ulit.',
     e_bot: 'Hindi tumakbo ang security check dito. Mag-apply na lang sa NegosyoPlans mismo:', e_closed: 'Sarado muna ang NegosyoPlans agent program. Subukan ulit sa susunod.',
     e_generic: 'Hindi maipadala ngayon. Subukan ulit mamaya.', e_wait: 'Hindi naisama sa waiting list:',
@@ -92,11 +94,10 @@ const S = {
     s3_h: 'Share your link', s3_p: 'Your link, QR card and a ready-made post are on your agent page. Just your email, no password.',
     s4_h: 'Get paid', s4_p: 'Your page shows your customers and earnings. Paid monthly to GCash or Maya.',
     form_h: 'Apply as an affiliate', form_p: 'The same questions as the NegosyoPlans agent form, plus which brands you want to share.',
-    f_name: 'Full name', f_email: 'Email', f_mobile: 'GCash / Maya number', f_wallet: 'Where to send your earnings', f_city: 'City or province',
-    f_channel: 'Where will you share your link?', ch_pick: 'Choose…', ch_fb: 'Facebook (own page or profile)', ch_groups: 'Facebook groups or group chats',
-    ch_friends: 'Family and friends', ch_biz: 'In my own business or with my clients', ch_other: 'Other',
-    f_brands: 'Brands you want to share', f_note: 'A little about you (optional)',
-    f_agree: 'I have read the rules and I agree. I am 18 or older and this GCash or Maya is mine.',
+    f_name: 'Full name', f_email: 'Email', f_mobile: 'Mobile number', f_city: 'City or province',
+    f_brands: 'Brands you want to share',
+    pay_note_b: 'No payment details needed here.', pay_note: 'Once you’re approved, you’ll add your GCash / Maya / bank.',
+    f_agree: 'I have read the rules and I agree. I am 18 or older.',
     rules_h: 'The rules',
     k1: 'The customer pays at the official checkout. Never accept cash or payment to your own GCash or Maya.',
     k2: 'Always tell the customer you earn a commission.', k3: 'No income promises — never promise earnings to a customer or anyone else.',
@@ -106,7 +107,7 @@ const S = {
     done_np: 'Thank you! We received your NegosyoPlans application. We’ll contact you by email within a few days.',
     done_wait: 'You’re on the waiting list for: {list}. We’ll tell you when it opens.',
     e_name: 'Enter your full name.', e_email: 'Enter a valid email.', e_mobile: 'The number is 11 digits and starts with 09.',
-    e_city: 'Enter your city or province.', e_channel: 'Choose where you’ll share your link.', e_agree: 'Please tick the box to agree to the rules.',
+    e_city: 'Enter your city or province.', e_agree: 'Please tick the box to agree to the rules.',
     e_brand: 'Pick at least one brand.', e_many: 'Too many tries — please wait a bit and try again.',
     e_bot: 'The security check couldn’t run here. Please apply on NegosyoPlans directly:', e_closed: 'The NegosyoPlans agent program is closed for now. Please try again later.',
     e_generic: 'Couldn’t send right now. Please try again in a few minutes.', e_wait: 'Couldn’t add you to the waiting list:',
@@ -124,8 +125,6 @@ const S = {
 } as const
 type Key = keyof typeof S.en
 
-const CHANNELS = ['facebook', 'groups', 'friends', 'own_business', 'other'] as const
-const CH_KEY: Record<string, Key> = { facebook: 'ch_fb', groups: 'ch_groups', friends: 'ch_friends', own_business: 'ch_biz', other: 'ch_other' }
 const SOC_SHORT: Record<string, string> = { facebook_page: 'Facebook', facebook_account: 'Facebook', x: 'X' }
 type SocRow = { platform: string; url: string; touched: boolean }
 
@@ -175,7 +174,7 @@ export default function Affiliates() {
   const t = (k: Key) => S[lang][k] as string
   const pick = (l: Lang) => { setLang(l); try { localStorage.setItem(LANG_KEY, l) } catch { /* private mode */ } }
 
-  const [f, setF] = useState({ name: '', email: '', mobile: '', walletType: 'GCash', city: '', channel: '', note: '', website: '' })
+  const [f, setF] = useState({ name: '', email: '', mobile: '', city: '', website: '' })
   const [brands, setBrands] = useState<Record<string, boolean>>({ negosyoplans: true })
   const [agree, setAgree] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -215,7 +214,6 @@ export default function Affiliates() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) return t('e_email')
     if (!/^09\d{9}$/.test(m)) return t('e_mobile')
     if (!f.city.trim()) return t('e_city')
-    if (!f.channel) return t('e_channel')
     if (!Object.values(brands).some(Boolean)) return t('e_brand')
     if (!agree) return t('e_agree')
     return null
@@ -238,8 +236,8 @@ export default function Affiliates() {
         if (f.website.trim()) { npOk = true } else {
           const r = await fetch(NP + '/api/agent/apply', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: f.name.trim(), email: f.email.trim(), mobile: f.mobile.replace(/[\s-]/g, ''), walletType: f.walletType,
-              city: f.city.trim(), channel: f.channel, social, note: f.note.trim(), agree: true, lang, source: 'lintejas', turnstileToken: bot.token }),
+            body: JSON.stringify({ name: f.name.trim(), email: f.email.trim(), mobile: f.mobile.replace(/[\s-]/g, ''),
+              city: f.city.trim(), social, agree: true, lang, source: 'lintejas', turnstileToken: bot.token }),   // the same fields as /become-an-agent
           })
           bot.reset()
           if (r.status === 403) { setErr({ msg: t('e_bot'), fallback: true }); return }
@@ -259,7 +257,7 @@ export default function Affiliates() {
         try {
           await sendPilotSignup({ name: f.name.trim(), business_name: 'Affiliate waitlist', business_type: 'Other', country: 'Philippines', email: f.email.trim(),
             mobile: f.mobile.replace(/[\s-]/g, '') || null, messenger: null, automations: wait.map(n => 'Affiliate waitlist: ' + n),
-            time_sink: [f.city.trim(), t(CH_KEY[f.channel]), f.note.trim()].filter(Boolean).join(' · ').slice(0, 300) || null, consent: true })
+            time_sink: f.city.trim().slice(0, 300) || null, consent: true })
         } catch (x) {
           if (npOk) { setDone({ np: true, wait: [] }); setErr({ msg: t('e_wait') + ' ' + (x as Error).message }); return }
           setErr({ msg: t('e_wait') + ' ' + (x as Error).message }); return
@@ -385,17 +383,8 @@ export default function Affiliates() {
                     <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-email">{t('f_email')}<input id="aff-email" type="email" inputMode="email" className={input} style={inputStyle} value={f.email} onChange={up('email')} maxLength={120} autoComplete="email" /></label>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-wallet">{t('f_wallet')}
-                      <select id="aff-wallet" className={input} style={inputStyle} value={f.walletType} onChange={up('walletType')}><option>GCash</option><option>Maya</option></select></label>
-                    <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-mobile">{t('f_mobile')}<input id="aff-mobile" inputMode="numeric" placeholder="09XXXXXXXXX" className={input} style={inputStyle} value={f.mobile} onChange={up('mobile')} maxLength={13} autoComplete="tel" /></label>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-mobile">{t('f_mobile')}<input id="aff-mobile" type="tel" inputMode="numeric" placeholder="09XXXXXXXXX" className={input} style={inputStyle} value={f.mobile} onChange={up('mobile')} maxLength={13} autoComplete="tel" /></label>
                     <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-city">{t('f_city')}<input id="aff-city" className={input} style={inputStyle} value={f.city} onChange={up('city')} maxLength={60} autoComplete="address-level2" /></label>
-                    <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-channel">{t('f_channel')}
-                      <select id="aff-channel" className={input} style={inputStyle} value={f.channel} onChange={up('channel')}>
-                        <option value="">{t('ch_pick')}</option>
-                        {CHANNELS.map(c => <option key={c} value={c}>{t(CH_KEY[c])}</option>)}
-                      </select></label>
                   </div>
                   <fieldset className="grid gap-2 min-w-0">
                     <legend className="text-[13px] font-semibold mb-1.5" style={{ color: 'var(--slate)' }}>{t('f_brands')}</legend>
@@ -449,7 +438,11 @@ export default function Affiliates() {
                       </p>
                     </section>
                   )}
-                  <label className={label} style={{ color: 'var(--slate)' }} htmlFor="aff-note">{t('f_note')}<textarea id="aff-note" rows={3} className={input + ' resize-y'} style={inputStyle} value={f.note} onChange={up('note')} maxLength={300} /></label>
+                  {brands.negosyoplans && (
+                    <p id="aff-pay-note" className="text-sm leading-relaxed rounded-xl border px-3 py-2.5" style={{ color: 'var(--cream)', borderColor: 'rgba(46,196,182,0.45)', background: 'rgba(46,196,182,0.10)' }}>
+                      <b style={{ color: '#5EE0D2' }}>{t('pay_note_b')}</b> {t('pay_note')}
+                    </p>
+                  )}
                   <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
                     <input tabIndex={-1} autoComplete="off" value={f.website} onChange={up('website')} />
                   </div>
