@@ -547,3 +547,22 @@ input[type="color"] {
 @media (max-width: 767px) {
   input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=hidden]), select, textarea { font-size: 16px !important; }
 }
+
+/* TL / EN language toggle — small pill beside the hero badge + a floating copy (Angie, 3 Nov 2026; approved mock
+   "Lintejas Floating Language Toggle"). src/components/ui/LangToggle.tsx. Each half 27×23 px, 10 px bold, with an
+   invisible 44×44 px tap area (::before: TL's grows to the left, EN's to the right, so the two never overlap). */
+.lang-toggle{ display:inline-flex; flex-shrink:0; padding:3px; border:1px solid var(--glass-border); border-radius:999px; background:#0F182B; }
+.lang-toggle-btn{ position:relative; width:27px; height:23px; padding:0; border:0; border-radius:999px; background:transparent;
+  color:var(--slate); font-family:inherit; font-size:10px; font-weight:800; line-height:1; letter-spacing:.02em; cursor:pointer; }
+.lang-toggle-btn[aria-pressed="true"]{ background:var(--gold); color:#0a1628; }
+.lang-toggle-btn::before{ content:""; position:absolute; top:50%; width:44px; height:44px; transform:translateY(-50%); }
+.lang-toggle-btn:first-child::before{ right:0; }
+.lang-toggle-btn:last-child::before{ left:0; }
+.lang-toggle-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+.lang-toggle--float{ border-color:rgba(226,181,74,.45); background:rgba(15,24,43,.88); box-shadow:0 8px 22px rgba(0,0,0,.45); }
+/* Floating copy: 12 px under the fixed 80 px header (+ notch), 16 px from the right; under the header (z 50), the
+   WhatsApp button (9999), the cookie banner (10000) and the mobile menu drawer (10001). */
+.lang-float{ position:fixed; top:calc(80px + env(safe-area-inset-top) + 12px); right:16px; z-index:40;
+  opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.lang-float.is-shown{ opacity:1; pointer-events:auto; }
+@media (prefers-reduced-motion:reduce){ .lang-float{ transition:none; } .lang-float:not(.is-shown){ visibility:hidden; } }

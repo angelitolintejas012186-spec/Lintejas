@@ -11,7 +11,8 @@
     "test:admin": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/admin-auth.e2e.mjs",
     "preview": "vite preview",
     "test:affiliates": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/affiliates-social.test.mjs",
-    "test:affiliates-rate": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/affiliates-rate.test.mjs"
+    "test:affiliates-rate": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/affiliates-rate.test.mjs",
+    "test:lang-toggle": "VITE_SUPABASE_URL=https://fake-test-project.supabase.co VITE_SUPABASE_ANON_KEY=fake-test-key vite build --outDir dist-test --emptyOutDir && node tests/lang-toggle.test.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
