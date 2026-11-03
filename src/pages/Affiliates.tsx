@@ -6,6 +6,8 @@ import { sendPilotSignup } from '../components/automation/submit'
 import { SOCIAL_MAX, SOCIAL_PLATFORMS, checkSocialRows } from '../lib/socialLinks'
 import type { SocialCheck } from '../lib/socialLinks'
 import { npBlueprintRate, npBlueprintRateIsNew } from '../lib/npRates'
+import { LangPill, FloatingLangToggle } from '../components/ui/LangToggle'
+import type { Lang } from '../components/ui/LangToggle'
 
 /* ── Affiliates (/affiliates) — Angie, 2 Nov 2026 ─────────────────────────────────────────────────────────────
    One page, one form, every Lintejas brand. Taglish / English switch (the agent pages' copy, word for word where
@@ -26,7 +28,6 @@ import { npBlueprintRate, npBlueprintRateIsNew } from '../lib/npRates'
 
 const NP = 'https://negosyoplans.com'
 const GOLD = 'var(--gold)'
-type Lang = 'tl' | 'en'
 const LANG_KEY = 'lt_aff_lang'
 
 const SOON = [
@@ -37,7 +38,7 @@ const SOON = [
 
 const S = {
   tl: {
-    chip: 'Lintejas Affiliate Program', h1a: 'Ibahagi ang isang Lintejas brand.', h1b: 'Kumita kada buwan.',
+    chip: 'Affiliate Program', h1a: 'Ibahagi ang isang Lintejas brand.', h1b: 'Kumita kada buwan.',
     lead: 'Isang application para sa lahat ng Lintejas brand. Makukuha mo ang sarili mong link at QR card, isang handang post, at page na nagpapakita ng mga customer at kita mo. Ipinapadala kada buwan sa GCash o Maya.',
     apply: 'Mag-apply bilang affiliate', see: 'Tingnan ang mga program',
     prog_h: 'Mga program', prog_p: 'Ang binabayad ng bawat brand ngayon. Ang rate ng mga brand na "paparating" ay itatakda kapag bukas na ang program nila.',
@@ -80,7 +81,7 @@ const S = {
     sr_own_site: 'Ilagay ang link ng sarili mong page o account, hindi ng NegosyoPlans o Lintejas.', e_social: 'Maglagay ng kahit isang tamang social media link.',
   },
   en: {
-    chip: 'Lintejas Affiliate Program', h1a: 'Share a Lintejas brand.', h1b: 'Earn every month.',
+    chip: 'Affiliate Program', h1a: 'Share a Lintejas brand.', h1b: 'Earn every month.',
     lead: 'One application covers every Lintejas brand. You get your own link and QR card, a ready-made post, and a page that shows your customers and earnings. Paid monthly to GCash or Maya.',
     apply: 'Apply as an affiliate', see: 'See the programs',
     prog_h: 'Programs', prog_p: 'What each brand pays today. Rates for the brands marked "coming soon" are set when that program opens.',
@@ -173,6 +174,7 @@ export default function Affiliates() {
   const [lang, setLang] = useState<Lang>(() => { try { return localStorage.getItem(LANG_KEY) === 'tl' ? 'tl' : 'en' } catch { return 'en' } })
   const t = (k: Key) => S[lang][k] as string
   const pick = (l: Lang) => { setLang(l); try { localStorage.setItem(LANG_KEY, l) } catch { /* private mode */ } }
+  const heroLang = useRef<HTMLDivElement>(null)
 
   const [f, setF] = useState({ name: '', email: '', mobile: '', city: '', website: '' })
   const [brands, setBrands] = useState<Record<string, boolean>>({ negosyoplans: true })
@@ -276,34 +278,30 @@ export default function Affiliates() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--navy)' }}>
-      <div className="max-w-[1180px] mx-auto px-6 lg:px-8 pt-28 pb-24">
-
-        {/* ── Language switch ── */}
-        <div className="flex justify-end mb-6">
-          <div role="group" aria-label="Language" className="inline-flex rounded-full border p-1" style={{ borderColor: 'var(--glass-border)' }}>
-            {(['tl', 'en'] as const).map(l => (
-              <button key={l} type="button" onClick={() => pick(l)} aria-pressed={lang === l}
-                className="min-w-[56px] min-h-[44px] px-4 rounded-full text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-                style={lang === l ? { background: GOLD, color: '#0a1628' } : { color: 'var(--slate)' }}>{l.toUpperCase()}</button>
-            ))}
-          </div>
-        </div>
+      <FloatingLangToggle lang={lang} onPick={pick} anchor={heroLang} />
+      <div className="max-w-[1180px] mx-auto px-6 lg:px-8 pt-8 lg:pt-12 pb-24">
 
         {/* ── Hero ── */}
-        <Reveal className="mb-16 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase mb-6"
-            style={{ background: 'rgba(212,168,67,0.10)', border: '1px solid rgba(212,168,67,0.35)', color: GOLD }}>
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: GOLD }} />{t('chip')}
+        <Reveal className="mb-16">
+          {/* Badge + language toggle on one line (toggle right-aligned; floating copy below once this scrolls away). */}
+          <div className="flex items-center justify-between gap-3 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase min-w-0"
+              style={{ background: 'rgba(212,168,67,0.10)', border: '1px solid rgba(212,168,67,0.35)', color: GOLD }}>
+              <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GOLD }} />{t('chip')}
+            </div>
+            <div ref={heroLang} className="shrink-0"><LangPill lang={lang} onPick={pick} /></div>
           </div>
-          <h1 className="font-display font-semibold text-4xl sm:text-5xl lg:text-6xl mb-5 leading-[1.05]" style={{ color: 'var(--cream)', textWrap: 'balance' } as CSSProperties}>
-            {t('h1a')} <span style={{ color: 'var(--gold-bright, #E8C766)' }}>{t('h1b')}</span>
-          </h1>
-          <p className="text-lg max-w-2xl mb-7" style={{ color: 'var(--slate)' }}>{t('lead')}</p>
-          <div className="flex flex-wrap gap-3">
-            <a href="#apply" className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-xl font-bold text-[15px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-              style={{ background: 'linear-gradient(135deg, #E8C766, #D4A843 50%, #9A7A2E)', color: '#0a1628', boxShadow: '0 0 28px rgba(212,168,67,0.25)' }}>{t('apply')}</a>
-            <a href="#programs" className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-xl font-bold text-[15px] border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-              style={{ borderColor: 'rgba(212,168,67,0.35)', color: 'var(--gold-bright, #E8C766)' }}>{t('see')}</a>
+          <div className="max-w-3xl">
+            <h1 className="font-display font-semibold text-4xl sm:text-5xl lg:text-6xl mb-5 leading-[1.05]" style={{ color: 'var(--cream)', textWrap: 'balance' } as CSSProperties}>
+              {t('h1a')} <span style={{ color: 'var(--gold-bright, #E8C766)' }}>{t('h1b')}</span>
+            </h1>
+            <p className="text-lg max-w-2xl mb-7" style={{ color: 'var(--slate)' }}>{t('lead')}</p>
+            <div className="flex flex-wrap gap-3">
+              <a href="#apply" className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-xl font-bold text-[15px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                style={{ background: 'linear-gradient(135deg, #E8C766, #D4A843 50%, #9A7A2E)', color: '#0a1628', boxShadow: '0 0 28px rgba(212,168,67,0.25)' }}>{t('apply')}</a>
+              <a href="#programs" className="inline-flex items-center justify-center min-h-[48px] px-6 rounded-xl font-bold text-[15px] border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
+                style={{ borderColor: 'rgba(212,168,67,0.35)', color: 'var(--gold-bright, #E8C766)' }}>{t('see')}</a>
+            </div>
           </div>
         </Reveal>
 
