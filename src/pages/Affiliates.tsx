@@ -5,6 +5,7 @@ import Reveal from '../components/ui/Reveal'
 import { sendPilotSignup } from '../components/automation/submit'
 import { SOCIAL_MAX, SOCIAL_PLATFORMS, checkSocialRows } from '../lib/socialLinks'
 import type { SocialCheck } from '../lib/socialLinks'
+import { npBlueprintRate, npBlueprintRateIsNew } from '../lib/npRates'
 
 /* ── Affiliates (/affiliates) — Angie, 2 Nov 2026 ─────────────────────────────────────────────────────────────
    One page, one form, every Lintejas brand. Taglish / English switch (the agent pages' copy, word for word where
@@ -38,7 +39,7 @@ const S = {
     apply: 'Mag-apply bilang affiliate', see: 'Tingnan ang mga program',
     prog_h: 'Mga program', prog_p: 'Ang binabayad ng bawat brand ngayon. Ang rate ng mga brand na "paparating" ay itatakda kapag bukas na ang program nila.',
     open: 'Bukas na', soon: 'Paparating', np_desc: 'Business blueprints at Matthew System dashboard para sa mga Pilipinong negosyante at OFW.',
-    r1: 'ng bawat blueprint na binili ng customer mo', r2: 'ng Matthew System pass, sa unang 12 buwan ng customer', r3: 'ng OFW bundle', r4: 'sa unang bayad na Matthew Lite ng customer',
+    r1: 'ng bawat blueprint na binili ng customer mo', r1_before: 'ng bawat blueprint na binili ng customer mo (20% mula 17 Nob)', r2: 'ng Matthew System pass, sa unang 12 buwan ng customer', r3: 'ng OFW bundle', r4: 'sa unang bayad na Matthew Lite ng customer',
     r_note: 'Sa iyo ang customer sa loob ng 30 araw mula nang pindutin ang link mo. Pinapadala kada buwan sa GCash o Maya kapag umabot na sa ₱500. Hindi kasama ang dati nang customer at ang sarili mong bili.',
     agent_link: 'Agent ka na? Buksan ang agent page →', soon_note: 'I-tsek sa form at ikaw ang unang sasabihan kapag bukas na.',
     how_h: 'Paano ito gumagana',
@@ -82,7 +83,7 @@ const S = {
     apply: 'Apply as an affiliate', see: 'See the programs',
     prog_h: 'Programs', prog_p: 'What each brand pays today. Rates for the brands marked "coming soon" are set when that program opens.',
     open: 'Open now', soon: 'Coming soon', np_desc: 'Business blueprints and the Matthew System dashboard for Filipino entrepreneurs and OFWs.',
-    r1: 'of every blueprint your customer buys', r2: 'of Matthew System passes, for the customer’s first 12 months', r3: 'of the OFW bundle', r4: 'for a customer’s first paid Matthew Lite',
+    r1: 'of every blueprint your customer buys', r1_before: 'of every blueprint your customer buys (20% from 17 Nov)', r2: 'of Matthew System passes, for the customer’s first 12 months', r3: 'of the OFW bundle', r4: 'for a customer’s first paid Matthew Lite',
     r_note: 'A customer counts for 30 days after tapping your link. Paid monthly to GCash or Maya once it reaches ₱500. Existing customers and your own purchases don’t count.',
     agent_link: 'Already an agent? Open your agent page →', soon_note: 'Tick it on the form and we’ll tell you first when it opens.',
     how_h: 'How it works',
@@ -321,7 +322,8 @@ export default function Affiliates() {
                 </div>
                 <p className="text-sm" style={{ color: 'var(--slate)' }}>{t('np_desc')}</p>
                 <ul className="grid gap-2.5">
-                  {([['25%', 'r1'], ['20%', 'r2'], ['20%', 'r3'], ['₱50', 'r4']] as const).map(([n, k]) => (
+                  {/* Blueprint rate: 25% before 17 Nov 2026 00:00 Manila (with the "20% from 17 Nov" note), 20% from then (src/lib/npRates.ts). */}
+                  {([[npBlueprintRate(), npBlueprintRateIsNew() ? 'r1' : 'r1_before'], ['20%', 'r2'], ['20%', 'r3'], ['₱50', 'r4']] as const).map(([n, k]) => (
                     <li key={k} className="grid grid-cols-[64px_1fr] gap-3 items-baseline text-[15px]" style={{ color: 'var(--cream)' }}>
                       <b className="font-display text-2xl" style={{ color: 'var(--gold-bright, #E8C766)', fontVariantNumeric: 'tabular-nums' }}>{n}</b><span>{t(k)}</span>
                     </li>
