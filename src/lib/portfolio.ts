@@ -26,7 +26,7 @@ const META: Record<string, Omit<PortfolioItem, 'v'>> = {
   lite: { name: 'Matthew Lite',
     purpose: 'Know every day if you really earned — sales, expenses, profit and your cash split at a glance.' },
   staycation: { name: 'Staycation Booking',
-    purpose: 'Direct booking for staycation owners — your own booking page, prices and house agreement. Coming soon.' },
+    purpose: 'Direct booking for staycation owners — your own booking page, prices and house agreement; guests pay the deposit straight to you.' },
   courses: { name: 'ZAM Academy',
     purpose: 'Practical digital-marketing courses — marketing that sells, not just gets likes.' },
   supplier: { name: 'WDRICH Supplier Registration', short: 'WDRICH',

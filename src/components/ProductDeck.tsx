@@ -152,22 +152,22 @@ export const CARDS: Card[] = [
     ],
     stats: [{ b: '₱99', s: 'per month' }, { b: '7-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
     cta: 'Start free' },
-  // Staycation Booking — COMING SOON (2026-10-27): direct booking for staycation owners, built on the Business Automation
-  // platform and not open to customers yet. Own page /staycation (pilot sign-up only). Sea-teal accent (index.css
-  // data-v="staycation"). Stats are facts, not figures. Placed directly after Matthew Lite.
-  { v: 'staycation', badgeSoon: true, soon: true, href: '/staycation', svg: StayMark,
-    title: 'Staycation Booking', hook: 'Your own booking page — guests pick dates, sign the house agreement and send the deposit, all in one link.',
-    pill: 'Coming soon', kicker: 'Direct booking for staycation owners', name: 'Staycation Booking',
-    promise: 'Your own booking page — guests pick dates, sign the house agreement and send the deposit, all in one link.',
-    pointsLabel: 'Planned features',
+  // Staycation Booking — LIVE (10 Nov 2026): direct booking for staycation owners at negosyoplans.com/stays.
+  // Guests pay the deposit straight to the owner at checkout; the owner pays Lintejas 5% of each confirmed stay.
+  // Sea-teal accent (index.css data-v="staycation"). Stats are facts, not figures. Placed directly after Matthew Lite.
+  { v: 'staycation', href: '/staycation', svg: StayMark,
+    title: 'Staycation Booking', hook: 'Your own booking page — guests pick dates, sign the house agreement and pay the deposit straight to you, all in one link.',
+    pill: 'Live', kicker: 'Direct booking for staycation owners', name: 'Staycation Booking',
+    promise: 'Your own booking page — guests pick dates, sign the house agreement and pay the deposit straight to you, all in one link.',
     points: [
-      { text: 'Per-unit availability calendar' },
-      { text: 'Owner-set prices, promos and packages' },
+      { text: 'Per-unit calendar — paid dates block by themselves' },
+      { text: 'Your prices, weekend rates, promos and packages' },
       { text: 'OFW-friendly: book for family, pay from abroad' },
-      { text: 'Check-in / check-out inventory checklist' },
+      { text: 'Check-in / check-out checklist, house agreement' },
+      { text: 'Your own web address — or the free link' },
     ],
-    stats: [{ b: 'Multi-unit', s: 'villas & rooms' }, { b: 'Your rules', s: 'prices & promos' }, { b: 'Direct', s: 'your own link' }],   // facts, no figures
-    cta: "See what's coming" },
+    stats: [{ b: '₱0', s: 'monthly fee' }, { b: '5%', s: 'per confirmed stay' }, { b: 'Direct', s: 'guests pay you' }],   // facts from the app's own terms
+    cta: 'See how it works' },
   { v: 'courses', badgeSoon: true, href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
     title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',
     pill: 'Courses', kicker: 'ZAM Academ.co', name: 'Digital Marketing',

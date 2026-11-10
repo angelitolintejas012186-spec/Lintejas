@@ -88,7 +88,7 @@ export default function App() {
             <Route path="/security"  element={<Security />} />
             <Route path="/automation" element={<Automation />} />
             <Route path="/staycation" element={<Staycation />} />
-            <Route path="/affiliates" element={<Affiliates />} />   {/* Affiliate program: one form for every brand (2 Nov 2026) */}   {/* Staycation Booking — coming soon (27 Oct 2026) */}
+            <Route path="/affiliates" element={<Affiliates />} />   {/* Affiliate program: one form for every brand (2 Nov 2026) */}   {/* Staycation Booking — live (10 Nov 2026) */}
             {/* Unknown public addresses → branded 404 (keeps nav + footer) */}
             <Route path="*"          element={<NotFound />} />
           </Route>
