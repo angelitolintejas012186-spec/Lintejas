@@ -1,51 +1,52 @@
 import { useEffect } from 'react'
 import type { CSSProperties } from 'react'
 import {
-  Building2, Tags, Clock, Users, ShieldCheck, Palette, Share2,
-  CalendarRange, Receipt, FileSignature, Wallet, CheckCircle2, Inbox, CalendarDays, ClipboardCheck, BadgeCheck,
+  Building2, Tags, Users, Palette, Share2, Globe, RefreshCw, Smartphone,
+  CalendarRange, Receipt, FileSignature, Wallet, CheckCircle2, Inbox, CalendarDays, ClipboardCheck, BadgeCheck, ArrowRight,
 } from 'lucide-react'
 import Reveal from '../components/ui/Reveal'
-import PilotForm from '../components/automation/PilotForm'
 import { StayMark } from '../components/ProductDeck'
-import '../components/automation/automation.css'
 
-/* ── Staycation Booking (/staycation) — COMING SOON (2026-10-27) ─────────────────────────────
-   The deck card's own page: what it will do, for guests and for owners, and a pilot sign-up. Honest copy only: it is
-   NOT open to customers yet — no prices, no "book now", no link to the private preview. The screens are our own app
-   with SAMPLE data (no real customers, no third-party photos). The sign-up reuses the Business Automation pilot form
-   (Supabase pilot_signups), tagged "Staycation booking" in `automations` — no database change.
+/* ── Staycation Booking (/staycation) — LIVE (10 Nov 2026) ────────────────────────────────────
+   The deck card's own page: how it works for guests and owners, what it does, real screens and the sign-up button
+   (negosyoplans.com/stays). Honest copy only — every line here is something the live app does today. The screens are
+   the live app with SAMPLE data (no real customers, no third-party photos). Terms as in the app: free to start, 5% of
+   each confirmed stay, no monthly fee; guests pay the deposit straight to the owner — Lintejas never holds it.
    Same site header / footer / navy background as the other venture pages; sea-teal accent like the deck card. */
 
 const TEAL = '#2EC4B6'
-const LINE = 'Direct booking for staycation owners: your own page, your own prices, and every request in one place.'
+const LINE = 'Direct booking for staycation owners: your own page, your own prices, and every booking in one place.'
+const APP = 'https://negosyoplans.com/stays'
 
 const GUEST_STEPS = [
-  { icon: CalendarRange, t: 'Pick a unit and dates', d: 'A calendar for each unit shows what is free, booked or on hold.' },
+  { icon: CalendarRange, t: 'Pick a unit and dates', d: 'A calendar for each unit shows which nights are free.' },
   { icon: Receipt, t: 'See the price', d: 'The total is worked out from the owner’s rates, promos and packages.' },
-  { icon: FileSignature, t: 'Sign the agreement', d: 'House rules, check-in times and the unit inventory, signed with a typed name.' },
-  { icon: Wallet, t: 'Send the deposit', d: 'GCash, Maya, a bank or a transfer from abroad, with a reference or a proof photo.' },
-  { icon: CheckCircle2, t: 'The owner confirms', d: 'Nothing is booked until the owner checks it and says yes.' },
+  { icon: FileSignature, t: 'Sign the house agreement', d: 'The owner’s house rules, signed with a typed name.' },
+  { icon: Wallet, t: 'Pay the deposit to the owner', d: 'GCash, bank or QR — straight to the owner. The guest sends the reference and a screenshot, and the dates are held at once.' },
+  { icon: CheckCircle2, t: 'The owner confirms', d: 'The owner checks the money and confirms. If nothing arrived, the dates open again.' },
 ]
 const OWNER_STEPS = [
-  { icon: Inbox, t: 'Requests inbox', d: 'Accept, decline or suggest other dates, with ready-made messages to send.' },
-  { icon: CalendarDays, t: 'Calendar', d: 'Every unit and night at a glance; block dates for maintenance or walk-ins.' },
-  { icon: ClipboardCheck, t: 'Handover and turnover', d: 'An inventory checklist at check-in and check-out, signed by the guest.' },
-  { icon: BadgeCheck, t: 'Your own brand and link', d: 'Your logo, colour and tagline on a page with your own address.' },
+  { icon: Inbox, t: 'Payments to check', d: 'Every paid booking with its reference and screenshot — confirm or decline in one tap, then send a ready message.' },
+  { icon: CalendarDays, t: 'Calendar', d: 'Every unit and night at a glance; add walk-in, phone or Facebook bookings yourself.' },
+  { icon: ClipboardCheck, t: 'Check-in and check-out', d: 'A checklist for each stay, balance paid, and private notes.' },
+  { icon: BadgeCheck, t: 'Your monthly statement', d: 'Free to start: 5% of each confirmed stay, no monthly fee. Paid once a month by GoTyme QR.' },
 ]
 const FEATURES = [
   { icon: Building2, t: 'Multi-unit', d: 'Villas, cabins or rooms — one page for all of them.' },
-  { icon: Tags, t: 'Owner-ruled pricing and promos', d: 'Weekday, weekend and peak rates, promos and packages you set.' },
-  { icon: Clock, t: 'Check-in and check-out times per unit', d: 'Each unit keeps its own times, with early or late on request.' },
-  { icon: Users, t: 'Book for someone else', d: 'An OFW abroad books and pays; a family member checks in first.' },
-  { icon: ShieldCheck, t: 'Security deposit and inventory checklist', d: 'What was there at check-in, what is missing at check-out.' },
-  { icon: Palette, t: 'Your own logo, colour and tagline', d: 'A page that looks like your place, not like ours.' },
-  { icon: Share2, t: 'Share link preview', d: 'Your photo, name and tagline when the link is shared on Messenger or Facebook.' },
+  { icon: Tags, t: 'Your prices, promos and packages', d: 'Weekday and Fri/Sat rates, promos (also with a secret code) and fixed-price packages.' },
+  { icon: Users, t: 'Book for someone else', d: 'An OFW abroad books and pays; a family member checks in.' },
+  { icon: FileSignature, t: 'House agreement and checklist', d: 'Guests sign your rules before they book; tick what was there at check-in and check-out.' },
+  { icon: Palette, t: 'Your own logo, colour and photos', d: 'A theme, cover photo, logo and gallery — a page that looks like your place.' },
+  { icon: Globe, t: 'Your own web address', d: 'Use the free link, or connect your own domain such as www.yourplace.ph.' },
+  { icon: RefreshCw, t: 'Airbnb / Booking.com calendar sync', d: 'Nights booked there are blocked here, and the other way round — only “busy” dates, never names.' },
+  { icon: Share2, t: 'Share link preview', d: 'Your name and tagline when the link is shared on Messenger or Facebook.' },
+  { icon: Smartphone, t: 'An app on your phone', d: 'Install the dashboard on your home screen — with a built-in guide, in English and Tagalog.' },
 ]
 const SCREENS = [
-  { src: '/brand/staycation/01-guest-page.jpg', t: 'The guest page', d: 'Your name, tagline and colour' },
-  { src: '/brand/staycation/02-book-for-someone.jpg', t: 'Book for someone else', d: 'Booker abroad, family checks in' },
-  { src: '/brand/staycation/03-owner-inbox.jpg', t: 'The owner’s inbox', d: 'Who booked, who checks in' },
-  { src: '/brand/staycation/04-handover.jpg', t: 'Check-in handover', d: 'Inventory checklist on the phone' },
+  { src: '/brand/staycation/01-guest-page.jpg', t: 'The guest page', d: 'Pick a unit and dates' },
+  { src: '/brand/staycation/02-checkout.jpg', t: 'Checkout', d: 'Pay the deposit straight to the owner' },
+  { src: '/brand/staycation/03-owner-home.jpg', t: 'The owner’s home', d: 'Calendar, this week and what needs you' },
+  { src: '/brand/staycation/04-paid-check.jpg', t: 'A payment to check', d: 'Reference, then Confirm or Decline' },
 ]
 
 function Chip() {
@@ -53,8 +54,17 @@ function Chip() {
     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase mb-6"
       style={{ background: 'rgba(46,196,182,0.10)', border: '1px solid rgba(46,196,182,0.35)', color: TEAL }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: TEAL }} />
-      Coming soon
+      Live
     </div>
+  )
+}
+
+function StartButton() {
+  return (
+    <a href={APP} className="inline-flex items-center justify-center gap-2 mt-7 px-7 rounded-xl font-semibold text-base"
+      style={{ minHeight: 52, background: TEAL, color: '#06221F', boxShadow: '0 10px 30px rgba(46,196,182,0.25)' }}>
+      Create my booking page <ArrowRight size={18} aria-hidden="true" />
+    </a>
   )
 }
 
@@ -93,12 +103,13 @@ export default function Staycation() {
           <Chip />
           <div className="mb-5 mx-auto" aria-hidden="true" style={{ width: '3.75rem', height: '3.75rem' }}>{StayMark}</div>
           <h1 className="font-display font-semibold text-4xl sm:text-5xl lg:text-6xl mb-4" style={{ color: 'var(--cream)', textWrap: 'balance' } as CSSProperties}>
-            Staycation <span style={{ color: TEAL }}>Booking</span> — coming soon
+            Staycation <span style={{ color: TEAL }}>Booking</span>
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--slate)' }}>{LINE}</p>
           <p className="text-sm max-w-2xl mx-auto mt-3" style={{ color: 'var(--slate)' }}>
-            Not open to customers yet. Owners can join the pilot below.
+            Free to start — Lintejas charges 5% of each stay you confirm. No monthly fee. Guests pay the deposit straight to you.
           </p>
+          <StartButton />
         </Reveal>
 
         {/* ── How it works ── */}
@@ -112,7 +123,7 @@ export default function Staycation() {
 
         {/* ── Features ── */}
         <Reveal className="mb-16">
-          <h2 className="font-display font-semibold text-3xl sm:text-4xl text-center mb-8" style={{ color: 'var(--cream)' }}>What it will do</h2>
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl text-center mb-8" style={{ color: 'var(--cream)' }}>What it does</h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map(f => (
               <li key={f.t} className="rounded-2xl border p-5 flex items-start gap-3" style={{ background: 'var(--glass-bg)', borderColor: 'var(--glass-border)' }}>
@@ -129,7 +140,7 @@ export default function Staycation() {
         {/* ── Screens (our own app, SAMPLE data) ── */}
         <Reveal className="mb-16">
           <h2 className="font-display font-semibold text-3xl sm:text-4xl text-center mb-2" style={{ color: 'var(--cream)' }}>A first look</h2>
-          <p className="text-sm text-center mb-8" style={{ color: 'var(--slate)' }}>Screens from the app in development, with SAMPLE data only.</p>
+          <p className="text-sm text-center mb-8" style={{ color: 'var(--slate)' }}>Screens from the live app, with SAMPLE data only.</p>
           <ul className="grid gap-5 grid-cols-2 lg:grid-cols-4">
             {SCREENS.map(s => (
               <li key={s.src} className="min-w-0">
@@ -146,13 +157,15 @@ export default function Staycation() {
           </ul>
         </Reveal>
 
-        {/* ── Join the pilot (the Business Automation pilot sign-up, tagged "Staycation booking") ── */}
+        {/* ── Start: the live app (sign up = property name + email, login link by email) ── */}
         <Reveal className="max-w-3xl mx-auto">
-          <section id="join" aria-labelledby="st-join-h" className="ba rounded-2xl p-6 sm:p-8"
-            style={{ '--ba-violet': '#0B6E66', '--ba-violet2': '#139C8F', '--ba-soft': '#E3F6F3', scrollMarginTop: 'calc(88px + env(safe-area-inset-top))' } as CSSProperties}>
-            <h2 id="st-join-h" className="ba-h2">Notify me / join the pilot</h2>
-            <p className="ba-sub">Run a staycation, resort or villas? Leave your details and we will contact you when the pilot opens. No payment is asked for.</p>
-            <PilotForm tag="Staycation booking" defaultType="Other" />
+          <section aria-labelledby="st-go-h" className="rounded-2xl border p-6 sm:p-8 text-center"
+            style={{ background: 'var(--glass-bg)', borderColor: 'rgba(46,196,182,0.35)' }}>
+            <h2 id="st-go-h" className="font-display font-semibold text-3xl mb-3" style={{ color: 'var(--cream)' }}>Create your booking page</h2>
+            <p className="text-sm max-w-xl mx-auto" style={{ color: 'var(--slate)' }}>
+              Your property name and email are all you need. A short setup guide walks you through prices, photos and how guests pay you.
+            </p>
+            <StartButton />
           </section>
         </Reveal>
 

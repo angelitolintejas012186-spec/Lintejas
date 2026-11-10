@@ -35,10 +35,10 @@
     "description": "Share a Lintejas brand and earn a commission. One application for NegosyoPlans and the brands coming next, paid monthly to GCash or Maya."
   },
   "/staycation": {
-    "title": "Staycation Booking — coming soon · Lintejas",
-    "description": "Direct booking for staycation owners: your own page, prices, house agreement and deposits in one link. Coming soon — join the pilot.",
+    "title": "Staycation Booking — your own booking page · Lintejas",
+    "description": "Direct booking for staycation owners: your own page, prices and house agreement. Guests pay the deposit straight to you. Free to start — 5% of each confirmed stay, no monthly fee.",
     "image": "https://lintejas.io/brand/staycation/01-guest-page.jpg",
-    "imageAlt": "Staycation Booking — a sample guest page with SAMPLE data"
+    "imageAlt": "Staycation Booking — the guest booking page, with SAMPLE data"
   },
   "/romlet": {
     "title": "RomLet — Workforce competency · Lintejas Engine",

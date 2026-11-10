@@ -53,9 +53,9 @@ export const VENTURE_NODES: VentureNode[] = [
   {
     id:     'staycation',
     label:  'Staycation Booking',
-    status: 'coming-soon',   // coming soon (27 Oct 2026) — not open to customers yet
+    status: 'live',          // live since 10 Nov 2026 (negosyoplans.com/stays)
     radius: 8,
-    color:  '#9A7A2E',       // bronze (not live)
+    color:  '#D4A843',       // gold (live)
     angle:  Math.PI * 1.20,
     orbit:  168,
   },
