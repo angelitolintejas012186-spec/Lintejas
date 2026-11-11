@@ -153,7 +153,7 @@ export const CARDS: Card[] = [
     stats: [{ b: '₱99', s: 'per month' }, { b: '7-day', s: 'free trial' }, { b: 'No', s: 'contract' }],
     cta: 'Start free' },
   // Staycation Booking — LIVE (10 Nov 2026): direct booking for staycation owners at negosyoplans.com/stays.
-  // Guests pay the deposit straight to the owner at checkout; the owner pays Lintejas 5% of each confirmed stay.
+  // Guests pay the deposit straight to the owner at checkout; the owner pays Lintejas 3% of each confirmed stay (5% before 11 Nov 2026).
   // Sea-teal accent (index.css data-v="staycation"). Stats are facts, not figures. Placed directly after Matthew Lite.
   { v: 'staycation', href: '/staycation', svg: StayMark,
     title: 'Staycation Booking', hook: 'Your own booking page — guests pick dates, sign the house agreement and pay the deposit straight to you, all in one link.',
@@ -166,7 +166,7 @@ export const CARDS: Card[] = [
       { text: 'Check-in / check-out checklist, house agreement' },
       { text: 'Your own web address — or the free link' },
     ],
-    stats: [{ b: '₱0', s: 'monthly fee' }, { b: '5%', s: 'per confirmed stay' }, { b: 'Direct', s: 'guests pay you' }],   // facts from the app's own terms
+    stats: [{ b: '₱0', s: 'monthly fee' }, { b: '3%', s: 'per confirmed stay' }, { b: 'Direct', s: 'guests pay you' }],   // facts from the app's own terms
     cta: 'See how it works' },
   { v: 'courses', badgeSoon: true, href: `${NP}/courses`, logo: '/brand/zam-mark.png', deckLogo: '/brand/zam-emblem.png',
     title: 'ZAM Academy', hook: 'Marketing that sells, not just gets likes.',

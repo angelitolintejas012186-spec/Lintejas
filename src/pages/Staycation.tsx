@@ -10,8 +10,8 @@ import { StayMark } from '../components/ProductDeck'
 /* ── Staycation Booking (/staycation) — LIVE (10 Nov 2026) ────────────────────────────────────
    The deck card's own page: how it works for guests and owners, what it does, real screens and the sign-up button
    (negosyoplans.com/stays). Honest copy only — every line here is something the live app does today. The screens are
-   the live app with SAMPLE data (no real customers, no third-party photos). Terms as in the app: free to start, 5% of
-   each confirmed stay, no monthly fee; guests pay the deposit straight to the owner — Lintejas never holds it.
+   the live app with SAMPLE data (no real customers, no third-party photos). Terms as in the app: free to start, 3% of
+   each confirmed stay (5% before 11 Nov 2026), no monthly fee; guests pay the deposit straight to the owner — Lintejas never holds it.
    Same site header / footer / navy background as the other venture pages; sea-teal accent like the deck card. */
 
 const TEAL = '#2EC4B6'
@@ -29,7 +29,7 @@ const OWNER_STEPS = [
   { icon: Inbox, t: 'Payments to check', d: 'Every paid booking with its reference and screenshot — confirm or decline in one tap, then send a ready message.' },
   { icon: CalendarDays, t: 'Calendar', d: 'Every unit and night at a glance; add walk-in, phone or Facebook bookings yourself.' },
   { icon: ClipboardCheck, t: 'Check-in and check-out', d: 'A checklist for each stay, balance paid, and private notes.' },
-  { icon: BadgeCheck, t: 'Your monthly statement', d: 'Free to start: 5% of each confirmed stay, no monthly fee. Paid once a month by GoTyme QR.' },
+  { icon: BadgeCheck, t: 'A simple fee', d: 'Free to start: 3% of each confirmed stay, no monthly fee. Each one is paid by GoTyme QR within 3 days.' },
 ]
 const FEATURES = [
   { icon: Building2, t: 'Multi-unit', d: 'Villas, cabins or rooms — one page for all of them.' },
@@ -107,7 +107,7 @@ export default function Staycation() {
           </h1>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'var(--slate)' }}>{LINE}</p>
           <p className="text-sm max-w-2xl mx-auto mt-3" style={{ color: 'var(--slate)' }}>
-            Free to start — Lintejas charges 5% of each stay you confirm. No monthly fee. Guests pay the deposit straight to you.
+            Free to start — Lintejas charges 3% of each stay you confirm. No monthly fee. Guests pay the deposit straight to you.
           </p>
           <StartButton />
         </Reveal>
