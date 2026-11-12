@@ -105,7 +105,7 @@ for (const W of [360, 390, 768, 820, 1024, 1180, 1280, 1440]) for (const L of ['
   await page.click('form button[type=submit]'); await page.waitForTimeout(800)
   const p = posts[0] || {}
   ok(tag + 'sent: social = the 2 filled links, normalised, with source lintejas', posts.length === 1 && p.source === 'lintejas' && JSON.stringify(p.social) === JSON.stringify([{ platform: 'facebook_page', url: 'https://facebook.com/juannegosyo' }, { platform: 'instagram', url: 'https://instagram.com/juan.negosyo' }]), p)
-  ok(tag + 'sent: exactly the shop form\'s fields (no walletType / channel / note)', JSON.stringify(Object.keys(p).filter(k => k !== 'turnstileToken').sort()) === JSON.stringify(['agree', 'city', 'email', 'lang', 'mobile', 'name', 'social', 'source'].sort()) && p.mobile === '09175550101', Object.keys(p))
+  ok(tag + 'sent: exactly the shop form\'s fields (no walletType / channel / note; the hidden website field is sent like the shop form, 12 Nov 2026)', JSON.stringify(Object.keys(p).filter(k => k !== 'turnstileToken').sort()) === JSON.stringify(['agree', 'city', 'email', 'lang', 'mobile', 'name', 'social', 'source', 'website'].sort()) && p.mobile === '09175550101', Object.keys(p))
   ok(tag + 'the thank-you shows', await page.evaluate(() => !!document.querySelector('[role=status]')))
   ok(tag + 'no page errors', !errs.length, errs)
   await ctx.close()
