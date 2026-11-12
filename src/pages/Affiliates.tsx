@@ -235,11 +235,12 @@ export default function Affiliates() {
     let npOk = false
     try {
       if (brands.negosyoplans) {
-        if (f.website.trim()) { npOk = true } else {
+        {   // 12 Nov 2026: the hidden spam field is sent, never judged here — the shop keeps a real person whose browser
+            // auto-filled it (they pass the bot check) and drops bots; before, a filled field meant nothing was sent at all
           const r = await fetch(NP + '/api/agent/apply', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: f.name.trim(), email: f.email.trim(), mobile: f.mobile.replace(/[\s-]/g, ''),
-              city: f.city.trim(), social, agree: true, lang, source: 'lintejas', turnstileToken: bot.token }),   // the same fields as /become-an-agent
+              city: f.city.trim(), social, agree: true, lang, source: 'lintejas', website: f.website, turnstileToken: bot.token }),   // the same fields as /become-an-agent
           })
           bot.reset()
           if (r.status === 403) { setErr({ msg: t('e_bot'), fallback: true }); return }
