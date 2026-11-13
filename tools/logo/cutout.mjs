@@ -1,5 +1,5 @@
-// Cut the official logo (public/brand/lintejas-logo-original.jpeg — Angie's WhatsApp JPEG with a FAKE baked-in
-// checkerboard + faint white smudges) onto TRUE transparency. Logo pixels are the picture's own (not redrawn).
+// Cut the official logo (public/brand/lintejas-logo-original.jpeg — Angie's render on navy, 13 Nov 2026; before that a
+// WhatsApp JPEG with a fake checkerboard) onto TRUE transparency. Logo pixels are the picture's own (not redrawn).
 //  1. soft alpha from warmth: every logo face has R−B ≥ 18 (palest = the beige inner bottom face); checkerboard/smudges ≤ 11
 //  2. keep only large connected shapes (frame + cube) → smudge specks gone
 //  3. fill small enclosed holes (specular spots), never the big hole inside the frame

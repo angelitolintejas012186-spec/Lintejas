@@ -23,12 +23,11 @@ const DECK_ENABLED = true
 const NP = 'https://negosyoplans.com'   // same-tab targets
 
 /* Matthew crest — the exact inline SVG the original deck uses (index.html:708). */
-/* Official Matte-1 crest — navy field rx 22, flat gold shield #D9A93C, navy M. Dead-flat, no hairline. */
+/* Matthew System crest (Angie, 13 Nov 2026): navy field rx 22 + the gold 3D shield (public/brand/matthew-shield.png). */
 const MatthewCrest = (
   <svg viewBox="0 0 100 100" role="img" aria-label="Matthew System crest">
     <rect x="0" y="0" width="100" height="100" rx="22" fill="#0D1B2E" />
-    <path d="M50 12 L84 22 V52 C84 71 69 84.5 50 90.5 C31 84.5 16 71 16 52 V22 Z" fill="#D9A93C" />
-    <path d="M31 64 V34 L50 52 L69 34 V64" fill="none" stroke="#0D1B2E" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
+    <image href="/brand/matthew-shield.png" x="11" y="11" width="78" height="80" />
   </svg>
 )
 
